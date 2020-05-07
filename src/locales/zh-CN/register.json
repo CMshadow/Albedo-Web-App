@@ -1,0 +1,42 @@
+{
+  "user.register": "立即注册",
+  "user.login": "立即登录",
+  "user.save-login": "自动登录",
+  "user.forget-password": "忘记密码",
+  "user.logo.welcome": "专业的光伏系统设计",
+
+  "user.register.welcome": "注册新账户",
+  "user.to-sign-in": "使用已有账户登录",
+  "user.to-sign-up": "创建新账户",
+
+  "user.required": "必填",
+  "user.required.fullname": "姓名",
+  "user.required.firstname": "名字",
+  "user.required.lastname": "姓氏",
+  "user.required.email": "邮箱",
+  "user.required.password": "密码",
+  "user.required.verification": "验证码",
+
+  "user.format.email": "请输入有效邮箱格式",
+  "user.hint.password": "至少8位密码，包含大小写字母和数字" ,
+  "user.strength.strong": "强度: 强",
+  "user.strength.medium": "强度: 中",
+  "user.strength.short": "强度: 太短",
+
+  "user.placeholder.firstname": "名字",
+  "user.placeholder.lastname": "姓氏",
+  "user.placeholder.email": "邮箱",
+  "user.placeholder.password": "至少8位密码，包含大小写字母和数字",
+  "user.placeholder.verification": "验证码",
+
+  "user.error.register": "注册失败",
+  "user.error.verification": "验证失败",
+  "user.error.UsernameExistsException": "邮箱已被使用",
+  "user.error.CodeMismatchException": "验证码不正确",
+
+  "user.verification.resend": "重新发送",
+  "user.verification.welcome": "验证邮箱",
+  "user.verification.confirm": "立即验证",
+
+  "user.login.welcome": "用户登录"
+}

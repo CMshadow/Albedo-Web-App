@@ -1,0 +1,3 @@
+export const SET_COGNITOUSER = 'SET_COGNITOUSER';
+export const SET_VERIFIED = 'SET_VERIFIED';
+export const SET_AUTH_LOADING = 'SET_AUTH_LOADING';

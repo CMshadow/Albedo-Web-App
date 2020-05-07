@@ -1,0 +1,71 @@
+@import '../../../styles/global.scss';
+
+.main {
+  width: 368px;
+  margin: 0 auto;
+
+  h2 {
+    text-align: center;
+  }
+
+  .password {
+    margin-bottom: 24px;
+    :global {
+      .ant-form-item-explain {
+        display: none;
+      }
+    }
+  }
+
+  .getCaptcha {
+    display: block;
+    width: 100%;
+  }
+
+  .submit {
+    width: 50%;
+  }
+
+  .login {
+    float: right;
+    line-height: $btn-height-lg;
+  }
+}
+
+.success,
+.warning,
+.error {
+  transition: color 0.3s;
+}
+
+.success {
+  color: $success-color;
+}
+
+.warning {
+  color: $warning-color;
+}
+
+.error {
+  color: $error-color;
+}
+
+.progress-pass > .progress {
+  :global {
+    .ant-progress-bg {
+      background-color: $warning-color;
+    }
+  }
+}
+
+.firstname {
+  display: inline-block;
+  width: 50%;
+  padding-right: 1%;
+}
+
+.lastname {
+  display: inline-block;
+  width: 50%;
+  padding-left: 1%;
+}
