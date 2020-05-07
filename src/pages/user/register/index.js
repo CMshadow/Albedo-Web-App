@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
 import { getLanguage } from '../../../utils/getLanguage';
-import { userPool, CreateSignupParams } from '../../../utils/cognito';
+import { Auth } from 'aws-amplify';
 import { useHistory } from "react-router-dom";
 import { Form, Button, Input, Popover, Progress, notification, Row } from 'antd';
 import * as actions from '../../../store/action/index';
@@ -19,27 +19,32 @@ const Register = (props) => {
 
   const onFinish = (values) => {
     props.setAuthLoading(true);
-    values.locale = getLanguage();
-    const attriList = CreateSignupParams(values);
-    userPool.signUp(
-      values.mail, values.password, attriList, [], (err, result) => {
-        if (err) {
-          console.log(err)
-          notification.error({
-            message: t('user.error.register'),
-            description: t(`user.error.${err.code}`)
-          })
-          props.setAuthLoading(false);
-          return;
-        }
-        const cognitoUser = result.user;
-        const userSub = result.userSub;
-        props.setCognitoUser(cognitoUser);
-        props.setVerified(false);
-        props.setAuthLoading(false);
-        history.push(`/user/verify/${userSub}`);
+    Auth.signUp({
+      username: values.mail,
+      password: values.password,
+      attributes: {
+        family_name: values.lastname,
+        given_name: values.firstname,
+        locale: getLanguage()
       }
-    )
+    })
+    .then(res => {
+      console.log(res)
+      const cognitoUser = res.user;
+      const userSub = res.userSub;
+      props.setCognitoUser(cognitoUser);
+      props.setVerified(false);
+      props.setAuthLoading(false);
+      history.push(`/user/verify/${userSub}`);
+    })
+    .catch(err => {
+      notification.error({
+        message: t('user.error.register'),
+        description: t(`user.error.${err.code}`)
+      })
+      props.setAuthLoading(false);
+      return;
+    })
   }
 
   const checkPassword = (rule, value) => {

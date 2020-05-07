@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Auth } from 'aws-amplify';
 import { Link, withRoute } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
@@ -15,29 +16,25 @@ const Verification = (props) => {
 
   const onFinish = (values) => {
     props.setAuthLoading(true);
-    props.cognitoUser.confirmRegistration(
-      values.verification, true, (err, result) => {
-        if (err) {
-          console.log(err)
-          notification.error({
-            message: t('user.error.verification'),
-            description: t(`user.error.${err.code}`)
-          })
-          props.setAuthLoading(false);
-          return;
-        }
-        console.log('call result: ' + result);
-        props.setAuthLoading(false);
-      }
-    );
+    Auth.confirmSignUp(props.cognitoUser.getUsername(), values.verification)
+    .then(res => {
+      console.log('call result: ' + res);
+      props.setAuthLoading(false);
+    })
+    .catch(err => {
+      console.log(err)
+      notification.error({
+        message: t('user.error.verification'),
+        description: t(`user.error.${err.code}`)
+      })
+      props.setAuthLoading(false);
+      return;
+    })
   }
 
   const getVerification = () => {
-    props.cognitoUser.resendConfirmationCode((err, result) => {
-      if (err) {
-        alert(err.message || JSON.stringify(err));
-        return;
-      }
+    Auth.resendSignUp(props.cognitoUser.getUsername())
+    .then(res => {
       // 按钮冷却60秒
       let counts = 59;
       setcount(counts);
@@ -48,7 +45,11 @@ const Verification = (props) => {
           clearInterval(interval);
         }
       }, 1000);
-    });
+    })
+    .catch(err => {
+      alert(err.message || JSON.stringify(err));
+      return;
+    })
   };
 
   return (

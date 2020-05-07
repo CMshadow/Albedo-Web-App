@@ -1,46 +1,14 @@
-import {
-  CognitoUserPool,
-  CognitoUserAttribute,
-  AuthenticationDetails
-} from 'amazon-cognito-identity-js';
+import Amplify from 'aws-amplify';
 
-const poolData = {
-	UserPoolId: 'us-west-2_WLzviguZC', // Your user pool id here
-	ClientId: '7vjd60cjtvqh51jo5pstqhr9u0', // Your client id here
-};
+Amplify.configure({
+  Auth: {
+    // REQUIRED - Amazon Cognito Region
+    region: 'us-west-2',
 
-export const userPool = new CognitoUserPool(poolData);
+    // OPTIONAL - Amazon Cognito User Pool ID
+    userPoolId: 'us-west-2_WLzviguZC',
 
-export const CreateSignupParams = (params) => {
-  const attributeList = [];
-
-  const email = {Name: 'email', Value: params.mail}
-  const attributeEmail = new CognitoUserAttribute(email);
-  attributeList.push(attributeEmail)
-
-  const givenName = {Name: 'given_name', Value: params.firstname}
-  const attributeGivenName = new CognitoUserAttribute(givenName);
-  attributeList.push(attributeGivenName)
-
-  const familyName = {Name: 'family_name', Value: params.lastname}
-  const attributeFamilyName = new CognitoUserAttribute(familyName);
-  attributeList.push(attributeFamilyName)
-
-  const locale = {Name: 'locale', Value: params.locale}
-  const attributeLocal = new CognitoUserAttribute(locale);
-  attributeList.push(attributeLocal)
-
-  return attributeList;
-}
-
-export const CreateAuthDetails = (params) => {
-  const authenticationData = {
-    Username: params.mail,
-    Password: params.password,
-    ValidationData: null
-  };
-  console.log(authenticationData)
-  console.log(AuthenticationDetails)
-  const authDetails = AuthenticationDetails(authenticationData);
-  return authDetails;
-}
+    // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
+    userPoolWebClientId: '7vjd60cjtvqh51jo5pstqhr9u0',
+  }
+});

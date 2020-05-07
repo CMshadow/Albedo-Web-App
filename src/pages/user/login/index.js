@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
 import { CognitoUser } from 'amazon-cognito-identity-js';
+import { Auth } from 'aws-amplify';
 import { userPool, CreateAuthDetails } from '../../../utils/cognito';
 import { useHistory } from "react-router-dom";
 import { Form, Button, Input, notification, Row, Checkbox } from 'antd';
@@ -18,40 +19,12 @@ const Login = (props) => {
 
   const onFinish = (values) => {
     props.setAuthLoading(true);
-    const authDetails = CreateAuthDetails(values);
-    const cognitoUser = CognitoUser({Username: values.mail, Pool: userPool});
-    cognitoUser.authenticateUser(authDetails, {
-      onSuccess: result => {
-        var accessToken = result.getAccessToken().getJwtToken();
-        console.log(result)
-        // //POTENTIAL: Region needs to be set if not already set previously elsewhere.
-        // AWS.config.region = '<region>';
-        //
-        // AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-        //   IdentityPoolId: '...', // your identity pool id here
-        //   Logins: {
-        //     // Change the key below according to the specific region your user pool is in.
-        //     'cognito-idp.<region>.amazonaws.com/<YOUR_USER_POOL_ID>': result
-        //       .getIdToken()
-        //       .getJwtToken(),
-        //   },
-        // });
-        //
-        // //refreshes credentials using AWS.CognitoIdentity.getCredentialsForIdentity()
-        // AWS.config.credentials.refresh(error => {
-        //   if (error) {
-        //     console.error(error);
-        //   } else {
-        //     // Instantiate aws sdk service objects now that the credentials have been updated.
-        //     // example: var s3 = new AWS.S3();
-        //     console.log('Successfully logged!');
-        //   }
-        // });
-      },
-
-      onFailure: err => {
-        alert(err.message || JSON.stringify(err));
-      },
+    Auth.signIn(values.mail, values.password).then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      alert(err.message || JSON.stringify(err));
+      return;
     });
   }
 
