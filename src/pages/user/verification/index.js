@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
+import { useDispatch } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
-import { Form, Button, Input, notification, Row, Col } from 'antd';
+import { Form, Button, Input, Row, Col } from 'antd';
+import { SignupVerifyAndRedirect } from '../../../utils/SignupVerifyAndRedirect';
 const FormItem = Form.Item;
 
 const Verification = (props) => {
   const location = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const [count, setcount] = useState(0);
   const [loading, setloading] = useState(false);
@@ -17,18 +20,11 @@ const Verification = (props) => {
 
   const onFinish = (values) => {
     setloading(true);
-    Auth.confirmSignUp(location.state.username, values.verification)
-    .then(res => {
-      history.push('/dashboard')
-      setloading(false);
-    })
-    .catch(err => {
-      notification.error({
-        message: t('user.error.verification'),
-        description: t(`user.error.${err.code}`)
-      })
-      setloading(false);
-      return;
+    SignupVerifyAndRedirect({
+      username: location.state.username,
+      verification: values.verification,
+      password: location.state.password,
+      history, dispatch, t, setloading
     })
   }
 

@@ -19,7 +19,7 @@ const PrivateHeader = (props) => {
 
   const signOut = () => {
     Auth.signOut();
-    dispatch(setCognitoUser('invalid'))
+    dispatch(setCognitoUser(null))
     history.push('/user/login');
     return;
   }

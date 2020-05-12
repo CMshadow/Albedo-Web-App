@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
-import { getLanguage } from '../../../utils/getLanguage';
-import { Auth } from 'aws-amplify';
 import { useHistory } from "react-router-dom";
-import { Form, Button, Input, Popover, Progress, notification, Row } from 'antd';
-import * as actions from '../../../store/action/index';
+import { SignupAndRedirect } from '../../../utils/SignupAndRedirect';
+import { Form, Button, Input, Popover, Progress, Row } from 'antd';
 const FormItem = Form.Item;
 
 const Register = (props) => {
   const { t } = useTranslation();
   const history = useHistory();
+  const dispatch = useDispatch();
   const [visible, setvisible] = useState(false);
   const [popover, setpopover] = useState(false);
   const [loading, setloading] = useState(false);
@@ -20,37 +19,12 @@ const Register = (props) => {
 
   const onFinish = (values) => {
     setloading(true);
-    Auth.signUp({
-      username: values.mail,
+    SignupAndRedirect({
+      email: values.mail,
       password: values.password,
-      attributes: {
-        family_name: values.lastname,
-        given_name: values.firstname,
-        locale: getLanguage()
-      }
-    })
-    .then(res => {
-      const cognitoUser = res.user;
-      return new Promise((resolve, reject) => {
-        setloading(false);
-        props.setCognitoUser(cognitoUser);
-        resolve();
-      }).then(() => {
-        console.log('here')
-        history.push({
-          pathname: '/user/verify',
-          state: { username: cognitoUser.getUsername() }
-        });
-      })
-    })
-    .catch(err => {
-      console.log(err)
-      notification.error({
-        message: t('user.error.register'),
-        description: t(`user.error.${err.code}`)
-      })
-      setloading(false);
-      return;
+      lastname: values.lastname,
+      firstname: values.firstname,
+      history, dispatch, t, setloading
     })
   }
 
@@ -59,7 +33,7 @@ const Register = (props) => {
     // 没有值的情况
     if (!value) {
       setvisible(!!value);
-      return promise.reject('密码必填');
+      return promise.reject(t('user.required.password'));
     }
     // 有值的情况
     if (!visible) {
@@ -221,16 +195,4 @@ const Register = (props) => {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    cognitoUser: state.auth.cognitoUser
-  };
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setCognitoUser: (cognitoUser) => dispatch(actions.setCognitoUser(cognitoUser)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default Register;

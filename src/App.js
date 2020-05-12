@@ -1,38 +1,22 @@
-import React, {useEffect} from 'react';
-import Router from './router/index';
+import React from 'react';
+import Router from './components/Router';
 import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from './store/reducer/index';
+import { PersistGate } from 'redux-persist/integration/react'
 import './App.scss';
-import Amplify, { Auth } from 'aws-amplify';
-import config from './auth.config';
-import { SET_COGNITOUSER } from './store/action/actionTypes';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import Amplify from 'aws-amplify';
+import cognitoConfig from './auth.config';
+import configureStore from './store.config';
 
-Amplify.configure(config);
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
+Amplify.configure(cognitoConfig);
 
 const App = () => {
-  Auth.currentAuthenticatedUser({})
-  .then(user => {
-    console.log(user)
-    store.dispatch({
-      type: SET_COGNITOUSER,
-      cognitoUser: user
-    })
-  })
-  .catch(err => {
-    console.log(err)
-    store.dispatch({
-      type: SET_COGNITOUSER,
-      cognitoUser: 'invalid'
-    })
-  });
+  const {store, persistor} = configureStore();
 
   return (
     <Provider store={store}>
-      <Router />
+      <PersistGate loading={null} persistor={persistor}>
+        <Router />
+      </PersistGate>
     </Provider>
   );
 }
