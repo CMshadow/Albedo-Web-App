@@ -1,6 +1,4 @@
-import Amplify from 'aws-amplify';
-
-Amplify.configure({
+const config = {
   Auth: {
     // REQUIRED - Amazon Cognito Region
     region: 'us-west-2',
@@ -11,4 +9,6 @@ Amplify.configure({
     // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
     userPoolWebClientId: '7vjd60cjtvqh51jo5pstqhr9u0',
   }
-});
+}
+
+export default config;

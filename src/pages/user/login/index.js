@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
-import { CognitoUser } from 'amazon-cognito-identity-js';
 import { Auth } from 'aws-amplify';
-import { userPool, CreateAuthDetails } from '../../../utils/cognito';
 import { useHistory } from "react-router-dom";
 import { Form, Button, Input, notification, Row, Checkbox } from 'antd';
 import * as actions from '../../../store/action/index';
@@ -16,15 +14,34 @@ const Login = (props) => {
   const history = useHistory();
   const [form] = Form.useForm();
   const [check, setcheck] = useState(true);
+  const [loading, setloading] = useState(false);
 
   const onFinish = (values) => {
-    props.setAuthLoading(true);
-    Auth.signIn(values.mail, values.password).then(res => {
-      console.log(res)
+    setloading(true);
+    Auth.signIn(values.mail, values.password)
+    .then(res => {
+      setloading(false);
+      return new Promise((resolve, reject) => {
+        props.setCognitoUser(res);
+        resolve();
+      }).then(() => {history.push(`/dashboard`)})
     })
     .catch(err => {
-      alert(err.message || JSON.stringify(err));
-      return;
+      console.log(err)
+      if (err.code === 'UserNotConfirmedException') {
+        history.push({
+          pathname: '/user/verify',
+          state: { username: values.mail }
+        });
+        return;
+      } else {
+        notification.error({
+          message: t('user.error.login'),
+          description: t(`user.error.${err.code}`)
+        })
+        setloading(false);
+        return;
+      }
     });
   }
 
@@ -76,7 +93,7 @@ const Login = (props) => {
         <FormItem className={styles.submit}>
           <Button
             size="large"
-            loading={props.authLoading}
+            loading={loading}
             className={styles.submit}
             type="primary"
             htmlType="submit"
@@ -92,18 +109,10 @@ const Login = (props) => {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    authLoading: state.auth.loading
-  };
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     setCognitoUser: (cognitoUser) => dispatch(actions.setCognitoUser(cognitoUser)),
-    setVerified: (bool) => dispatch(actions.setVerified(bool)),
-    setAuthLoading: (bool) => dispatch(actions.setAuthLoading(bool)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);

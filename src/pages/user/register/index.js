@@ -15,10 +15,11 @@ const Register = (props) => {
   const history = useHistory();
   const [visible, setvisible] = useState(false);
   const [popover, setpopover] = useState(false);
+  const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    props.setAuthLoading(true);
+    setloading(true);
     Auth.signUp({
       username: values.mail,
       password: values.password,
@@ -29,20 +30,26 @@ const Register = (props) => {
       }
     })
     .then(res => {
-      console.log(res)
       const cognitoUser = res.user;
-      const userSub = res.userSub;
-      props.setCognitoUser(cognitoUser);
-      props.setVerified(false);
-      props.setAuthLoading(false);
-      history.push(`/user/verify/${userSub}`);
+      return new Promise((resolve, reject) => {
+        setloading(false);
+        props.setCognitoUser(cognitoUser);
+        resolve();
+      }).then(() => {
+        console.log('here')
+        history.push({
+          pathname: '/user/verify',
+          state: { username: cognitoUser.getUsername() }
+        });
+      })
     })
     .catch(err => {
+      console.log(err)
       notification.error({
         message: t('user.error.register'),
         description: t(`user.error.${err.code}`)
       })
-      props.setAuthLoading(false);
+      setloading(false);
       return;
     })
   }
@@ -198,7 +205,7 @@ const Register = (props) => {
         <FormItem>
           <Button
             size="large"
-            loading={props.authLoading}
+            loading={loading}
             className={styles.submit}
             type="primary"
             htmlType="submit"
@@ -216,15 +223,13 @@ const Register = (props) => {
 
 const mapStateToProps = state => {
   return {
-    authLoading: state.auth.loading
+    cognitoUser: state.auth.cognitoUser
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     setCognitoUser: (cognitoUser) => dispatch(actions.setCognitoUser(cognitoUser)),
-    setVerified: (bool) => dispatch(actions.setVerified(bool)),
-    setAuthLoading: (bool) => dispatch(actions.setAuthLoading(bool)),
   };
 };
 

@@ -1,39 +1,39 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { Auth } from 'aws-amplify';
-import { Link, withRoute } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
 import { Form, Button, Input, notification, Row, Col } from 'antd';
-import * as actions from '../../../store/action/index';
 const FormItem = Form.Item;
 
 const Verification = (props) => {
+  const location = useLocation();
+  const history = useHistory();
   const { t } = useTranslation();
   const [count, setcount] = useState(0);
+  const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
   let interval = null;
 
   const onFinish = (values) => {
-    props.setAuthLoading(true);
-    Auth.confirmSignUp(props.cognitoUser.getUsername(), values.verification)
+    setloading(true);
+    Auth.confirmSignUp(location.state.username, values.verification)
     .then(res => {
-      console.log('call result: ' + res);
-      props.setAuthLoading(false);
+      history.push('/dashboard')
+      setloading(false);
     })
     .catch(err => {
-      console.log(err)
       notification.error({
         message: t('user.error.verification'),
         description: t(`user.error.${err.code}`)
       })
-      props.setAuthLoading(false);
+      setloading(false);
       return;
     })
   }
 
   const getVerification = () => {
-    Auth.resendSignUp(props.cognitoUser.getUsername())
+    Auth.resendSignUp(location.state.username)
     .then(res => {
       // 按钮冷却60秒
       let counts = 59;
@@ -89,7 +89,7 @@ const Verification = (props) => {
         <FormItem wrapperCol={{span: 10, offset: 7}}>
           <Button
             size="large"
-            loading={false}
+            loading={loading}
             className={styles.submit}
             type="primary"
             htmlType="submit"
@@ -102,18 +102,4 @@ const Verification = (props) => {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    authLoading: state.auth.loading,
-    cognitoUser: state.auth.cognitoUser
-  };
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setVerified: (bool) => dispatch(actions.setVerified(bool)),
-    setAuthLoading: (bool) => dispatch(actions.setAuthLoading(bool)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Verification);
+export default Verification;
