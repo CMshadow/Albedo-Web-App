@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
 import { useHistory } from "react-router-dom";
-import { Form, Button, Input, Row, Checkbox } from 'antd';
-import { SigninAndRedirect } from '../../../utils/SigninAndRedirect';
+import { Form, Button, Input, Row, Checkbox, notification } from 'antd';
+import { SignIn } from '../service';
+import { setCognitoUser } from '../../../store/action/index';
 const FormItem = Form.Item;
 
 const Login = (props) => {
@@ -18,13 +19,29 @@ const Login = (props) => {
 
   const onFinish = (values) => {
     setloading(true);
-    SigninAndRedirect({
-      username: values.mail,
-      password: values.password,
-      dispatch: dispatch,
-      t: t,
-      history: history,
-      setloading: setloading
+    SignIn({username: values.mail, password: values.password})
+    .then(cognitoUser => {
+      setloading(false);
+      return new Promise((resolve, reject) => {
+        dispatch(setCognitoUser(cognitoUser));
+        resolve();
+      }).then(() => {history.push('/dashboard')})
+    })
+    .catch(err => {
+      setloading(false);
+      if (err.code === 'UserNotConfirmedException') {
+        history.push({
+          pathname: '/user/verify',
+          state: { username: values.mail, password: values.password }
+        });
+        return;
+      } else {
+        notification.error({
+          message: t('user.error.login'),
+          description: t(`user.error.${err.code}`)
+        })  
+        return;
+      }
     })
   }
 

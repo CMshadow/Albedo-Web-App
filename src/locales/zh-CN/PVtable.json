@@ -1,0 +1,47 @@
+{
+  "PVtable.add-PV": "添加新组件",
+
+  "PV.required": "必填",
+  "PV.required.number": "必须为数字",
+
+  "PV.name": "光伏组件名称",
+  "PV.name.placeholder": "MyPV-300W-20V-18A",
+  "PV.note": "光伏组件备注",
+  "PV.note.placeholder": "备注信息",
+  "PV.panelWidth": "光伏组件宽度",
+  "PV.panelLength": "光伏组件长度",
+  "PV.panelHeight": "光伏组件厚度",
+  "PV.panelWeight": "光伏组件重量",
+  "PV.siliconMaterial": "组件类型",
+  "PV.mc-Si": "多晶硅",
+  "PV.c-Si": "单晶硅",
+  "PV.moduleMaterial": "组件材质",
+  "PV.glass/cell/glass": "玻璃/太阳能电池/玻璃",
+  "PV.glass/cell/polymer-sheet": "玻璃/太阳能电池/复合材料",
+  "PV.polymer/thin-film/steel": "复合材料/薄膜电池/不锈钢",
+  "PV.seriesCell": "太阳能电池串联数量",
+  "PV.parallelCell": "并联太阳能电池串数",
+  "PV.pmax": "峰值功率Pmax",
+  "PV.gammaPmax": "γPmax: 峰值功率温度系数",
+  "PV.vmpo": "Vpm: 最佳工作电压",
+  "PV.impo": "Ipm: 最佳工作电流",
+  "PV.voco": "Voc: 开路电压",
+  "PV.betaVoco": "Kv: 开路电压温度系数",
+  "PV.isco": "Isc: 短路电流",
+  "PV.alphaIsc": "KIsc: 短路电流温度系数",
+  "PV.alphaImp": "KImp: 最大功率下电流温度系数",
+  "PV.betaVmpo": "Kv': 最大功率下电压温度系数",
+  "PV.ixo": "Ixo: 电压为½Voc时的电流",
+  "PV.ixxo": "Ixxo: 电压为½(Voc+Vpm)时的电流",
+  "PV.t": "T: 电池工作温度最低值",
+  "PV.tPrime": "T': 电池工作温度最高值",
+  "PV.tenYDecay": "10年功率衰降(不大于)",
+  "PV.twentyfiveYDecay": "25年功率衰降(不大于)",
+
+
+  "PV.n": "太阳能电池二极管系数",
+  "PV.deltaT": "1000W/㎡ 下太阳能电池和组件背面温度差 (℃)",
+  "PV.fd": "光伏组件吸收的散射值系数",
+
+  "PV.success.create": "成功添加光伏组件"
+}

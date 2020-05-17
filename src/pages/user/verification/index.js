@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Auth } from 'aws-amplify';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
-import { Form, Button, Input, Row, Col } from 'antd';
-import { SignupVerifyAndRedirect } from '../../../utils/SignupVerifyAndRedirect';
+import { Form, Button, Input, Row, Col, notification } from 'antd';
+import { ConfirmSignUp, SignIn, ResendVerification } from '../service';
+import { setCognitoUser } from '../../../store/action/index';
 const FormItem = Form.Item;
 
 const Verification = (props) => {
@@ -18,18 +18,45 @@ const Verification = (props) => {
   const [form] = Form.useForm();
   let interval = null;
 
+  useEffect(() => {
+    if (!location.state) {
+      history.push('/user/login')
+    }
+  })
+
   const onFinish = (values) => {
+    console.log(location.state)
     setloading(true);
-    SignupVerifyAndRedirect({
+    ConfirmSignUp({
       username: location.state.username,
-      verification: values.verification,
-      password: location.state.password,
-      history, dispatch, t, setloading
+      verification: values.verification
+    })
+    .then(res => {
+      SignIn({
+        username: location.state.username,
+        password: location.state.password
+      })
+      .then(cognitoUser => {
+        setloading(false);
+        return new Promise((resolve, reject) => {
+          dispatch(setCognitoUser(cognitoUser));
+          resolve();
+        }).then(() => {history.push('/dashboard')})
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      notification.error({
+        message: t('user.error.verification'),
+        description: t(`user.error.${err.code}`)
+      })
+      setloading(false);
+      return;
     })
   }
 
   const getVerification = () => {
-    Auth.resendSignUp(location.state.username)
+    ResendVerification({username: location.state.username})
     .then(res => {
       // 按钮冷却60秒
       let counts = 59;

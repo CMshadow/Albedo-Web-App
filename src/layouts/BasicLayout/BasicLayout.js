@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout, Menu, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import * as styles from './BasicLayout.module.scss';
@@ -8,7 +9,14 @@ import * as styles from './BasicLayout.module.scss';
 const { Sider, Content } = Layout;
 
 const BasicLayout = (props) => {
+  const history = useHistory();
   const { t } = useTranslation();
+  const selectMenu = history.location.pathname.split('/')[1]
+
+  const onSelect = ({ item, key }) => {
+    history.push(`/${key}`)
+  }
+
   return (
     <Layout>
       <Sider width={250} className={styles.sider}>
@@ -19,21 +27,21 @@ const BasicLayout = (props) => {
             <h4>{t('sider.edition')}</h4>
           </div>
         </Row>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" className={styles.menuItem}>
+        <Menu theme="dark" mode="inline" selectedKeys={[selectMenu]} onSelect={onSelect}>
+          <Menu.Item key="dashboard" className={styles.menuItem}>
             {t('sider.menu.project')}
           </Menu.Item>
-          <Menu.Item key="2" className={styles.menuItem}>
+          <Menu.Item key="pv" className={styles.menuItem}>
             {t('sider.menu.pv')}
           </Menu.Item>
-          <Menu.Item key="3" className={styles.menuItem}>
+          <Menu.Item key="inverter" className={styles.menuItem}>
             {t('sider.menu.inverter')}
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout className={styles.main}>
         <PrivateHeader />
-        <Content>
+        <Content className={styles.content}>
           {props.children}
         </Content>
       </Layout>

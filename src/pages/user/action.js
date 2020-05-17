@@ -6,3 +6,10 @@ export const setCognitoUser = (cognitoUser) => (dispatch, getState) => {
     cognitoUser: cognitoUser
   });
 }
+
+export const setCognitoUserSession = (session) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.SET_COGNITOUSERSESSION,
+    session: session
+  })
+}

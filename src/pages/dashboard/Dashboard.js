@@ -1,10 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux';
+import { Alert } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const Dashboard = (props) => {
-  console.log(props.cognitoUser)
+  const { t } = useTranslation();
+
   return (
-    <div>hello</div>
+    <Alert
+      message={t('warning.dev.message')}
+      description={t('warning.dev.description')}
+      type="info"
+      showIcon
+      closable
+    />
   )
 }
 

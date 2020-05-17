@@ -4,14 +4,13 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
 import { useHistory } from "react-router-dom";
-import { SignupAndRedirect } from '../../../utils/SignupAndRedirect';
-import { Form, Button, Input, Popover, Progress, Row } from 'antd';
+import { Signup } from '../service';
+import { Form, Button, Input, Popover, Progress, Row, notification } from 'antd';
 const FormItem = Form.Item;
 
 const Register = (props) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const dispatch = useDispatch();
   const [visible, setvisible] = useState(false);
   const [popover, setpopover] = useState(false);
   const [loading, setloading] = useState(false);
@@ -19,12 +18,25 @@ const Register = (props) => {
 
   const onFinish = (values) => {
     setloading(true);
-    SignupAndRedirect({
+    Signup({
       email: values.mail,
       password: values.password,
       lastname: values.lastname,
       firstname: values.firstname,
-      history, dispatch, t, setloading
+    }).then(res => {
+      setloading(false);
+      history.push({
+        pathname: '/user/verify',
+        state: { username: values.mail, password: values.password }
+      });
+    })
+    .catch(err => {
+      console.log(err)
+      notification.error({
+        message: t('user.error.register'),
+        description: t(`user.error.${err.code}`)
+      })
+      setloading(false);
     })
   }
 
