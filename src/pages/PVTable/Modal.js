@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import {
@@ -9,22 +9,21 @@ import {
   Row,
   Col,
   Modal,
-  Button,
   Divider,
   notification,
   message
 } from 'antd';
-import * as styles from './PVModal.module.scss';
-import { addPV } from './service';
+import * as styles from './Modal.module.scss';
+import { addPV, getPV } from './service';
 const FormItem = Form.Item;
 const { Option } = Select;
 
-const PVModal = (props) => {
+export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRecord, seteditRecord}) => {
   const { t } = useTranslation();
-  const [showModal, setshowModal] = useState(false);
   const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+
   const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
   const labelCol = { xs: {span: 24}, sm: {span:14}, md: {span: 12}};
   const wrapperCol = { xs: {span: 24}, sm: {span:10}, md: {span: 12}};
@@ -71,6 +70,11 @@ const PVModal = (props) => {
     required: t('PV.required')
   };
 
+  const onClose = () => {
+    form.resetFields();
+    seteditRecord(null);
+  }
+
   const handleCancel = () => {
     setshowModal(false);
   };
@@ -91,7 +95,12 @@ const PVModal = (props) => {
     dispatch(addPV({values})).then(() => {
       setloading(false)
       setshowModal(false)
-      message.success(t('PV.success.create'))
+      message.success(t('PV.success.createPV'))
+      const response = dispatch(getPV())
+      response.then(data => {
+        setdata(data)
+        setactiveData(data)
+      })
     }).catch(err => {
       console.log(err)
       setloading(false)
@@ -102,72 +111,73 @@ const PVModal = (props) => {
     })
   }
 
+  useEffect(() => {
+    if (editRecord) {
+      form.setFieldsValue(editRecord)
+    } else{
+      form.setFieldsValue({
+        'siliconMaterial': 'mc-Si',
+        'moduleMaterial': 'glass/cell/glass'
+      })
+    }
+  }, [editRecord, form])
+
   return (
-    <div>
-      <Button type="primary" onClick={() => setshowModal(true)}>
-        {t('PVtable.add-PV')}
-      </Button>
-      <Modal
-        title={t('PVtable.add-PV')}
-        visible={showModal}
-        onOk={handleOk}
-        confirmLoading={loading}
-        onCancel={handleCancel}
-        okText="确认"
-        cancelText="取消"
-        maskClosable={false}
-        width={'80vw'}
+    <Modal
+      title={t('PVtable.add-PV')}
+      visible={showModal}
+      onOk={handleOk}
+      confirmLoading={loading}
+      onCancel={handleCancel}
+      okText={t('action.confirm')}
+      cancelText={t('action.cancel')}
+      maskClosable={false}
+      width={'80vw'}
+      afterClose={onClose}
+    >
+      <Form
+        colon={false}
+        form={form}
+        className={styles.form}
+        name="add-PV"
+        scrollToFirstError
+        validateMessages={validateMessages}
+        labelCol={labelCol}
+        wrapperCol={wrapperCol}
+        onFinish={submitForm}
       >
-        <Form
-          colon={false}
-          form={form}
-          className={styles.form}
-          name="add-PV"
-          scrollToFirstError
-          validateMessages={validateMessages}
-          labelCol={labelCol}
-          wrapperCol={wrapperCol}
-          initialValues={{
-            'siliconMaterial': 'mc-Si',
-            'moduleMaterial': 'glass/cell/glass'
-          }}
-          onFinish={submitForm}
-        >
-          {genFormItems(formBasicKeys)}
-          <Divider />
-          <Row gutter={rowGutter}>
-            <Col span={12}>
-              <FormItem
-                name='siliconMaterial'
-                label={t('PV.siliconMaterial')}
-                rules={[{required: true}]}
-              >
-                <Select>
-                  <Option value="mc-Si">{t('PV.mc-Si')}</Option>
-                  <Option value="c-Si">{t('PV.c-Si')}</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem
-                name='moduleMaterial'
-                label={t('PV.moduleMaterial')}
-                rules={[{required: true}]}
-              >
-                <Select>
-                  <Option value="glass/cell/glass">{t('PV.glass/cell/glass')}</Option>
-                  <Option value="glass/cell/polymer-sheet">{t('PV.glass/cell/polymer-sheet')}</Option>
-                  <Option value="polymer/thin-film/steel">{t('PV.polymer/thin-film/steel')}</Option>
-                </Select>
-              </FormItem>
-            </Col>
-          </Row>
-          <Divider />
-          {genFormItems(formAdvancedKeys)}
-        </Form>
-      </Modal>
-    </div>
+        {genFormItems(formBasicKeys)}
+        <Divider />
+        <Row gutter={rowGutter}>
+          <Col span={12}>
+            <FormItem
+              name='siliconMaterial'
+              label={t('PV.siliconMaterial')}
+              rules={[{required: true}]}
+            >
+              <Select>
+                <Option value="mc-Si">{t('PV.mc-Si')}</Option>
+                <Option value="c-Si">{t('PV.c-Si')}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem
+              name='moduleMaterial'
+              label={t('PV.moduleMaterial')}
+              rules={[{required: true}]}
+            >
+              <Select>
+                <Option value="glass/cell/glass">{t('PV.glass/cell/glass')}</Option>
+                <Option value="glass/cell/polymer-sheet">{t('PV.glass/cell/polymer-sheet')}</Option>
+                <Option value="polymer/thin-film/steel">{t('PV.polymer/thin-film/steel')}</Option>
+              </Select>
+            </FormItem>
+          </Col>
+        </Row>
+        <Divider />
+        {genFormItems(formAdvancedKeys)}
+      </Form>
+    </Modal>
   )
 }
-
-export default PVModal;

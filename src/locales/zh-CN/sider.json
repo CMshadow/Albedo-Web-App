@@ -2,6 +2,6 @@
   "sider.company": "光巢科技",
   "sider.edition": "DEV-Alpha",
   "sider.menu.project": "管理项目",
-  "sider.menu.pv": "管理光伏板组件",
+  "sider.menu.pv": "管理光伏组件",
   "sider.menu.inverter": "管理逆变器组件"
 }

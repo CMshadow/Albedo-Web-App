@@ -3,7 +3,8 @@ import footer from './zh-CN/footer.json';
 import sider from './zh-CN/sider.json';
 import header from './zh-CN/header.json';
 import errorANDwarning from './zh-CN/error&warning.json';
-import PVtable from './zh-CN/PVtable.json';
+import pv from './zh-CN/PV.json';
+import action from './zh-CN/action.json';
 
 export default {
   ...register,
@@ -11,5 +12,6 @@ export default {
   ...sider,
   ...header,
   ...errorANDwarning,
-  ...PVtable
+  ...pv,
+  ...action
 }

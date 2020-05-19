@@ -1,6 +1,23 @@
 {
   "PVtable.add-PV": "添加新组件",
 
+  "PVtable.table.name": "组件名称",
+  "PVtable.table.pmax": "峰值功率",
+  "PVtable.table.vmpo": "最佳工作电压",
+  "PVtable.table.impo": "最佳工作电流",
+  "PVtable.table.isco": "短路电流",
+  "PVtable.table.voco": "开路电压",
+  "PVtable.table.moduleMaterial": "组件材质",
+  "PVtable.table.action": "操作",
+  "PVtable.table.edit": "编辑",
+  "PVtable.table.delete": "删除",
+  "PVtable.table.totalCount": "个组件",
+
+  "PVtable.filter.search": "搜索",
+  "PVtable.filter.reset": "重置",
+  "PVtable.filter.filter": "过滤",
+
+
   "PV.required": "必填",
   "PV.required.number": "必须为数字",
 
@@ -43,5 +60,6 @@
   "PV.deltaT": "1000W/㎡ 下太阳能电池和组件背面温度差 (℃)",
   "PV.fd": "光伏组件吸收的散射值系数",
 
-  "PV.success.create": "成功添加光伏组件"
+  "PV.success.createPV": "成功添加光伏组件",
+  "PV.success.deletePV": "成功删除光伏组件"
 }
