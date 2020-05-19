@@ -10,7 +10,7 @@ export const DeleteAction = ({record, setdata, setactiveData}) => {
   const dispatch = useDispatch();
 
   const onDelete = () => {
-    dispatch(deletePV(record.pvID))
+    dispatch(deletePV({pvID: record.pvID}))
     .then(() => {
       message.success(t('PV.success.deletePV'))
       const response = dispatch(getPV())

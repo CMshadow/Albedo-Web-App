@@ -14,7 +14,7 @@ import {
   message
 } from 'antd';
 import * as styles from './Modal.module.scss';
-import { addPV, getPV } from './service';
+import { addPV, getPV, updatePV } from './service';
 const FormItem = Form.Item;
 const { Option } = Select;
 
@@ -92,10 +92,16 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
   }
 
   const submitForm = (values) => {
-    dispatch(addPV({values})).then(() => {
+    let action;
+    if (editRecord) {
+      action = dispatch(updatePV({pvID: editRecord.pvID, values: values}))
+    } else {
+      action = dispatch(addPV({values}))
+    }
+    action.then(() => {
       setloading(false)
       setshowModal(false)
-      message.success(t('PV.success.createPV'))
+      editRecord ? message.success(t('PV.success.updatePV')) : message.success(t('PV.success.createPV'))
       const response = dispatch(getPV())
       response.then(data => {
         setdata(data)

@@ -61,5 +61,6 @@
   "PV.fd": "光伏组件吸收的散射值系数",
 
   "PV.success.createPV": "成功添加光伏组件",
+  "PV.success.updatePV": "成功修改光伏组件",
   "PV.success.deletePV": "成功删除光伏组件"
 }
