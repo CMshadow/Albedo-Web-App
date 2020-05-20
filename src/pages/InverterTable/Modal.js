@@ -1,19 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import {
-  Form,
-  Input,
-  Select,
-  Checkbox,
-  Row,
-  Col,
-  Modal,
-  Divider,
-  message,
-  Collapse,
-  Tooltip
-} from 'antd';
+import { Form, Input, Select, Checkbox, Row, Col, Modal, Divider, message, Collapse, Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import * as styles from './Modal.module.scss';
 import { addInverter, getInverter, updateInverter } from './service';
@@ -22,7 +10,7 @@ const FormItem = Form.Item;
 const { Option } = Select;
 const { Panel } = Collapse;
 
-
+// Inverter表单默认值
 const initValues = {
   'c0': 0,
   'c1': 0,
@@ -40,11 +28,13 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
   const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
   const labelCol = { xs: {span: 24}, sm: {span:24}, md: {span: 24}, lg: {span: 16}, xl: {span: 12}};
   const wrapperCol = { xs: {span: 24}, sm: {span:24}, md: {span: 24}, lg: {span: 8}, xl: {span: 12}};
+  // Inverter表单基本信息[key，类型，单位]
   const formBasicKeys = [
     [['name', 's', ''], ['note', 's', '']],
     [['inverterLength', 'n', 'mm'], ['inverterWidth', 'n', 'mm']],
     [['inverterHeight', 'n', 'mm'], ['inverterWeight', 'n', 'kg']],
   ]
+  // Inverter表单进阶信息[key，类型，单位]
   const formAdvancedKeys = [
     [['vdcMin', 'n', 'V'], ['vdcMax', 'n', 'V']],
     [['vdco', 'n', 'V'], ['vac', 'n', 'V']],
@@ -62,6 +52,7 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
     [['protectLvl', 's', ''], ['commProtocal', 's', '']],
     [['workingAltMax', 'n', 'm'], ['radiator', 'c', ['forcedConvection', 'naturalConvection']]]
   ]
+  // Inverter表单勾选信息[key，类型，可选项]
   const formBoolKeys = [
     [
       ['grdTrblDetect', 'b', ''], ['overloadProtect', 'b', ''],
@@ -73,11 +64,13 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
       ['overheatProtect', 'b', '']
     ],
   ]
+  // Inverter表单高级参数[key，类型，可选项，有提示文本]
   const formProKeys = [
     [['c0', 'n', '1/W', 'description'], ['c1', 'n', '1/V', 'description']],
     [['c2', 'n', '1/V', 'description'], ['c3', 'n', '1/V', 'description']],
   ]
 
+  // 根据 类型，单位/选择项 生成表单的用户输入组件
   const genFormItemInput = (type, unit) => {
     switch (type) {
       case 'b': return (
@@ -102,6 +95,7 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
     }
   }
 
+  //根据 类型，是否有提示文本生成表单字段的不同label
   const genFormItemLabel = (key, note) => {
     if (!note) {
       return t(`Inverter.${key}`)
@@ -117,6 +111,7 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
     }
   }
 
+  // 生成表单字段组件
   const genFormItems = (keys, itemsPerRow) => keys.map((keysInRow, index) =>
     <Row gutter={rowGutter} key={index}>
       {keysInRow.map(([key, type, unit, note]) =>
@@ -138,20 +133,25 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
     </Row>
   )
 
+  // 通用required项提示文本
   const validateMessages = {
     required: t('form.required')
   };
 
+  // modal被关闭后回调
   const onClose = () => {
     form.resetFields();
     seteditRecord(null);
   }
 
+  // modal取消键onclick
   const handleCancel = () => {
     setshowModal(false);
   };
 
+  // modal确认键onclick
   const handleOk = () => {
+    // 验证表单，如果通过提交表单
     form.validateFields()
     .then(success => {
       setloading(true);
@@ -163,8 +163,9 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
     })
   }
 
+  // 表单提交
   const submitForm = (values) => {
-    // 转换格式
+    // 根据colKey的类型转换格式
     [].concat(...formBasicKeys).concat([].concat(...formAdvancedKeys))
     .concat([].concat(...formBoolKeys)).concat([].concat(...formProKeys))
     .forEach(([key, type,]) => {
@@ -174,6 +175,7 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
       }
     })
 
+    // 发送 创建/更新Inverter 后端请求
     let action;
     if (editRecord) {
       action = dispatch(updateInverter({inverterID: editRecord.inverterID, values: values}))
@@ -197,12 +199,9 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
     })
   }
 
+  // 组件渲染后加载表单初始值
   useEffect(() => {
-    if (editRecord) {
-      form.setFieldsValue(editRecord)
-    } else{
-      form.setFieldsValue(initValues)
-    }
+    form.setFieldsValue(editRecord || initValues)
   }, [editRecord, form])
 
   return (

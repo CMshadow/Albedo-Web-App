@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import {
-  Form,
-  Input,
-  Select,
-  Row,
-  Col,
-  Modal,
-  Divider,
-  message
-} from 'antd';
+import { Form, Input, Select, Row, Col, Modal, Divider, message } from 'antd';
 import * as styles from './Modal.module.scss';
 import { addPV, getPV, updatePV } from './service';
 const FormItem = Form.Item;
 const { Option } = Select;
 
+// PV表单默认值
 const initValues = {
   'siliconMaterial': 'mc-Si',
   'moduleMaterial': 'glass/cell/glass'
@@ -28,19 +20,22 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
   const dispatch = useDispatch();
 
   const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
-  const labelCol = { xs: {span: 24}, sm: {span:24}, md: {span: 24}, lg: {span: 16}, xl: {span: 12}};
-  const wrapperCol = { xs: {span: 24}, sm: {span:24}, md: {span: 24}, lg: {span: 8}, xl: {span: 12}};
+  const labelCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 24}, lg: {span: 16}, xl: {span: 12}};
+  const wrapperCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 24}, lg: {span: 8}, xl: {span: 12}};
+  // PV表单基本信息[key，类型，单位]
   const formBasicKeys = [
     [['name', 's', ''], ['note', 's', '']],
     [['panelLength', 'n', 'mm'], ['panelWidth', 'n', 'mm']],
     [['panelHeight', 'n', 'mm'], ['panelWeight', 'n', 'kg']],
   ]
+  // PV表单选择项[key，类型，可选项]
   const formSelectKeys = [
     [
       ['siliconMaterial', 'c', ['mc-Si', 'c-Si']],
       ['moduleMaterial', 'c', ['glass/cell/glass', 'PV.glass/cell/polymer-sheet', 'polymer/thin-film/steel']]
     ]
   ]
+  // PV表单进阶信息[key，类型，单位]
   const formAdvancedKeys = [
     [['seriesCell', 'n', ''], ['parallelCell', 'n', '']],
     [['pmax', 'n', 'Wp'], ['gammaPmax', 'n', '%/℃']],
@@ -53,6 +48,7 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
     [['tenYDecay', 'n', '%'], ['twentyfiveYDecay', 'n', '%']],
   ]
 
+  // 根据 类型，单位/选择项 生成表单的用户输入组件
   const genFormItemInput = (type, unit) => {
     switch (type) {
       case 'c': return (
@@ -73,7 +69,7 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
       )
     }
   }
-
+  // 生成表单字段组件
   const genFormItems = (keys, itemsPerRow) => keys.map((keysInRow, index) =>
     <Row gutter={rowGutter} key={index}>
       {keysInRow.map(([key, type, unit, note]) =>
@@ -91,20 +87,25 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
     </Row>
   )
 
+  // 通用required项提示文本
   const validateMessages = {
     required: t('form.required')
   };
 
+  // modal被关闭后回调
   const onClose = () => {
     form.resetFields();
     seteditRecord(null);
   }
 
+  // modal取消键onclick
   const handleCancel = () => {
     setshowModal(false);
   };
 
+  // modal确认键onclick
   const handleOk = () => {
+    // 验证表单，如果通过提交表单
     form.validateFields()
     .then(success => {
       setloading(true);
@@ -116,13 +117,15 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
     })
   }
 
+  // 表单提交
   const submitForm = (values) => {
-    // 转换格式
+    // 根据colKey的类型转换格式
     [].concat(...formBasicKeys).concat([].concat(...formAdvancedKeys))
     .forEach(([key, type,]) => {
       if (type === 'n') values[key] = Number(values[key])
     })
 
+    // 发送 创建/更新PV 后端请求
     let action;
     if (editRecord) {
       action = dispatch(updatePV({pvID: editRecord.pvID, values: values}))
@@ -132,7 +135,9 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
     action.then(() => {
       setloading(false)
       setshowModal(false)
-      editRecord ? message.success(t('PV.success.updatePV')) : message.success(t('PV.success.createPV'))
+      editRecord ?
+      message.success(t('PV.success.updatePV')) :
+      message.success(t('PV.success.createPV'))
       const response = dispatch(getPV())
       response.then(data => {
         setdata(data)
@@ -144,12 +149,9 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
     })
   }
 
+  // 组件渲染后加载表单初始值
   useEffect(() => {
-    if (editRecord) {
-      form.setFieldsValue(editRecord)
-    } else{
-      form.setFieldsValue(initValues)
-    }
+    form.setFieldsValue(editRecord || initValues)
   }, [editRecord, form])
 
   return (

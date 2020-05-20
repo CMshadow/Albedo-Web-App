@@ -101,6 +101,7 @@ const PVTable = (props) => {
     ),
   })
 
+  // 手动触发更新列表数据
   const fetchData = () => {
     setloading(true)
     const response = dispatch(getPV())
@@ -111,7 +112,7 @@ const PVTable = (props) => {
     })
   }
 
-  // 获取表单数据
+  // 组件渲染后自动获取表单数据
   useEffect(() => {
     setloading(true)
     const response = dispatch(getPV())

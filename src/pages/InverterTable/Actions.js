@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { deleteInverter, getInverter } from './service';
 
+// Inverter列表中触发删除一个Inverter
 export const DeleteAction = ({record, setdata, setactiveData}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

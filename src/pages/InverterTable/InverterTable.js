@@ -78,6 +78,7 @@ const InverterTable = (props) => {
     ),
   })
 
+  // 手动触发更新列表数据
   const fetchData = () => {
     setloading(true)
     const response = dispatch(getInverter())
@@ -88,7 +89,7 @@ const InverterTable = (props) => {
     })
   }
 
-  // 获取表单数据
+  // 组件渲染后自动获取表单数据
   useEffect(() => {
     setloading(true)
     const response = dispatch(getInverter())
@@ -111,7 +112,7 @@ const InverterTable = (props) => {
       <Button
         className={styles.rightBut}
         shape="circle"
-        onClick={fetchData}
+        onClick={() => fetchData()}
         icon={<SyncOutlined spin={loading}/>}
       />
       <Table

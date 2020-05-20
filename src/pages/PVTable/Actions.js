@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { deletePV, getPV } from './service';
 
+// PV列表中触发删除一个PV
 export const DeleteAction = ({record, setdata, setactiveData}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
