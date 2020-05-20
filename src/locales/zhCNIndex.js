@@ -4,7 +4,10 @@ import sider from './zh-CN/sider.json';
 import header from './zh-CN/header.json';
 import errorANDwarning from './zh-CN/error&warning.json';
 import pv from './zh-CN/PV.json';
+import inverter from './zh-CN/Inverter.json';
 import action from './zh-CN/action.json';
+import formGeneral from './zh-CN/formGeneral.json';
+import tableGeneral from './zh-CN/tableGeneral.json';
 
 export default {
   ...register,
@@ -13,5 +16,8 @@ export default {
   ...header,
   ...errorANDwarning,
   ...pv,
-  ...action
+  ...inverter,
+  ...action,
+  ...formGeneral,
+  ...tableGeneral
 }

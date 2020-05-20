@@ -9,6 +9,7 @@ import UserLayout from '../layouts/UserLayout/UserLayout';
 import BasicLayout from '../layouts/BasicLayout/BasicLayout';
 import Dashboard from '../pages/dashboard/Dashboard';
 import PVTable from '../pages/PVTable/PVTable';
+import InverterTable from '../pages/InverterTable/InverterTable';
 import NotFound404 from '../pages/404';
 
 const Router = () => {
@@ -30,6 +31,7 @@ const Router = () => {
             <Switch>
               <PrivateRoute path='/dashboard' component={Dashboard} />
               <PrivateRoute path="/pv" component={PVTable} />
+              <PrivateRoute path="/inverter" component={InverterTable} />
               <Route path='*' component={NotFound404} />
             </Switch>
           </BasicLayout>

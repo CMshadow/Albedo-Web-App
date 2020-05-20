@@ -29,7 +29,7 @@ export const SearchString = ({colKey}) => {
         <Input
           className={styles.input}
           ref={node => {searchInputRef = node}}
-          placeholder={`${t('filter.search')}${t(`PVtable.table.${colKey}`)}`}
+          placeholder={`${t('PVtable.filter.search')}${t(`PVtable.table.${colKey}`)}`}
           value={selectedKeys[0]}
           onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => handleSearch(selectedKeys, confirm, colKey)}
@@ -42,14 +42,14 @@ export const SearchString = ({colKey}) => {
             icon={<SearchOutlined />}
             size="small"
           >
-            {t('filter.search')}
+            {t('PVtable.filter.search')}
           </Button>
           <Button
             className={styles.button}
             onClick={() => handleReset(clearFilters)}
             size="small"
           >
-            {t('filter.reset')}
+            {t('PVtable.filter.reset')}
           </Button>
         </Space>
       </div>
@@ -140,14 +140,14 @@ export const SearchRange = ({colKey, data, setactiveData}) => {
                 icon={<FilterOutlined />}
                 size="small"
               >
-                {t('filter.filter')}
+                {t('PVtable.filter.filter')}
               </Button>
               <Button
                 className={styles.button}
                 onClick={() => onReset(clearFilters)}
                 size="small"
               >
-                {t('filter.reset')}
+                {t('PVtable.filter.reset')}
               </Button>
             </Space>
           </Row>

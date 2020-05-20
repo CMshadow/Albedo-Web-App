@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 // import undoable, { includeAction } from 'redux-undo';
-import authReducer from '../../pages/user/reducer';
+import authReducer from './authReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,

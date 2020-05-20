@@ -78,7 +78,7 @@ const PVTable = (props) => {
   })
   // 生成表单操作列属性
   tableCols.push({
-    title: t('PVtable.table.action'),
+    title: t('table.action'),
     dataIndex: 'action',
     key: 'action',
     fixed: 'right',
@@ -127,7 +127,7 @@ const PVTable = (props) => {
         pagination={{
           position: ['bottomCenter'],
           total: activeData.length,
-          showTotal: total => `${total}` + t('PVtable.table.totalCount'),
+          showTotal: total => `${total}` + t('table.totalCount'),
           defaultPageSize: 10,
           showSizeChanger: true
         }}

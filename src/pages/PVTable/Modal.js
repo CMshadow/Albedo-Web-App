@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import {
   Form,
   Input,
-  InputNumber,
   Select,
   Row,
   Col,
@@ -18,6 +17,11 @@ import { addPV, getPV, updatePV } from './service';
 const FormItem = Form.Item;
 const { Option } = Select;
 
+const initValues = {
+  'siliconMaterial': 'mc-Si',
+  'moduleMaterial': 'glass/cell/glass'
+}
+
 export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRecord, seteditRecord}) => {
   const { t } = useTranslation();
   const [loading, setloading] = useState(false);
@@ -25,12 +29,18 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
   const dispatch = useDispatch();
 
   const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
-  const labelCol = { xs: {span: 24}, sm: {span:14}, md: {span: 12}};
-  const wrapperCol = { xs: {span: 24}, sm: {span:10}, md: {span: 12}};
+  const labelCol = { xs: {span: 24}, sm: {span:24}, md: {span: 24}, lg: {span: 16}, xl: {span: 12}};
+  const wrapperCol = { xs: {span: 24}, sm: {span:24}, md: {span: 24}, lg: {span: 8}, xl: {span: 12}};
   const formBasicKeys = [
     [['name', 's', ''], ['note', 's', '']],
     [['panelLength', 'n', 'mm'], ['panelWidth', 'n', 'mm']],
     [['panelHeight', 'n', 'mm'], ['panelWeight', 'n', 'kg']],
+  ]
+  const formSelectKeys = [
+    [
+      ['siliconMaterial', 'c', ['mc-Si', 'c-Si']],
+      ['moduleMaterial', 'c', ['glass/cell/glass', 'PV.glass/cell/polymer-sheet', 'polymer/thin-film/steel']]
+    ]
   ]
   const formAdvancedKeys = [
     [['seriesCell', 'n', ''], ['parallelCell', 'n', '']],
@@ -44,22 +54,38 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
     [['tenYDecay', 'n', '%'], ['twentyfiveYDecay', 'n', '%']],
   ]
 
-  const genFormItems = keys => keys.map((keysInRow, index) =>
+  const genFormItemInput = (type, unit) => {
+    switch (type) {
+      case 'c': return (
+        <Select>
+          {
+            unit.map(choice =>
+              <Option key={choice} value={choice}>{t(`PV.${choice}`)}</Option>
+            )
+          }
+        </Select>
+      )
+      case 'n': return (
+        <Input addonAfter={`${unit}`} type='number' className={styles.input} />
+      )
+      case 's':
+      default: return (
+        <Input />
+      )
+    }
+  }
+
+  const genFormItems = (keys, itemsPerRow) => keys.map((keysInRow, index) =>
     <Row gutter={rowGutter} key={index}>
-      {keysInRow.map(([key, type, unit]) =>
-        <Col span={12} key={key}>
+      {keysInRow.map(([key, type, unit, note]) =>
+        <Col span={ 24 / itemsPerRow } key={key}>
           <FormItem
-            name={key} label={t(`PV.${key}`)}
-            rules={[{required: true}]}
+            valuePropName={ type === 'b' ? 'checked' : 'value'}
+            name={key}
+            label={ t(`PV.${key}`) }
+            rules={ type !== 'b' ? [{required: true}] : null }
           >
-            {type === 's'?
-              <Input placeholder={t(`PV.${key}.placeholder`)} /> :
-              <InputNumber
-                formatter={value => `${value}${unit}`}
-                parser={value => value.replace(`${unit}`, '')}
-                className={styles.input}
-              />
-            }
+            { genFormItemInput(type, unit) }
           </FormItem>
         </Col>
       )}
@@ -67,7 +93,7 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
   )
 
   const validateMessages = {
-    required: t('PV.required')
+    required: t('form.required')
   };
 
   const onClose = () => {
@@ -92,6 +118,12 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
   }
 
   const submitForm = (values) => {
+    // 转换格式
+    [].concat(...formBasicKeys).concat([].concat(...formAdvancedKeys))
+    .forEach(([key, type,]) => {
+      if (type === 'n') values[key] = Number(values[key])
+    })
+
     let action;
     if (editRecord) {
       action = dispatch(updatePV({pvID: editRecord.pvID, values: values}))
@@ -121,16 +153,13 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
     if (editRecord) {
       form.setFieldsValue(editRecord)
     } else{
-      form.setFieldsValue({
-        'siliconMaterial': 'mc-Si',
-        'moduleMaterial': 'glass/cell/glass'
-      })
+      form.setFieldsValue(initValues)
     }
   }, [editRecord, form])
 
   return (
     <Modal
-      title={t('PVtable.add-PV')}
+      title={editRecord ? t('PVtable.edit-PV') : t('PVtable.add-PV')}
       visible={showModal}
       onOk={handleOk}
       confirmLoading={loading}
@@ -152,37 +181,11 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
         wrapperCol={wrapperCol}
         onFinish={submitForm}
       >
-        {genFormItems(formBasicKeys)}
+        {genFormItems(formBasicKeys, 2)}
         <Divider />
-        <Row gutter={rowGutter}>
-          <Col span={12}>
-            <FormItem
-              name='siliconMaterial'
-              label={t('PV.siliconMaterial')}
-              rules={[{required: true}]}
-            >
-              <Select>
-                <Option value="mc-Si">{t('PV.mc-Si')}</Option>
-                <Option value="c-Si">{t('PV.c-Si')}</Option>
-              </Select>
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem
-              name='moduleMaterial'
-              label={t('PV.moduleMaterial')}
-              rules={[{required: true}]}
-            >
-              <Select>
-                <Option value="glass/cell/glass">{t('PV.glass/cell/glass')}</Option>
-                <Option value="glass/cell/polymer-sheet">{t('PV.glass/cell/polymer-sheet')}</Option>
-                <Option value="polymer/thin-film/steel">{t('PV.polymer/thin-film/steel')}</Option>
-              </Select>
-            </FormItem>
-          </Col>
-        </Row>
+        {genFormItems(formSelectKeys, 2)}
         <Divider />
-        {genFormItems(formAdvancedKeys)}
+        {genFormItems(formAdvancedKeys, 2)}
       </Form>
     </Modal>
   )

@@ -1,4 +1,4 @@
-import * as actionTypes from '../../store/action/actionTypes';
+import * as actionTypes from '../action/actionTypes';
 
 const initialState = {
   cognitoUser: null,

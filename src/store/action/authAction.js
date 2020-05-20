@@ -1,4 +1,4 @@
-import * as actionTypes from '../../store/action/actionTypes';
+import * as actionTypes from './actionTypes';
 
 export const setCognitoUser = (cognitoUser) => (dispatch, getState) => {
   return dispatch({
