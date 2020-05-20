@@ -9,7 +9,6 @@ import {
   Col,
   Modal,
   Divider,
-  notification,
   message
 } from 'antd';
 import * as styles from './Modal.module.scss';
@@ -142,10 +141,6 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
     }).catch(err => {
       console.log(err)
       setloading(false)
-      notification.error({
-        message: err.errorType,
-        description: err.errorMessage
-      })
     })
   }
 

@@ -10,7 +10,6 @@ import {
   Col,
   Modal,
   Divider,
-  notification,
   message,
   Collapse,
   Tooltip
@@ -18,9 +17,11 @@ import {
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import * as styles from './Modal.module.scss';
 import { addInverter, getInverter, updateInverter } from './service';
+import { getLanguage } from '../../utils/getLanguage';
 const FormItem = Form.Item;
 const { Option } = Select;
 const { Panel } = Collapse;
+
 
 const initValues = {
   'c0': 0,
@@ -52,8 +53,8 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
     [['vso', 'n', 'V'], ['pso', 'n', 'kWp']],
     [['pdcMax', 'n', 'kWp'], ['idcMax', 'n', 'A']],
     [['iacMax', 'n', 'A'], ['pnt', 'n', 'W']],
-    [['mpptNum', 'n', ''], ['mpptIdcmax', 'n', 'A']],
-    [['strNum', 'n', ''], ['strIdcmax', 'n', 'A']],
+    [['mpptNum', 'n', ''], ['mpptIdcMax', 'n', 'A']],
+    [['strNum', 'n', ''], ['strIdcMax', 'n', 'A']],
     [['inverterEffcy', 'n', '%'], ['nationEffcy', 'n', '%']],
     [['acFreqMin', 'n', 'Hz'], ['acFreqMax', 'n', 'Hz']],
     [['nominalPwrFac', 'n', 'cosφ'], ['THDi', 'n', '%']],
@@ -123,7 +124,11 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
           <FormItem
             valuePropName={ type === 'b' ? 'checked' : 'value'}
             name={key}
-            label={ genFormItemLabel(key, note) }
+            label={
+              key === 'nationEffcy' ?
+              t(`${getLanguage()}`) + genFormItemLabel(key, note) :
+              genFormItemLabel(key, note)
+            }
             rules={ type !== 'b' ? [{required: true}] : null }
           >
             { genFormItemInput(type, unit) }
@@ -159,38 +164,37 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
   }
 
   const submitForm = (values) => {
-    console.log(values)
     // 转换格式
-    // [].concat(...formBasicKeys).concat([].concat(...formAdvancedKeys))
-    // .forEach(([key, type,]) => {
-    //   if (type === 'n') values[key] = Number(values[key])
-    // })
+    [].concat(...formBasicKeys).concat([].concat(...formAdvancedKeys))
+    .concat([].concat(...formBoolKeys)).concat([].concat(...formProKeys))
+    .forEach(([key, type,]) => {
+      if (type === 'n') values[key] = Number(values[key])
+      else if (type === 'b') {
+        values[key] = values[key] ? true : false
+      }
+    })
 
-    // let action;
-    // if (editRecord) {
-    //   action = dispatch(updateInverter({inverterID: editRecord.inverterID, values: values}))
-    // } else {
-    //   action = dispatch(addInverter({values}))
-    // }
-    // action.then(() => {
-    //   setloading(false)
-    //   setshowModal(false)
-    //   editRecord ?
-    //   message.success(t('Inverter.success.updateInverter')) :
-    //   message.success(t('Inverter.success.createInverter'))
-    //   const response = dispatch(getInverter())
-    //   response.then(data => {
-    //     setdata(data)
-    //     setactiveData(data)
-    //   })
-    // }).catch(err => {
-    //   console.log(err)
-    //   setloading(false)
-    //   notification.error({
-    //     message: err.errorType,
-    //     description: err.errorMessage
-    //   })
-    // })
+    let action;
+    if (editRecord) {
+      action = dispatch(updateInverter({inverterID: editRecord.inverterID, values: values}))
+    } else {
+      action = dispatch(addInverter({values}))
+    }
+    action.then(() => {
+      setloading(false)
+      setshowModal(false)
+      editRecord ?
+      message.success(t('Inverter.success.updateInverter')) :
+      message.success(t('Inverter.success.createInverter'))
+      const response = dispatch(getInverter())
+      response.then(data => {
+        setdata(data)
+        setactiveData(data)
+      })
+    }).catch(err => {
+      console.log(err)
+      setloading(false)
+    })
   }
 
   useEffect(() => {
@@ -240,6 +244,7 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
             className={styles.collapsePanel}
             header={t('InverterTable.proParams')}
             key="pro"
+            forceRender
           >
             {genFormItems(formProKeys, 2)}
           </Panel>

@@ -8,7 +8,7 @@ export const addInverter = ({values}) => async dispatch => {
   dispatch(setCognitoUserSession(session))
 
   return axios.post(
-    `/pv/${session.idToken.payload.sub}`,
+    `/inverter/${session.idToken.payload.sub}`,
     values,
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
@@ -21,6 +21,7 @@ export const addInverter = ({values}) => async dispatch => {
       message: err.errorType,
       description: err.errorMessage
     })
+    throw err
   })
 }
 
@@ -29,7 +30,7 @@ export const getInverter = () => async dispatch => {
   dispatch(setCognitoUserSession(session))
 
   return axios.get(
-    `/pv/${session.idToken.payload.sub}`,
+    `/inverter/${session.idToken.payload.sub}`,
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
   .then(res => {
@@ -41,17 +42,18 @@ export const getInverter = () => async dispatch => {
       message: err.errorType,
       description: err.errorMessage
     })
+    throw err
   })
 }
 
-export const deleteInverter = ({pvID}) => async dispatch => {
+export const deleteInverter = ({inverterID}) => async dispatch => {
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
 
   return axios.delete(
-    `/pv/${session.idToken.payload.sub}`,
+    `/inverter/${session.idToken.payload.sub}`,
     {
-      params: {pvID: pvID},
+      params: {inverterID: inverterID},
       headers: {'COG-TOKEN': session.idToken.jwtToken}
     }
   )
@@ -65,18 +67,19 @@ export const deleteInverter = ({pvID}) => async dispatch => {
       message: err.errorType,
       description: err.errorMessage
     })
+    throw err
   })
 }
 
-export const updateInverter = ({pvID, values}) => async dispatch => {
+export const updateInverter = ({inverterID, values}) => async dispatch => {
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
 
   return axios.put(
-    `/pv/${session.idToken.payload.sub}`,
+    `/inverter/${session.idToken.payload.sub}`,
     values,
     {
-      params: {pvID: pvID},
+      params: {inverterID: inverterID},
       headers: {'COG-TOKEN': session.idToken.jwtToken}
     }
   )
@@ -90,5 +93,6 @@ export const updateInverter = ({pvID, values}) => async dispatch => {
       message: err.errorType,
       description: err.errorMessage
     })
+    throw err
   })
 }

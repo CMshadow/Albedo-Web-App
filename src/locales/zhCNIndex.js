@@ -1,3 +1,4 @@
+import country from './zh-CN/country.json';
 import register from './zh-CN/register.json';
 import footer from './zh-CN/footer.json';
 import sider from './zh-CN/sider.json';
@@ -10,6 +11,7 @@ import formGeneral from './zh-CN/formGeneral.json';
 import tableGeneral from './zh-CN/tableGeneral.json';
 
 export default {
+  ...country,
   ...register,
   ...footer,
   ...sider,

@@ -21,6 +21,7 @@ export const addPV = ({values}) => async dispatch => {
       message: err.errorType,
       description: err.errorMessage
     })
+    throw err
   })
 }
 
@@ -41,6 +42,7 @@ export const getPV = () => async dispatch => {
       message: err.errorType,
       description: err.errorMessage
     })
+    throw err
   })
 }
 
@@ -65,6 +67,7 @@ export const deletePV = ({pvID}) => async dispatch => {
       message: err.errorType,
       description: err.errorMessage
     })
+    throw err
   })
 }
 
@@ -90,5 +93,6 @@ export const updatePV = ({pvID, values}) => async dispatch => {
       message: err.errorType,
       description: err.errorMessage
     })
+    throw err
   })
 }

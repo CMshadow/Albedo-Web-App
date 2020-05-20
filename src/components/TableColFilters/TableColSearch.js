@@ -3,7 +3,7 @@ import { Input, Button, Space, Slider, InputNumber, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined, FilterFilled, FilterOutlined } from '@ant-design/icons';
-import * as styles from './CustomColSearch.module.scss';
+import * as styles from './TabelColSearch.module.scss';
 import { getMin, getMax } from '../../utils/getObjectsMinMax';
 
 export const SearchString = ({colKey}) => {
@@ -29,7 +29,7 @@ export const SearchString = ({colKey}) => {
         <Input
           className={styles.input}
           ref={node => {searchInputRef = node}}
-          placeholder={`${t('filter.search')}${t(`PVtable.table.${colKey}`)}`}
+          placeholder={`${t('filter.search')}${t(`table.${colKey}`)}`}
           value={selectedKeys[0]}
           onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => handleSearch(selectedKeys, confirm, colKey)}

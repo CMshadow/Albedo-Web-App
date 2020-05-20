@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Popconfirm, notification, message } from 'antd';
+import { Button, Popconfirm, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -20,10 +20,6 @@ export const DeleteAction = ({record, setdata, setactiveData}) => {
       })
     }).catch(err => {
       console.log(err)
-      notification.error({
-        message: err.errorType,
-        description: err.errorMessage
-      })
     })
   }
 

@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Divider, Button } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, SyncOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { PVModal } from './Modal';
 import { getPV } from './service';
-import { SearchString, SearchRange } from './CustomColSearch';
+import { SearchString, SearchRange } from '../../components/TableColFilters/TableColSearch';
 import { DeleteAction } from './Actions';
+import * as styles from './PVTable.module.scss';
 
 // 表单中的数字columns和单位
+// 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
 const colKeys = [
-  ['pmax', 'n', 'Wp'], ['vmpo', 'n', 'V'],['impo', 'n', 'A'],
-  ['isco', 'n', 'A'], ['voco', 'n', 'V']
+  ['pmax', 'n', 'Wp', 150], ['vmpo', 'n', 'V', 175], ['impo', 'n', 'A', 175],
+  ['isco', 'n', 'A', 150], ['voco', 'n', 'V', 150]
 ]
 
 const PVTable = (props) => {
@@ -40,7 +42,7 @@ const PVTable = (props) => {
   ]
 
   // 生成表单所有数字列属性
-  const tableCols = colKeys.map(([key, type, unit], index) => {
+  const tableCols = colKeys.map(([key, type, unit, width], index) => {
     return {
       title: t(`PVtable.table.${key}`),
       dataIndex: key,
@@ -48,7 +50,7 @@ const PVTable = (props) => {
       render: (value) => `${value} ${unit}`,
       sorter: (a, b) => a[key] - b[key],
       multiple: index,
-      width: 175,
+      width: width,
       ...SearchRange({
         colKey: key,
         data,
@@ -99,6 +101,16 @@ const PVTable = (props) => {
     ),
   })
 
+  const fetchData = () => {
+    setloading(true)
+    const response = dispatch(getPV())
+    response.then(data => {
+      setdata(data)
+      setactiveData(data)
+      setloading(false)
+    })
+  }
+
   // 获取表单数据
   useEffect(() => {
     setloading(true)
@@ -113,12 +125,18 @@ const PVTable = (props) => {
   return (
     <div>
       <Button
-        style={{'marginBottom': '10px'}}
+        className={styles.leftBut}
         type="primary"
         onClick={() => setshowModal(true)}
       >
         {t('PVtable.add-PV')}
       </Button>
+      <Button
+        className={styles.rightBut}
+        shape="circle"
+        onClick={fetchData}
+        icon={<SyncOutlined spin={loading}/>}
+      />
       <Table
         columns={tableCols}
         dataSource={activeData}
@@ -131,7 +149,7 @@ const PVTable = (props) => {
           defaultPageSize: 10,
           showSizeChanger: true
         }}
-        scroll={{ y: 'calc(100vh - 275px)' }}
+        scroll={{ x: '100%', y: 'calc(100vh - 275px)' }}
       />
       <PVModal
         showModal={showModal}
