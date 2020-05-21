@@ -2,6 +2,8 @@
   "error.404": "页面不存在",
   "error.backhome": "返回主页",
 
+  "error.http": "操作失败",
+
   "warning.dev.message": "Alpha测试版本",
   "warning.dev.description": "注意：该测试版本内容尚不完整且也许会发生变化。如果您在使用过程中发现诸多问题，敬请谅解，同时欢迎您向我们提供宝贵的反馈意见以改进软件。 - 光巢科技",
 

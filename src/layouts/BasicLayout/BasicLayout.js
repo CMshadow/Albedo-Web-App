@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
+import GlobalAlert from '../../components/globalAlert/GlobalAlert';
 import * as styles from './BasicLayout.module.scss';
 
 const { Sider, Content } = Layout;
@@ -42,6 +43,7 @@ const BasicLayout = (props) => {
       <Layout className={styles.main}>
         <PrivateHeader />
         <Content className={styles.content}>
+          <GlobalAlert />
           {props.children}
         </Content>
       </Layout>

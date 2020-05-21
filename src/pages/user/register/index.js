@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './style.module.scss';
 import { useHistory } from "react-router-dom";
 import { Signup } from '../service';
 import { Form, Button, Input, Popover, Progress, Row, notification } from 'antd';
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 const FormItem = Form.Item;
 
 const Register = (props) => {
@@ -40,9 +40,8 @@ const Register = (props) => {
     })
   }
 
-  const checkPassword = (rule, value) => {
+  const passwordLengthValidator = (rule, value) => {
     const promise = Promise;
-    // 没有值的情况
     if (!value) {
       setvisible(!!value);
       return promise.reject(t('user.required.password'));
@@ -52,23 +51,64 @@ const Register = (props) => {
       setvisible(!!value);
     }
     setpopover(!popover);
-    if (
-      value.length < 8 ||
-      !value.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
-    ) {
-      return promise.reject('');
-    }
+    if (value.length < 8) return promise.reject('');
     return promise.resolve();
-  };
+  }
+
+  const passwordCapLetterValidator = (rule, value) => {
+    const promise = Promise;
+    setpopover(!popover);
+    if (value === value.toLowerCase()) return promise.reject('');
+    return promise.resolve();
+  }
+
+  const passwordLowLetterValidator = (rule, value) => {
+    const promise = Promise;
+    setpopover(!popover);
+    if (value === value.toUpperCase()) return promise.reject('');
+    return promise.resolve();
+  }
+
+  const passwordNumberValidator = (rule, value) => {
+    const promise = Promise;
+    setpopover(!popover);
+    if (/\d/.test(value)) return promise.resolve();
+    return promise.reject('');
+  }
+
+  const checkPsswordLength = () => {
+    const password = form.getFieldValue('password');
+    if (password.length < 8) return false
+    return true
+  }
+
+  const checkPsswordCapLetter = () => {
+    const password = form.getFieldValue('password');
+    if (password === password.toLowerCase()) return false
+    return true
+  }
+
+  const checkPsswordLowLetter = () => {
+    const password = form.getFieldValue('password');
+    if (password === password.toUpperCase()) return false
+    return true
+  }
+
+  const checkPsswordNumber = () => {
+    const password = form.getFieldValue('password');
+    return /\d/.test(password);
+  }
 
   const getPasswordStatus = () => {
     const password = form.getFieldValue('password');
-    if (password && password.length > 10) {
-      return 'success';
-    }
-    if (password && password.length > 7) {
-      return 'normal';
-    }
+    if (
+      checkPsswordLength() && checkPsswordCapLetter() &&
+      checkPsswordLowLetter() && checkPsswordNumber() && password.length > 11
+    ) return 'success';
+    if (
+      checkPsswordLength() && checkPsswordCapLetter() &&
+      checkPsswordLowLetter() && checkPsswordNumber()
+    ) return 'normal';
     return 'exception';
   };
 
@@ -85,26 +125,72 @@ const Register = (props) => {
   ),
   exception: (
     <div className={styles.error}>
-      {t('user.strength.short')}
+      {t('user.strength.invalid')}
     </div>
   ),
 };
 
   const renderPasswordProgress = () => {
-    const value = form.getFieldValue('password');
+    const password = form.getFieldValue('password');
     const passwordStatus = getPasswordStatus();
-    return value && value.length ? (
+    return password && password.length ? (
       <div>
         <Progress
           status={passwordStatus}
           className={styles.progress}
           strokeWidth={8}
-          percent={value.length * 10 > 100 ? 100 : value.length * 10}
+          percent={
+            passwordStatus === 'exception' ? 0 :
+            passwordStatus === 'normal' ? 50 : 100
+          }
           showInfo={false}
         />
       </div>
     ) : null;
   };
+
+  const genPopoverContent = () => (
+    visible && (
+      <div style={{ padding: '4px 0' }}>
+        {passwordStatusMap[getPasswordStatus()]}
+        {renderPasswordProgress()}
+        <div style={{ marginTop: 10 }}>
+          <Row align='middle'>
+            {
+              checkPsswordLength() ?
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" /> :
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d"/>
+            }
+            {t('user.hint.length')}
+          </Row>
+          <Row align='middle'>
+            {
+              checkPsswordLowLetter() ?
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" /> :
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d"/>
+            }
+            {t('user.hint.lowLetter')}
+          </Row>
+          <Row align='middle'>
+            {
+              checkPsswordCapLetter() ?
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" /> :
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d"/>
+            }
+            {t('user.hint.capLetter')}
+          </Row>
+          <Row align='middle'>
+            {
+              checkPsswordNumber() ?
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" /> :
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d"/>
+            }
+            {t('user.hint.number')}
+          </Row>
+        </div>
+      </div>
+    )
+  )
 
   return (
     <div className={styles.main}>
@@ -161,17 +247,7 @@ const Register = (props) => {
           {t('user.required.password')}
         </Row>
         <Popover
-          content={
-            visible && (
-              <div style={{ padding: '4px 0' }}>
-                {passwordStatusMap[getPasswordStatus()]}
-                {renderPasswordProgress()}
-                <div style={{ marginTop: 10 }}>
-                  {t('user.hint.password')}
-                </div>
-              </div>
-            )
-          }
+          content={genPopoverContent}
           overlayStyle={{ width: 240 }}
           placement="right"
           visible={visible}
@@ -181,11 +257,17 @@ const Register = (props) => {
             className={styles.password}
             rules={[
               {
-                validator: checkPassword,
-              },
+                validator: passwordLengthValidator,
+              }, {
+                validator: passwordCapLetterValidator,
+              }, {
+                validator: passwordLowLetterValidator,
+              }, {
+                validator: passwordNumberValidator,
+              }
             ]}
           >
-            <Input size="large" type="password" placeholder={t('user.placeholder.password')}/>
+            <Input.Password size="large" type="password" placeholder={t('user.placeholder.password')}/>
           </FormItem>
         </Popover>
         <FormItem>

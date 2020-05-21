@@ -1,0 +1,14 @@
+{
+  "project.create-project": "创建新项目",
+
+  "project.create.title": "项目名称",
+  "project.create.title.placeholder": "我的光伏项目",
+  "project.create.address": "项目地址",
+  "project.create.address.placeholder": "请输入地址并查询",
+  "project.create.validation": "验证地址",
+  "project.create.type": "项目类型",
+  "project.type.domestic": "户用项目",
+  "project.type.commercial": "工商业项目",
+
+  "project.error.invalid-address": "地址无法验证"
+}

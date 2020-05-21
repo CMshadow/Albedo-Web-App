@@ -18,10 +18,13 @@
   "user.required.verification": "验证码",
 
   "user.format.email": "请输入有效邮箱格式",
-  "user.hint.password": "至少8位密码，包含大小写字母和数字" ,
+  "user.hint.length": "包含至少8个字符" ,
+  "user.hint.lowLetter": "包含小写字母" ,
+  "user.hint.capLetter": "包含大写字母" ,
+  "user.hint.number": "包含数字",
   "user.strength.strong": "强度: 强",
   "user.strength.medium": "强度: 中",
-  "user.strength.short": "强度: 太短",
+  "user.strength.invalid": "强度: 不符合要求",
 
   "user.placeholder.firstname": "名字",
   "user.placeholder.lastname": "姓氏",

@@ -9,6 +9,7 @@ import inverter from './zh-CN/Inverter.json';
 import action from './zh-CN/action.json';
 import formGeneral from './zh-CN/formGeneral.json';
 import tableGeneral from './zh-CN/tableGeneral.json';
+import project from './zh-CN/project.json';
 
 export default {
   ...country,
@@ -21,5 +22,6 @@ export default {
   ...inverter,
   ...action,
   ...formGeneral,
-  ...tableGeneral
+  ...tableGeneral,
+  ...project
 }
