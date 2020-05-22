@@ -7,6 +7,10 @@ import { addPV, getPV, updatePV } from './service';
 const FormItem = Form.Item;
 const { Option } = Select;
 
+const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
+const labelCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 24}, lg: {span: 16}, xl: {span: 12}};
+const wrapperCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 24}, lg: {span: 8}, xl: {span: 12}};
+
 // PV表单默认值
 const initValues = {
   'siliconMaterial': 'mc-Si',
@@ -19,9 +23,6 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
   const [form] = Form.useForm();
   const dispatch = useDispatch();
 
-  const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
-  const labelCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 24}, lg: {span: 16}, xl: {span: 12}};
-  const wrapperCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 24}, lg: {span: 8}, xl: {span: 12}};
   // PV表单基本信息[key，类型，单位]
   const formBasicKeys = [
     [['name', 's', ''], ['note', 's', '']],
@@ -165,6 +166,7 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
       cancelText={t('action.cancel')}
       maskClosable={false}
       width={'80vw'}
+      style={{ top: 20 }}
       afterClose={onClose}
     >
       <Form

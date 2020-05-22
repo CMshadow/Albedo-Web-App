@@ -1,10 +1,13 @@
 {
   "project.create-project": "创建新项目",
+  "project.map.googleMap": "谷歌地图",
+  "project.map.aMap": "高德地图",
 
   "project.create.title": "项目名称",
   "project.create.title.placeholder": "我的光伏项目",
   "project.create.address": "项目地址",
   "project.create.address.placeholder": "请输入地址并查询",
+  "project.create.address.hint": "用于生成气象数据",
   "project.create.validation": "验证地址",
   "project.create.type": "项目类型",
   "project.type.domestic": "户用项目",

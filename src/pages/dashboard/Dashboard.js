@@ -18,7 +18,7 @@ const Dashboard = (props) => {
         type="primary"
         onClick={() => setshowModal(true)}
       >
-        {t('PVtable.add-PV')}
+        {t('project.create-project')}
       </Button>
       <Button
         className={styles.rightBut}
