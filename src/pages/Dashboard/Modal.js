@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-import { amapGeocoder, googleGeocoder, getApiKey } from './service';
+import { useDispatch, useSelector } from 'react-redux';
+import { amapGeocoder, googleGeocoder, getApiKey, createProject } from './service';
 import { Tabs, Form, Input, Select, Modal, Divider, Button, notification, Tooltip, Collapse, Slider } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { getLanguage } from '../../utils/getLanguage';
+import { genFullName } from '../../utils/genFullName';
 import GoogleMap from './GoogleMap';
 import AMap from './AMap';
 import * as styles from './Modal.module.scss';
@@ -22,6 +23,7 @@ const initValues = {projectType: 'domestic', albedo: 0.3}
 export const CreateProjectModal = ({showModal, setshowModal, google}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const cognitoUser = useSelector(state => state.auth.cognitoUser);
   const [loading, setloading] = useState(false);
   const [validated, setvalidated] = useState(false);
   const [mapPos, setmapPos] = useState({lon: -117.843687, lat: 33.676542})
@@ -42,7 +44,7 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
 
   // 高德的地理编码解析
   const amapDecode = () => {
-    const address = form.getFieldValue('address')
+    const address = form.getFieldValue('projectAddress')
     amapGeocoder({address: address, key: aMapWebKey})
     .then(res => {
       const payload = res.data.geocodes
@@ -66,8 +68,7 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
 
   // 谷歌的地理编码解析
   const googleDecode = () => {
-    console.log('hello')
-    const address = form.getFieldValue('address')
+    const address = form.getFieldValue('projectAddress')
     googleGeocoder({address: address, key: googleMapKey})
     .then(res => {
       console.log(res)
@@ -124,7 +125,18 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
 
   // 表单提交
   const submitForm = (values) => {
-    console.log(values)
+    dispatch(createProject({...values, projectCreator: genFullName(cognitoUser)}))
+    .then(() => {
+      setloading(false)
+      setshowModal(false)
+    }).catch(err => {
+      console.log(err)
+      notification.error({
+        message: err.errorType,
+        description: err.errorMessage
+      })
+      setloading(false)
+    })
   }
 
   // 组件渲染后获取浏览器位置 及 获取地图服务api key

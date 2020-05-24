@@ -24,3 +24,14 @@ export const getApiKey = () => async dispatch => {
     '/apikeysender',{headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
 }
+
+export const createProject = (values) => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.post(
+    `/project/${session.idToken.payload.sub}`,
+    values,
+    {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+  )
+}
