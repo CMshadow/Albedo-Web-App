@@ -12,6 +12,15 @@
   "project.create.type": "项目类型",
   "project.type.domestic": "户用项目",
   "project.type.commercial": "工商业项目",
+  "project.create.proParams": "进阶设置",
+
+  "project.create.albedo": "漫反射系数",
+  "project.create.albedo.shadow": "无反射",
+  "project.create.albedo.forest": "森林",
+  "project.create.albedo.grassland": "草地",
+  "project.create.albedo.urban": "城市",
+  "project.create.albedo.desert": "沙漠",
+  "project.create.albedo.full": "全反射",
 
   "project.error.invalid-address": "地址无法验证"
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { amapGeocoder, googleGeocoder, getApiKey } from './service';
-import { Tabs, Form, Input, Select, Modal, Divider, Button, notification, Tooltip } from 'antd';
+import { Tabs, Form, Input, Select, Modal, Divider, Button, notification, Tooltip, Collapse, Slider } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { getLanguage } from '../../utils/getLanguage';
 import GoogleMap from './GoogleMap';
@@ -11,12 +11,13 @@ import * as styles from './Modal.module.scss';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const { Panel } = Collapse;
 const { TabPane } = Tabs;
 
 const labelCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 4}};
 const wrapperCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 20}};
 
-const initValues = {projectType: 'domestic'}
+const initValues = {projectType: 'domestic', albedo: 0.3}
 
 export const CreateProjectModal = ({showModal, setshowModal, google}) => {
   const { t } = useTranslation();
@@ -29,6 +30,15 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
   const [aMapWebKey, setaMapWebKey] = useState('')
   const [selectedMap, setselectedMap] = useState(getLanguage() === 'zh-CN' ? 'aMap' : 'googleMap')
   const [form] = Form.useForm();
+
+  // albedo几个预设值
+  const albedoMarks = {
+    0: t('project.create.albedo.shadow'),
+    0.15: t('project.create.albedo.forest'),
+    0.3: t('project.create.albedo.urban'),
+    0.4: t('project.create.albedo.desert'),
+    1: t('project.create.albedo.full')
+  };
 
   // 高德的地理编码解析
   const amapDecode = () => {
@@ -210,6 +220,18 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
             <Option key='commercial' value='commercial'>{t(`project.type.commercial`)}</Option>
           </Select>
         </FormItem>
+        <Collapse bordered={false}>
+          <Panel
+            className={styles.collapsePanel}
+            header={t('project.create.proParams')}
+            key="pro"
+            forceRender
+          >
+            <FormItem name='albedo' label={t('project.create.albedo')} rules={[{required: true}]}>
+              <Slider marks={albedoMarks} step={0.05} max={1}/>
+            </FormItem>
+          </Panel>
+        </Collapse>
       </Form>
     </Modal>
   )
