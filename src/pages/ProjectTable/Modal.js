@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { amapGeocoder, googleGeocoder, getApiKey, createProject } from './service';
@@ -22,6 +23,7 @@ const initValues = {projectType: 'domestic', albedo: 0.3}
 
 export const CreateProjectModal = ({showModal, setshowModal, google}) => {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
   const cognitoUser = useSelector(state => state.auth.cognitoUser);
   const [loading, setloading] = useState(false);
@@ -71,7 +73,6 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
     const address = form.getFieldValue('projectAddress')
     googleGeocoder({address: address, key: googleMapKey})
     .then(res => {
-      console.log(res)
       const payload = res.data.results
       if (payload.length === 0) {
         setvalidated(false)
@@ -131,9 +132,10 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
       longitude: Number(mapPos.lon),
       latitude: Number(mapPos.lat)
     }))
-    .then(() => {
+    .then(res => {
       setloading(false)
       setshowModal(false)
+      history.push(`project/${res.data.projectID}`);
     }).catch(err => {
       console.log(err)
       notification.error({

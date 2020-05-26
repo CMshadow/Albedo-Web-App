@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Skeleton, Descriptions, Card } from 'antd';
+import { Descriptions, Card } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { wh2other } from '../../../utils/unitConverter';
 
 const Item = Descriptions.Item
 
@@ -9,12 +10,16 @@ export const OptimalCard = ({loading, ...values}) => {
 
   return (
     <Card loading={loading} title={t('project.optimal.title')}>
-      <Descriptions column={2}>
+      <Descriptions column={3}>
         <Item label={t('project.optimal.optTilt')}>
           {values.optTilt}°
         </Item>
         <Item label={t('project.optimal.optAzi')}>
-          {values.optAzi}°
+          {values.optAzimuth}°
+        </Item>
+        <Item label={t('project.optimal.optPOA')}>
+          {wh2other(values.optPOA).value.toFixed(1)}
+          {wh2other(values.optPOA).unit}/㎡
         </Item>
       </Descriptions>
     </Card>

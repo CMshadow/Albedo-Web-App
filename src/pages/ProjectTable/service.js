@@ -1,4 +1,5 @@
 import { Auth } from 'aws-amplify';
+import { notification } from 'antd';
 import { setCognitoUserSession } from '../../store/action/index';
 import axios from '../../axios.config';
 
@@ -34,4 +35,50 @@ export const createProject = (values) => async dispatch => {
     values,
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
+}
+
+export const getProject = () => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.get(
+    `/project/${session.idToken.payload.sub}`,
+    {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+  )
+  .then(res => {
+    console.log(res)
+    return res.data
+  })
+  .catch(err => {
+    notification.error({
+      message: err.errorType,
+      description: err.errorMessage
+    })
+    throw err
+  })
+}
+
+export const deleteProject = ({projectID}) => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.delete(
+    `/project/${session.idToken.payload.sub}`,
+    {
+      params: {projectID: projectID},
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => {
+    console.log(res)
+    return res.data.payload
+  })
+  .catch(err => {
+    console.log(err)
+    notification.error({
+      message: err.errorType,
+      description: err.errorMessage
+    })
+    throw err
+  })
 }

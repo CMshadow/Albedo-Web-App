@@ -24,6 +24,10 @@
 
   "project.error.invalid-address": "地址无法验证",
 
+  "project.createdAt": "创建时间",
+  "project.updatedAt": "更新时间",
+  "table.projectTitle": "项目名称",
+  "table.projectAddress": "项目地址",
 
   "project.descriptions.projectAddress": "项目地址",
   "project.descriptions.projectCreator": "创建人",
@@ -31,7 +35,10 @@
   "project.descriptions.createdAt": "创建时间",
   "project.descriptions.updatedAt": "更新时间",
 
-  "project.optimal.title": "最佳朝向倾角",
+  "project.optimal.title": "最佳配置",
   "project.optimal.optTilt": "最佳倾角",
-  "project.optimal.optAzi": "最佳朝向"
+  "project.optimal.optAzi": "最佳朝向",
+  "project.optimal.optPOA": "最大年总辐照",
+
+  "project.success.deleteProject": "成功删除项目"
 }
