@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { CreateProjectModal } from './Modal';
 import { getProject } from './service';
 import { DeleteAction } from './Actions';
-import { SearchString, SearchRange } from '../../components/TableColFilters/TableColSearch';
+import { SearchString } from '../../components/TableColFilters/TableColSearch';
 import * as styles from './ProjectTable.module.scss';
 
 
@@ -107,8 +107,7 @@ const ProjectTable = (props) => {
   // 手动触发更新列表数据
   const fetchData = () => {
     setloading(true)
-    const response = dispatch(getProject())
-    response.then(data => {
+    dispatch(getProject()).then(data => {
       setdata(data)
       setactiveData(data)
       setloading(false)
@@ -118,8 +117,7 @@ const ProjectTable = (props) => {
   // 组件渲染后自动获取表单数据
   useEffect(() => {
     setloading(true)
-    const response = dispatch(getProject())
-    response.then(data => {
+    dispatch(getProject()).then(data => {
       setdata(data)
       setactiveData(data)
       setloading(false)

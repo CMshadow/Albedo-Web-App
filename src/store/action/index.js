@@ -4,5 +4,5 @@ export {
 } from './authAction';
 
 export {
-  setMetaInfo
+  setProjectData
 } from './projectAction';

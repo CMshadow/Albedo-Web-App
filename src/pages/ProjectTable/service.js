@@ -24,6 +24,12 @@ export const getApiKey = () => async dispatch => {
   return axios.get(
     '/apikeysender',{headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
+  .then(res => res.data)
+  .catch(err => {
+    console.log(err)
+    notification({message: err.response.message})
+    throw err
+  })
 }
 
 export const createProject = (values) => async dispatch => {
@@ -35,6 +41,12 @@ export const createProject = (values) => async dispatch => {
     values,
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
+  .then(res => res.data)
+  .catch(err => {
+    console.log(err)
+    notification({message: err.response.message})
+    throw err
+  })
 }
 
 export const getProject = () => async dispatch => {
@@ -45,15 +57,10 @@ export const getProject = () => async dispatch => {
     `/project/${session.idToken.payload.sub}`,
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
-  .then(res => {
-    console.log(res)
-    return res.data
-  })
+  .then(res => res.data)
   .catch(err => {
-    notification.error({
-      message: err.errorType,
-      description: err.errorMessage
-    })
+    console.log(err)
+    notification({message: err.response.message})
     throw err
   })
 }
@@ -69,16 +76,10 @@ export const deleteProject = ({projectID}) => async dispatch => {
       headers: {'COG-TOKEN': session.idToken.jwtToken}
     }
   )
-  .then(res => {
-    console.log(res)
-    return res.data.payload
-  })
+  .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification.error({
-      message: err.errorType,
-      description: err.errorMessage
-    })
+    notification({message: err.response.message})
     throw err
   })
 }

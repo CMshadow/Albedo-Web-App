@@ -17,10 +17,10 @@ export const Description = ({loading, ...values}) => {
           {t(`project.type.${values.projectType}`)}
         </Item>
         <Item label={t('project.descriptions.createdAt')}>
-          {values.createdAt}
+          {new Date(values.createdAt * 1000).toLocaleString()}
         </Item>
         <Item label={t('project.descriptions.updatedAt')}>
-          {values.updatedAt}
+          {new Date(values.updatedAt * 1000).toLocaleString()}
         </Item>
         <Item label={t('project.descriptions.projectAddress')} span={2}>
           {values.projectAddress}

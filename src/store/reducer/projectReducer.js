@@ -4,17 +4,17 @@ const initialState = {
 
 };
 
-const setMetaInfo = (state, action) => {
+const setProjectData = (state, action) => {
   return {
     ...state,
-    ...action.metaInfo
+    ...action.data
   }
 }
 
 const reducer = (state=initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_PROJECT_METAINFO:
-      return setMetaInfo(state, action);
+    case actionTypes.SET_PROJECTDATA:
+      return setProjectData(state, action);
     default: return state;
   }
 };

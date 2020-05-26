@@ -113,8 +113,7 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
   const handleOk = () => {
     // 验证表单，如果通过提交表单
     form.validateFields()
-    .then(success => {
-      console.log(success)
+    .then(() => {
       setloading(true);
       form.submit()
     })
@@ -132,16 +131,11 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
       longitude: Number(mapPos.lon),
       latitude: Number(mapPos.lat)
     }))
-    .then(res => {
+    .then(data => {
       setloading(false)
       setshowModal(false)
-      history.push(`project/${res.data.projectID}`);
+      history.push(`project/${data.projectID}`);
     }).catch(err => {
-      console.log(err)
-      notification.error({
-        message: err.errorType,
-        description: err.errorMessage
-      })
       setloading(false)
     })
   }
@@ -154,10 +148,10 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
       });
     }
     dispatch(getApiKey())
-    .then(res => {
-      setgoogleMapKey(res.data.payload.GOOGLE_MAP_API_KEY)
-      setaMapKey(res.data.payload.A_MAP_API_KEY)
-      setaMapWebKey(res.data.payload.A_MAP_WEB_API_KEY)
+    .then(data => {
+      setgoogleMapKey(data.GOOGLE_MAP_API_KEY)
+      setaMapKey(data.A_MAP_API_KEY)
+      setaMapWebKey(data.A_MAP_WEB_API_KEY)
     })
   }, [dispatch])
 

@@ -184,18 +184,16 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
       action = dispatch(addInverter({values}))
     }
     action.then(() => {
-      setloading(false)
-      setshowModal(false)
-      editRecord ?
-      message.success(t('Inverter.success.updateInverter')) :
-      message.success(t('Inverter.success.createInverter'))
-      const response = dispatch(getInverter())
-      response.then(data => {
+      dispatch(getInverter()).then(data => {
+        setloading(false)
+        setshowModal(false)
+        editRecord ?
+        message.success(t('Inverter.success.updateInverter')) :
+        message.success(t('Inverter.success.createInverter'))
         setdata(data)
         setactiveData(data)
       })
     }).catch(err => {
-      console.log(err)
       setloading(false)
     })
   }

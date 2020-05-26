@@ -19,8 +19,6 @@ export const DeleteAction = ({record, setdata, setactiveData}) => {
         setdata(data)
         setactiveData(data)
       })
-    }).catch(err => {
-      console.log(err)
     })
   }
 

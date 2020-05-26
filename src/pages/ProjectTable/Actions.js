@@ -14,13 +14,10 @@ export const DeleteAction = ({record, setdata, setactiveData}) => {
     dispatch(deleteProject({projectID: record.projectID}))
     .then(() => {
       message.success(t('project.success.deleteProject'))
-      const response = dispatch(getProject())
-      response.then(data => {
+      dispatch(getProject()).then(data => {
         setdata(data)
         setactiveData(data)
       })
-    }).catch(err => {
-      console.log(err)
     })
   }
 

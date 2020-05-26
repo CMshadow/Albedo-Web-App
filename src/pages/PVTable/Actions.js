@@ -14,13 +14,10 @@ export const DeleteAction = ({record, setdata, setactiveData}) => {
     dispatch(deletePV({pvID: record.pvID}))
     .then(() => {
       message.success(t('PV.success.deletePV'))
-      const response = dispatch(getPV())
-      response.then(data => {
+      dispatch(getPV()).then(data => {  
         setdata(data)
         setactiveData(data)
       })
-    }).catch(err => {
-      console.log(err)
     })
   }
 

@@ -33,7 +33,7 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
   const formSelectKeys = [
     [
       ['siliconMaterial', 'c', ['mc-Si', 'c-Si']],
-      ['moduleMaterial', 'c', ['glass/cell/glass', 'PV.glass/cell/polymer-sheet', 'polymer/thin-film/steel']]
+      ['moduleMaterial', 'c', ['glass/cell/glass', 'glass/cell/polymer-sheet', 'polymer/thin-film/steel']]
     ]
   ]
   // PV表单进阶信息[key，类型，单位]
@@ -134,18 +134,16 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
       action = dispatch(addPV({values}))
     }
     action.then(() => {
-      setloading(false)
-      setshowModal(false)
-      editRecord ?
-      message.success(t('PV.success.updatePV')) :
-      message.success(t('PV.success.createPV'))
-      const response = dispatch(getPV())
-      response.then(data => {
+      dispatch(getPV()).then(data => {
+        editRecord ?
+        message.success(t('PV.success.updatePV')) :
+        message.success(t('PV.success.createPV'))
+        setloading(false)
+        setshowModal(false)
         setdata(data)
         setactiveData(data)
       })
     }).catch(err => {
-      console.log(err)
       setloading(false)
     })
   }

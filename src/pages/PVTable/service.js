@@ -12,15 +12,10 @@ export const addPV = ({values}) => async dispatch => {
     values,
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
-  .then(res => {
-    console.log(res)
-    return
-  })
+  .then(res => res.data)
   .catch(err => {
-    notification.error({
-      message: err.errorType,
-      description: err.errorMessage
-    })
+    console.log(err)
+    notification.error({message: err.response.message})
     throw err
   })
 }
@@ -33,15 +28,10 @@ export const getPV = () => async dispatch => {
     `/pv/${session.idToken.payload.sub}`,
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
-  .then(res => {
-    console.log(res)
-    return res.data.payload
-  })
+  .then(res => res.data)
   .catch(err => {
-    notification.error({
-      message: err.errorType,
-      description: err.errorMessage
-    })
+    console.log(err)
+    notification.error({message: err.response.message})
     throw err
   })
 }
@@ -57,16 +47,10 @@ export const deletePV = ({pvID}) => async dispatch => {
       headers: {'COG-TOKEN': session.idToken.jwtToken}
     }
   )
-  .then(res => {
-    console.log(res)
-    return res.data.payload
-  })
+  .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification.error({
-      message: err.errorType,
-      description: err.errorMessage
-    })
+    notification.error({message: err.response.message})
     throw err
   })
 }
@@ -83,16 +67,10 @@ export const updatePV = ({pvID, values}) => async dispatch => {
       headers: {'COG-TOKEN': session.idToken.jwtToken}
     }
   )
-  .then(res => {
-    console.log(res)
-    return res.data.payload
-  })
+  .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification.error({
-      message: err.errorType,
-      description: err.errorMessage
-    })
+    notification.error({message: err.response.message})
     throw err
   })
 }
