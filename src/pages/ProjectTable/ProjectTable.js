@@ -4,9 +4,9 @@ import { Button } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { CreateProjectModal } from './Modal';
-import * as styles from './Dashboard.module.scss';
+import * as styles from './ProjectTable.module.scss';
 
-const Dashboard = (props) => {
+const ProjectTable = (props) => {
   const { t } = useTranslation();
   const [loading, setloading] = useState(false)
   const [showModal, setshowModal] = useState(false)
@@ -36,4 +36,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(Dashboard)
+export default connect(mapStateToProps)(ProjectTable)

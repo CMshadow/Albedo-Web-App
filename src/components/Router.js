@@ -7,8 +7,9 @@ import Verification from '../pages/user/Verification/index';
 import Login from '../pages/user/Login/index';
 import UserLayout from '../layouts/UserLayout/UserLayout';
 import BasicLayout from '../layouts/BasicLayout/BasicLayout';
-import Dashboard from '../pages/Dashboard/Dashboard';
+import ProjectTable from '../pages/ProjectTable/ProjectTable';
 import PVTable from '../pages/PVTable/PVTable';
+import Dashboard from '../pages/Project/Dashboard';
 import InverterTable from '../pages/InverterTable/InverterTable';
 import NotFound404 from '../pages/404';
 
@@ -26,10 +27,18 @@ const Router = () => {
             </Switch>
           </UserLayout>
         </Route>
+        <PrivateRoute path="/project">
+          <BasicLayout>
+            <Switch>
+              <PrivateRoute path='/project/:projectID' component={Dashboard} />
+              <Route path='*' component={NotFound404} />
+            </Switch>
+          </BasicLayout>
+        </PrivateRoute>
         <PrivateRoute path="/">
           <BasicLayout>
             <Switch>
-              <PrivateRoute path='/dashboard' component={Dashboard} />
+              <PrivateRoute path='/dashboard' component={ProjectTable} />
               <PrivateRoute path="/pv" component={PVTable} />
               <PrivateRoute path="/inverter" component={InverterTable} />
               <Route path='*' component={NotFound404} />

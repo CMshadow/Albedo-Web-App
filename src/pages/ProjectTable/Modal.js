@@ -125,7 +125,12 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
 
   // 表单提交
   const submitForm = (values) => {
-    dispatch(createProject({...values, projectCreator: genFullName(cognitoUser)}))
+    dispatch(createProject({
+      ...values,
+      projectCreator: genFullName(cognitoUser),
+      longitude: Number(mapPos.lon),
+      latitude: Number(mapPos.lat)
+    }))
     .then(() => {
       setloading(false)
       setshowModal(false)

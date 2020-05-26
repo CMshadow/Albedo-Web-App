@@ -22,5 +22,16 @@
   "project.create.albedo.desert": "沙漠",
   "project.create.albedo.full": "全反射",
 
-  "project.error.invalid-address": "地址无法验证"
+  "project.error.invalid-address": "地址无法验证",
+
+
+  "project.descriptions.projectAddress": "项目地址",
+  "project.descriptions.projectCreator": "创建人",
+  "project.descriptions.projectType": "项目类型",
+  "project.descriptions.createdAt": "创建时间",
+  "project.descriptions.updatedAt": "更新时间",
+
+  "project.optimal.title": "最佳朝向倾角",
+  "project.optimal.optTilt": "最佳倾角",
+  "project.optimal.optAzi": "最佳朝向"
 }
