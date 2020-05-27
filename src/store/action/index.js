@@ -4,5 +4,7 @@ export {
 } from './authAction';
 
 export {
-  setProjectData
+  setProjectData,
+  addBuilding,
+  deleteBuilding
 } from './projectAction';

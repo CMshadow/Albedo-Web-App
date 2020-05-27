@@ -40,5 +40,9 @@
   "project.optimal.optAzi": "最佳朝向",
   "project.optimal.optPOA": "最大年总辐照",
 
-  "project.success.deleteProject": "成功删除项目"
+  "project.success.deleteProject": "成功删除项目",
+
+  "project.add.building": "添加房屋",
+  "project.add.buildingName": "房屋名称",
+  "project.add.spec": "添加设备"
 }

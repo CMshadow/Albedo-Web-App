@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Description } from './elements/Description';
 import { OptimalCard } from './elements/OptimalCard';
+import { Equipments } from './elements/Equipments';
 import { getProject, globalOptTiltAzimuth } from './service';
 import { setProjectData } from '../../store/action/index';
 
@@ -44,7 +45,12 @@ const Dashboard = (props) => {
       </Row>
       <Row gutter={rowGutter}>
         <Col span={24}>
-        <OptimalCard loading={loading || optLoading} {...projectData} />
+          <OptimalCard loading={loading || optLoading} {...projectData} />
+        </Col>
+      </Row>
+      <Row gutter={rowGutter}>
+        <Col span={24}>
+          <Equipments loading={loading} {...projectData}/>
         </Col>
       </Row>
     </div>
