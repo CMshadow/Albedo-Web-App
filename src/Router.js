@@ -1,17 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
-import Register from '../pages/user/Register/index';
-import Verification from '../pages/user/Verification/index';
-import Login from '../pages/user/Login/index';
-import UserLayout from '../layouts/UserLayout/UserLayout';
-import BasicLayout from '../layouts/BasicLayout/BasicLayout';
-import ProjectTable from '../pages/ProjectTable/ProjectTable';
-import PVTable from '../pages/PVTable/PVTable';
-import Dashboard from '../pages/Project/Dashboard';
-import InverterTable from '../pages/InverterTable/InverterTable';
-import NotFound404 from '../pages/404';
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
+import Register from './pages/user/Register/index';
+import Verification from './pages/user/Verification/index';
+import Login from './pages/user/Login/index';
+import UserLayout from './layouts/UserLayout/UserLayout';
+import BasicLayout from './layouts/BasicLayout/BasicLayout';
+import ProjectTable from './pages/ProjectTable/ProjectTable';
+import PVTable from './pages/PVTable/index';
+import Dashboard from './pages/Project/Dashboard';
+import InverterTable from './pages/InverterTable/InverterTable';
+import NotFound404 from './pages/404';
 
 const Router = () => {
   return(

@@ -6,7 +6,8 @@ import { Description } from './elements/Description';
 import { OptimalCard } from './elements/OptimalCard';
 import { Equipments } from './elements/Equipments';
 import { getProject, globalOptTiltAzimuth } from './service';
-import { setProjectData } from '../../store/action/index';
+import { getPV } from '../PVTable/service'
+import { setProjectData, setPVData, setPVActiveData } from '../../store/action/index';
 
 const rowGutter = [12, 12]
 
@@ -20,6 +21,11 @@ const Dashboard = (props) => {
   const [optLoading, setoptLoading] = useState(true)
 
   useEffect(() => {
+    dispatch(getPV())
+    .then(res => {
+      dispatch(setPVData(res))
+      dispatch(setPVActiveData(res))
+    })
     dispatch(getProject({projectID: projectID}))
     .then(res => {
       dispatch(setProjectData(res))

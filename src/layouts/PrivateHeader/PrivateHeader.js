@@ -2,7 +2,7 @@ import React from 'react';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout, Avatar, Dropdown, Menu, Row } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import SelectLang from '../../components/selectLang';
+import SelectLang from '../../components/SelectLang/index';
 import * as styles from './PrivateHeader.module.scss';
 import { Auth } from 'aws-amplify';
 import { genInitial } from '../../utils/genInitial';

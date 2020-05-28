@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
-import GlobalAlert from '../../components/globalAlert/GlobalAlert';
+import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
 import * as styles from './BasicLayout.module.scss';
 
 const { Sider, Content } = Layout;

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import DefaultFooter from '../Footer/DefaultFooter';
 import logo from '../../assets/logo.png';
-import SelectLang from '../../components/selectLang/index';
+import SelectLang from '../../components/SelectLang/index';
 import styles from './UserLayout.module.scss';
 
 const UserLayout = (props) => {

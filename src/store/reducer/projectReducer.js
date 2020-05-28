@@ -17,14 +17,14 @@ const addBuilding = (state, action) => {
       ...state,
       buildings: [
         ...state.buildings,
-        {buildingID: uuidv1(), buildingName: action.buildingName}
+        {buildingID: uuidv1(), buildingName: action.buildingName, data:[]}
       ]
     }
   } else {
     return {
       ...state,
       buildings: [
-        {buildingID: uuidv1(), buildingName: action.buildingName}
+        {buildingID: uuidv1(), buildingName: action.buildingName, data:[]}
       ]
     }
   }
@@ -41,6 +41,41 @@ const deleteBuilding = (state, action) => {
   }
 }
 
+const addPVSpec = (state, action) => {
+  const buildingIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].data.push({
+    pv_panel_parameters: {
+      tilt_angle: null,
+      azimuth: null,
+      mode: null,
+      pvID: null
+    },
+    inverter_wiring: []
+  })
+  return {
+    ...state,
+    buildings: newBuildings
+  }
+}
+
+const editPVSpec = (state, action) => {
+  const workingIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  newBuildings[workingIndex].data[action.specIndex].pv_panel_parameters = {
+    tilt_angle: action.tilt_angle,
+    azimuth: action.azimuth,
+    mode: 'single',
+    pvID: action.pvID
+  }
+  return {
+    ...state,
+    buildings: newBuildings
+  }
+}
+
 const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_PROJECTDATA:
@@ -49,6 +84,10 @@ const reducer = (state=initialState, action) => {
       return addBuilding(state, action);
     case actionTypes.DELETE_BUILDING:
       return deleteBuilding(state, action)
+    case actionTypes.ADD_PV_SPEC:
+      return addPVSpec(state, action)
+    case actionTypes.EDIT_PV_SPEC:
+      return editPVSpec(state, action)
     default: return state;
   }
 };

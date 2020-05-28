@@ -6,7 +6,7 @@ import Amplify from 'aws-amplify';
 import cognitoConfig from './auth.config';
 import configureStore from './store.config';
 import AntdConfig from './antd.config'
-import Router from './components/Router';
+import Router from './Router';
 
 Amplify.configure(cognitoConfig);
 

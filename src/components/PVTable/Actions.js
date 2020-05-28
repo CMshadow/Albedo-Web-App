@@ -3,10 +3,9 @@ import { Button, Popconfirm, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { deletePV, getPV } from './service';
 
 // PV列表中触发删除一个PV
-export const DeleteAction = ({record, setdata, setactiveData}) => {
+export const DeleteAction = ({record, setdata, setactiveData, deletePV, getPV}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 

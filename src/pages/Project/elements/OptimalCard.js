@@ -17,7 +17,7 @@ export const OptimalCard = ({loading, ...values}) => {
             className={styles.text}
             title={t('project.optimal.optTilt')}
             value={values.optTilt}
-            valueStyle={{ color: '#3f8600' }}
+            valueStyle={{ color: '#faad14' }}
             suffix="°"
           />
         </Card>
@@ -28,7 +28,7 @@ export const OptimalCard = ({loading, ...values}) => {
             className={styles.text}
             title={t('project.optimal.optAzi')}
             value={values.optAzimuth}
-            valueStyle={{ color: '#3f8600' }}
+            valueStyle={{ color: '#faad14' }}
             suffix="°"
           />
         </Card>
@@ -40,7 +40,7 @@ export const OptimalCard = ({loading, ...values}) => {
             title={t('project.optimal.optPOA')}
             value={wh2other(values.optPOA).value}
             precision={2}
-            valueStyle={{ color: '#3f8600' }}
+            valueStyle={{ color: '#faad14' }}
             suffix={wh2other(values.optPOA).unit + '/㎡'}
           />
         </Card>

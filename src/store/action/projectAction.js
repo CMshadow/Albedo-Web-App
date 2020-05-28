@@ -20,3 +20,20 @@ export const deleteBuilding = (buildingID) => (dispatch, getState) => {
     buildingID: buildingID
   })
 }
+
+export const addPVSpec = (buildingID) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.ADD_PV_SPEC,
+    buildingID: buildingID
+  })
+}
+
+export const editPVSpec = ({buildingID, specIndex, ...values}) =>
+(dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.EDIT_PV_SPEC,
+    buildingID: buildingID,
+    specIndex: specIndex,
+    ...values
+  })
+}

@@ -6,5 +6,12 @@ export {
 export {
   setProjectData,
   addBuilding,
-  deleteBuilding
+  deleteBuilding,
+  addPVSpec,
+  editPVSpec
 } from './projectAction';
+
+export {
+  setPVData,
+  setPVActiveData
+} from './pvTableAction';

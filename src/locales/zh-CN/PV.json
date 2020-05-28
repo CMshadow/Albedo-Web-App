@@ -2,6 +2,7 @@
   "PVtable.add-PV": "添加新组件",
   "PVtable.edit-PV": "修改组件",
 
+  "PVtable.table": "光伏组件列表",
   "PVtable.table.name": "组件名称",
   "PVtable.table.pmax": "峰值功率",
   "PVtable.table.vmpo": "最佳工作电压",
