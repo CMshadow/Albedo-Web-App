@@ -13,9 +13,11 @@
   }
 
   .toolbar {
+    float: right;
     background-color: $layout-body-background;
     height: 100%;
     padding: 20px;
+    justify-content: center;
   }
 
 }

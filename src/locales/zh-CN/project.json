@@ -45,6 +45,7 @@
   "project.add.building": "添加房屋",
   "project.add.buildingName": "房屋名称",
   "project.add.spec": "添加设备",
+  "project.add.spec.prefix": "给房屋",
   "project.spec.tilt_angle": "组件倾角",
   "project.spec.azimuth": "组件朝向",
   "project.spec.pv": "光伏组件",

@@ -66,6 +66,8 @@ export const BuildingTab = ({buildings, ...props}) => {
             type="dashed"
             onClick={() => addSpec(building.buildingID)}
           >
+            {t('project.add.spec.prefix')}
+            {building.buildingName}
             {t('project.add.spec')}
           </Button>
         </TabPane>

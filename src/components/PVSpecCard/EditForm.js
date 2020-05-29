@@ -9,7 +9,7 @@ const FormItem = Form.Item;
 
 const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
 
-export const EditForm = ({buildingID, specIndex}) => {
+export const EditForm = ({buildingID, specIndex, setediting}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [form] = Form.useForm()
@@ -17,6 +17,11 @@ export const EditForm = ({buildingID, specIndex}) => {
   const [tilt, settilt] = useState({value: null})
   const [azimuth, setazimuth] = useState({value: null})
   const pvData = useSelector(state => state.pv)
+
+  const buildings = useSelector(state => state.project.buildings)
+  const buildingIndex = buildings.map(building => building.buildingID)
+    .indexOf(buildingID)
+  const spec = buildings[buildingIndex].data[specIndex].pv_panel_parameters
 
   // 通用required项提示文本
   const validateMessages = {
@@ -40,6 +45,7 @@ export const EditForm = ({buildingID, specIndex}) => {
 
   const submitForm = (values) => {
     dispatch(editPVSpec({buildingID, specIndex, ...values}))
+    setediting(false)
   }
 
   const tiltChange = (event) => {
@@ -87,9 +93,10 @@ export const EditForm = ({buildingID, specIndex}) => {
         scrollToFirstError
         validateMessages={validateMessages}
         onFinish={submitForm}
+        initialValues={spec}
       >
         <Row gutter={12}>
-          <Col span={14}>
+          <Col span={22}>
             <FormItem
               name='pvID'
               label={t('project.spec.pv')}
@@ -114,7 +121,7 @@ export const EditForm = ({buildingID, specIndex}) => {
           </Col>
         </Row>
         <Row gutter={rowGutter}>
-          <Col span={8}>
+          <Col span={12}>
             <FormItem
               name='tilt_angle'
               label={t('project.spec.tilt_angle')}
@@ -130,7 +137,7 @@ export const EditForm = ({buildingID, specIndex}) => {
               />
             </FormItem>
           </Col>
-          <Col span={8}>
+          <Col span={12}>
             <FormItem
               name='azimuth'
               label={t('project.spec.azimuth')}
