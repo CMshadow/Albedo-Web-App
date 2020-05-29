@@ -37,3 +37,24 @@ export const editPVSpec = ({buildingID, specIndex, ...values}) =>
     ...values
   })
 }
+
+export const addInverterSpec = ({buildingID, specIndex}) =>
+(dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.ADD_INVERTER_SPEC,
+    buildingID: buildingID,
+    specIndex: specIndex,
+  })
+}
+
+export const editInverterSpec = ({
+  buildingID, specIndex, inverterIndex, ...values
+}) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.EDIT_INVERTER_SPEC,
+    buildingID: buildingID,
+    specIndex: specIndex,
+    inverterIndex: inverterIndex,
+    ...values
+  })
+}

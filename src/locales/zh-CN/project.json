@@ -44,11 +44,13 @@
 
   "project.add.building": "添加房屋",
   "project.add.buildingName": "房屋名称",
-  "project.add.spec": "添加设备",
+  "project.add.spec": "添加光伏组件配置",
   "project.add.spec.prefix": "给房屋",
   "project.spec.tilt_angle": "组件倾角",
   "project.spec.azimuth": "组件朝向",
   "project.spec.pv": "光伏组件",
+  "project.spec.inverters": "管理逆变器",
+  "project.add.inverterSpec": "添加逆变器配置",
 
   "project.error.tilt":"倾角在0°到60°之间",
   "project.error.azimuth":"朝向在0°到360°之间"

@@ -61,14 +61,49 @@ const addPVSpec = (state, action) => {
 }
 
 const editPVSpec = (state, action) => {
-  const workingIndex = state.buildings.map(building => building.buildingID)
+  const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
-  newBuildings[workingIndex].data[action.specIndex].pv_panel_parameters = {
+  newBuildings[buildingIndex].data[action.specIndex].pv_panel_parameters = {
     tilt_angle: action.tilt_angle,
     azimuth: action.azimuth,
     mode: 'single',
     pvID: action.pvID
+  }
+  return {
+    ...state,
+    buildings: newBuildings
+  }
+}
+
+const addInverterSpec = (state, action) => {
+  const buildingIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].data[action.specIndex].inverter_wiring.push({
+    inverter_serial_number: newBuildings[buildingIndex].data[action.specIndex]
+      .inverter_wiring.length + 1,
+    panels_per_string: null,
+    string_per_inverter: null,
+    inverterID: null
+  })
+  return {
+    ...state,
+    buildings: newBuildings
+  }
+}
+
+const editInverterSpec = (state, action) => {
+  const buildingIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].data[action.specIndex]
+  .inverter_wiring[action.inverterIndex] = {
+    inverter_serial_number: newBuildings[buildingIndex].data[action.specIndex]
+      .inverter_wiring[action.inverterIndex].inverter_serial_number,
+    panels_per_string: action.panels_per_string,
+    string_per_inverter: action.string_per_inverter,
+    inverterID: action.inverterID
   }
   return {
     ...state,
@@ -88,6 +123,10 @@ const reducer = (state=initialState, action) => {
       return addPVSpec(state, action)
     case actionTypes.EDIT_PV_SPEC:
       return editPVSpec(state, action)
+    case actionTypes.ADD_INVERTER_SPEC:
+      return addInverterSpec(state, action)
+    case actionTypes.EDIT_INVERTER_SPEC:
+      return editInverterSpec(state, action)
     default: return state;
   }
 };

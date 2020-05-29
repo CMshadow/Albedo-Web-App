@@ -10,7 +10,7 @@ import BasicLayout from './layouts/BasicLayout/BasicLayout';
 import ProjectTable from './pages/ProjectTable/ProjectTable';
 import PVTable from './pages/PVTable/index';
 import Dashboard from './pages/Project/Dashboard';
-import InverterTable from './pages/InverterTable/InverterTable';
+import InverterTable from './pages/InverterTable/index';
 import NotFound404 from './pages/404';
 
 const Router = () => {

@@ -8,7 +8,9 @@ export {
   addBuilding,
   deleteBuilding,
   addPVSpec,
-  editPVSpec
+  editPVSpec,
+  addInverterSpec,
+  editInverterSpec
 } from './projectAction';
 
 export {
