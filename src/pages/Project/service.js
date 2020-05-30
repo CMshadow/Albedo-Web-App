@@ -12,11 +12,11 @@ export const getProject = ({projectID}) => async dispatch => {
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
   .then(res => res.data)
-  .catch(err => {
-    console.log(err)
-    notification({message: err.response.message})
-    throw err
-  })
+  // .catch(err => {
+  //   console.log(err)
+  //   notification({message: err.response.message})
+  //   throw err
+  // })
 }
 
 export const globalOptTiltAzimuth = ({projectID}) => async dispatch => {

@@ -38,7 +38,7 @@ const PVTablePage = (props) => {
   }, [dispatch])
 
   return (
-    <Card>
+    <Card bodyStyle={{padding: '20px 12px'}}>
       <Button
         className={styles.leftBut}
         type="primary"

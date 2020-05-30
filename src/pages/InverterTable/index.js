@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'antd';
+import { Button, Card } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -40,7 +40,7 @@ const InverterTablePage = (props) => {
   }, [dispatch])
 
   return (
-    <div>
+    <Card bodyStyle={{padding: '20px 12px'}}>
       <Button
         className={styles.leftBut}
         type="primary"
@@ -74,7 +74,7 @@ const InverterTablePage = (props) => {
         editRecord={editRecord}
         seteditRecord={seteditRecord}
       />
-    </div>
+    </Card>
   )
 }
 

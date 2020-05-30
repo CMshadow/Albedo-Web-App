@@ -16,7 +16,7 @@ const rowGutter = [12, 12]
 const Dashboard = (props) => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const projectID = history.location.pathname.split('/').slice(-1)[0]
+  const projectID = history.location.pathname.split('/')[2]
   const projectData = useSelector(state => state.project)
   const [loading, setloading] = useState(true)
   const [optLoading, setoptLoading] = useState(true)

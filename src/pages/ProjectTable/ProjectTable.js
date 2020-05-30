@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux';
-import { Button, Table, Divider } from 'antd';
+import { Button, Table, Divider, Card } from 'antd';
 import { DashboardTwoTone } from '@ant-design/icons';
 import { SyncOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -44,7 +44,7 @@ const ProjectTable = (props) => {
       width: 250,
       ...SearchString({colKey: 'projectTitle'}),
       render: (val, record) => (
-        <Link to={`/project/${record.projectID}`}>
+        <Link to={`/project/${record.projectID}/dashboard`}>
           {val}
         </Link>
       ),
@@ -94,7 +94,7 @@ const ProjectTable = (props) => {
             type="link"
             icon={<DashboardTwoTone />}
             onClick={() => {
-              history.push(`project/${record.projectID}`);
+              history.push(`project/${record.projectID}/dashboard`);
             }}
           />
           <Divider type='vertical' />
@@ -125,7 +125,7 @@ const ProjectTable = (props) => {
   }, [dispatch])
 
   return (
-    <div>
+    <Card bodyStyle={{padding: '20px 12px'}}>
       <Button
         className={styles.leftBut}
         type="primary"
@@ -154,7 +154,7 @@ const ProjectTable = (props) => {
         scroll={{ x: '100%', y: 'calc(100vh - 275px)' }}
       />
       <CreateProjectModal showModal={showModal} setshowModal={setshowModal} />
-    </div>
+    </Card>
   )
 }
 

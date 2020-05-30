@@ -40,7 +40,6 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
   }
 
   const submitForm = (values) => {
-    console.log(values)
     dispatch(editInverterSpec({buildingID, specIndex, invIndex, ...values}))
     setediting(false)
   }

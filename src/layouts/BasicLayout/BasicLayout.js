@@ -32,12 +32,6 @@ const BasicLayout = (props) => {
           <Menu.Item key="dashboard" className={styles.menuItem}>
             {t('sider.menu.project')}
           </Menu.Item>
-          <Menu.Item key="pv" className={styles.menuItem}>
-            {t('sider.menu.pv')}
-          </Menu.Item>
-          <Menu.Item key="inverter" className={styles.menuItem}>
-            {t('sider.menu.inverter')}
-          </Menu.Item>
         </Menu>
       </Sider>
       <Layout className={styles.main}>
