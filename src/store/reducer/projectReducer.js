@@ -76,6 +76,17 @@ const editPVSpec = (state, action) => {
   }
 }
 
+const deletePVSpec = (state, action) => {
+  const buildingIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].data.splice(action.specIndex, 1)
+  return {
+    ...state,
+    buildings: newBuildings
+  }
+}
+
 const addInverterSpec = (state, action) => {
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -98,13 +109,29 @@ const editInverterSpec = (state, action) => {
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   newBuildings[buildingIndex].data[action.specIndex]
-  .inverter_wiring[action.inverterIndex] = {
+  .inverter_wiring[action.invIndex] = {
     inverter_serial_number: newBuildings[buildingIndex].data[action.specIndex]
-      .inverter_wiring[action.inverterIndex].inverter_serial_number,
+      .inverter_wiring[action.invIndex].inverter_serial_number,
     panels_per_string: action.panels_per_string,
     string_per_inverter: action.string_per_inverter,
     inverterID: action.inverterID
   }
+  return {
+    ...state,
+    buildings: newBuildings
+  }
+}
+
+const deleteInverterSpec = (state, action) => {
+  const buildingIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].data[action.specIndex].inverter_wiring
+  .splice(action.invIndex, 1)
+  newBuildings[buildingIndex].data[action.specIndex].inverter_wiring
+  .forEach((obj, ind) => {
+    if (ind >= action.specIndex) obj.inverter_serial_number -= 1
+  })
   return {
     ...state,
     buildings: newBuildings
@@ -123,10 +150,14 @@ const reducer = (state=initialState, action) => {
       return addPVSpec(state, action)
     case actionTypes.EDIT_PV_SPEC:
       return editPVSpec(state, action)
+    case actionTypes.DELETE_PV_SPEC:
+      return deletePVSpec(state, action)
     case actionTypes.ADD_INVERTER_SPEC:
       return addInverterSpec(state, action)
     case actionTypes.EDIT_INVERTER_SPEC:
       return editInverterSpec(state, action)
+    case actionTypes.DELETE_INVERTER_SPEC:
+      return deleteInverterSpec(state, action)
     default: return state;
   }
 };

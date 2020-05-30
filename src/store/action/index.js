@@ -1,7 +1,7 @@
 export {
   setCognitoUser,
   setCognitoUserSession
-} from './authAction';
+} from './authAction'
 
 export {
   setProjectData,
@@ -9,11 +9,18 @@ export {
   deleteBuilding,
   addPVSpec,
   editPVSpec,
+  deletePVSpec,
   addInverterSpec,
-  editInverterSpec
-} from './projectAction';
+  editInverterSpec,
+  deleteInverterSpec
+} from './projectAction'
 
 export {
   setPVData,
   setPVActiveData
-} from './pvTableAction';
+} from './pvTableAction'
+
+export {
+  setInverterData,
+  setInverterActiveData
+} from './inverterTableAction'

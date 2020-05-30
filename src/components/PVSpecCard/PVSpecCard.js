@@ -6,7 +6,7 @@ import { EditTwoTone, DeleteOutlined } from '@ant-design/icons'
 import { EditForm } from './EditForm'
 import { SpecView } from './SpecView'
 import { InverterSpecCard } from '../InverterSpecCard/InverterSpecCard'
-import { addInverterSpec } from '../../store/action/index'
+import { addInverterSpec, deletePVSpec } from '../../store/action/index'
 import * as styles from './PVSpecCard.module.scss';
 const { Panel } = Collapse;
 
@@ -58,7 +58,9 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
               ghost
               type='link'
               shape="circle"
-              danger icon={<DeleteOutlined />}
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => dispatch(deletePVSpec({buildingID, specIndex}))}
             />
           </Row>
         </Col>
@@ -67,13 +69,14 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
       <Row gutter={12} justify='center'>
         <Col span={24}>
           <Collapse bordered={false} className={styles.collapse}>
-            <Panel header={t('project.spec.inverters')} key="1">
+            <Panel header={<h4>{t('project.spec.inverters')}</h4>} key="1">
               {
                 invsSpec.map((invSpec, invIndex) =>
                   <InverterSpecCard
+                    key={invIndex}
                     buildingID={buildingID}
                     specIndex={specIndex}
-                    inverterIndex={invIndex}
+                    invIndex={invIndex}
                     {...invSpec}
                   />
                 )

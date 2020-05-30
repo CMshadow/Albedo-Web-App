@@ -7,7 +7,8 @@ import { OptimalCard } from './elements/OptimalCard';
 import { Equipments } from './elements/Equipments';
 import { getProject, globalOptTiltAzimuth } from './service';
 import { getPV } from '../PVTable/service'
-import { setProjectData, setPVData, setPVActiveData } from '../../store/action/index';
+import { getInverter } from '../InverterTable/service'
+import { setProjectData, setPVData, setPVActiveData, setInverterData, setInverterActiveData } from '../../store/action/index';
 
 const rowGutter = [12, 12]
 
@@ -25,6 +26,11 @@ const Dashboard = (props) => {
     .then(res => {
       dispatch(setPVData(res))
       dispatch(setPVActiveData(res))
+    })
+    dispatch(getInverter())
+    .then(res => {
+      dispatch(setInverterData(res))
+      dispatch(setInverterActiveData(res))
     })
     dispatch(getProject({projectID: projectID}))
     .then(res => {

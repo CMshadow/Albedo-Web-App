@@ -38,6 +38,14 @@ export const editPVSpec = ({buildingID, specIndex, ...values}) =>
   })
 }
 
+export const deletePVSpec = ({buildingID, specIndex}) => (dispatch,getState) => {
+  return dispatch({
+    type: actionTypes.DELETE_PV_SPEC,
+    buildingID: buildingID,
+    specIndex: specIndex
+  })
+}
+
 export const addInverterSpec = ({buildingID, specIndex}) =>
 (dispatch, getState) => {
   return dispatch({
@@ -48,13 +56,23 @@ export const addInverterSpec = ({buildingID, specIndex}) =>
 }
 
 export const editInverterSpec = ({
-  buildingID, specIndex, inverterIndex, ...values
+  buildingID, specIndex, invIndex, ...values
 }) => (dispatch, getState) => {
   return dispatch({
     type: actionTypes.EDIT_INVERTER_SPEC,
     buildingID: buildingID,
     specIndex: specIndex,
-    inverterIndex: inverterIndex,
+    invIndex: invIndex,
     ...values
+  })
+}
+
+export const deleteInverterSpec = ({buildingID, specIndex, invIndex}) =>
+(dispatch,getState) => {
+  return dispatch({
+    type: actionTypes.DELETE_INVERTER_SPEC,
+    buildingID: buildingID,
+    specIndex: specIndex,
+    invIndex: invIndex,
   })
 }

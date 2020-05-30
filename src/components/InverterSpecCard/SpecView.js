@@ -4,25 +4,27 @@ import { Descriptions } from 'antd'
 import { useSelector } from 'react-redux'
 const Item = Descriptions.Item
 
-export const SpecView = ({buildingID, specIndex}) => {
+export const SpecView = ({buildingID, specIndex, invIndex}) => {
   const { t } = useTranslation()
 
   const buildings = useSelector(state => state.project.buildings)
-  const pvData = useSelector(state => state.pv.data)
+  const inverterData = useSelector(state => state.inverter.data)
 
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
-  const spec = buildings[buildingIndex].data[specIndex].pv_panel_parameters
+  const spec = buildings[buildingIndex].data[specIndex].inverter_wiring[invIndex]
 
-  const pvIndex = pvData.map(record => record.pvID)
-    .indexOf(spec.pvID)
-  const pvName = pvData[pvIndex].name
+  const pvIndex = inverterData.map(record => record.inverterID)
+    .indexOf(spec.inverterID)
+  const pvName = inverterData[pvIndex].name
 
   return (
-    <Descriptions bordered column={2}>
-      <Item label={t('project.spec.pv')} span={2}>{pvName}</Item>
-      <Item label={t('project.spec.tilt_angle')}>{spec.tilt_angle}°</Item>
-      <Item label={t('project.spec.azimuth')}>{spec.azimuth}°</Item>
+    <Descriptions column={3}>
+      <Item label={t('project.spec.serial')} span={1}>{spec.inverter_serial_number}</Item>
+      <Item label={t('project.spec.inverter')} span={2}>{pvName}</Item>
+      <Item label={t('project.spec.panels_per_string')}>{spec.panels_per_string}</Item>
+      <Item label={t('project.spec.string_per_inverter')}>{spec.string_per_inverter}</Item>
+      <Item label={t('project.spec.total_panels')}>{spec.string_per_inverter * spec.panels_per_string}</Item>
     </Descriptions>
   )
 }

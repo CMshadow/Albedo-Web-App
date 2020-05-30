@@ -3,11 +3,13 @@ import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import projectReducer from './projectReducer';
 import pvTableReducer from './pvTableReducer'
+import inverterTableReducer from './inverterTableReducer'
 
 const rootReducer = combineReducers({
   auth: authReducer,
   project: projectReducer,
-  pv: pvTableReducer
+  pv: pvTableReducer,
+  inverter: inverterTableReducer
   // undoable: undoable(combineReducers({
   // }), {
   //   initTypes: ['@@redux/INIT'],

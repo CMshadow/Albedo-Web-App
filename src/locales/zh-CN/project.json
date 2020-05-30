@@ -46,6 +46,7 @@
   "project.add.buildingName": "房屋名称",
   "project.add.spec": "添加光伏组件配置",
   "project.add.spec.prefix": "给房屋",
+
   "project.spec.tilt_angle": "组件倾角",
   "project.spec.azimuth": "组件朝向",
   "project.spec.pv": "光伏组件",
@@ -53,5 +54,11 @@
   "project.add.inverterSpec": "添加逆变器配置",
 
   "project.error.tilt":"倾角在0°到60°之间",
-  "project.error.azimuth":"朝向在0°到360°之间"
+  "project.error.azimuth":"朝向在0°到360°之间",
+
+  "project.spec.serial": "逆变器编号",
+  "project.spec.inverter": "逆变器型号",
+  "project.spec.string_per_inverter": "并联组串数",
+  "project.spec.panels_per_string": "光伏组件数/组串",
+  "project.spec.total_panels": "光伏组件总数"
 }

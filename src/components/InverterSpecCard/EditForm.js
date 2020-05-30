@@ -1,27 +1,26 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Form, Input, Row, Col, Select, Button, Drawer } from 'antd';
+import { Form, InputNumber, Row, Col, Select, Button, Drawer } from 'antd';
 import { TableOutlined } from '@ant-design/icons'
-import { editPVSpec, setPVActiveData } from '../../store/action/index'
-import { PVTableViewOnly } from '../PVTable/PVTableViewOnly'
+import { editInverterSpec, setInverterActiveData } from '../../store/action/index'
+import { InverterTableViewOnly } from '../InverterTable/InverterTableViewOnly'
 const FormItem = Form.Item;
 
 const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
 
-export const EditForm = ({buildingID, specIndex, setediting}) => {
+export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [form] = Form.useForm()
   const [showDrawer, setshowDrawer] = useState(false)
-  const [tilt, settilt] = useState({value: null})
-  const [azimuth, setazimuth] = useState({value: null})
-  const pvData = useSelector(state => state.pv)
+  const inverterData = useSelector(state => state.inverter)
 
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
-  const spec = buildings[buildingIndex].data[specIndex].pv_panel_parameters
+  const invSpec = buildings[buildingIndex].data[specIndex]
+    .inverter_wiring[invIndex]
 
   // 通用required项提示文本
   const validateMessages = {
@@ -29,9 +28,6 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   };
 
   const handleOk = () => {
-    if (tilt.validateStatus === 'error' || azimuth.validateStatus === 'error') {
-      return
-    }
     // 验证表单，如果通过提交表单
     form.validateFields()
     .then(success => {
@@ -44,44 +40,10 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   }
 
   const submitForm = (values) => {
-    dispatch(editPVSpec({buildingID, specIndex, ...values}))
+    console.log(values)
+    dispatch(editInverterSpec({buildingID, specIndex, invIndex, ...values}))
     setediting(false)
   }
-
-  const tiltChange = (event) => {
-    settilt({ ...validateTilt(event.target.value), value: event.target.value});
-  }
-
-  const validateTilt = (tilt) => {
-    if (Number(tilt) < 0 || Number(tilt) > 60) {
-      return {
-        validateStatus: 'error',
-        errorMsg: t('project.error.tilt'),
-      }
-    }
-    return {
-      validateStatus: 'success',
-      errorMsg: null,
-    };
-  }
-
-  const azimuthChange = (event) => {
-    setazimuth({ ...validateAzimuth(event.target.value), value: event.target.value});
-  }
-
-  const validateAzimuth = (azimuth) => {
-    if (Number(azimuth) < 0 || Number(azimuth) > 360) {
-      return {
-        validateStatus: 'error',
-        errorMsg: t('project.error.azimuth'),
-      }
-    }
-    return {
-      validateStatus: 'success',
-      errorMsg: null,
-    };
-  }
-
 
   return (
     <div>
@@ -93,20 +55,20 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         scrollToFirstError
         validateMessages={validateMessages}
         onFinish={submitForm}
-        initialValues={spec}
+        initialValues={invSpec}
       >
         <Row gutter={12}>
           <Col span={22}>
             <FormItem
-              name='pvID'
-              label={t('project.spec.pv')}
+              name='inverterID'
+              label={t('project.spec.inverter')}
               rules={[{required: true}]}
             >
               <Select
                 options={
-                  pvData.activeData.map(record => ({
+                  inverterData.activeData.map(record => ({
                     label: record.name,
-                    value: record.pvID
+                    value: record.inverterID
                   }))
                 }
               />
@@ -123,34 +85,20 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         <Row gutter={rowGutter}>
           <Col span={12}>
             <FormItem
-              name='tilt_angle'
-              label={t('project.spec.tilt_angle')}
+              name='string_per_inverter'
+              label={t('project.spec.string_per_inverter')}
               rules={[{required: true}]}
-              validateStatus={tilt.validateStatus}
-              help={tilt.errorMsg || null}
             >
-              <Input
-                addonAfter='°'
-                type='number'
-                value={tilt.value}
-                onChange={tiltChange}
-              />
+              <InputNumber precision={0} min={1} style={{width: '100%'}}/>
             </FormItem>
           </Col>
           <Col span={12}>
             <FormItem
-              name='azimuth'
-              label={t('project.spec.azimuth')}
+              name='panels_per_string'
+              label={t('project.spec.panels_per_string')}
               rules={[{required: true}]}
-              validateStatus={azimuth.validateStatus}
-              help={azimuth.errorMsg || null}
             >
-              <Input
-                addonAfter='°'
-                type='number'
-                value={azimuth.value}
-                onChange={azimuthChange}
-              />
+              <InputNumber precision={0} min={1} style={{width: '100%'}}/>
             </FormItem>
           </Col>
         </Row>
@@ -160,17 +108,17 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
       </Form>
       <Drawer
         bodyStyle={{padding: '0px'}}
-        title={t('PVtable.table')}
+        title={t('InverterTable.table')}
         placement="right"
         closable={false}
         onClose={() => setshowDrawer(false)}
         visible={showDrawer}
         width='50vw'
       >
-        <PVTableViewOnly
-          data={pvData.data}
-          activeData={pvData.activeData}
-          setactiveData={(activeData) => dispatch(setPVActiveData(activeData))}
+        <InverterTableViewOnly
+          data={inverterData.data}
+          activeData={inverterData.activeData}
+          setactiveData={(activeData) => dispatch(setInverterActiveData(activeData))}
         />
       </Drawer>
     </div>
