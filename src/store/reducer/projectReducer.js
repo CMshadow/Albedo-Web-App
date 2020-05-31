@@ -1,14 +1,24 @@
 import * as actionTypes from '../action/actionTypes';
 import { v1 as uuidv1 } from 'uuid';
-const initialState = {
 
-};
+const initialState = {};
 
 const setProjectData = (state, action) => {
   return {
     ...state,
     ...action.data
   }
+}
+
+const updateProjectAttributes = (state, action) => {
+  return {
+    ...state,
+    ...action.values
+  }
+}
+
+const releaseProjectData = (state, action) => {
+  return {}
 }
 
 const addBuilding = (state, action) => {
@@ -65,8 +75,8 @@ const editPVSpec = (state, action) => {
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   newBuildings[buildingIndex].data[action.specIndex].pv_panel_parameters = {
-    tilt_angle: action.tilt_angle,
-    azimuth: action.azimuth,
+    tilt_angle: Number(action.tilt_angle),
+    azimuth: Number(action.azimuth),
     mode: 'single',
     pvID: action.pvID
   }
@@ -142,6 +152,10 @@ const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_PROJECTDATA:
       return setProjectData(state, action);
+    case actionTypes.UPDATE_PROJECTATTRIBUTES:
+      return updateProjectAttributes(state, action)
+    case actionTypes.RELEASE_PROJECTDATA:
+      return releaseProjectData(state, action)
     case actionTypes.ADD_BUILDING:
       return addBuilding(state, action);
     case actionTypes.DELETE_BUILDING:

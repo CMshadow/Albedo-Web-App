@@ -1,6 +1,5 @@
 import React from 'react';
-import { Table, Divider, Button } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { Table } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { SearchString, SearchRange } from '../TableColFilters/TableColSearch';
 

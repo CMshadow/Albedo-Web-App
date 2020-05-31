@@ -26,25 +26,25 @@ const Dashboard = (props) => {
     .then(res => {
       dispatch(setPVData(res))
       dispatch(setPVActiveData(res))
-    })
-    dispatch(getInverter())
-    .then(res => {
-      dispatch(setInverterData(res))
-      dispatch(setInverterActiveData(res))
-    })
-    dispatch(getProject({projectID: projectID}))
-    .then(res => {
-      dispatch(setProjectData(res))
-      setloading(false)
-      if (!res.optTilt || !res.optAzimuth || !res.optPOA) {
-        dispatch(globalOptTiltAzimuth({projectID: projectID}))
-        .then(optSpec => {
-          dispatch(setProjectData(optSpec))
-          setoptLoading(false)
+      dispatch(getInverter())
+      .then(res => {
+        dispatch(setInverterData(res))
+        dispatch(setInverterActiveData(res))
+        dispatch(getProject({projectID: projectID}))
+        .then(res => {
+          dispatch(setProjectData(res))
+          setloading(false)
+          if (!res.optTilt || !res.optAzimuth || !res.optPOA) {
+            dispatch(globalOptTiltAzimuth({projectID: projectID}))
+            .then(optSpec => {
+              dispatch(setProjectData(optSpec))
+              setoptLoading(false)
+            })
+          } else {
+            setoptLoading(false)
+          }
         })
-      } else {
-        setoptLoading(false)
-      }
+      })
     })
   }, [dispatch, projectID])
 
@@ -52,7 +52,7 @@ const Dashboard = (props) => {
     <div>
       <Row gutter={rowGutter}>
         <Col span={24}>
-          <Description loading={loading} {...projectData} />
+          <Description loading={loading}/>
         </Col>
       </Row>
       <Row gutter={rowGutter}>

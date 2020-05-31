@@ -1,6 +1,6 @@
 import React from 'react';
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Layout, Avatar, Dropdown, Menu, Row } from 'antd';
+import { LogoutOutlined, UserOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { Layout, Avatar, Dropdown, Menu, Row, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import SelectLang from '../../components/SelectLang/index';
 import * as styles from './PrivateHeader.module.scss';
@@ -16,6 +16,7 @@ const PrivateHeader = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const history = useHistory();
+  const projectExist = Object.keys(useSelector(state => state.project)).length !== 0
 
   const signOut = () => {
     Auth.signOut();
@@ -35,6 +36,18 @@ const PrivateHeader = (props) => {
 
   return (
     <Header className={styles.header}>
+      {
+        projectExist ?
+        <Button
+          type='link'
+          size='large'
+          icon={<ArrowLeftOutlined />}
+          onClick={() => {history.push('/dashboard')}}
+        >
+          {t('sider.menu.back-project')}
+        </Button> :
+        null
+      }
       <Row className={styles.right}>
         <Dropdown overlay={menuHeaderDropdown}>
           <div className={styles.item}>

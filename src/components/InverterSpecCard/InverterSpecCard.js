@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { Card, Divider, Button } from 'antd';
+import { useDispatch } from 'react-redux';
+import { Card, Button } from 'antd';
 import { EditTwoTone, DeleteOutlined } from '@ant-design/icons'
 import { EditForm } from './EditForm'
 import { SpecView } from './SpecView'
@@ -10,7 +9,6 @@ import * as styles from './InverterSpecCard.module.scss';
 
 export const InverterSpecCard = ({buildingID, specIndex, invIndex, ...props}) => {
   const dispatch = useDispatch()
-  const { t } = useTranslation()
   const [editing, setediting] = useState(true)
 
   useEffect(() => {

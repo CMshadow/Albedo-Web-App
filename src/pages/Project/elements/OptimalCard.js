@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Descriptions, Card, Statistic, Row, Col } from 'antd';
+import React from 'react'
+import { Card, Statistic, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { wh2other } from '../../../utils/unitConverter';
 import * as styles from './OptimalCard.module.scss';
-
-const Item = Descriptions.Item
 
 export const OptimalCard = ({loading, ...values}) => {
   const { t } = useTranslation()

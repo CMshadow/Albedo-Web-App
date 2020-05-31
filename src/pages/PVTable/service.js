@@ -15,7 +15,7 @@ export const addPV = ({values}) => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification.error({message: err.response.message})
+    notification.error({message: err.response.data.message})
     throw err
   })
 }
@@ -31,7 +31,7 @@ export const getPV = () => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification.error({message: err.response.message})
+    notification.error({message: err.response.data.message})
     throw err
   })
 }
@@ -50,7 +50,7 @@ export const deletePV = ({pvID}) => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification.error({message: err.response.message})
+    notification.error({message: err.response.data.message})
     throw err
   })
 }
@@ -70,7 +70,7 @@ export const updatePV = ({pvID, values}) => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification.error({message: err.response.message})
+    notification.error({message: err.response.data.message})
     throw err
   })
 }

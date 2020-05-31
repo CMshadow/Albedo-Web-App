@@ -27,7 +27,7 @@ export const getApiKey = () => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification({message: err.response.message})
+    notification({message: err.response.data.message})
     throw err
   })
 }
@@ -44,7 +44,7 @@ export const createProject = (values) => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification({message: err.response.message})
+    notification({message: err.response.data.message})
     throw err
   })
 }
@@ -60,7 +60,7 @@ export const getProject = () => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification({message: err.response.message})
+    notification({message: err.response.data.message})
     throw err
   })
 }
@@ -79,7 +79,7 @@ export const deleteProject = ({projectID}) => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification({message: err.response.message})
+    notification({message: err.response.data.message})
     throw err
   })
 }

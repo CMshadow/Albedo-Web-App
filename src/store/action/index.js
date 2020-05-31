@@ -5,6 +5,8 @@ export {
 
 export {
   setProjectData,
+  updateProjectAttributes,
+  releaseProjectData,
   addBuilding,
   deleteBuilding,
   addPVSpec,

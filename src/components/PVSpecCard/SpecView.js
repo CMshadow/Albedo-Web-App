@@ -13,7 +13,7 @@ export const SpecView = ({buildingID, specIndex}) => {
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
   const spec = buildings[buildingIndex].data[specIndex].pv_panel_parameters
-
+  
   const pvIndex = pvData.map(record => record.pvID)
     .indexOf(spec.pvID)
   const pvName = pvData[pvIndex].name

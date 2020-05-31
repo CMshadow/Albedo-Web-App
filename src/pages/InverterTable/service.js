@@ -15,7 +15,7 @@ export const addInverter = ({values}) => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification({message: err.response.message})
+    notification({message: err.response.data.message})
     throw err
   })
 }
@@ -31,7 +31,7 @@ export const getInverter = () => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification({message: err.response.message})
+    notification({message: err.response.data.message})
     throw err
   })
 }
@@ -50,7 +50,7 @@ export const deleteInverter = ({inverterID}) => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification({message: err.response.message})
+    notification({message: err.response.data.message})
     throw err
   })
 }
@@ -70,7 +70,7 @@ export const updateInverter = ({inverterID, values}) => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification({message: err.response.message})
+    notification({message: err.response.data.message})
     throw err
   })
 }

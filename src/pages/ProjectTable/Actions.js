@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { deleteProject, getProject } from './service';
 
 // Project列表中触发删除一个Project
-export const DeleteAction = ({record, setdata, setactiveData}) => {
+export const DeleteAction = ({record, setdata}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -16,7 +16,6 @@ export const DeleteAction = ({record, setdata, setactiveData}) => {
       message.success(t('project.success.deleteProject'))
       dispatch(getProject()).then(data => {
         setdata(data)
-        setactiveData(data)
       })
     })
   }

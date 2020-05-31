@@ -42,6 +42,7 @@ const PVTablePage = (props) => {
       <Button
         className={styles.leftBut}
         type="primary"
+        size='large'
         onClick={() => setshowModal(true)}
       >
         {t('PVtable.add-PV')}

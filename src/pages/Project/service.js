@@ -12,11 +12,10 @@ export const getProject = ({projectID}) => async dispatch => {
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
   .then(res => res.data)
-  // .catch(err => {
-  //   console.log(err)
-  //   notification({message: err.response.message})
-  //   throw err
-  // })
+  .catch(err => {
+    notification({message: err.response.data.message})
+    throw err
+  })
 }
 
 export const globalOptTiltAzimuth = ({projectID}) => async dispatch => {
@@ -31,7 +30,18 @@ export const globalOptTiltAzimuth = ({projectID}) => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification({message: err.response.message})
+    notification({message: err.response.data.message})
     throw err
   })
+}
+
+export const saveProject = ({projectID, projectData}) => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+  return axios.put(
+    `/project/${session.idToken.payload.sub}/${projectID}`,
+    projectData,
+    {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+  )
+  .then(res => res.data)
 }

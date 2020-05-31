@@ -18,7 +18,6 @@ const ProjectTable = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [data, setdata] = useState([]);
-  const [activeData, setactiveData] = useState([]);
   const [loading, setloading] = useState(false)
   const [showModal, setshowModal] = useState(false)
 
@@ -98,7 +97,7 @@ const ProjectTable = (props) => {
             }}
           />
           <Divider type='vertical' />
-          <DeleteAction record={record} setdata={setdata} setactiveData={setactiveData} />
+          <DeleteAction record={record} setdata={setdata} />
         </div>
       ),
     }
@@ -109,7 +108,6 @@ const ProjectTable = (props) => {
     setloading(true)
     dispatch(getProject()).then(data => {
       setdata(data)
-      setactiveData(data)
       setloading(false)
     })
   }
@@ -119,7 +117,6 @@ const ProjectTable = (props) => {
     setloading(true)
     dispatch(getProject()).then(data => {
       setdata(data)
-      setactiveData(data)
       setloading(false)
     })
   }, [dispatch])
@@ -129,6 +126,7 @@ const ProjectTable = (props) => {
       <Button
         className={styles.leftBut}
         type="primary"
+        size='large'
         onClick={() => setshowModal(true)}
       >
         {t('project.create-project')}
@@ -141,12 +139,12 @@ const ProjectTable = (props) => {
       />
       <Table
         columns={tableCols}
-        dataSource={activeData}
+        dataSource={data}
         rowKey='projectID'
         loading={loading}
         pagination={{
           position: ['bottomCenter'],
-          total: activeData.length,
+          total: data.length,
           showTotal: total => `${total}` + t('table.totalCount'),
           defaultPageSize: 10,
           showSizeChanger: true

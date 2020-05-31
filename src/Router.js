@@ -10,6 +10,7 @@ import BasicLayout from './layouts/BasicLayout/BasicLayout';
 import ProjectLayout from './layouts/ProjectLayout/ProjectLayout'
 import ProjectTable from './pages/ProjectTable/ProjectTable';
 import PVTable from './pages/PVTable/index';
+import Report from './pages/Report/Report'
 import Dashboard from './pages/Project/Dashboard';
 import InverterTable from './pages/InverterTable/index';
 import NotFound404 from './pages/404';
@@ -32,6 +33,7 @@ const Router = () => {
           <ProjectLayout>
             <Switch>
               <PrivateRoute path='/project/:projectID/dashboard' component={Dashboard} />
+              <PrivateRoute path="/project/:projectID/report" component={Report} />
               <PrivateRoute path="/project/:projectID/pv" component={PVTable} />
               <PrivateRoute path="/project/:projectID/inverter" component={InverterTable} />
               <Route path='*' component={NotFound404} />
