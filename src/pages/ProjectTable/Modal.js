@@ -22,10 +22,10 @@ const wrapperCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 15, offset: 1}};
 const initValues = {
   projectType: 'domestic',
   albedo: 0.3,
-  p_loss_soiling: 0.02,
-  p_loss_connection: 0.005,
-  p_loss_mismatch: 0.02,
-  system_availability: 1
+  p_loss_soiling: 2,
+  p_loss_connection: 0.5,
+  p_loss_mismatch: 2,
+  system_availability: 100
 }
 
 export const CreateProjectModal = ({showModal, setshowModal, google}) => {
@@ -54,25 +54,25 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
   // p_loss_soiling标识
   const pLossSoilingMarks = {
     0: t('project.create.loss_0'),
-    0.05: t('project.create.loss_0.05'),
+    5: t('project.create.loss_5'),
   };
 
   // p_loss_connection标识
   const pLossConnectionMarks = {
     0: t('project.create.loss_0'),
-    0.01: t('project.create.loss_0.01'),
+    1: t('project.create.loss_1'),
   };
 
   // p_loss_mismatch标识
   const pLossMismatchMarks = {
     0: t('project.create.loss_0'),
-    0.05: t('project.create.loss_0.05'),
+    5: t('project.create.loss_5'),
   };
 
   // system_availability标识
   const systemAvailabilityMarks = {
     0: t('project.create.availability_0'),
-    1: t('project.create.availability_1'),
+    100: t('project.create.availability_100'),
   };
 
   // 高德的地理编码解析
@@ -246,8 +246,8 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
             <div>
               <Tooltip title={t(`project.create.address.hint`)}>
                 <QuestionCircleOutlined className={styles.icon}/>
+                {t('project.create.address')}
               </Tooltip>
-              {t('project.create.address')}
             </div>
           }
           rules={[{required: true}]}
@@ -284,21 +284,21 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
               label={t('project.create.p_loss_soiling')}
               rules={[{required: true}]}
             >
-              <Slider marks={pLossSoilingMarks} step={0.001} max={0.05}/>
+              <Slider marks={pLossSoilingMarks} step={0.1} max={5}/>
             </FormItem>
             <FormItem
               name='p_loss_connection'
               label={t('project.create.p_loss_connection')}
               rules={[{required: true}]}
             >
-              <Slider marks={pLossConnectionMarks} step={0.001} max={0.01}/>
+              <Slider marks={pLossConnectionMarks} step={0.1} max={1}/>
             </FormItem>
             <FormItem
               name='p_loss_mismatch'
               label={t('project.create.p_loss_mismatch')}
               rules={[{required: true}]}
             >
-              <Slider marks={pLossMismatchMarks} step={0.001} max={0.05}/>
+              <Slider marks={pLossMismatchMarks} step={0.1} max={5}/>
             </FormItem>
             <Divider />
             <FormItem
@@ -306,7 +306,7 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
               label={t('project.create.system_availability')}
               rules={[{required: true}]}
             >
-              <Slider marks={systemAvailabilityMarks} step={0.01} max={1}/>
+              <Slider marks={systemAvailabilityMarks} step={1} max={100}/>
             </FormItem>
           </Panel>
         </Collapse>

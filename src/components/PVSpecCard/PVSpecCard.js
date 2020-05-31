@@ -65,11 +65,15 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
           </Row>
         </Col>
       </Row>
-      <Divider className={styles.sectionBreak}/>
+      {/* <Divider className={styles.sectionBreak}/> */}
       <Row gutter={12} justify='center'>
         <Col span={24}>
           <Collapse bordered={false} className={styles.collapse}>
-            <Panel header={<h4>{t('project.spec.inverters')}</h4>} key="1">
+            <Panel
+              className={styles.collapsePanel}
+              header={<h4>{t('project.spec.inverters')}</h4>}
+              key="1"
+            >
               {
                 invsSpec.map((invSpec, invIndex) =>
                   <InverterSpecCard
