@@ -8,7 +8,6 @@ export const setProjectData = (data) => (dispatch, getState) => {
 }
 
 export const updateProjectAttributes = (values) => (dispatch, getState) => {
-  console.log({...values})
   return dispatch({
     type: actionTypes.UPDATE_PROJECTATTRIBUTES,
     values: values

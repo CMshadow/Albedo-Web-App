@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Row, Button } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -7,8 +7,11 @@ import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
-import { saveProject } from '../../pages/Project/service'
-import { updateProjectAttributes } from '../../store/action/index'
+import { getProject, saveProject, globalOptTiltAzimuth } from '../../pages/Project/service'
+import { getPV } from '../../pages/PVTable/service'
+import { getInverter } from '../../pages/InverterTable/service'
+import { setProjectData, setPVData, setPVActiveData, setInverterData, setInverterActiveData, updateProjectAttributes } from '../../store/action/index';
+
 import * as styles from './ProjectLayout.module.scss';
 
 const { Sider, Content } = Layout;
@@ -29,12 +32,41 @@ const ProjectLayout = (props) => {
 
   const saveProjectClick = () => {
     setloading(true)
-    dispatch(saveProject({projectID, projectData}))
+    dispatch(saveProject(projectID))
     .then(res => {
       dispatch(updateProjectAttributes({updatedAt: res.Attributes.updatedAt}))
       setloading(false)
     })
   }
+
+  // 读pv 逆变器 项目数据 最佳倾角朝向
+  useEffect(() => {
+    dispatch(getPV())
+    .then(res => {
+      dispatch(setPVData(res))
+      dispatch(setPVActiveData(res))
+      dispatch(getInverter())
+      .then(res => {
+        dispatch(setInverterData(res))
+        dispatch(setInverterActiveData(res))
+        dispatch(getProject({projectID: projectID}))
+        .then(res => {
+          dispatch(setProjectData(res))
+          setloading(false)
+          if (!res.optTilt || !res.optAzimuth || !res.optPOA) {
+            dispatch(globalOptTiltAzimuth({projectID: projectID}))
+            .then(optSpec => {
+              dispatch(setProjectData(optSpec))
+            })
+          }
+        })
+        .catch(err => {
+          history.push('/dashboard')
+        })
+      })
+    })
+
+  }, [dispatch, history, projectID, t])
 
   return (
     <Layout>

@@ -21,11 +21,7 @@ const wrapperCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 15, offset: 1}};
 
 const initValues = {
   projectType: 'domestic',
-  albedo: 0.3,
-  p_loss_soiling: 2,
-  p_loss_connection: 0.5,
-  p_loss_mismatch: 2,
-  system_availability: 100
+  albedo: 0.3
 }
 
 export const CreateProjectModal = ({showModal, setshowModal, google}) => {
@@ -49,30 +45,6 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
     0.3: t('project.create.albedo.urban'),
     0.4: t('project.create.albedo.desert'),
     1: t('project.create.albedo.full')
-  };
-
-  // p_loss_soiling标识
-  const pLossSoilingMarks = {
-    0: t('project.create.loss_0'),
-    5: t('project.create.loss_5'),
-  };
-
-  // p_loss_connection标识
-  const pLossConnectionMarks = {
-    0: t('project.create.loss_0'),
-    1: t('project.create.loss_1'),
-  };
-
-  // p_loss_mismatch标识
-  const pLossMismatchMarks = {
-    0: t('project.create.loss_0'),
-    5: t('project.create.loss_5'),
-  };
-
-  // system_availability标识
-  const systemAvailabilityMarks = {
-    0: t('project.create.availability_0'),
-    100: t('project.create.availability_100'),
   };
 
   // 高德的地理编码解析
@@ -277,36 +249,6 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
               rules={[{required: true}]}
             >
               <Slider marks={albedoMarks} step={0.05} max={1}/>
-            </FormItem>
-            <Divider />
-            <FormItem
-              name='p_loss_soiling'
-              label={t('project.create.p_loss_soiling')}
-              rules={[{required: true}]}
-            >
-              <Slider marks={pLossSoilingMarks} step={0.1} max={5}/>
-            </FormItem>
-            <FormItem
-              name='p_loss_connection'
-              label={t('project.create.p_loss_connection')}
-              rules={[{required: true}]}
-            >
-              <Slider marks={pLossConnectionMarks} step={0.1} max={1}/>
-            </FormItem>
-            <FormItem
-              name='p_loss_mismatch'
-              label={t('project.create.p_loss_mismatch')}
-              rules={[{required: true}]}
-            >
-              <Slider marks={pLossMismatchMarks} step={0.1} max={5}/>
-            </FormItem>
-            <Divider />
-            <FormItem
-              name='system_availability'
-              label={t('project.create.system_availability')}
-              rules={[{required: true}]}
-            >
-              <Slider marks={systemAvailabilityMarks} step={1} max={100}/>
             </FormItem>
           </Panel>
         </Collapse>

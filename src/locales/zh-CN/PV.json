@@ -2,6 +2,8 @@
   "PVtable.add-PV": "添加新组件",
   "PVtable.edit-PV": "修改组件",
 
+  "PVtable.proParams": "高级参数 (仅用于计算，不会被展示)",
+
   "PVtable.table": "光伏组件列表",
   "PVtable.table.name": "组件名称",
   "PVtable.table.pmax": "峰值功率",
@@ -42,7 +44,8 @@
   "PV.tPrime": "T': 电池工作温度最高值",
   "PV.tenYDecay": "10年功率衰降(不大于)",
   "PV.twentyfiveYDecay": "25年功率衰降(不大于)",
-
+  "PV.year1Decay": "首年功率衰降",
+  "PV.year2To25Decay": "第2-25年每年功率递减",
 
   "PV.n": "太阳能电池二极管系数",
   "PV.deltaT": "1000W/㎡ 下太阳能电池和组件背面温度差 (℃)",

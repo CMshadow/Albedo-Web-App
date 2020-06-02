@@ -14,14 +14,14 @@ export const SpecView = ({buildingID, specIndex, invIndex}) => {
     .indexOf(buildingID)
   const spec = buildings[buildingIndex].data[specIndex].inverter_wiring[invIndex]
 
-  const pvIndex = inverterData.map(record => record.inverterID)
-    .indexOf(spec.inverterID)
-  const pvName = inverterData[pvIndex].name
+  const inverterIndex = inverterData.map(record => record.inverterID)
+    .indexOf(spec.inverter_model.inverterID)
+  const inverterName = inverterData[inverterIndex].name
 
   return (
     <Descriptions column={3}>
       <Item label={t('project.spec.serial')} span={1}>{spec.inverter_serial_number}</Item>
-      <Item label={t('project.spec.inverter')} span={2}>{pvName}</Item>
+      <Item label={t('project.spec.inverter')} span={2}>{inverterName}</Item>
       <Item label={t('project.spec.panels_per_string')}>{spec.panels_per_string}</Item>
       <Item label={t('project.spec.string_per_inverter')}>{spec.string_per_inverter}</Item>
       <Item label={t('project.spec.total_panels')}>{spec.string_per_inverter * spec.panels_per_string}</Item>

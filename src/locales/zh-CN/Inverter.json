@@ -2,7 +2,7 @@
   "InverterTable.add-Inverter": "添加新逆变器",
   "InverterTable.edit-Inverter": "修改逆变器",
 
-  "InverterTable.proParams": "高级参数",
+  "InverterTable.proParams": "高级参数 (仅用于计算，不会被展示)",
 
   "InverterTable.table": "逆变器列表",
   "InverterTable.table.name": "逆变器名称",

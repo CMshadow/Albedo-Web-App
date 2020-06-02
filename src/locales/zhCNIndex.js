@@ -10,6 +10,7 @@ import action from './zh-CN/action.json';
 import formGeneral from './zh-CN/formGeneral.json';
 import tableGeneral from './zh-CN/tableGeneral.json';
 import project from './zh-CN/project.json';
+import report from './zh-CN/report.json'
 
 export default {
   ...country,
@@ -23,5 +24,6 @@ export default {
   ...action,
   ...formGeneral,
   ...tableGeneral,
-  ...project
+  ...project,
+  ...report
 }

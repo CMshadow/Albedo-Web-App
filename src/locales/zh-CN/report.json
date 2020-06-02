@@ -1,0 +1,33 @@
+{
+  "report.paramsForm.title": "设置参数",
+
+  "report.paramsForm.irradiance": "辐照端损耗",
+  "report.paramsForm.dc": "DC端损耗",
+  "report.paramsForm.ac": "AC端损耗",
+  "report.paramsForm.grid": "并网端损耗",
+  "report.paramsForm.system": "系统参数",
+
+  "report.paramsForm.p_loss_soiling": "灰尘等遮挡损失 (%)",
+  "report.paramsForm.p_loss_connection": "组件连接损失 (%)",
+  "report.paramsForm.p_loss_mismatch": "组件失配损失 (%)",
+  "report.paramsForm.loss_0": "无损失",
+  "report.paramsForm.loss_1": "1%损失",
+  "report.paramsForm.loss_5": "5%损失",
+  "report.paramsForm.availability_0": "完全失效",
+  "report.paramsForm.availability_100": "100%工作效率",
+
+  "report.paramsForm.disabled": "自动计算",
+  "report.paramsForm.pv": "由选用组件决定",
+  "report.paramsForm.or": "或",
+  "report.paramsForm.overwrite": "覆盖值",
+
+  "report.paramsForm.p_loss_tilt_azimuth": "安装倾角辐射量百分比 (%)",
+  "report.paramsForm.p_loss_eff_irradiance": "有效辐照损失 (%)",
+  "report.paramsForm.p_loss_temperature": "温度损失 (%)",
+  "report.paramsForm.year1Decay": "光致衰减 (%)",
+  "report.paramsForm.year2To25Decay": "次年后逐年递减 (%)",
+  "report.paramsForm.p_loss_dc_wiring": "直流线损 (%)",
+  "report.paramsForm.p_loss_conversion": "逆变器效率 (%)",
+  "report.paramsForm.transformer_efficiency": "升压变压器效率 (%)",
+  "report.paramsForm.p_loss_ac_wiring": "交流线损 (%)"
+}

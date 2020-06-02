@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { Form, Input, Select, Row, Col, Modal, Divider, message } from 'antd';
+import { Form, Input, Select, Row, Col, Modal, Divider, message, Collapse } from 'antd';
 import * as styles from './Modal.module.scss';
 import { addPV, getPV, updatePV } from './service';
 const FormItem = Form.Item;
 const { Option } = Select;
+const { Panel } = Collapse;
 
 const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
 const labelCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 24}, lg: {span: 16}, xl: {span: 12}};
@@ -14,7 +15,9 @@ const wrapperCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 24}, lg: {span: 
 // PV表单默认值
 const initValues = {
   'siliconMaterial': 'mc-Si',
-  'moduleMaterial': 'glass/cell/glass'
+  'moduleMaterial': 'glass/cell/glass',
+  'year1Decay': '2.5',
+  'year2To25Decay': '0.7'
 }
 
 export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRecord, seteditRecord}) => {
@@ -47,6 +50,10 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
     [['ixo', 'n', 'A'], ['ixxo', 'n', 'A']],
     [['t', 'n', '℃'], ['tPrime', 'n', '℃']],
     [['tenYDecay', 'n', '%'], ['twentyfiveYDecay', 'n', '%']],
+  ]
+  // PV表单高级参数[key，类型，单位]
+  const formProKeys = [
+    [['year1Decay', 'n', '%'], ['year2To25Decay', 'n', '%']],
   ]
 
   // 根据 类型，单位/选择项 生成表单的用户输入组件
@@ -122,6 +129,7 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
   const submitForm = (values) => {
     // 根据colKey的类型转换格式
     [].concat(...formBasicKeys).concat([].concat(...formAdvancedKeys))
+    .concat([].concat(...formProKeys))
     .forEach(([key, type,]) => {
       if (type === 'n') values[key] = Number(values[key])
     })
@@ -183,6 +191,16 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
         {genFormItems(formSelectKeys, 2)}
         <Divider />
         {genFormItems(formAdvancedKeys, 2)}
+        <Collapse bordered={false}>
+          <Panel
+            className={styles.collapsePanel}
+            header={t('PVtable.proParams')}
+            key="pro"
+            forceRender
+          >
+            {genFormItems(formProKeys, 2)}
+          </Panel>
+        </Collapse>
       </Form>
     </Modal>
   )

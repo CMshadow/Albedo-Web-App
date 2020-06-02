@@ -13,7 +13,7 @@ export const getProject = ({projectID}) => async dispatch => {
   )
   .then(res => res.data)
   .catch(err => {
-    notification({message: err.response.data.message})
+    notification.error({message: err.response.data.message})
     throw err
   })
 }
@@ -30,12 +30,13 @@ export const globalOptTiltAzimuth = ({projectID}) => async dispatch => {
   .then(res => res.data)
   .catch(err => {
     console.log(err)
-    notification({message: err.response.data.message})
+    notification.error({message: err.response.data.message})
     throw err
   })
 }
 
-export const saveProject = ({projectID, projectData}) => async dispatch => {
+export const saveProject = (projectID) => async (dispatch, getState) => {
+  const projectData = getState().project
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
   return axios.put(

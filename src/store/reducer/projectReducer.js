@@ -60,7 +60,7 @@ const addPVSpec = (state, action) => {
       tilt_angle: null,
       azimuth: null,
       mode: null,
-      pvID: null
+      pv_model: {pvID: null, userID: null}
     },
     inverter_wiring: []
   })
@@ -78,7 +78,7 @@ const editPVSpec = (state, action) => {
     tilt_angle: Number(action.tilt_angle),
     azimuth: Number(action.azimuth),
     mode: 'single',
-    pvID: action.pvID
+    pv_model: {pvID: action.pvID, userID: action.pv_userID}
   }
   return {
     ...state,
@@ -106,7 +106,7 @@ const addInverterSpec = (state, action) => {
       .inverter_wiring.length + 1,
     panels_per_string: null,
     string_per_inverter: null,
-    inverterID: null
+    inverter_model: {inverterID: null, userID: null}
   })
   return {
     ...state,
@@ -124,7 +124,7 @@ const editInverterSpec = (state, action) => {
       .inverter_wiring[action.invIndex].inverter_serial_number,
     panels_per_string: action.panels_per_string,
     string_per_inverter: action.string_per_inverter,
-    inverterID: action.inverterID
+    inverter_model: {inverterID: action.inverterID, userID: action.inverter_userID}
   }
   return {
     ...state,

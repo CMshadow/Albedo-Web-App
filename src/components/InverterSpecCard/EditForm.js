@@ -40,7 +40,12 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
   }
 
   const submitForm = (values) => {
-    dispatch(editInverterSpec({buildingID, specIndex, invIndex, ...values}))
+    dispatch(editInverterSpec({
+      buildingID, specIndex, invIndex, ...values,
+      inverter_userID: inverterData.data.find(
+        record => record.inverterID === values.inverterID
+      ).userID
+    }))
     setediting(false)
   }
 
@@ -54,7 +59,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
         scrollToFirstError
         validateMessages={validateMessages}
         onFinish={submitForm}
-        initialValues={invSpec}
+        initialValues={{ ...invSpec, inverterID: invSpec.inverter_model.inverterID }}
       >
         <Row gutter={12}>
           <Col span={22}>

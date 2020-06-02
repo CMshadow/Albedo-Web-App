@@ -44,7 +44,10 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   }
 
   const submitForm = (values) => {
-    dispatch(editPVSpec({buildingID, specIndex, ...values}))
+    dispatch(editPVSpec({
+      buildingID, specIndex, ...values,
+      pv_userID: pvData.data.find(record => record.pvID === values.pvID).userID
+    }))
     setediting(false)
   }
 
@@ -93,7 +96,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         scrollToFirstError
         validateMessages={validateMessages}
         onFinish={submitForm}
-        initialValues={spec}
+        initialValues={{ ...spec, pvID: spec.pv_model.pvID }}
       >
         <Row gutter={12}>
           <Col span={22}>
