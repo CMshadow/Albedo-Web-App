@@ -128,7 +128,7 @@ const ParamsForm = () => {
     // 去除values中所有undefined properties 并转换所有值为数字
     Object.keys(values).forEach(key =>
       values[key] === undefined ?
-      delete values[key] :
+      {} :
       values[key]=Number(values[key])
     );
     // 更新redux中项目数据后更新后端的项目数据
