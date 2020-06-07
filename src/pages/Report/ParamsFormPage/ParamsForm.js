@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber } from 'antd';
+import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProjectAttributes } from '../../../store/action/index'
@@ -33,7 +33,10 @@ const ParamsForm = () => {
       p_loss_connection: 0.5,
       p_loss_mismatch: 2,
       transformer_efficiency: 100,
-      system_availability: 100
+      system_availability: 100,
+      Ub: 380,
+      ACVolDropFac: 2,
+      DCVolDropFac: 1
     }
   }
 
@@ -85,10 +88,40 @@ const ParamsForm = () => {
     [['transformer_efficiency', 1, 100, transformerEfficiencyMarks], ['p_loss_ac_wiring', 'disabled', 'disabled']]
   ]
 
+  const wiringKeys = [
+    [['Ub', 'n', 'V'], ['ACVolDropFac', 'n', '%']],
+    [['DCVolDropFac', 'n', '%']]
+  ]
+
   // 通用required项提示文本
   const validateMessages = {
     required: t('form.required')
   };
+
+  const genFormInputArea = (key, step, max, marks) => {
+    switch(step) {
+      case 'disabled':
+        return (
+          <Text className={styles.fixedText} code>
+            {t(`report.paramsForm.${step}`)}
+          </Text>
+        )
+      case 'pv':
+        return (
+          <Space>
+            <Text className={styles.fixedText} code>
+              {t(`report.paramsForm.${step}`)}
+            </Text>
+            <Text>{t('report.paramsForm.or')}</Text>
+            <InputNumber min={0} max={50} placeholder={t('report.paramsForm.overwrite')} />%
+          </Space>
+        )
+      case 'n':
+        return <Input addonAfter={max} type='number' className={styles.numberInput} />
+      default:
+      return <Slider marks={marks} step={step} max={max}/>
+    }
+  }
 
   // 动态生成表单字段组件
   const genFormItems = (keys, itemsPerRow) => keys.map((keysInRow, index) =>
@@ -103,18 +136,7 @@ const ParamsForm = () => {
             }
           >
             {
-              step === 'disabled' ?
-              <Text className={styles.fixedText} code>
-                {t(`report.paramsForm.${step}`)}
-              </Text> : step === 'pv' ?
-              <Space>
-                <Text className={styles.fixedText} code>
-                  {t(`report.paramsForm.${step}`)}
-                </Text>
-                <Text>{t('report.paramsForm.or')}</Text>
-                <InputNumber min={0} max={50} placeholder={t('report.paramsForm.overwrite')} />%
-              </Space> :
-              <Slider marks={marks} step={step} max={max}/>
+              genFormInputArea(key, step, max, marks)
             }
           </FormItem>
         </Col>
@@ -164,6 +186,8 @@ const ParamsForm = () => {
         {genFormItems(acKeys, 2)}
         <Divider>{t('report.paramsForm.grid')}</Divider>
         {genFormItems(gridKeys, 2)}
+        <Divider>{t('report.paramsForm.wiring')}</Divider>
+        {genFormItems(wiringKeys, 2)}
         <br/>
         <Row justify='center'>
           <Button

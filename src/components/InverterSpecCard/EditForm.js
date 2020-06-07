@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Form, InputNumber, Row, Col, Select, Button, Drawer } from 'antd';
-import { TableOutlined } from '@ant-design/icons'
+import { Form, Input, InputNumber, Row, Col, Select, Button, Drawer, Tooltip } from 'antd';
+import { TableOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { editInverterSpec, setInverterActiveData } from '../../store/action/index'
 import { InverterTableViewOnly } from '../InverterTable/InverterTableViewOnly'
+import * as styles from './EditForm.module.scss'
 const FormItem = Form.Item;
 
-const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
+const rowGutter = { md: 8, lg: 15, xl: 32 };
 
 export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
   const dispatch = useDispatch()
@@ -16,16 +17,37 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
   const [showDrawer, setshowDrawer] = useState(false)
   const inverterData = useSelector(state => state.inverter)
 
+
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
   const invSpec = buildings[buildingIndex].data[specIndex]
     .inverter_wiring[invIndex]
+  const [dc_cable_len, setdc_cable_len] = useState({
+    value: invSpec.dc_cable_len
+  })
 
   // 通用required项提示文本
   const validateMessages = {
     required: t('form.required')
   };
+
+  const validateDCCableLen = value => {
+    if (value.split(',').some(v => isNaN(v))) {
+      return {
+        validateStatus: 'error',
+        errorMsg: t('project.spec.dc_cable_len.error.onlynumber'),
+      }
+    }
+  }
+
+  //组串线缆长度输入框改变回调
+  const onDCCableLenChange = value => {
+    setdc_cable_len({
+      ...validateDCCableLen(value.target.value),
+      value: value.target.value
+    });
+  }
 
   const handleOk = () => {
     // 验证表单，如果通过提交表单
@@ -40,12 +62,13 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
   }
 
   const submitForm = (values) => {
-    dispatch(editInverterSpec({
-      buildingID, specIndex, invIndex, ...values,
-      inverter_userID: inverterData.data.find(
-        record => record.inverterID === values.inverterID
-      ).userID
-    }))
+    console.log(values)
+    // dispatch(editInverterSpec({
+    //   buildingID, specIndex, invIndex, ...values,
+    //   inverter_userID: inverterData.data.find(
+    //     record => record.inverterID === values.inverterID
+    //   ).userID
+    // }))
     setediting(false)
   }
 
@@ -87,28 +110,59 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
           </Col>
         </Row>
         <Row gutter={rowGutter}>
-          <Col span={12}>
+          <Col span={7}>
             <FormItem
               name='string_per_inverter'
               label={t('project.spec.string_per_inverter')}
               rules={[{required: true}]}
             >
-              <InputNumber precision={0} min={1} style={{width: '100%'}}/>
+              <InputNumber precision={0} min={1} className={styles.inputNumber}/>
             </FormItem>
           </Col>
-          <Col span={12}>
+          <Col span={7}>
             <FormItem
               name='panels_per_string'
               label={t('project.spec.panels_per_string')}
               rules={[{required: true}]}
             >
-              <InputNumber precision={0} min={1} style={{width: '100%'}}/>
+              <InputNumber precision={0} min={1} className={styles.inputNumber}/>
+            </FormItem>
+          </Col>
+          <Col span={10}>
+            <FormItem
+              name='ac_cable_len'
+              label={t('project.spec.ac_cable_len')}
+              rules={[{required: true}]}
+            >
+              <InputNumber
+                formatter={value => `${value}m`}
+                parser={value => value.replace('m', '')}
+                precision={0}
+                min={0}
+                className={styles.inputNumber}
+              />
             </FormItem>
           </Col>
         </Row>
-        <FormItem>
-          <Button type='primary' onClick={handleOk}>{t('form.confirm')}</Button>
-        </FormItem>
+        <Row>
+          <FormItem
+            name='dc_cable_len'
+            label={
+              <Tooltip title={t(`project.spec.dc_cable_len.hint`)}>
+                <QuestionCircleOutlined className={styles.icon}/>
+                {t('project.spec.dc_cable_len')}
+              </Tooltip>
+            }
+            rules={[{required: true}]}
+          >
+            <Input addonAfter='m' value={dc_cable_len.value} onChange={onDCCableLenChange}/>
+          </FormItem>
+        </Row>
+        <Row align='middle' justify='center'>
+          <FormItem className={styles.submitBut}>
+            <Button type='primary' onClick={handleOk}>{t('form.confirm')}</Button>
+          </FormItem>
+        </Row>
       </Form>
       <Drawer
         bodyStyle={{padding: '0px'}}

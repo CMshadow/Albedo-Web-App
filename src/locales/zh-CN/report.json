@@ -6,6 +6,7 @@
   "report.paramsForm.ac": "AC端损耗",
   "report.paramsForm.grid": "并网端损耗",
   "report.paramsForm.system": "系统参数",
+  "report.paramsForm.wiring": "电器",
 
   "report.paramsForm.p_loss_soiling": "灰尘等遮挡损失 (%)",
   "report.paramsForm.p_loss_connection": "组件连接损失 (%)",
@@ -29,5 +30,9 @@
   "report.paramsForm.p_loss_dc_wiring": "直流线损 (%)",
   "report.paramsForm.p_loss_conversion": "逆变器效率 (%)",
   "report.paramsForm.transformer_efficiency": "升压变压器效率 (%)",
-  "report.paramsForm.p_loss_ac_wiring": "交流线损 (%)"
+  "report.paramsForm.p_loss_ac_wiring": "交流线损 (%)",
+
+  "report.paramsForm.Ub": "并网电压",
+  "report.paramsForm.ACVolDropFac": "交流侧允许压降系数",
+  "report.paramsForm.DCVolDropFac": "直流侧允许压降系数"
 }
