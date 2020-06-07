@@ -8,6 +8,7 @@ export {
   updateProjectAttributes,
   releaseProjectData,
   addBuilding,
+  editBuilding,
   deleteBuilding,
   addPVSpec,
   editPVSpec,

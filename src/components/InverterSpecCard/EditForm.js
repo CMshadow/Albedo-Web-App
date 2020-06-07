@@ -24,7 +24,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
   const invSpec = buildings[buildingIndex].data[specIndex]
     .inverter_wiring[invIndex]
   const [dc_cable_len, setdc_cable_len] = useState({
-    value: invSpec.dc_cable_len
+    value: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
   })
 
   // 通用required项提示文本
@@ -32,12 +32,27 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
     required: t('form.required')
   };
 
+  // 自定义校验组串线缆长度输入是否符合规范
   const validateDCCableLen = value => {
+    // 含非数字
     if (value.split(',').some(v => isNaN(v))) {
       return {
         validateStatus: 'error',
-        errorMsg: t('project.spec.dc_cable_len.error.onlynumber'),
+        errorMsg: t('project.spec.dc_cable_len.error.only-number'),
       }
+    }
+    // 数量与该逆变器组串数不同
+    const spi = form.getFieldValue('string_per_inverter')
+    if (value.split(',').length !== spi) {
+      return {
+        validateStatus: 'error',
+        errorMsg: t('project.spec.dc_cable_len.error.spi-not-match'),
+      }
+    }
+    // 校验通过
+    return {
+      validateStatus: 'success',
+      errorMsg: null,
     }
   }
 
@@ -53,6 +68,15 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
     // 验证表单，如果通过提交表单
     form.validateFields()
     .then(success => {
+      // 验证组串线缆长度输入是否规范
+      const vali = validateDCCableLen(form.getFieldValue('dc_cable_len'))
+      if (vali.validateStatus === 'error') {
+        setdc_cable_len({
+          ...vali,
+          value: dc_cable_len.value
+        })
+        return
+      }
       form.submit()
     })
     .catch(err => {
@@ -62,13 +86,14 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
   }
 
   const submitForm = (values) => {
-    console.log(values)
-    // dispatch(editInverterSpec({
-    //   buildingID, specIndex, invIndex, ...values,
-    //   inverter_userID: inverterData.data.find(
-    //     record => record.inverterID === values.inverterID
-    //   ).userID
-    // }))
+    // 组串线缆长度string转换数字array
+    values.dc_cable_len = values.dc_cable_len.split(',').map(v => Number(v))
+    dispatch(editInverterSpec({
+      buildingID, specIndex, invIndex, ...values,
+      inverter_userID: inverterData.data.find(
+        record => record.inverterID === values.inverterID
+      ).userID
+    }))
     setediting(false)
   }
 
@@ -137,7 +162,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
               <InputNumber
                 formatter={value => `${value}m`}
                 parser={value => value.replace('m', '')}
-                precision={0}
+                precision={2}
                 min={0}
                 className={styles.inputNumber}
               />
@@ -145,18 +170,27 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
           </Col>
         </Row>
         <Row>
-          <FormItem
-            name='dc_cable_len'
-            label={
-              <Tooltip title={t(`project.spec.dc_cable_len.hint`)}>
-                <QuestionCircleOutlined className={styles.icon}/>
-                {t('project.spec.dc_cable_len')}
-              </Tooltip>
-            }
-            rules={[{required: true}]}
-          >
-            <Input addonAfter='m' value={dc_cable_len.value} onChange={onDCCableLenChange}/>
-          </FormItem>
+          <Col span={24}>
+            <FormItem
+              name='dc_cable_len'
+              label={
+                <Tooltip title={t(`project.spec.dc_cable_len.hint`)}>
+                  <QuestionCircleOutlined className={styles.icon}/>
+                  {t('project.spec.dc_cable_len')}
+                </Tooltip>
+              }
+              validateStatus={dc_cable_len.validateStatus}
+              help={dc_cable_len.errorMsg}
+              rules={[{required: true}]}
+            >
+              <Input
+                className={styles.inputNumber}
+                addonAfter='m'
+                value={dc_cable_len.value}
+                onChange={onDCCableLenChange}
+              />
+            </FormItem>
+          </Col>
         </Row>
         <Row align='middle' justify='center'>
           <FormItem className={styles.submitBut}>

@@ -44,6 +44,7 @@
 
   "project.add.building": "添加房屋",
   "project.add.buildingName": "房屋名称",
+  "project.add.combibox_cable_len": "汇流箱输出线缆长度",
   "project.add.spec": "添加光伏组件配置",
   "project.add.spec.prefix": "给房屋",
 
@@ -62,7 +63,8 @@
   "project.spec.panels_per_string": "光伏组件数/组串",
   "project.spec.ac_cable_len": "逆变器至汇流箱线缆长度",
   "project.spec.dc_cable_len": "每条组串到逆变器线缆长度",
-  "project.spec.dc_cable_len.hint": "每条组串线缆长度以逗号隔开，如：20,25,30",
-  "project.spec.dc_cable_len.error.onlynumber": "输入不能包含非数字元素",
+  "project.spec.dc_cable_len.hint": "每条组串线缆长度以逗号隔开，如:20,25,30",
+  "project.spec.dc_cable_len.error.only-number": "输入不能包含非数字元素",
+  "project.spec.dc_cable_len.error.spi-not-match": "与组串数不符",
   "project.spec.total_panels": "光伏组件总数"
 }

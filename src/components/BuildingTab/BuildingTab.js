@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Tabs, Button } from 'antd';
+import { Tabs, Button, Space } from 'antd';
+import { SettingOutlined } from '@ant-design/icons'
 import * as styles from './BuildingTab.module.scss';
-import { BuildingNameModal } from '../../components/BuildingNameModal/BuildingNameModal'
+import { BuildingModal } from '../../components/BuildingModal/BuildingModal'
 import { deleteBuilding, addPVSpec } from '../../store/action/index'
 import { PVSpecCard } from '../../components/PVSpecCard/PVSpecCard'
 
@@ -13,6 +14,7 @@ export const BuildingTab = ({buildings, ...props}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [showModal, setshowModal] = useState(false)
+  const [editRecord, seteditRecord] = useState(null)
 
   const deleteBuildingTab = (targetKey) => {
     dispatch(deleteBuilding(targetKey))
@@ -47,7 +49,21 @@ export const BuildingTab = ({buildings, ...props}) => {
         onEdit={onEdit}
       >
         {buildings.map(building => (
-          <TabPane tab={building.buildingName} key={building.buildingID}>
+          <TabPane
+            tab={
+              <Space size='middle'>
+                {building.buildingName}
+                <SettingOutlined
+                  className={styles.icon}
+                  onClick={() => {
+                    seteditRecord(building)
+                    setshowModal(true)}
+                  }
+                />
+              </Space>
+            }
+            key={building.buildingID}
+          >
             {building.data.map((spec, specIndex) => (
               <PVSpecCard
                 editing={
@@ -73,7 +89,12 @@ export const BuildingTab = ({buildings, ...props}) => {
         </TabPane>
       ))}
       </Tabs>
-      <BuildingNameModal showModal={showModal} setshowModal={setshowModal}/>
+      <BuildingModal
+        showModal={showModal}
+        setshowModal={setshowModal}
+        editRecord={editRecord}
+        seteditRecord={seteditRecord}
+      />
     </div>
   )
 }

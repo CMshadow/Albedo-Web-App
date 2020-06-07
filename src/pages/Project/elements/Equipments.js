@@ -3,12 +3,13 @@ import { Card, Button } from 'antd';
 import { useTranslation } from 'react-i18next';
 import * as styles from './Equipments.module.scss';
 import { BuildingTab } from '../../../components/BuildingTab/BuildingTab'
-import { BuildingNameModal } from '../../../components/BuildingNameModal/BuildingNameModal'
+import { BuildingModal } from '../../../components/BuildingModal/BuildingModal'
 
 
 export const Equipments = ({loading, ...values}) => {
   const { t } = useTranslation();
   const [showModal, setshowModal] = useState(false)
+  const [editRecord, seteditRecord] = useState(null)
 
   return (
     <Card loading={loading}>
@@ -24,7 +25,12 @@ export const Equipments = ({loading, ...values}) => {
         </Button> :
         <BuildingTab {...values}/>
       }
-      <BuildingNameModal showModal={showModal} setshowModal={setshowModal}/>
+      <BuildingModal
+        showModal={showModal}
+        setshowModal={setshowModal}
+        editRecord={editRecord}
+        seteditRecord={seteditRecord}
+      />
     </Card>
   )
 }

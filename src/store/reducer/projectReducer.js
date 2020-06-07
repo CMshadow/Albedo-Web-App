@@ -27,16 +27,40 @@ const addBuilding = (state, action) => {
       ...state,
       buildings: [
         ...state.buildings,
-        {buildingID: uuidv1(), buildingName: action.buildingName, data:[]}
+        {
+          buildingID: uuidv1(),
+          buildingName: action.buildingName,
+          combibox_cable_len: action.combibox_cable_len,
+          data:[]
+        }
       ]
     }
   } else {
     return {
       ...state,
       buildings: [
-        {buildingID: uuidv1(), buildingName: action.buildingName, data:[]}
+        {
+          buildingID: uuidv1(),
+          buildingName: action.buildingName,
+          combibox_cable_len: action.combibox_cable_len,
+          data:[]
+        }
       ]
     }
+  }
+}
+
+const editBuilding = (state, action) => {
+  const spliceIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  const buildingCopy = newBuildings[spliceIndex]
+  buildingCopy.buildingName = action.buildingName
+  buildingCopy.combibox_cable_len = action.combibox_cable_len
+  newBuildings.splice(spliceIndex, 1, buildingCopy)
+  return {
+    ...state,
+    buildings: newBuildings
   }
 }
 
@@ -124,6 +148,8 @@ const editInverterSpec = (state, action) => {
       .inverter_wiring[action.invIndex].inverter_serial_number,
     panels_per_string: action.panels_per_string,
     string_per_inverter: action.string_per_inverter,
+    ac_cable_len: action.ac_cable_len,
+    dc_cable_len: action.dc_cable_len,
     inverter_model: {inverterID: action.inverterID, userID: action.inverter_userID}
   }
   return {
@@ -158,6 +184,8 @@ const reducer = (state=initialState, action) => {
       return releaseProjectData(state, action)
     case actionTypes.ADD_BUILDING:
       return addBuilding(state, action);
+    case actionTypes.EDIT_BUILDING:
+      return editBuilding(state, action)
     case actionTypes.DELETE_BUILDING:
       return deleteBuilding(state, action)
     case actionTypes.ADD_PV_SPEC:

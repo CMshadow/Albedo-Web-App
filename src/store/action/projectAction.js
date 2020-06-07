@@ -20,10 +20,18 @@ export const releaseProjectData = () => (dispatch, getState) => {
   })
 }
 
-export const addBuilding = (buildingName) => (dispatch, getState) => {
+export const addBuilding = (values) => (dispatch, getState) => {
   return dispatch({
     type: actionTypes.ADD_BUILDING,
-    buildingName: buildingName
+    ...values
+  })
+}
+
+export const editBuilding = ({buildingID, ...values}) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.EDIT_BUILDING,
+    buildingID: buildingID,
+    ...values
   })
 }
 
