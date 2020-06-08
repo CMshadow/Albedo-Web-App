@@ -107,7 +107,11 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
         scrollToFirstError
         validateMessages={validateMessages}
         onFinish={submitForm}
-        initialValues={{ ...invSpec, inverterID: invSpec.inverter_model.inverterID }}
+        initialValues={{
+          ...invSpec,
+          inverterID: invSpec.inverter_model.inverterID,
+          dc_cable_len: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
+        }}
       >
         <Row gutter={12}>
           <Col span={22}>

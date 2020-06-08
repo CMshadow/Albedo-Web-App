@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,24 +22,6 @@ const ParamsForm = () => {
   const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
   const projectID = history.location.pathname.split('/')[2]
-
-  // 确定表单的初始值 从redux读项目的当前值或使用默认值
-  let initValues
-  if (projectData.p_loss_soiling) {
-    initValues = projectData
-  } else {
-    initValues = {
-      p_loss_soiling: 2,
-      p_loss_connection: 0.5,
-      p_loss_mismatch: 2,
-      transformer_efficiency: 100,
-      system_availability: 100,
-      Ub: 380,
-      ACVolDropFac: 2,
-      DCVolDropFac: 1
-    }
-  }
-
 
   // 滑动输入条标识style
   const markStyle = {overflow: 'hidden', whiteSpace: 'nowrap'}
@@ -164,6 +146,24 @@ const ParamsForm = () => {
     }, 500)
   }
 
+  // 组间渲染后设置表单默认值
+  useEffect(() => {
+    if (projectData.p_loss_soiling) {
+      form.setFieldsValue(projectData)
+    } else {
+      form.setFieldsValue({
+        p_loss_soiling: 2,
+        p_loss_connection: 0.5,
+        p_loss_mismatch: 2,
+        transformer_efficiency: 100,
+        system_availability: 100,
+        Ub: 380,
+        ACVolDropFac: 2,
+        DCVolDropFac: 1
+      })
+    }
+  }, [form, projectData])
+
   return (
     <Card className={styles.card} hoverable title={t('report.paramsForm.title')}>
       <Form
@@ -174,7 +174,6 @@ const ParamsForm = () => {
         validateMessages={validateMessages}
         labelCol={labelCol}
         wrapperCol={wrapperCol}
-        initialValues={initValues}
         hideRequiredMark
         onFinish={submitForm}
       >
