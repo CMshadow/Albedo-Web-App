@@ -16,7 +16,7 @@ const Report = () => {
 
   return (
     <Card>
-      <InvestmentTable/>
+      <InvestmentTable buildingIndex={0}/>
     </Card>
   )
 }

@@ -74,8 +74,18 @@ const EditableCell = ({title, editable, children, dataIndex, record, handleSave,
   return <td {...restProps}>{childNode}</td>;
 };
 
-export const InvestmentTable = () => {
+export const InvestmentTable = ({ buildingIndex }) => {
   const { t } = useTranslation()
+  const projectData = useSelector(state => state.project)
+  const pvData = useSelector(state => state.pv).data
+  const inverterData = useSelector(state => state.inverter).data
+
+  const buildingData = projectData.buildings[buildingIndex]
+  const allPVID = buildingData.data.map(spec =>
+    pvData.find(pv => pv.pvID === spec.pv_panel_parameters.pv_model.pvID).name
+  )
+  console.log(allPVID)
+
   const [dataSource, setdataSource] = useState(
     [
       {
