@@ -11,6 +11,7 @@ import formGeneral from './zh-CN/formGeneral.json';
 import tableGeneral from './zh-CN/tableGeneral.json';
 import project from './zh-CN/project.json';
 import report from './zh-CN/report.json'
+import investmentTable from './zh-CN/investmentTable.json'
 
 export default {
   ...country,
@@ -25,5 +26,6 @@ export default {
   ...formGeneral,
   ...tableGeneral,
   ...project,
-  ...report
+  ...report,
+  ...investmentTable
 }

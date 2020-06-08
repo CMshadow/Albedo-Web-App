@@ -1,0 +1,42 @@
+{
+  "investment.series": "序号",
+  "investment.name": "工程或费用名称",
+  "investment.description": "型号，说明",
+  "investment.unit": "单位",
+  "investment.quantity": "数量",
+  "investment.unitPrice": "单价",
+  "investment.totalPrice": "合计",
+  "investment.investmentWeight": "各项占总投资百分比",
+
+  "investment.series.one": "一",
+  "investment.series.two": "二",
+  "investment.series.three": "三",
+
+  "investment.name.costList": "费用清单",
+  "investment.name.pv": "光伏组件",
+  "investment.name.rack": "光伏板支架及基础",
+  "investment.name.inverter": "并网逆变器",
+  "investment.name.combibox": "交流汇流箱",
+  "investment.name.meter": "关口电能表",
+  "investment.name.router": "无线路由器",
+  "investment.name.comm": "通信管理机",
+  "investment.name.dc_wiring": "直流光伏电缆",
+  "investment.name.ac_wiring": "逆变器至汇流箱交流电缆",
+  "investment.name.combibox_wiring": "并网交流电缆",
+  "investment.name.rooftop": "屋面加固费用",
+  "investment.name.other": "其它费用",
+  "investment.name.unitInvestment": "单位千瓦投资",
+  "investment.name.totalInvestment": "总投资",
+
+  "investment.description.rack": "钢/铝合金支架及基础",
+  "investment.description.rooftop": "实地考察后报价",
+  "investment.description.other": "人工费、管理费等",
+
+  "investment.unit.kuai": "块",
+  "investment.unit.tai": "台",
+  "investment.unit.tao": "套",
+  "investment.unit.xiang": "项",
+  "investment.unit.price": "元",
+  "investment.unit.price/W": "元/W",
+  "investment.unit.price/KW": "元/KW"
+}
