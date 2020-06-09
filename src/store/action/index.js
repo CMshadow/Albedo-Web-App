@@ -27,3 +27,7 @@ export {
   setInverterData,
   setInverterActiveData
 } from './inverterTableAction'
+
+export {
+  setReportData
+} from './reportAction'

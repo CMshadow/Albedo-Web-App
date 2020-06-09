@@ -4,12 +4,14 @@ import authReducer from './authReducer';
 import projectReducer from './projectReducer';
 import pvTableReducer from './pvTableReducer'
 import inverterTableReducer from './inverterTableReducer'
+import reportReducer from './reportReducer'
 
 const rootReducer = combineReducers({
   auth: authReducer,
   project: projectReducer,
   pv: pvTableReducer,
-  inverter: inverterTableReducer
+  inverter: inverterTableReducer,
+  report: reportReducer
   // undoable: undoable(combineReducers({
   // }), {
   //   initTypes: ['@@redux/INIT'],
