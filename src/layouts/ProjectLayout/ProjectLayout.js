@@ -107,7 +107,7 @@ const ProjectLayout = (props) => {
         {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
         <Content className={styles.content}>
           <GlobalAlert />
-          {props.children}
+          {Object.keys(projectData).length !== 0 ? props.children : null}
         </Content>
       </Layout>
     </Layout>
