@@ -25,7 +25,35 @@ export const wh2other = (data) => {
   } else {
     return {
       'value': wh2WANkwh(data),
-      'unit': 'WANkwh'
+      'unit': 'WANkWh'
+    }
+  }
+}
+
+export const w2other = (data) => {
+  let mark = data
+  if (Array.isArray(data)) mark = Math.min(data)
+
+  if (mark < 1000) {
+    return {
+      'value': data,
+      'unit': 'W'
+    }
+  } else if (mark / 1e3 < 1000) {
+    return {
+      'value': wh2kwh(data),
+      'unit': 'KW'
+    }
+  }
+  else if (mark / 1e6 < 1000) {
+    return {
+      'value': wh2mwh(data),
+      'unit': 'MW'
+    }
+  } else {
+    return {
+      'value': wh2WANkwh(data),
+      'unit': 'WANkW'
     }
   }
 }
@@ -36,6 +64,18 @@ export const other2wh = (data, unit) => {
   } else if (unit.toLowerCase() === 'kwh') {
     return kwh2wh(data)
   } else if (unit.toLowerCase() === 'mwh') {
+    return mwh2wh(data)
+  } else {
+    return WANkwh2wh(data)
+  }
+}
+
+export const other2w = (data, unit) => {
+  if (unit.toLowerCase() === 'w') {
+    return data
+  } else if (unit.toLowerCase() === 'kw') {
+    return kwh2wh(data)
+  } else if (unit.toLowerCase() === 'mw') {
     return mwh2wh(data)
   } else {
     return WANkwh2wh(data)

@@ -1,4 +1,8 @@
 {
+  "investment.title": "光伏系统投资统计表",
+  "investment.project-title": "项目名称",
+  "investment.project-scale": "项目规模",
+
   "investment.series": "序号",
   "investment.name": "工程或费用名称",
   "investment.description": "型号，说明",
@@ -32,10 +36,11 @@
   "investment.description.rooftop": "实地考察后报价",
   "investment.description.other": "人工费、管理费等",
 
-  "investment.unit.kuai": "块",
-  "investment.unit.tai": "台",
-  "investment.unit.tao": "套",
-  "investment.unit.xiang": "项",
+  "investment.unit.price/kuai": "元/块",
+  "investment.unit.price/tai": "元/台",
+  "investment.unit.price/tao": "元/套",
+  "investment.unit.price/xiang": "元/项",
+  "investment.unit.price/m": "元/m",
   "investment.unit.price": "元",
   "investment.unit.price/W": "元/W",
   "investment.unit.price/KW": "元/KW"
