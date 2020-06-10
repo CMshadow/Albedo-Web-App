@@ -45,6 +45,13 @@
     background-color: #52c41a;
     color: white;
   }
+
+  .spin {
+    text-align: center;
+    justify-content: center;
+    height: calc(100vh - 64px);
+    padding: 50% 0px;
+  }
 }
 
 .main {

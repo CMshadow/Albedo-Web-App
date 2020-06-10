@@ -169,7 +169,7 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
       okText={t('action.confirm')}
       cancelText={t('action.cancel')}
       maskClosable={false}
-      width={'50vw'}
+      width={'75vw'}
       style={{ top: 20 }}
     >
 

@@ -31,6 +31,7 @@ const addBuilding = (state, action) => {
           buildingID: uuidv1(),
           buildingName: action.buildingName,
           combibox_cable_len: action.combibox_cable_len,
+          reGenReport: true,
           data:[]
         }
       ]
@@ -43,6 +44,7 @@ const addBuilding = (state, action) => {
           buildingID: uuidv1(),
           buildingName: action.buildingName,
           combibox_cable_len: action.combibox_cable_len,
+          reGenReport: true,
           data:[]
         }
       ]
@@ -57,6 +59,7 @@ const editBuilding = (state, action) => {
   const buildingCopy = newBuildings[spliceIndex]
   buildingCopy.buildingName = action.buildingName
   buildingCopy.combibox_cable_len = action.combibox_cable_len
+  buildingCopy.reGenReport = true
   newBuildings.splice(spliceIndex, 1, buildingCopy)
   return {
     ...state,
@@ -75,10 +78,22 @@ const deleteBuilding = (state, action) => {
   }
 }
 
+const setBuildingReGenReport = (state, action) => {
+  const buildingIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].reGenReport = action.reGenReport
+  return {
+    ...state,
+    buildings: newBuildings
+  }
+}
+
 const addPVSpec = (state, action) => {
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].reGenReport = true
   newBuildings[buildingIndex].data.push({
     pv_panel_parameters: {
       tilt_angle: null,
@@ -104,6 +119,12 @@ const editPVSpec = (state, action) => {
     mode: 'single',
     pv_model: {pvID: action.pvID, userID: action.pv_userID}
   }
+  if (
+    JSON.stringify(newBuildings[buildingIndex]) !==
+    JSON.stringify(state.buildings[buildingIndex])
+  ) {
+    newBuildings[buildingIndex].reGenReport = true
+  }
   return {
     ...state,
     buildings: newBuildings
@@ -114,6 +135,7 @@ const deletePVSpec = (state, action) => {
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].reGenReport = true
   newBuildings[buildingIndex].data.splice(action.specIndex, 1)
   return {
     ...state,
@@ -125,6 +147,7 @@ const addInverterSpec = (state, action) => {
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].reGenReport = true
   newBuildings[buildingIndex].data[action.specIndex].inverter_wiring.push({
     inverter_serial_number: newBuildings[buildingIndex].data[action.specIndex]
       .inverter_wiring.length + 1,
@@ -152,6 +175,12 @@ const editInverterSpec = (state, action) => {
     dc_cable_len: action.dc_cable_len,
     inverter_model: {inverterID: action.inverterID, userID: action.inverter_userID}
   }
+  if (
+    JSON.stringify(newBuildings[buildingIndex]) !==
+    JSON.stringify(state.buildings[buildingIndex])
+  ) {
+    newBuildings[buildingIndex].reGenReport = true
+  }
   return {
     ...state,
     buildings: newBuildings
@@ -162,6 +191,7 @@ const deleteInverterSpec = (state, action) => {
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].reGenReport = true
   newBuildings[buildingIndex].data[action.specIndex].inverter_wiring
   .splice(action.invIndex, 1)
   newBuildings[buildingIndex].data[action.specIndex].inverter_wiring
@@ -188,6 +218,8 @@ const reducer = (state=initialState, action) => {
       return editBuilding(state, action)
     case actionTypes.DELETE_BUILDING:
       return deleteBuilding(state, action)
+    case actionTypes.SET_BUILDING_REGENREPORT:
+      return setBuildingReGenReport(state, action)
     case actionTypes.ADD_PV_SPEC:
       return addPVSpec(state, action)
     case actionTypes.EDIT_PV_SPEC:

@@ -22,18 +22,18 @@ const Report = () => {
   const buildingID = projectData.buildings[buildingIndex].buildingID
   const year = 1
 
-  useEffect(() => {
-    if (!projectData.p_loss_soiling) {
-      history.push(`${history.location.pathname}/params`)
-    } else {
-      dispatch(getReport({projectID, buildingIndex, year}))
-      .then(res => {
-        console.log(res)
-        dispatch(setReportData({buildingID, data: res}))
-        setloading(false)
-      })
-    }
-  },[buildingID, dispatch, history, projectData.p_loss_soiling, projectID])
+  // useEffect(() => {
+  //   if (!projectData.p_loss_soiling) {
+  //     history.push(`${history.location.pathname}/params`)
+  //   } else {
+  //     dispatch(getReport({projectID, buildingIndex, year}))
+  //     .then(res => {
+  //       console.log(res)
+  //       dispatch(setReportData({buildingID, data: res}))
+  //       setloading(false)
+  //     })
+  //   }
+  // },[buildingID, dispatch, history, projectData.p_loss_soiling, projectID])
 
   return (
     loading ?

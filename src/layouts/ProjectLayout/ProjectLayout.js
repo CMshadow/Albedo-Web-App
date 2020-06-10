@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Row, Button } from 'antd';
+import { Layout, Menu, Row, Button, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
@@ -78,30 +78,39 @@ const ProjectLayout = (props) => {
             <h4>{t('sider.edition')}</h4>
           </div>
         </Row>
-        <Menu theme="dark" mode="inline" selectedKeys={[selectMenu]} onSelect={onSelectMenu}>
-          <Menu.Item key='dashboard' className={styles.menuItem}>
-            {t('sider.menu.projectDetail')}
-          </Menu.Item>
-          <Menu.Item key='report' className={styles.menuItem}>
-            {t('sider.menu.report')}
-          </Menu.Item>
-          <Menu.Item key="pv" className={styles.menuItem}>
-            {t('sider.menu.pv')}
-          </Menu.Item>
-          <Menu.Item key="inverter" className={styles.menuItem}>
-            {t('sider.menu.inverter')}
-          </Menu.Item>
-        </Menu>
-        <Button
-          block
-          type='link'
-          size='large'
-          className={styles.saveBut}
-          onClick={saveProjectClick}
-          loading={loading}
-        >
-          {t('sider.save')}
-        </Button>
+        {
+          Object.keys(projectData).length !== 0 ?
+          <div>
+            <Menu theme="dark" mode="inline" selectedKeys={[selectMenu]} onSelect={onSelectMenu}>
+              <Menu.Item key='dashboard' className={styles.menuItem}>
+                {t('sider.menu.projectDetail')}
+              </Menu.Item>
+              <Menu.Item key='report' className={styles.menuItem}>
+                {t('sider.menu.report')}
+              </Menu.Item>
+              <Menu.Item key="pv" className={styles.menuItem}>
+                {t('sider.menu.pv')}
+              </Menu.Item>
+              <Menu.Item key="inverter" className={styles.menuItem}>
+                {t('sider.menu.inverter')}
+              </Menu.Item>
+            </Menu>
+            <Button
+              block
+              type='link'
+              size='large'
+              className={styles.saveBut}
+              onClick={saveProjectClick}
+              loading={loading}
+            >
+              {t('sider.save')}
+            </Button>
+          </div> :
+          <div className={styles.spin}>
+            <Spin size='large' />
+          </div>
+        }
+
       </Sider>
       <Layout className={styles.main}>
         {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
