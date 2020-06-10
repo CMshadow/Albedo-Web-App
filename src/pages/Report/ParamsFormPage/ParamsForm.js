@@ -67,7 +67,7 @@ const ParamsForm = () => {
   ]
 
   const gridKeys = [
-    [['transformer_efficiency', 1, 100, transformerEfficiencyMarks], ['p_loss_ac_wiring', 'disabled', 'disabled']]
+    [['transformer_efficiency', 'disabled', 100, transformerEfficiencyMarks], ['p_loss_ac_wiring', 'disabled', 'disabled']]
   ]
 
   const wiringKeys = [

@@ -9,10 +9,29 @@ const setProjectData = (state, action) => {
   }
 }
 
+const updateReportAttributes = (state, action) => {
+  console.log({
+    ...state,
+    [action.buildingID]: {
+      ...state[action.buildingID],
+      ...action.values
+    }
+  })
+  return {
+    ...state,
+    [action.buildingID]: {
+      ...state[action.buildingID],
+      ...action.values
+    }
+  }
+}
+
 const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_REPORTDATA:
       return setProjectData(state, action);
+    case actionTypes.UPDATE_REPORTATTRIBUTES:
+      return updateReportAttributes(state, action)
     default: return state;
   }
 };
