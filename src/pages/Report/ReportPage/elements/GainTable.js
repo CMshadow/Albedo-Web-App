@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { other2w, w2other } from '../../../../utils/unitConverter'
 import { updateReportAttributes } from '../../../../store/action/index'
-import './InvestmentTable.scss'
+import './GainTable.scss'
 const EditableContext = React.createContext();
 const Item = Descriptions.Item
 const Title = Typography.Title
@@ -98,7 +98,7 @@ const reduceUnique = data => {
   }, {})
 }
 
-export const InvestmentTable = ({ buildingID }) => {
+export const GainTable = ({ buildingID }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const projectData = useSelector(state => state.project)
@@ -498,7 +498,6 @@ export const InvestmentTable = ({ buildingID }) => {
 
   return (
     <Card
-      className='card'
       title={
         <Title
           className='cardTitle'

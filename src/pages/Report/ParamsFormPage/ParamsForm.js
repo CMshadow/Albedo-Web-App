@@ -141,7 +141,11 @@ const ParamsForm = () => {
       dispatch(saveProject(projectID))
       .then(res => {
         setloading(false)
-        history.replace(`/project/${projectID}/report`)
+        if (history.location.state && history.location.state.buildingID) {
+          history.replace(`/project/${projectID}/report/${history.location.state.buildingID}`)
+        } else {
+          history.replace(`/project/${projectID}/dashboard`)
+        }
       })
     }, 500)
   }

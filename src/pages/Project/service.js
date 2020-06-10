@@ -37,7 +37,6 @@ export const globalOptTiltAzimuth = ({projectID}) => async dispatch => {
 
 export const saveProject = (projectID) => async (dispatch, getState) => {
   const projectData = getState().project
-  console.log(projectData)
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
   return axios.put(

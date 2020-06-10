@@ -1,4 +1,7 @@
 {
+  "report.investmentTable": "投资统计表",
+  "report.gainTable": "收益统计表",
+
   "report.paramsForm.title": "设置参数",
 
   "report.paramsForm.irradiance": "辐照端损耗",

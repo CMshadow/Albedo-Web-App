@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Row, Button, Spin } from 'antd';
+import { Layout, Menu, Row, Button, Spin, Space } from 'antd';
+import { SettingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,11 +11,13 @@ import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
 import { getProject, saveProject, globalOptTiltAzimuth } from '../../pages/Project/service'
 import { getPV } from '../../pages/PVTable/service'
 import { getInverter } from '../../pages/InverterTable/service'
+import { saveReport } from '../../pages/Report/ReportPage/service'
 import { setProjectData, setPVData, setPVActiveData, setInverterData, setInverterActiveData, updateProjectAttributes } from '../../store/action/index';
 
 import * as styles from './ProjectLayout.module.scss';
 
 const { Sider, Content } = Layout;
+const { SubMenu } = Menu;
 
 const ProjectLayout = (props) => {
   const history = useHistory();
@@ -22,6 +25,7 @@ const ProjectLayout = (props) => {
   const { t } = useTranslation();
   const [loading, setloading] = useState(false)
   const projectData = useSelector(state => state.project)
+  const reportData = useSelector(state => state.report)
   const cognitoUser = useSelector(state => state.auth.cognitoUser)
   const projectID = history.location.pathname.split('/')[2]
   const selectMenu = history.location.pathname.split('/')[3]
@@ -33,7 +37,11 @@ const ProjectLayout = (props) => {
   const saveProjectClick = () => {
     setloading(true)
     dispatch(saveProject(projectID))
-    .then(res => {
+    .then(async res => {
+      const allSavingPromise = [Object.keys(reportData).map(buildingID =>
+        dispatch(saveReport({projectID, buildingID}))
+      )]
+      Promise.all(allSavingPromise)
       dispatch(updateProjectAttributes({updatedAt: res.Attributes.updatedAt}))
       setloading(false)
     })
@@ -85,9 +93,37 @@ const ProjectLayout = (props) => {
               <Menu.Item key='dashboard' className={styles.menuItem}>
                 {t('sider.menu.projectDetail')}
               </Menu.Item>
-              <Menu.Item key='report' className={styles.menuItem}>
-                {t('sider.menu.report')}
-              </Menu.Item>
+              <SubMenu
+                key='report'
+                className={styles.menuItem}
+                title={
+                  <Space>
+                    {t('sider.menu.report')}
+                    <Button
+                      shape="circle"
+                      ghost
+                      type='link'
+                      onClick={() => {history.push(`/project/${projectID}/report/params`)}}
+                      icon={<SettingOutlined />}
+                    />
+                  </Space>
+                }
+              >
+                {
+                  projectData.buildings.filter(building =>
+                    building.data.length > 0 &&
+                    building.data[0].inverter_wiring.length > 0
+                  ).map(building => (
+                    <Menu.Item key={`report/${building.buildingID}`}>
+                      {
+                        t('sider.menu.report.prefix') +
+                        `${building.buildingName}` +
+                        t('sider.menu.report.suffix')
+                      }
+                    </Menu.Item>
+                  ))
+                }
+              </SubMenu>
               <Menu.Item key="pv" className={styles.menuItem}>
                 {t('sider.menu.pv')}
               </Menu.Item>

@@ -10,6 +10,7 @@ export {
   addBuilding,
   editBuilding,
   deleteBuilding,
+  setBuildingReGenReport,
   addPVSpec,
   editPVSpec,
   deletePVSpec,
@@ -29,5 +30,8 @@ export {
 } from './inverterTableAction'
 
 export {
-  setReportData
+  setReportData,
+  updateReportAttributes,
+  releaseReportData,
+  deleteReportData
 } from './reportAction'

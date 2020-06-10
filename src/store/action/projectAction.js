@@ -42,7 +42,7 @@ export const deleteBuilding = (buildingID) => (dispatch, getState) => {
   })
 }
 
-export const setBuildingReGenReport = (buildingID, reGenReport) => (dispatch, getState) => {
+export const setBuildingReGenReport = ({buildingID, reGenReport}) => (dispatch, getState) => {
   return dispatch({
     type: actionTypes.SET_BUILDING_REGENREPORT,
     buildingID: buildingID,

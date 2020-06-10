@@ -35,7 +35,7 @@ const Router = () => {
             <Switch>
               <PrivateRoute path='/project/:projectID/dashboard' component={Dashboard} />
               <PrivateRoute path="/project/:projectID/report/params" component={ParamsForm} />
-              <PrivateRoute path="/project/:projectID/report" component={Report} />  
+              <PrivateRoute path="/project/:projectID/report/:buildingID" component={Report} />  
               <PrivateRoute path="/project/:projectID/pv" component={PVTable} />
               <PrivateRoute path="/project/:projectID/inverter" component={InverterTable} />
               <Route path='*' component={NotFound404} />

@@ -11,9 +11,18 @@ const setProjectData = (state, action) => {
 }
 
 const updateProjectAttributes = (state, action) => {
-  return {
-    ...state,
-    ...action.values
+  const prevStateExceptUpdatedAt = {...state, updatedAt: ''}
+  const newStateExceptUpdatedAt = {...state, ...action.values, updatedAt: ''}
+  if (
+    JSON.stringify(prevStateExceptUpdatedAt) ===
+    JSON.stringify(newStateExceptUpdatedAt)
+  ) {
+    return {...state, ...action.values}
+  }
+  else {
+    const newState = {...state, ...action.values}
+    newState.buildings.forEach(building => building.reGenReport = true)
+    return newState
   }
 }
 
@@ -119,12 +128,7 @@ const editPVSpec = (state, action) => {
     mode: 'single',
     pv_model: {pvID: action.pvID, userID: action.pv_userID}
   }
-  if (
-    JSON.stringify(newBuildings[buildingIndex]) !==
-    JSON.stringify(state.buildings[buildingIndex])
-  ) {
-    newBuildings[buildingIndex].reGenReport = true
-  }
+  newBuildings[buildingIndex].reGenReport = true
   return {
     ...state,
     buildings: newBuildings
@@ -175,12 +179,7 @@ const editInverterSpec = (state, action) => {
     dc_cable_len: action.dc_cable_len,
     inverter_model: {inverterID: action.inverterID, userID: action.inverter_userID}
   }
-  if (
-    JSON.stringify(newBuildings[buildingIndex]) !==
-    JSON.stringify(state.buildings[buildingIndex])
-  ) {
-    newBuildings[buildingIndex].reGenReport = true
-  }
+  newBuildings[buildingIndex].reGenReport = true
   return {
     ...state,
     buildings: newBuildings
