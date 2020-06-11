@@ -49,7 +49,7 @@ const EditableCell = ({title, editable, children, dataIndex, record, handleSave,
     }
   };
 
-  let childNode = children;
+  let childNode = <div className="noneditable">{children}</div>
 
   if (editable) {
     childNode = editing ? (
@@ -155,13 +155,14 @@ export const HeaderTable = ({ buildingID }) => {
     }, {
       title: t('gain.total'),
       dataIndex: 'total',
+      width: '60%'
     }
   ];
   const formatedColumns = columns.map(col => ({
     ...col,
     onCell: record => ({
       record,
-      editable: col.dataIndex === 'total',
+      editable: col.dataIndex === 'total' && record.key !== 3, // 除最终上网电价都可以修改
       dataIndex: col.dataIndex,
       title: col.title,
       handleSave: handleSave,
@@ -170,7 +171,6 @@ export const HeaderTable = ({ buildingID }) => {
 
   // 保存用户输入至表格，并更新其他相关格
   const handleSave = row => {
-    console.log(row)
     const newData = [...dataSource];
     // 寻找更新的row index
     const index = newData.findIndex(item => row.key === item.key);
@@ -184,15 +184,17 @@ export const HeaderTable = ({ buildingID }) => {
       case 2:
         updateAttribute = 'export-credit'
         break
-      case 3:
-        updateAttribute = 'final-export-credit'
-        break
       case 4:
       default:
         updateAttribute = 'rate-of-electricity'
     }
+    newData[2].total = Number((newData[0].total + newData[1].total).toFixed(2))
     setdataSource(newData);
-    dispatch(updateReportAttributes({buildingID, [updateAttribute]: row.total}))
+    dispatch(updateReportAttributes({
+      buildingID,
+      [updateAttribute]: row.total,
+      'final-export-credit': newData[2].total
+    }))
   };
 
   const components = {
