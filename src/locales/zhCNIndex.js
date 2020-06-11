@@ -12,6 +12,7 @@ import tableGeneral from './zh-CN/tableGeneral.json';
 import project from './zh-CN/project.json';
 import report from './zh-CN/report.json'
 import investmentTable from './zh-CN/investmentTable.json'
+import gainTable from './zh-CN/gainTable.json'
 import reportCharts from './zh-CN/reportCharts.json'
 
 export default {
@@ -29,5 +30,6 @@ export default {
   ...project,
   ...report,
   ...investmentTable,
+  ...gainTable,
   ...reportCharts
 }

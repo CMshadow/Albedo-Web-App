@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import { Table, Form, Input, InputNumber, Card, Descriptions, Typography } from 'antd'
+import { Table, Form, Input, InputNumber, Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
-import { other2w, w2other } from '../../../../utils/unitConverter'
-import { updateReportAttributes } from '../../../../store/action/index'
+import { TableHeadDescription } from '../Descriptions/TableHeadDescription'
+import { other2w, w2other } from '../../utils/unitConverter'
+import { updateReportAttributes } from '../../store/action/index'
 import './InvestmentTable.scss'
 const EditableContext = React.createContext();
-const Item = Descriptions.Item
 const Title = Typography.Title
 
 const EditableRow = ({ index, ...props }) => {
@@ -78,7 +78,7 @@ const EditableCell = ({title, editable, children, dataIndex, record, handleSave,
       </Form.Item>
     ) : (
       <div
-        className="editable-cell-value-wrap"
+        className={record[dataIndex] ? "editable-cell-wrap" : "editable-cell-wrap-empty"}
         onClick={toggleEdit}
       >
         {children}
@@ -151,7 +151,6 @@ export const InvestmentTable = ({ buildingID }) => {
   )
   const uniqueACLength = reduceUnique(ACLength)
   // 项目DC装机量单位W
-  const DCCapacity = reportData[buildingID].ttl_dc_power_capacity
   const DCCapacityInW = other2w(
     reportData[buildingID].ttl_dc_power_capacity.value,
     reportData[buildingID].ttl_dc_power_capacity.unit
@@ -472,22 +471,15 @@ export const InvestmentTable = ({ buildingID }) => {
       }
     });
     setdataSource(newData);
-    dispatch(updateReportAttributes({buildingID, investment: newData}))
+    dispatch(updateReportAttributes({
+      buildingID,
+      investment: newData,
+      ttl_investment: ttlInvestment
+    }))
   };
 
   // 生成表单头
-  const genHeader = data => {
-    return (
-      <Descriptions column={2} bordered className='tableHeader'>
-        <Item label={t('investment.project-title')} span={1}>
-          {projectData.projectTitle + t('investment.title')}
-        </Item>
-        <Item label={t('investment.project-scale')} span={1}>
-          {`${DCCapacity.value} ${DCCapacity.unit}`}
-        </Item>
-      </Descriptions>
-    )
-  }
+  const genHeader = () => <TableHeadDescription buildingID={buildingID}/>
 
   const components = {
     body: {

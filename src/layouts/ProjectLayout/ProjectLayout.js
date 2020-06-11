@@ -11,7 +11,7 @@ import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
 import { getProject, saveProject, globalOptTiltAzimuth } from '../../pages/Project/service'
 import { getPV } from '../../pages/PVTable/service'
 import { getInverter } from '../../pages/InverterTable/service'
-import { saveReport } from '../../pages/Report/ReportPage/service'
+import { saveReport } from '../../pages/Report/service'
 import { setProjectData, setPVData, setPVActiveData, setInverterData, setInverterActiveData, updateProjectAttributes } from '../../store/action/index';
 
 import * as styles from './ProjectLayout.module.scss';

@@ -1,7 +1,7 @@
 import { Auth } from 'aws-amplify';
-import { setCognitoUserSession } from '../../../store/action/index';
+import { setCognitoUserSession } from '../../store/action/index';
 import { notification } from 'antd';
-import axios from '../../../axios.config';
+import axios from '../../axios.config';
 
 export const genReport = ({projectID, buildingID}) => async dispatch => {
   const session = await Auth.currentSession()

@@ -1,0 +1,34 @@
+{
+  "gain.title": "收益统计表",
+
+  "gain.series": "序号",
+  "gain.name": "名称",
+  "gain.unit": "单位",
+  "gain.description": "说明",
+  "gain.total": "合计",
+
+  "gain.series.one": "一",
+  "gain.series.two": "二",
+  "gain.series.three": "三",
+
+  "gain.name.feed-in-tariff": "电价补贴",
+  "gain.name.rate-of-electricity": "电价",
+  "gain.name.investment-gain": "投资收益",
+  "gain.name.construction": "建设期",
+
+  "gain.unit.price/kwh": "元/kWh",
+  "gain.unit.price": "元",
+  "gain.unit.year": "年",
+
+  "gain.description.feed-in-tariff": "上网电价补贴",
+  "gain.description.export-credit": "上网电价",
+  "gain.description.final-export-credit": "最终上网电价",
+  "gain.description.rate-of-electricity": "下网电价",
+
+  "gain.all-in": "全额上网",
+  "gain.hold": "全部自用",
+  "gain.cash-in-flow": "现金流入",
+  "gain.cash-out-flow": "现金流出",
+  "gain.net-cash-flow": "净现金流量",
+  "gain.acc-net-cash-flow": "累计净现金流量"
+}

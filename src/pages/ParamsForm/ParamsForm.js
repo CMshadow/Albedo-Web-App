@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProjectAttributes } from '../../../store/action/index'
+import { updateProjectAttributes } from '../../store/action/index'
 import { useHistory } from 'react-router-dom'
-import { saveProject } from '../../Project/service'
+import { saveProject } from '../Project/service'
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;

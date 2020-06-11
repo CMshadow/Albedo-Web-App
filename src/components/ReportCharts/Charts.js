@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Statistic, Row, Col } from 'antd';
-import { getReport } from '../service'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
