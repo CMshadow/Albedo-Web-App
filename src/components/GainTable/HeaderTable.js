@@ -121,6 +121,7 @@ export const HeaderTable = ({ buildingID }) => {
     {
       title: t('gain.series'),
       dataIndex: 'series',
+      align: 'center',
       width: '5%',
       render: (value, row, index) => {
         const obj = { children: value, props: {} };
@@ -131,6 +132,7 @@ export const HeaderTable = ({ buildingID }) => {
     }, {
       title: t('gain.name'),
       dataIndex: 'name',
+      align: 'center',
       width: '10%',
       render: (value, row, index) => {
         const obj = { children: value, props: {} };
@@ -141,6 +143,7 @@ export const HeaderTable = ({ buildingID }) => {
     }, {
       title: t('gain.unit'),
       dataIndex: 'unit',
+      align: 'center',
       width: '5%',
       render: (value, row, index) => {
         const obj = { children: value, props: {} };
@@ -151,11 +154,15 @@ export const HeaderTable = ({ buildingID }) => {
     }, {
       title: t('gain.description'),
       dataIndex: 'description',
+      align: 'center',
       width: '20%'
     }, {
       title: t('gain.total'),
       dataIndex: 'total',
-      width: '60%'
+      align: 'center',
+      width: '10%'
+    }, {
+      width: '50%'
     }
   ];
   const formatedColumns = columns.map(col => ({

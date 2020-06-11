@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import { Table, Form, Input, InputNumber, Card, Descriptions, Typography } from 'antd'
+import { Finance } from 'financejs'
+import { Table, Form, InputNumber, Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { HeaderTable } from './HeaderTable'
@@ -8,6 +9,8 @@ import { updateReportAttributes } from '../../store/action/index'
 import './GainTable.scss'
 const EditableContext = React.createContext();
 const Title = Typography.Title
+const Text = Typography.Text
+let finance = new Finance();
 
 const EditableRow = ({ index, ...props }) => {
   const { t } = useTranslation()
@@ -160,16 +163,19 @@ export const GainTable = ({ buildingID }) => {
       key: 0,
       title: t('gain.series.three'),
       dataIndex: 'series',
+      align: 'center',
       width: '5%',
     }, {
       key: 1,
       title: t('gain.name.investment-gain'),
       dataIndex: 'name',
+      align: 'center',
       width: '10%',
     }, {
       key: 2,
       title: t('gain.unit'),
       dataIndex: 'unit',
+      align: 'center',
       width: '5%',
     }, {
       key: 3,
@@ -294,6 +300,134 @@ export const GainTable = ({ buildingID }) => {
   // 生成表单头
   const genHeader = () => <HeaderTable buildingID={buildingID}/>
 
+  // 计算回本周期
+  const calculatePayback = (dataSource, type) => {
+    let dataIndexAccNet = `acc-net-cash-flow-${type}`
+    let dataIndexNet = `net-cash-flow-${type}`
+
+    let paybackPeriod = 0
+    let paybackAmount = dataSource[paybackPeriod][dataIndexAccNet]
+    while(paybackAmount < 0) {
+      paybackPeriod += 1
+      paybackAmount = dataSource[paybackPeriod][dataIndexAccNet]
+    }
+    const offset = paybackAmount / dataSource[paybackPeriod][dataIndexNet]
+    return Number((paybackPeriod - offset).toFixed(2))
+  }
+
+  // 生成表单统计数据
+  const genSummary = dataSource => {
+    const ttlCashInFlowToGrid = Number(dataSource.reduce((sum, record) =>
+      sum + record['cash-in-flow-togrid'], 0
+    ).toFixed(2))
+    const ttlCashInFlowSelfUse = Number(dataSource.reduce((sum, record) =>
+      sum + record['cash-in-flow-selfuse'], 0
+    ).toFixed(2))
+    const netCashFlowToGrid = dataSource.map(record =>
+      record['net-cash-flow-togrid']
+    )
+    const netCashFlowSelfUse = dataSource.map(record =>
+      record['net-cash-flow-selfuse']
+    )
+    const paybackPeriodToGrid =
+      dataSource.length > 0 ? calculatePayback(dataSource, 'togrid') : 0
+    const paybackPeriodSelfUse =
+      dataSource.length > 0 ? calculatePayback(dataSource, 'selfuse') : 0
+    const paybackPeriodAvg = Number(
+      ((paybackPeriodToGrid + paybackPeriodSelfUse)/2).toFixed(2)
+    )
+
+    return (
+      <>
+        <Table.Summary.Row className='summaryRow'>
+          <Table.Summary.Cell rowSpan={2}>
+            <Text strong>26</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell rowSpan={2}>
+            <Text strong>{t('gain.cash-in-flow.25year')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell rowSpan={2}>
+            <Text strong>{t('gain.unit.price')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{t('gain.togrid')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{ttlCashInFlowToGrid}</Text>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+        <Table.Summary.Row className='summaryRow'>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{t('gain.selfuse')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{ttlCashInFlowSelfUse}</Text>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+        <Table.Summary.Row className='summaryRow'>
+          <Table.Summary.Cell rowSpan={2}>
+            <Text strong>27</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell rowSpan={2}>
+            <Text strong>{t('gain.cash-in-flow.irr')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell rowSpan={2} />
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{t('gain.togrid')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>
+              {netCashFlowToGrid.length > 0 ? finance.IRR(...netCashFlowToGrid) : 0}
+            </Text>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+        <Table.Summary.Row className='summaryRow'>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{t('gain.selfuse')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>
+              {netCashFlowSelfUse.length > 0 ? finance.IRR(...netCashFlowSelfUse) : 0}
+            </Text>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+        <Table.Summary.Row className='summaryRow'>
+          <Table.Summary.Cell rowSpan={3}>
+            <Text strong>28</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell rowSpan={3}>
+            <Text strong>{t('gain.payback-period')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell rowSpan={3} >
+            <Text strong>{t('gain.unit.year')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{t('gain.togrid')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{paybackPeriodToGrid}</Text>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+        <Table.Summary.Row className='summaryRow'>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{t('gain.selfuse')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{paybackPeriodSelfUse}</Text>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+        <Table.Summary.Row className='summaryRow'>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{t('gain.average')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={2}>
+            <Text strong>{paybackPeriodAvg}</Text>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+      </>
+    );
+  }
+
   return (
     <Card
       title={
@@ -315,6 +449,7 @@ export const GainTable = ({ buildingID }) => {
         pagination={false}
         size='middle'
         title={genHeader}
+        summary={genSummary}
       />
     </Card>
   )

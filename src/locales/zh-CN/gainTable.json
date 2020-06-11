@@ -27,11 +27,16 @@
 
   "gain.togrid": "全额上网",
   "gain.selfuse": "全部自用",
+  "gain.average": "平均",
   "gain.cash-in-flow": "现金流入",
   "gain.cash-out-flow": "现金流出",
   "gain.net-cash-flow": "净现金流量",
   "gain.acc-net-cash-flow": "累计净现金流量",
 
   "gain.year.prefix": "第",
-  "gain.year.suffix": "年"
+  "gain.year.suffix": "年",
+
+  "gain.cash-in-flow.25year": "25年总收入",
+  "gain.cash-in-flow.irr": "财务内部收益率",
+  "gain.payback-period": "投资回报期"
 }
