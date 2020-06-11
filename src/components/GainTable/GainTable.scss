@@ -11,22 +11,25 @@
 
 .noneditable {
   min-height: 22px;
-  padding: 5px;
+  // padding: 5px;
 }
 
 .editable-cell {
   position: relative;
+  min-height: 22px;
+  padding: 4px;
 }
 
 .editable-cell-wrap {
   min-height: 22px;
-  padding: 5px;
+  padding: 4px;
+  border: 1px solid #ffffff;
   cursor: pointer;
 }
 
 .editable-cell-wrap-empty {
   min-height: 22px;
-  padding: 5px;
+  padding: 4px;
   cursor: pointer;
   border: 1px solid #ff4d4f;
   border-radius: 4px;
@@ -34,12 +37,14 @@
 
 .editable-row:hover .editable-cell-wrap {
   border: 1px solid $primary-color2;
+  min-height: 22px;
   border-radius: 4px;
   padding: 4px 11px;
 }
 
 .editable-row:hover .editable-cell-wrap-empty {
   border: 1px solid $primary-color2;
+  min-height: 22px;
   border-radius: 4px;
   padding: 4px 11px;
 }

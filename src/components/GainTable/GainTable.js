@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { HeaderTable } from './HeaderTable'
 import { other2wh, wh2kwh } from '../../utils/unitConverter'
+import { updateReportAttributes } from '../../store/action/index'
 import './GainTable.scss'
 const EditableContext = React.createContext();
 const Title = Typography.Title
@@ -29,7 +30,6 @@ const EditableCell = ({title, editable, children, dataIndex, record, handleSave,
   const [editing, setEditing] = useState(false);
   const inputRef = useRef();
   const form = useContext(EditableContext);
-  console.log(editable)
 
   useEffect(() => {
     if (editing) inputRef.current.focus()
@@ -69,7 +69,7 @@ const EditableCell = ({title, editable, children, dataIndex, record, handleSave,
       </Form.Item>
     ) : (
       <div
-        className={record[dataIndex] ? "editable-cell-wrap" : "editable-cell-wrap-empty"}
+        className="editable-cell-wrap"
         onClick={toggleEdit}
       >
         {children}
@@ -87,57 +87,73 @@ export const GainTable = ({ buildingID }) => {
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
 
-  const initDataSource = [
-    {
-      key: 0,
-      series: 0,
-      name: t('gain.name.construction'),
-      unit: t('gain.unit.price'),
-      'cash-in-flow-togrid': 0,
-      'cash-in-flow-selfuse': 0,
-      'cash-out-flow-togrid': reportData[buildingID].ttl_investment,
-      'cash-out-flow-selfuse': reportData[buildingID].ttl_investment,
-      'net-cash-flow-togrid': -reportData[buildingID].ttl_investment,
-      'net-cash-flow-selfuse': -reportData[buildingID].ttl_investment,
-      'acc-net-cash-flow-togrid': -reportData[buildingID].ttl_investment,
-      'acc-net-cash-flow-selfuse': -reportData[buildingID].ttl_investment,
-    }
-  ]
-  reportData[buildingID].year25_AC_power.forEach((obj, index) => {
-    const yearACInKwh = wh2kwh(other2wh(obj.value, obj.unit))
-    const cashInFlowToGrid = Number(
-      (yearACInKwh * reportData[buildingID]['final-export-credit']).toFixed(2)
-    )
-    const cashInFlowSelfUse = Number(
-      (yearACInKwh * reportData[buildingID]['rate-of-electricity']).toFixed(2)
-    )
-    const lastAccNetCashFlowToGrid =
-      initDataSource.slice(-1)[0]['acc-net-cash-flow-togrid']
-    const lastAccNetCashFlowSelfUse =
-      initDataSource.slice(-1)[0]['acc-net-cash-flow-selfuse']
-    const newAccNetCashFlowToGrid = Number(
-      (lastAccNetCashFlowToGrid + cashInFlowToGrid).toFixed(2)
-    )
-    const newAccNetCashFlowSelfUse = Number(
-      (lastAccNetCashFlowSelfUse + cashInFlowSelfUse).toFixed(2)
-    )
-    initDataSource.push({
-      key: index + 1,
-      series: index + 1,
-      unit: t('gain.unit.price'),
-      name: t('gain.year.prefix') + `${index + 1}` + t('gain.year.suffix'),
-      'cash-in-flow-togrid': cashInFlowToGrid,
-      'cash-in-flow-selfuse': cashInFlowSelfUse,
-      'cash-out-flow-togrid': 0,
-      'cash-out-flow-selfuse': 0,
-      'net-cash-flow-togrid': cashInFlowToGrid,
-      'net-cash-flow-selfuse': cashInFlowSelfUse,
-      'acc-net-cash-flow-togrid': newAccNetCashFlowToGrid,
-      'acc-net-cash-flow-selfuse': newAccNetCashFlowSelfUse
-    })
-  })
+  const [dataSource, setdataSource] = useState([])
 
-  const [dataSource, setdataSource] = useState(initDataSource)
+  // 组件渲染后动态更新数据
+  useEffect(() => {
+    const initDataSource = [
+      {
+        key: 0,
+        series: 0,
+        name: t('gain.name.construction'),
+        unit: t('gain.unit.price'),
+        'cash-in-flow-togrid': 0,
+        'cash-in-flow-selfuse': 0,
+        'cash-out-flow-togrid': reportData[buildingID].ttl_investment,
+        'cash-out-flow-selfuse': reportData[buildingID].ttl_investment,
+        'net-cash-flow-togrid': -reportData[buildingID].ttl_investment,
+        'net-cash-flow-selfuse': -reportData[buildingID].ttl_investment,
+        'acc-net-cash-flow-togrid': -reportData[buildingID].ttl_investment,
+        'acc-net-cash-flow-selfuse': -reportData[buildingID].ttl_investment,
+      }
+    ]
+    reportData[buildingID].year25_AC_power.forEach((obj, index) => {
+      const yearACInKwh = wh2kwh(other2wh(obj.value, obj.unit))
+      const cashInFlowToGrid = Number(
+        (yearACInKwh * reportData[buildingID]['final-export-credit']).toFixed(2)
+      )
+      const cashInFlowSelfUse = Number(
+        (yearACInKwh * reportData[buildingID]['rate-of-electricity']).toFixed(2)
+      )
+      const cashOutFlowToGrid =
+        reportData[buildingID].gain ?
+        reportData[buildingID].gain[index + 1]['cash-out-flow-togrid'] : 0
+      const cashOutFlowSelfUse =
+        reportData[buildingID].gain ?
+        reportData[buildingID].gain[index + 1]['cash-out-flow-selfuse'] : 0
+      const netCashFlowToGrid = Number(
+        (cashInFlowToGrid - cashOutFlowToGrid).toFixed(2)
+      )
+      const netCashFlowSelfUse = Number(
+        (cashInFlowSelfUse - cashOutFlowSelfUse).toFixed(2)
+      )
+      const lastAccNetCashFlowToGrid =
+        initDataSource.slice(-1)[0]['acc-net-cash-flow-togrid']
+      const lastAccNetCashFlowSelfUse =
+        initDataSource.slice(-1)[0]['acc-net-cash-flow-selfuse']
+      const newAccNetCashFlowToGrid = Number(
+        (lastAccNetCashFlowToGrid + netCashFlowToGrid).toFixed(2)
+      )
+      const newAccNetCashFlowSelfUse = Number(
+        (lastAccNetCashFlowSelfUse + netCashFlowSelfUse).toFixed(2)
+      )
+      initDataSource.push({
+        key: index + 1,
+        series: index + 1,
+        unit: t('gain.unit.price'),
+        name: t('gain.year.prefix') + `${index + 1}` + t('gain.year.suffix'),
+        'cash-in-flow-togrid': cashInFlowToGrid,
+        'cash-in-flow-selfuse': cashInFlowSelfUse,
+        'cash-out-flow-togrid': cashOutFlowToGrid,
+        'cash-out-flow-selfuse': cashOutFlowSelfUse,
+        'net-cash-flow-togrid': netCashFlowToGrid,
+        'net-cash-flow-selfuse': netCashFlowSelfUse,
+        'acc-net-cash-flow-togrid': newAccNetCashFlowToGrid,
+        'acc-net-cash-flow-selfuse': newAccNetCashFlowSelfUse
+      })
+    })
+    setdataSource(initDataSource)
+  }, [buildingID, reportData, t])
 
   const columns = [
     {
@@ -158,84 +174,114 @@ export const GainTable = ({ buildingID }) => {
     }, {
       key: 3,
       title: t('gain.cash-in-flow'),
-      width: '20%',
       children: [
         {
           title: t('gain.togrid'),
           dataIndex: 'cash-in-flow-togrid',
+          width: '10%'
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'cash-in-flow-selfuse',
+          width: '10%'
         }
       ]
     }, {
       key: 4,
       title: t('gain.cash-out-flow'),
-      width: '20%',
       children: [
         {
           title: t('gain.togrid'),
           dataIndex: 'cash-out-flow-togrid',
+          width: '10%'
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'cash-out-flow-selfuse',
+          width: '10%'
         }
       ]
     }, {
       key: 5,
       title: t('gain.net-cash-flow'),
-      width: '20%',
       children: [
         {
           title: t('gain.togrid'),
           dataIndex: 'net-cash-flow-togrid',
+          width: '10%'
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'net-cash-flow-selfuse',
+          width: '10%'
         }
       ]
     }, {
       key: 6,
       title: t('gain.acc-net-cash-flow'),
-      width: '20%',
       children: [
         {
           title: t('gain.togrid'),
           dataIndex: 'acc-net-cash-flow-togrid',
+          width: '10%'
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'acc-net-cash-flow-selfuse',
+          width: '10%'
         }
       ]
     }
   ];
-  const formatedColumns = columns.map(col => {
-    console.log(col.key === 4)
-    return({
-    ...col,
-    onCell: record => ({
-      record,
-      editable: col.key === 4,
-      dataIndex: col.dataIndex,
-      title: col.title,
-      handleSave: handleSave,
-    })
-  })});
+  const formatedColumns = columns.flatMap(col => {
+    if (col.children) {
+      return {
+        ...col,
+        children: col.children.map(sub => ({
+          ...sub,
+          onCell: record => {
+            return {
+              record,
+              editable: col.key === 4 && record.key !== 0,
+              dataIndex: sub.dataIndex,
+              title: sub.title,
+              handleSave: handleSave,
+            }
+          }
+        }))
+      }
+    } else {
+      return col
+    }
+  });
 
   // 保存用户输入至表格，并更新其他相关格
   const handleSave = row => {
-    console.log(row)
     const newData = [...dataSource];
     // 寻找更新的row index
     const index = newData.findIndex(item => row.key === item.key);
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
+    // 相关值计算
+    newData.slice(index, -1).forEach((record, recordIndex) => {
+      const newCashInFlowToGrid = Number(
+        (record['cash-in-flow-togrid'] - record['cash-out-flow-togrid']).toFixed(2)
+      )
+      const newCashInFlowSelfUse = Number(
+        record['cash-in-flow-selfuse'] - record['cash-out-flow-selfuse'].toFixed(2)
+      )
+      record['net-cash-flow-togrid'] = newCashInFlowToGrid
+      record['net-cash-flow-selfuse'] = newCashInFlowSelfUse
+      record['acc-net-cash-flow-togrid'] = Number((
+        newData[index + recordIndex - 1]['acc-net-cash-flow-togrid'] +
+        newCashInFlowToGrid
+      ).toFixed(2))
+      record['acc-net-cash-flow-selfuse'] = Number((
+        newData[index + recordIndex - 1]['acc-net-cash-flow-selfuse'] +
+        newCashInFlowSelfUse
+      ).toFixed(2))
+    })
+    dispatch(updateReportAttributes({
+      buildingID,
+      gain: newData,
+    }))
     setdataSource(newData);
-    // dispatch(updateReportAttributes({
-    //   buildingID,
-    //   [updateAttribute]: row.total,
-    //   'final-export-credit': newData[2].total
-    // }))
   };
 
   const components = {
@@ -262,6 +308,7 @@ export const GainTable = ({ buildingID }) => {
     >
       <Table
         components={components}
+        rowClassName={() => 'editable-row'}
         bordered
         dataSource={dataSource}
         columns={formatedColumns}
