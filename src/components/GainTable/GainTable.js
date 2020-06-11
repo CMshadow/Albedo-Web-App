@@ -265,12 +265,12 @@ export const GainTable = ({ buildingID }) => {
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
     // 相关值计算
-    newData.slice(index, -1).forEach((record, recordIndex) => {
+    newData.slice(index,).forEach((record, recordIndex) => {
       const newCashInFlowToGrid = Number(
         (record['cash-in-flow-togrid'] - record['cash-out-flow-togrid']).toFixed(2)
       )
       const newCashInFlowSelfUse = Number(
-        record['cash-in-flow-selfuse'] - record['cash-out-flow-selfuse'].toFixed(2)
+        (record['cash-in-flow-selfuse'] - record['cash-out-flow-selfuse']).toFixed(2)
       )
       record['net-cash-flow-togrid'] = newCashInFlowToGrid
       record['net-cash-flow-selfuse'] = newCashInFlowSelfUse
@@ -317,6 +317,7 @@ export const GainTable = ({ buildingID }) => {
 
   // 生成表单统计数据
   const genSummary = dataSource => {
+    //更新统计数值
     const ttlCashInFlowToGrid = Number(dataSource.reduce((sum, record) =>
       sum + record['cash-in-flow-togrid'], 0
     ).toFixed(2))
@@ -336,14 +337,10 @@ export const GainTable = ({ buildingID }) => {
     const paybackPeriodAvg = Number(
       ((paybackPeriodToGrid + paybackPeriodSelfUse)/2).toFixed(2)
     )
-
     return (
       <>
         <Table.Summary.Row className='summaryRow'>
-          <Table.Summary.Cell rowSpan={2}>
-            <Text strong>26</Text>
-          </Table.Summary.Cell>
-          <Table.Summary.Cell rowSpan={2}>
+          <Table.Summary.Cell rowSpan={2} colSpan={2}>
             <Text strong>{t('gain.cash-in-flow.25year')}</Text>
           </Table.Summary.Cell>
           <Table.Summary.Cell rowSpan={2}>
@@ -365,10 +362,7 @@ export const GainTable = ({ buildingID }) => {
           </Table.Summary.Cell>
         </Table.Summary.Row>
         <Table.Summary.Row className='summaryRow'>
-          <Table.Summary.Cell rowSpan={2}>
-            <Text strong>27</Text>
-          </Table.Summary.Cell>
-          <Table.Summary.Cell rowSpan={2}>
+          <Table.Summary.Cell rowSpan={2} colSpan={2}>
             <Text strong>{t('gain.cash-in-flow.irr')}</Text>
           </Table.Summary.Cell>
           <Table.Summary.Cell rowSpan={2} />
@@ -377,7 +371,10 @@ export const GainTable = ({ buildingID }) => {
           </Table.Summary.Cell>
           <Table.Summary.Cell colSpan={2}>
             <Text strong>
-              {netCashFlowToGrid.length > 0 ? finance.IRR(...netCashFlowToGrid) : 0}
+              {
+                netCashFlowToGrid.length > 0 ?
+                finance.IRR(...netCashFlowToGrid) : 0
+              }
             </Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
@@ -387,15 +384,15 @@ export const GainTable = ({ buildingID }) => {
           </Table.Summary.Cell>
           <Table.Summary.Cell colSpan={2}>
             <Text strong>
-              {netCashFlowSelfUse.length > 0 ? finance.IRR(...netCashFlowSelfUse) : 0}
+              {
+                netCashFlowSelfUse.length > 0 ?
+                finance.IRR(...netCashFlowSelfUse) : 0
+              }
             </Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
         <Table.Summary.Row className='summaryRow'>
-          <Table.Summary.Cell rowSpan={3}>
-            <Text strong>28</Text>
-          </Table.Summary.Cell>
-          <Table.Summary.Cell rowSpan={3}>
+          <Table.Summary.Cell rowSpan={3} colSpan={2}>
             <Text strong>{t('gain.payback-period')}</Text>
           </Table.Summary.Cell>
           <Table.Summary.Cell rowSpan={3} >
