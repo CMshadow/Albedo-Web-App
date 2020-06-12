@@ -8,6 +8,7 @@ import { updateReportAttributes } from '../../store/action/index'
 import './InvestmentTable.scss'
 const EditableContext = React.createContext();
 const Title = Typography.Title
+const Text = Typography.Text
 
 const EditableRow = ({ index, ...props }) => {
   const { t } = useTranslation()
@@ -272,16 +273,6 @@ export const InvestmentTable = ({ buildingID }) => {
         unit: t('investment.unit.price/xiang'),
         quantity: 1,
         unitPriceEditable: true
-      },{
-        key: 13,
-        series: t('investment.series.two'),
-        name: t('investment.name.totalInvestment'),
-        investmentWeight: t('investment.unit.price'),
-      },{
-        key: 14,
-        series: t('investment.series.three'),
-        name: t('investment.name.unitInvestment'),
-        investmentWeight: t('investment.unit.price/KW'),
       }
     ]
 
@@ -290,10 +281,8 @@ export const InvestmentTable = ({ buildingID }) => {
 
   // 需要整行合并单元格的row keys
   const disabledRowKeys = [0, 1, 3, 8, 9]
-  // 最后两个统计行的row keys
-  const summaryRowKeys = [13, 14]
   // 需要字体加粗的row keys
-  const strongRowKeys = [0, 13, 14]
+  const strongRowKeys = [0]
   // 生成表格列格式
   const columns = [
     {
@@ -326,12 +315,6 @@ export const InvestmentTable = ({ buildingID }) => {
             props: {colSpan: 6}
           };
         }
-        else if (summaryRowKeys.includes(row.key)) {
-          return {
-            children: text,
-            props: {colSpan: 4}
-          };
-        }
         return text
       },
     },{
@@ -339,7 +322,7 @@ export const InvestmentTable = ({ buildingID }) => {
       dataIndex: 'quantity',
       editable: true,
       render: (text, row, index) => {
-        if (disabledRowKeys.concat(summaryRowKeys).includes(row.key)) {
+        if (disabledRowKeys.includes(row.key)) {
           return {
             children: text,
             props: {colSpan: 0}
@@ -357,7 +340,7 @@ export const InvestmentTable = ({ buildingID }) => {
       editable: true,
       width: '125px',
       render: (text, row, index) => {
-        if (disabledRowKeys.concat(summaryRowKeys).includes(row.key)) {
+        if (disabledRowKeys.includes(row.key)) {
           return {
             children: text,
             props: {colSpan: 0}
@@ -370,7 +353,7 @@ export const InvestmentTable = ({ buildingID }) => {
       dataIndex: 'unit',
       editable: true,
       render: (text, row, index) => {
-        if (disabledRowKeys.concat(summaryRowKeys).includes(row.key)) {
+        if (disabledRowKeys.includes(row.key)) {
           return {
             children: text,
             props: {colSpan: 0}
@@ -383,7 +366,6 @@ export const InvestmentTable = ({ buildingID }) => {
       dataIndex: 'totalPrice',
       width: '125px',
       render: (text, row, index) => {
-        if (row.key === 13 || row.key === 14) return <strong>{text}</strong>
         if (disabledRowKeys.includes(row.key)) {
           return {
             children: text >= 0 ? text.toFixed(2) : null,
@@ -396,7 +378,6 @@ export const InvestmentTable = ({ buildingID }) => {
       title: t('investment.investmentWeight'),
       dataIndex: 'investmentWeight',
       render: (text, row, index) => {
-        if (row.key === 13 || row.key === 14) return <strong>{text}</strong>
         if (disabledRowKeys.includes(row.key)) {
           return {
             children: text ? `${text} %` : text,
@@ -449,37 +430,66 @@ export const InvestmentTable = ({ buildingID }) => {
       row.totalPrice = row.unitPrice * row.quantity
     }
     newData.splice(index, 1, { ...item, ...row });
-    // 更新所有的总价之和
+    // 所有的总价之和
     let ttlInvestment = 0
     newData.forEach(row => {
-      if (row.key !== 13 && row.key !== 14) {
-        ttlInvestment += row.totalPrice ? row.totalPrice : 0
-      }
+      ttlInvestment += row.totalPrice ? row.totalPrice : 0
     })
-    // 更新总投资的row
-    const ttlInvestmentIndex = newData.findIndex(item => item.key === 13);
-    newData[ttlInvestmentIndex].totalPrice = ttlInvestment.toFixed(2)
-    // 更新单位千瓦投资的row
-    const unitInvestmentIndex = newData.findIndex(item => item.key === 14);
-    newData[unitInvestmentIndex].totalPrice =
-      (ttlInvestment / (DCCapacityInW / 1000)).toFixed(2)
+    // 单位千瓦投资
+    const avgInvestmentPerKw = (ttlInvestment / (DCCapacityInW / 1000)).toFixed(2)
     // 更新每一行的投资占比
     newData.forEach(row => {
-      if (!summaryRowKeys.includes(row.key)) {
-        row.investmentWeight = row.totalPrice ?
-          (row.totalPrice / ttlInvestment * 100).toFixed(2) : null
-      }
+      row.investmentWeight = row.totalPrice ?
+        (row.totalPrice / ttlInvestment * 100).toFixed(2) : null
     });
     setdataSource(newData);
     dispatch(updateReportAttributes({
       buildingID,
       investment: newData,
-      ttl_investment: ttlInvestment
+      ttl_investment: ttlInvestment,
+      investmentPerKw: avgInvestmentPerKw
     }))
   };
 
   // 生成表单头
   const genHeader = () => <TableHeadDescription buildingID={buildingID}/>
+
+  const genSummary = () => {
+    return (
+      <>
+        <Table.Summary.Row className='summaryRow'>
+          <Table.Summary.Cell>
+            <Text strong>{t('investment.series.two')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell>
+            <Text strong>{t('investment.name.totalInvestment')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={4} />
+          <Table.Summary.Cell>
+            <Text strong>{reportData[buildingID].ttl_investment}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell>
+            <Text strong>{t('investment.unit.price')}</Text>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+        <Table.Summary.Row className='summaryRow'>
+          <Table.Summary.Cell>
+            <Text strong>{t('investment.series.three')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell>
+            <Text strong>{t('investment.name.unitInvestment')}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={4} />
+          <Table.Summary.Cell>
+            <Text strong>{reportData[buildingID].investmentPerKw}</Text>
+          </Table.Summary.Cell>
+          <Table.Summary.Cell>
+            <Text strong>{t('investment.unit.price/KW')}</Text>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+      </>
+    )
+  }
 
   const components = {
     body: {
@@ -506,6 +516,7 @@ export const InvestmentTable = ({ buildingID }) => {
         pagination={false}
         size='middle'
         title={genHeader}
+        summary={genSummary}
       />
     </Card>
   )
