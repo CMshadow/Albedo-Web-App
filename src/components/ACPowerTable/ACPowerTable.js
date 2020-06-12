@@ -94,10 +94,7 @@ export const ACPowerTable = ({ buildingID }) => {
   return (
     <Card
       title={
-        <Title
-          className='cardTitle'
-          level={4}
-        >
+        <Title className='cardTitle' level={4}>
           {projectData.projectTitle + t('acPowerTable.title')}
         </Title>
       }

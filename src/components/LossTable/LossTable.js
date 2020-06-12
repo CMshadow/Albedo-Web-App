@@ -110,10 +110,7 @@ export const LossTable = ({ buildingID }) => {
   return (
     <Card
       title={
-        <Title
-          className='cardTitle'
-          level={4}
-        >
+        <Title className='cardTitle' level={4}>
           {projectData.projectTitle + t('lossTable.title')}
         </Title>
       }
