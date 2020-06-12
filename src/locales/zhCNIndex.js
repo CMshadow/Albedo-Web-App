@@ -15,6 +15,7 @@ import investmentTable from './zh-CN/investmentTable.json'
 import gainTable from './zh-CN/gainTable.json'
 import acPowerTable from './zh-CN/acPowerTable.json'
 import lossTable from './zh-CN/lossTable.json'
+import irrTable from './zh-CN/irradianceTable.json'
 import reportCharts from './zh-CN/reportCharts.json'
 
 export default {
@@ -35,5 +36,6 @@ export default {
   ...gainTable,
   ...reportCharts,
   ...acPowerTable,
-  ...lossTable
+  ...lossTable,
+  ...irrTable
 }

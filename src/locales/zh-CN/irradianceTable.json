@@ -1,0 +1,11 @@
+{
+  "irrTable.title": "拟建屋顶光伏年度/各月辐射量表",
+
+  "irrTable.irradiance": "总辐射量",
+  "irrTable.irradianceYear": "年总辐射量",
+  "irrTable.avgPkHr": "每天平均峰值日照小时数",
+  "irrTable.month": "月",
+
+  "irrTable.tilt": "光伏组件倾角",
+  "irrTable.azimuth": "光伏组件朝向"
+}

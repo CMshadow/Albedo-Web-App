@@ -41,17 +41,14 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
     sm: 1,
     md: dataSource.length > 1 ? 2 : 1,
     lg: dataSource.length > 1 ? 2 : 1,
-    xl: dataSource.length > 1 ? 3 : 1,
+    xl: dataSource.length > 1 ? 2 : 1,
     xxl: dataSource.length > 1 ? 3 : 1
   }
 
   return (
     <Card
       title={
-        <Title
-          className='cardTitle'
-          level={4}
-        >
+        <Title className='cardTitle' level={4}>
           {projectData.projectTitle + t('table.title.inverterDetail')}
         </Title>
       }
@@ -63,7 +60,9 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
         dataSource={dataSource}
         renderItem={inverterID => (
           <List.Item>
-            <InverterDetailTable inverterID={inverterID} count={uniqueInverterCount[inverterID]}/>
+            <Card hoverable bodyStyle={{padding: '5px'}} bordered={false}>
+              <InverterDetailTable inverterID={inverterID} count={uniqueInverterCount[inverterID]}/>
+            </Card>
           </List.Item>
         )}
       />

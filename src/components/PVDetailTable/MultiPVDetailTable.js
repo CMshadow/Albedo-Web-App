@@ -42,17 +42,14 @@ export const MultiPVDetailTable = ({ buildingID }) => {
     sm: 1,
     md: dataSource.length > 1 ? 2 : 1,
     lg: dataSource.length > 1 ? 2 : 1,
-    xl: dataSource.length > 1 ? 3 : 1,
+    xl: dataSource.length > 1 ? 2 : 1,
     xxl: dataSource.length > 1 ? 3 : 1
   }
 
   return (
     <Card
       title={
-        <Title
-          className='cardTitle'
-          level={4}
-        >
+        <Title className='cardTitle' level={4}>
           {projectData.projectTitle + t('table.title.pvDetail')}
         </Title>
       }
@@ -64,7 +61,9 @@ export const MultiPVDetailTable = ({ buildingID }) => {
         dataSource={dataSource}
         renderItem={pvID => (
           <List.Item>
-            <PVDetailTable pvID={pvID} count={uniquePVCount[pvID]}/>
+            <Card hoverable bodyStyle={{padding: '5px'}} bordered={false}>
+              <PVDetailTable pvID={pvID} count={uniquePVCount[pvID]}/>
+            </Card>
           </List.Item>
         )}
       />

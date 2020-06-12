@@ -8,9 +8,11 @@ import { InvestmentTable } from '../../components/InvestmentTable/InvestmentTabl
 import { GainTable } from '../../components/GainTable/GainTable'
 import { ACPowerTable } from '../../components/ACPowerTable/ACPowerTable'
 import { LossTable } from '../../components/LossTable/LossTable'
+import { IrradianceTable } from '../../components/IrradianceTable/IrradianceTable'
 import { MultiPVDetailTable } from '../../components/PVDetailTable/MultiPVDetailTable'
 import { MultiInverterDetailTable } from '../../components/InverterDetailTable/MultiInverterDetailTable'
 import { genReport, getReport } from './service'
+import { saveProject } from '../Project/service'
 import { setReportData, setBuildingReGenReport } from '../../store/action/index'
 import * as styles from './Report.module.scss'
 
@@ -39,15 +41,18 @@ const Report = () => {
       })
     } else {
       if (curBuilding.reGenReport) {
-        dispatch(genReport({projectID, buildingID: buildingID}))
+        dispatch(saveProject(projectID))
         .then(res => {
-          dispatch(setReportData({buildingID: buildingID, data: res}))
-          dispatch(setBuildingReGenReport({buildingID, reGenReport: false}))
-          setloading(false)
-        })
-        .catch(err => {
-          setloading(false)
-        })
+          dispatch(genReport({projectID, buildingID: buildingID}))
+          .then(res => {
+            dispatch(setReportData({buildingID: buildingID, data: res}))
+            dispatch(setBuildingReGenReport({buildingID, reGenReport: false}))
+            setloading(false)
+          })
+          .catch(err => {
+            setloading(false)
+          })
+        })  
       } else if (!curBuilding.reGenReport && !reportData[buildingID]) {
         dispatch(getReport({projectID, buildingID: buildingID}))
         .then(res => {
@@ -86,6 +91,9 @@ const Report = () => {
       </TabPane>
       <TabPane tab={t('report.inverterDetail')} key="6">
         <MultiInverterDetailTable buildingID={buildingID}/>
+      </TabPane>
+      <TabPane tab={t('report.irrTable')} key="7">
+        <IrradianceTable buildingID={buildingID}/>
       </TabPane>
     </Tabs>
     // <Charts
