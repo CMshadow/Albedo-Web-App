@@ -490,7 +490,6 @@ export const InvestmentTable = ({ buildingID }) => {
 
   return (
     <Card
-      className='card'
       title={
         <Title
           className='cardTitle'

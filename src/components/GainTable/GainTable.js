@@ -372,7 +372,7 @@ export const GainTable = ({ buildingID }) => {
           <Table.Summary.Cell colSpan={2}>
             <Text strong>
               {
-                netCashFlowToGrid.length > 0 ?
+                netCashFlowToGrid.length > 0 && netCashFlowToGrid.every(val => !isNaN(val)) ?
                 finance.IRR(...netCashFlowToGrid) : 0
               }
             </Text>
@@ -385,7 +385,7 @@ export const GainTable = ({ buildingID }) => {
           <Table.Summary.Cell colSpan={2}>
             <Text strong>
               {
-                netCashFlowSelfUse.length > 0 ?
+                netCashFlowSelfUse.length > 0 && netCashFlowSelfUse.every(val => !isNaN(val))?
                 finance.IRR(...netCashFlowSelfUse) : 0
               }
             </Text>

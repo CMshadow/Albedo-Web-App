@@ -109,7 +109,7 @@ const ProjectLayout = (props) => {
                   </Space>
                 }
               >
-                {
+                { projectData.buildings &&
                   projectData.buildings.filter(building =>
                     building.data.length > 0 &&
                     building.data[0].inverter_wiring.length > 0

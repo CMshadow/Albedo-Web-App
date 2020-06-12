@@ -1,0 +1,17 @@
+{
+  "acPowerTable.title": "逐年上网发电量表",
+
+  "acPowerTable.year": "年份",
+  "acPowerTable.unit": "单位",
+  "acPowerTable.prod": "发电量",
+  "acPowerTable.kwh_over_kwp": "小时数",
+
+  "acPowerTable.year.prefix": "第",
+  "acPowerTable.year.suffix": "年",
+
+  "acPowerTable.totalACPower": "25年总发电量",
+  "acPowerTable.avgACPower": "年平均发电量",
+  "acPowerTable.avgKwhOverKwp": "平均利用小时数",
+
+  "acPowerTable.unit.h" : "小时"
+}

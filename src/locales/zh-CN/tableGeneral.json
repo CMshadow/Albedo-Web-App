@@ -7,5 +7,21 @@
 
   "filter.search": "搜索",
   "filter.reset": "重置",
-  "filter.filter": "过滤"
+  "filter.filter": "过滤",
+
+  "table.series": "序号",
+  "table.paramName": "参数名称",
+  "table.unit": "单位",
+  "table.param": "参数",
+  "table.count": "数量",
+
+  "table.pvName": "光伏组件名称",
+  "table.inverterName": "逆变器名称",
+
+  "table.title.pvDetail": "光伏组件主要参数表",
+  "table.title.inverterDetail": "逆变器主要参数表",
+
+  "table.yes/no": "有/无",
+  "table.true": "有",
+  "table.false": "无"
 }

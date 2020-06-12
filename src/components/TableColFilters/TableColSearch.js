@@ -6,7 +6,7 @@ import { SearchOutlined, FilterFilled, FilterOutlined } from '@ant-design/icons'
 import * as styles from './TabelColSearch.module.scss';
 import { getMin, getMax } from '../../utils/getObjectsMinMax';
 
-export const SearchString = ({colKey}) => {
+export const SearchString = ({colKey, onClick}) => {
   let searchInputRef;
   const { t } = useTranslation()
   const [searchedCol, setsearchedCol] = useState('')
@@ -61,14 +61,19 @@ export const SearchString = ({colKey}) => {
     onFilterDropdownVisibleChange: visible => {
       if (visible) {setTimeout(() => searchInputRef.select())}
     },
-    render: text =>
+    render: (text, record) =>
       searchedCol === colKey ?
-      <Highlighter
-        highlightClassName={styles.highlight}
-        searchWords={[searchedText]}
-        autoEscape={true}
-        textToHighlight={text.toString()}
-      /> : (text)
+      <Button type='link' onClick={() => {onClick(record.pvID || record.inverterID)}}>
+        <Highlighter
+          highlightClassName={styles.highlight}
+          searchWords={[searchedText]}
+          autoEscape={true}
+          textToHighlight={text.toString()}
+        />
+      </Button> :
+      <Button type='link' onClick={() => {onClick(record.pvID || record.inverterID)}}>
+        {text}
+      </Button>
   }
 };
 

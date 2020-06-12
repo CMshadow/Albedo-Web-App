@@ -1,9 +1,10 @@
-import React from 'react';
-import { Table, Divider, Button } from 'antd';
+import React, { useState } from 'react';
+import { Table, Divider, Button, Drawer } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { SearchString, SearchRange } from '../TableColFilters/TableColSearch';
 import { DeleteAction } from './Actions';
+import { InverterDetailTable } from '../InverterDetailTable/InverterDetailTable'
 
 // 表单中的数字columns和单位
 // 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
@@ -20,6 +21,14 @@ export const InverterTable = ({
   setshowModal, seteditRecord, showActionCol=false
 }) => {
   const { t } = useTranslation();
+  const [showDrawer, setshowDrawer] = useState(false)
+  const [viewInverterID, setviewInverterID] = useState(null)
+
+  // 点击组件名显示详细信息
+  const onClickName = (inverterID) => {
+    setviewInverterID(inverterID)
+    setshowDrawer(true)
+  }
 
   // 生成表单所有数字列属性
   const tableCols = colKeys.map(([key, type, unit, width], index) => {
@@ -46,7 +55,7 @@ export const InverterTable = ({
     sorter: (a, b) => a.name - b.name,
     fixed: 'left',
     width: 250,
-    ...SearchString({colKey: 'name'}),
+    ...SearchString({colKey: 'name', onClick: onClickName}),
   })
   // 生成表单操作列属性
   if (showActionCol) {
@@ -80,19 +89,31 @@ export const InverterTable = ({
   }
 
   return (
-    <Table
-      columns={tableCols}
-      dataSource={activeData}
-      rowKey='inverterID'
-      loading={loading}
-      pagination={{
-        position: ['bottomCenter'],
-        total: activeData.length,
-        showTotal: total => `${total}` + t('table.totalCount'),
-        defaultPageSize: 10,
-        showSizeChanger: true
-      }}
-      scroll={{ x: '100%', y: 'calc(100vh - 275px)' }}
-    />
+    <>
+      <Table
+        columns={tableCols}
+        dataSource={activeData}
+        rowKey='inverterID'
+        loading={loading}
+        pagination={{
+          position: ['bottomCenter'],
+          total: activeData.length,
+          showTotal: total => `${total}` + t('table.totalCount'),
+          defaultPageSize: 10,
+          showSizeChanger: true
+        }}
+        scroll={{ x: '100%', y: 'calc(100vh - 275px)' }}
+      />
+      <Drawer
+        bodyStyle={{padding: '0px'}}
+        placement="right"
+        closable={false}
+        onClose={() => setshowDrawer(false)}
+        visible={showDrawer}
+        width='50vw'
+      >
+        <InverterDetailTable inverterID={viewInverterID} />
+      </Drawer>
+    </>
   )
 }

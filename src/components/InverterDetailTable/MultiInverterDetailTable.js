@@ -1,0 +1,72 @@
+import React from 'react'
+import { List, Card, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { InverterDetailTable } from './InverterDetailTable'
+const Title = Typography.Title
+const Text = Typography.Text
+
+const reduceUnique = data => {
+  return data.reduce((acc, val) => {
+    Object.keys(acc).includes(val.inverterID) ?
+    acc[val.inverterID] += val.count :
+    acc[val.inverterID] = val.count
+    return acc
+  }, {})
+}
+
+export const MultiInverterDetailTable = ({ buildingID }) => {
+  const { t } = useTranslation()
+  const projectData = useSelector(state => state.project)
+  const inverterData = useSelector(state => state.inverter).data
+  const buildingData = projectData.buildings.find(building =>
+    building.buildingID === buildingID
+  )
+
+  // 统计每种用到的逆变器id及数量
+  const inverterCount = buildingData.data.flatMap(spec =>
+    spec.inverter_wiring.map(inverterSpec => ({
+      inverterID: inverterData.find(inverter =>
+        inverter.inverterID === inverterSpec.inverter_model.inverterID
+      ).inverterID,
+      count: 1
+    }))
+  )
+  const uniqueInverterCount = reduceUnique(inverterCount)
+  const dataSource = Object.keys(uniqueInverterCount)
+
+  const listGrid = {
+    gutter: 16,
+    xs: 1,
+    sm: 1,
+    md: dataSource.length > 1 ? 2 : 1,
+    lg: dataSource.length > 1 ? 2 : 1,
+    xl: dataSource.length > 1 ? 3 : 1,
+    xxl: dataSource.length > 1 ? 3 : 1
+  }
+
+  return (
+    <Card
+      title={
+        <Title
+          className='cardTitle'
+          level={4}
+        >
+          {projectData.projectTitle + t('table.title.inverterDetail')}
+        </Title>
+      }
+      headStyle={{textAlign: 'center'}}
+    >
+      <List
+        grid={listGrid}
+        itemLayout="horizontal"
+        dataSource={dataSource}
+        renderItem={inverterID => (
+          <List.Item>
+            <InverterDetailTable inverterID={inverterID} count={uniqueInverterCount[inverterID]}/>
+          </List.Item>
+        )}
+      />
+    </Card>
+  )
+}

@@ -1,6 +1,10 @@
 {
   "report.investmentTable": "投资统计表",
   "report.gainTable": "收益统计表",
+  "report.acPowerTable": "上网发电量表",
+  "report.lossTable": "系统损失表",
+  "report.pvDetail": "光伏组件参数表",
+  "report.inverterDetail": "逆变器参数表",
 
   "report.paramsForm.title": "设置参数",
 

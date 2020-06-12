@@ -6,6 +6,10 @@ import { useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { InvestmentTable } from '../../components/InvestmentTable/InvestmentTable'
 import { GainTable } from '../../components/GainTable/GainTable'
+import { ACPowerTable } from '../../components/ACPowerTable/ACPowerTable'
+import { LossTable } from '../../components/LossTable/LossTable'
+import { MultiPVDetailTable } from '../../components/PVDetailTable/MultiPVDetailTable'
+import { MultiInverterDetailTable } from '../../components/InverterDetailTable/MultiInverterDetailTable'
 import { genReport, getReport } from './service'
 import { setReportData, setBuildingReGenReport } from '../../store/action/index'
 import * as styles from './Report.module.scss'
@@ -25,11 +29,12 @@ const Report = () => {
   const curBuilding = projectData.buildings.find(building =>
     building.buildingID === buildingID
   )
+  console.log(reportData[buildingID])
 
   useEffect(() => {
     if (!projectData.p_loss_soiling) {
       history.push({
-        pathname: `${history.location.pathname}/params`,
+        pathname: `/project/${projectID}/report/params`,
         state: { buildingID: buildingID }
       })
     } else {
@@ -63,12 +68,24 @@ const Report = () => {
     <div className={styles.spin}>
       <Spin indicator={<LoadingOutlined spin />} size='large'/>
     </div> :
-    <Tabs defaultActiveKey="1" type="card">
+    <Tabs defaultActiveKey="1" type="card" className={styles.tabs}>
       <TabPane tab={t('report.investmentTable')} key="1">
         <InvestmentTable buildingID={buildingID}/>
       </TabPane>
       <TabPane tab={t('report.gainTable')} key="2">
         <GainTable buildingID={buildingID}/>
+      </TabPane>
+      <TabPane tab={t('report.acPowerTable')} key="3">
+        <ACPowerTable buildingID={buildingID}/>
+      </TabPane>
+      <TabPane tab={t('report.lossTable')} key="4">
+        <LossTable buildingID={buildingID}/>
+      </TabPane>
+      <TabPane tab={t('report.pvDetail')} key="5">
+        <MultiPVDetailTable buildingID={buildingID}/>
+      </TabPane>
+      <TabPane tab={t('report.inverterDetail')} key="6">
+        <MultiInverterDetailTable buildingID={buildingID}/>
       </TabPane>
     </Tabs>
     // <Charts

@@ -1,7 +1,8 @@
-import React from 'react';
-import { Table } from 'antd';
+import React, { useState } from 'react';
+import { Table, Drawer } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { SearchString, SearchRange } from '../TableColFilters/TableColSearch';
+import { PVDetailTable } from '../PVDetailTable/PVDetailTable'
 
 // 表单中的数字columns和单位
 // 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
@@ -12,6 +13,14 @@ const colKeys = [
 
 export const PVTableViewOnly = ({data, activeData, setactiveData}) => {
   const { t } = useTranslation();
+  const [showDrawer, setshowDrawer] = useState(false)
+  const [viewPVID, setviewPVID] = useState(false)
+
+  // 点击组件名显示详细信息
+  const onClickName = (pvID) => {
+    setviewPVID(pvID)
+    setshowDrawer(true)
+  }
 
   // 组件材质筛选选项
   const moduleMaterialFilters = [
@@ -54,7 +63,7 @@ export const PVTableViewOnly = ({data, activeData, setactiveData}) => {
     sorter: (a, b) => a.name - b.name,
     fixed: 'left',
     width: 250,
-    ...SearchString({colKey: 'name'}),
+    ...SearchString({colKey: 'name', onClick: onClickName}),
   })
   // 生成表单组件材质列属性
   tableCols.push({
@@ -68,18 +77,30 @@ export const PVTableViewOnly = ({data, activeData, setactiveData}) => {
   })
 
   return (
-    <Table
-      columns={tableCols}
-      dataSource={activeData}
-      rowKey='pvID'
-      pagination={{
-        position: ['bottomCenter'],
-        total: activeData.length,
-        showTotal: total => `${total}` + t('table.totalCount'),
-        defaultPageSize: 10,
-        showSizeChanger: true
-      }}
-      scroll={{ x: '100%', y: 'calc(100vh - 275px)' }}
-    />
+    <>
+      <Table
+        columns={tableCols}
+        dataSource={activeData}
+        rowKey='pvID'
+        pagination={{
+          position: ['bottomCenter'],
+          total: activeData.length,
+          showTotal: total => `${total}` + t('table.totalCount'),
+          defaultPageSize: 10,
+          showSizeChanger: true
+        }}
+        scroll={{ x: '100%', y: 'calc(100vh - 275px)' }}
+      />
+      <Drawer
+        bodyStyle={{padding: '0px'}}
+        placement="right"
+        closable={false}
+        onClose={() => setshowDrawer(false)}
+        visible={showDrawer}
+        width='50vw'
+      >
+        <PVDetailTable pvID={viewPVID} />
+      </Drawer>
+    </>
   )
 }

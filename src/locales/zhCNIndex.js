@@ -13,6 +13,8 @@ import project from './zh-CN/project.json';
 import report from './zh-CN/report.json'
 import investmentTable from './zh-CN/investmentTable.json'
 import gainTable from './zh-CN/gainTable.json'
+import acPowerTable from './zh-CN/acPowerTable.json'
+import lossTable from './zh-CN/lossTable.json'
 import reportCharts from './zh-CN/reportCharts.json'
 
 export default {
@@ -31,5 +33,7 @@ export default {
   ...report,
   ...investmentTable,
   ...gainTable,
-  ...reportCharts
+  ...reportCharts,
+  ...acPowerTable,
+  ...lossTable
 }
