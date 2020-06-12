@@ -9,7 +9,7 @@
   "lossTable.p_loss_degradation": "光致衰减（首年衰减）",
   "lossTable.p_loss_degradation_rest": "次年后衰减",
   "lossTable.p_loss_connection": "组件连接损失",
-  "lossTable.p_loss_conversion": "逆变器效率",
+  "lossTable.p_loss_conversion": "逆变器损失",
   "lossTable.p_loss_transformer": "升压变压器损耗",
   "lossTable.p_loss_dc_wiring": "直流线损",
   "lossTable.p_loss_ac_wiring": "低压汇流线损",
