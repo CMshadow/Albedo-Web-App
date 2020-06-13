@@ -1,3 +1,5 @@
+import { getLanguage } from './getLanguage'
+
 export const watthour2MJ = (data) => {
   return data * 0.0036
 }
@@ -104,4 +106,27 @@ export const wh2WANkwh = (data) => {
 
 export const WANkwh2wh = (data) => {
   return data * 1e7
+}
+
+export const money2Other = (data) => {
+  const locale = getLanguage()
+  switch (locale) {
+    case 'zh-CN':
+      if (Math.abs(data) < 1000) {
+        return { 'value': data, 'unit': '' }
+      } else if (Math.abs(data) / 1e3 < 10) {
+        return { 'value': data / 1e3, 'unit': 'qian' }
+      } else {
+        return { 'value': data / 1e4, 'unit': 'wan' }
+      }
+    default:
+      if (Math.abs(data) < 1000) {
+        return { 'value': data, 'unit': '' }
+      } else if (Math.abs(data) / 1e6 < 1000) {
+        return { 'value': data / 1e3, 'unit': 'qian' }
+      } else {
+        return { 'value': data / 1e6, 'unit': 'baiwan' }
+      }
+  }
+
 }

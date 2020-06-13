@@ -38,5 +38,6 @@
 
   "gain.cash-in-flow.25year": "25年总收入",
   "gain.cash-in-flow.irr": "财务内部收益率",
-  "gain.payback-period": "投资回报期"
+  "gain.payback-period": "投资回报期",
+  "gain.cannot-payback": "25年内无法回本"
 }

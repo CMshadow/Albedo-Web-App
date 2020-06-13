@@ -1,53 +1,50 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Statistic, Row, Col } from 'antd';
-import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { Card, Statistic, Row, Col, Typography } from 'antd';
 import { useTranslation } from 'react-i18next'
+import { CashFlowChart } from './CashFlowChart'
+import { ACPowerChart } from './ACPowerChart'
+import { LossChart } from './LossChart'
 import * as styles from './Charts.module.scss'
+const Title = Typography.Title
 
-export const Charts = ({loading, ...values}) => {
+export const Charts = ({ buildingID }) => {
   const { t } = useTranslation()
 
   return (
-    <Row gutter={12}>
-      <Col span={8}>
-        <Card loading={loading}>
-          <Statistic
-            className={styles.text}
-            title={t('report.charts.total_pv_capacity')}
-            value={
-              values.ttl_dc_power_capacity ?
-              values.ttl_dc_power_capacity.value:
-              null
-            }
-            valueStyle={{ color: '#faad14' }}
-            suffix={
-              values.ttl_dc_power_capacity ?
-              values.ttl_dc_power_capacity.unit :
-              null
-            }
-          />
-        </Card>
-      </Col>
-      <Col span={8}>
-        <Card loading={loading}>
-          <Statistic
-            className={styles.text}
-            title={t('report.charts.year_1_production')}
-            value={
-              values.year_AC_power ?
-              values.year_AC_power.value :
-              null
-            }
-            valueStyle={{ color: '#faad14' }}
-            suffix={
-              values.year_AC_power ?
-              values.year_AC_power.unit :
-              null
-            }
-          />
-        </Card>
-      </Col>
-    </Row>
+    <>
+      <Card
+        title={
+          <Title className={styles.text} level={4}>
+            {t('cashflowChart.title')}
+          </Title>
+        }
+        bordered={false}
+        hoverable
+      >
+        <CashFlowChart buildingID={buildingID}/>
+      </Card>
+      <Card
+        title={
+          <Title className={styles.text} level={4}>
+            {t('acPowerChart.title')}
+          </Title>
+        }
+        bordered={false}
+        hoverable
+      >
+        <ACPowerChart buildingID={buildingID}/>
+      </Card>
+      <Card
+        title={
+          <Title className={styles.text} level={4}>
+            {t('lossChart.title')}
+          </Title>
+        }
+        bordered={false}
+        hoverable
+      >
+        <LossChart buildingID={buildingID}/>
+      </Card>
+    </>
   )
 }

@@ -11,6 +11,7 @@ import { LossTable } from '../../components/LossTable/LossTable'
 import { IrradianceTable } from '../../components/IrradianceTable/IrradianceTable'
 import { MultiPVDetailTable } from '../../components/PVDetailTable/MultiPVDetailTable'
 import { MultiInverterDetailTable } from '../../components/InverterDetailTable/MultiInverterDetailTable'
+import { Charts } from '../../components/ReportCharts/Charts'
 import { genReport, getReport } from './service'
 import { saveProject } from '../Project/service'
 import { setReportData, setBuildingReGenReport } from '../../store/action/index'
@@ -52,7 +53,7 @@ const Report = () => {
           .catch(err => {
             setloading(false)
           })
-        })  
+        })
       } else if (!curBuilding.reGenReport && !reportData[buildingID]) {
         dispatch(getReport({projectID, buildingID: buildingID}))
         .then(res => {
@@ -95,11 +96,10 @@ const Report = () => {
       <TabPane tab={t('report.irrTable')} key="7">
         <IrradianceTable buildingID={buildingID}/>
       </TabPane>
+      <TabPane tab={t('report.charts')} key="8">
+        <Charts buildingID={buildingID}/>
+      </TabPane>
     </Tabs>
-    // <Charts
-    //   loading={reportData[buildingID] ? false : true}
-    //   {...reportData[buildingID]}
-    // />
   )
 }
 

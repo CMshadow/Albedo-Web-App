@@ -1,0 +1,25 @@
+{
+  "cashflowChart.title": "项目累计现金流",
+  "acPowerChart.title": "项目首年每月发电量",
+  "lossChart.title": "系统各项损失",
+
+  "cashflowChart.year": "年份",
+  "cashflowChart.gain": "净现金流量",
+  "cashflowChart.togrid": "全部上网",
+  "cashflowChart.selfuse": "全部自用",
+
+  "acPowerChart.month": "月份",
+  "acPowerChart.month.1": "1月",
+  "acPowerChart.month.2": "2月",
+  "acPowerChart.month.3": "3月",
+  "acPowerChart.month.4": "4月",
+  "acPowerChart.month.5": "5月",
+  "acPowerChart.month.6": "6月",
+  "acPowerChart.month.7": "7月",
+  "acPowerChart.month.8": "8月",
+  "acPowerChart.month.9": "9月",
+  "acPowerChart.month.10": "10月",
+  "acPowerChart.month.11": "11月",
+  "acPowerChart.month.12": "12月",
+  "acPowerChart.production": "总发电量"
+}

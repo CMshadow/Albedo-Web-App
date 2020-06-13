@@ -1,4 +1,5 @@
 import country from './zh-CN/country.json';
+import money from './zh-CN/money.json'
 import register from './zh-CN/register.json';
 import footer from './zh-CN/footer.json';
 import sider from './zh-CN/sider.json';
@@ -17,9 +18,11 @@ import acPowerTable from './zh-CN/acPowerTable.json'
 import lossTable from './zh-CN/lossTable.json'
 import irrTable from './zh-CN/irradianceTable.json'
 import reportCharts from './zh-CN/reportCharts.json'
+import chart from './zh-CN/chart.json'
 
 export default {
   ...country,
+  ...money,
   ...register,
   ...footer,
   ...sider,
@@ -37,5 +40,6 @@ export default {
   ...reportCharts,
   ...acPowerTable,
   ...lossTable,
-  ...irrTable
+  ...irrTable,
+  ...chart
 }

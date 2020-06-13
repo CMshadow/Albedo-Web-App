@@ -6,6 +6,7 @@
   "report.pvDetail": "光伏组件参数表",
   "report.inverterDetail": "逆变器参数表",
   "report.irrTable": "辐射量表",
+  "report.charts": "图表",
 
   "report.paramsForm.title": "设置参数",
 

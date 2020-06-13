@@ -4,7 +4,7 @@ import { Table, Form, InputNumber, Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { HeaderTable } from './HeaderTable'
-import { other2wh, wh2kwh } from '../../utils/unitConverter'
+import { createDateSource } from '../../utils/createGainData'
 import { updateReportAttributes } from '../../store/action/index'
 import './GainTable.scss'
 const EditableContext = React.createContext();
@@ -90,71 +90,13 @@ export const GainTable = ({ buildingID }) => {
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
 
-  const [dataSource, setdataSource] = useState([])
+  const [dataSource, setdataSource] = useState(
+    createDateSource(reportData[buildingID])
+  )
 
   // 组件渲染后动态更新数据
   useEffect(() => {
-    const initDataSource = [
-      {
-        key: 0,
-        series: 0,
-        name: t('gain.name.construction'),
-        unit: t('gain.unit.price'),
-        'cash-in-flow-togrid': 0,
-        'cash-in-flow-selfuse': 0,
-        'cash-out-flow-togrid': reportData[buildingID].ttl_investment,
-        'cash-out-flow-selfuse': reportData[buildingID].ttl_investment,
-        'net-cash-flow-togrid': -reportData[buildingID].ttl_investment,
-        'net-cash-flow-selfuse': -reportData[buildingID].ttl_investment,
-        'acc-net-cash-flow-togrid': -reportData[buildingID].ttl_investment,
-        'acc-net-cash-flow-selfuse': -reportData[buildingID].ttl_investment,
-      }
-    ]
-    reportData[buildingID].year25_AC_power.forEach((obj, index) => {
-      const yearACInKwh = wh2kwh(other2wh(obj.value, obj.unit))
-      const cashInFlowToGrid = Number(
-        (yearACInKwh * reportData[buildingID]['final-export-credit']).toFixed(2)
-      )
-      const cashInFlowSelfUse = Number(
-        (yearACInKwh * reportData[buildingID]['rate-of-electricity']).toFixed(2)
-      )
-      const cashOutFlowToGrid =
-        reportData[buildingID].gain ?
-        reportData[buildingID].gain[index + 1]['cash-out-flow-togrid'] : 0
-      const cashOutFlowSelfUse =
-        reportData[buildingID].gain ?
-        reportData[buildingID].gain[index + 1]['cash-out-flow-selfuse'] : 0
-      const netCashFlowToGrid = Number(
-        (cashInFlowToGrid - cashOutFlowToGrid).toFixed(2)
-      )
-      const netCashFlowSelfUse = Number(
-        (cashInFlowSelfUse - cashOutFlowSelfUse).toFixed(2)
-      )
-      const lastAccNetCashFlowToGrid =
-        initDataSource.slice(-1)[0]['acc-net-cash-flow-togrid']
-      const lastAccNetCashFlowSelfUse =
-        initDataSource.slice(-1)[0]['acc-net-cash-flow-selfuse']
-      const newAccNetCashFlowToGrid = Number(
-        (lastAccNetCashFlowToGrid + netCashFlowToGrid).toFixed(2)
-      )
-      const newAccNetCashFlowSelfUse = Number(
-        (lastAccNetCashFlowSelfUse + netCashFlowSelfUse).toFixed(2)
-      )
-      initDataSource.push({
-        key: index + 1,
-        series: index + 1,
-        unit: t('gain.unit.price'),
-        name: t('gain.year.prefix') + `${index + 1}` + t('gain.year.suffix'),
-        'cash-in-flow-togrid': cashInFlowToGrid,
-        'cash-in-flow-selfuse': cashInFlowSelfUse,
-        'cash-out-flow-togrid': cashOutFlowToGrid,
-        'cash-out-flow-selfuse': cashOutFlowSelfUse,
-        'net-cash-flow-togrid': netCashFlowToGrid,
-        'net-cash-flow-selfuse': netCashFlowSelfUse,
-        'acc-net-cash-flow-togrid': newAccNetCashFlowToGrid,
-        'acc-net-cash-flow-selfuse': newAccNetCashFlowSelfUse
-      })
-    })
+    const initDataSource = createDateSource(reportData[buildingID])
     setdataSource(initDataSource)
   }, [buildingID, reportData, t])
 
@@ -171,12 +113,16 @@ export const GainTable = ({ buildingID }) => {
       dataIndex: 'name',
       align: 'center',
       width: '10%',
+      render: text =>
+        text === 'construction' ? t('gain.name.construction') :
+        t('gain.year.prefix') + text + t('gain.year.suffix')
     }, {
       key: 2,
       title: t('gain.unit'),
       dataIndex: 'unit',
       align: 'center',
       width: '5%',
+      render: text => t(`gain.unit.${text}`)
     }, {
       key: 3,
       title: t('gain.cash-in-flow'),
@@ -307,12 +253,16 @@ export const GainTable = ({ buildingID }) => {
 
     let paybackPeriod = 0
     let paybackAmount = dataSource[paybackPeriod][dataIndexAccNet]
-    while(paybackAmount < 0) {
+    while(paybackAmount < 0 && paybackPeriod < dataSource.length - 1) {
       paybackPeriod += 1
       paybackAmount = dataSource[paybackPeriod][dataIndexAccNet]
     }
-    const offset = paybackAmount / dataSource[paybackPeriod][dataIndexNet]
-    return Number((paybackPeriod - offset).toFixed(2))
+    if (paybackAmount >= 0) {
+      const offset = paybackAmount / dataSource[paybackPeriod][dataIndexNet]
+      return Number((paybackPeriod - offset).toFixed(2))
+    } else {
+      return t('gain.cannot-payback')
+    }
   }
 
   // 生成表单统计数据
