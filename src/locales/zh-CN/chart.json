@@ -29,7 +29,7 @@
   "lossChart.ac": "交流",
 
   "lossChart.opt_irr": "最优朝向倾角",
-  "lossChart.p_loss_tilt_azimuth": "实际安装朝向倾角与最优差",
+  "lossChart.p_loss_tilt_azimuth": "与最佳朝向倾角偏差",
   "lossChart.p_loss_mismatch": "光伏组件的匹配损失",
   "lossChart.p_loss_soiling": "表面灰尘遮挡损失",
   "lossChart.p_loss_eff_irradiance": "有效辐射损失",

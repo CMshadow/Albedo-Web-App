@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { Chart, Interval, Axis, Tooltip } from 'bizcharts';
+import { Chart, Interval, Axis, Tooltip, Annotation } from 'bizcharts';
 
 export const ACPowerChart = ({buildingID}) => {
   const { t } = useTranslation()
@@ -39,6 +39,11 @@ export const ACPowerChart = ({buildingID}) => {
       <Axis name='value' title />
       <Interval color='#1890ff' position="month*value" />
       <Tooltip shared />
+      <Annotation.Line top start={{month: "5月", value: 1498.53813321092}} end={{month: "12月", value: 2498.53813321092}} lineStyle={{
+                stroke: '#999', // 线的颜色
+                lineDash: [0, 2, 2], // 虚线的设置
+                lineWidth: 10, // 线的宽度
+              }}/>
     </Chart>
   )
 }
