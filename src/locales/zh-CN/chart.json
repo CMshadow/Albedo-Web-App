@@ -21,5 +21,27 @@
   "acPowerChart.month.10": "10月",
   "acPowerChart.month.11": "11月",
   "acPowerChart.month.12": "12月",
-  "acPowerChart.production": "总发电量"
+  "acPowerChart.production": "总发电量",
+
+  "lossChart.opt": "最优情况",
+  "lossChart.irr": "辐照",
+  "lossChart.dc": "直流",
+  "lossChart.ac": "交流",
+
+  "lossChart.opt_irr": "最优朝向倾角",
+  "lossChart.p_loss_tilt_azimuth": "实际安装朝向倾角与最优差",
+  "lossChart.p_loss_mismatch": "光伏组件的匹配损失",
+  "lossChart.p_loss_soiling": "表面灰尘遮挡损失",
+  "lossChart.p_loss_eff_irradiance": "有效辐射损失",
+  "lossChart.p_loss_temperature": "温度影响损失",
+  "lossChart.p_loss_degradation": "光致衰减（首年衰减）",
+  "lossChart.p_loss_degradation_rest": "次年后衰减",
+  "lossChart.p_loss_connection": "组件连接损失",
+  "lossChart.p_loss_conversion": "逆变器损失",
+  "lossChart.p_loss_transformer": "升压变压器损耗",
+  "lossChart.p_loss_dc_wiring": "直流线损",
+  "lossChart.p_loss_ac_wiring": "低压汇流线损",
+  "lossChart.p_loss_combibox_wiring": "交流线损",
+  "lossChart.p_loss_system": "发电系统总损失",
+  "lossChart.system_efficiency": "发电系统总效率"
 }
