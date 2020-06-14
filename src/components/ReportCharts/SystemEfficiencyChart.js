@@ -1,7 +1,7 @@
 import React from "react";
-import { Chart, Point, Area, Annotation, Axis, Coordinate, registerShape } from "bizcharts";
-import {useTranslation} from 'react-i18next'
-import {useSelector} from 'react-redux'
+import { Chart, Point, Annotation, Axis, Coordinate, registerShape } from "bizcharts";
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
 
 // 自定义Shape 部分
 registerShape('point', 'pointer', {

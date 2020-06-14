@@ -1,9 +1,10 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { Chart, Interval, Axis, Tooltip } from 'bizcharts';
+import { Chart, Interval, Axis, Tooltip, Legend } from 'bizcharts';
 import { createDateSource } from '../../utils/createGainData'
 import { money2Other } from '../../utils/unitConverter'
+import { titleStyle, legendStyle } from '../../styles.config'
 
 export const CashFlowChart = ({buildingID}) => {
   const { t } = useTranslation()
@@ -49,13 +50,14 @@ export const CashFlowChart = ({buildingID}) => {
   return (
     <Chart
       scale={scale}
-      height={400}
+      height={500}
       autoFit data={dataSource}
       interactions={['active-region']}
       padding='auto'
     >
-      <Axis name='year' title />
-      <Axis name='value' title />
+      <Legend position='bottom' itemName={{style: legendStyle}} offsetY={-75}/>
+      <Axis name='year' title={{style: titleStyle}} />
+      <Axis name='value' title={{style: titleStyle}} />
       <Interval adjust={adjust} color={color} position="year*value" />
       <Tooltip shared />
     </Chart>

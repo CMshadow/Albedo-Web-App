@@ -110,19 +110,22 @@ export const WANkwh2wh = (data) => {
 
 export const money2Other = (data) => {
   const locale = getLanguage()
+  let mark = data
+  if (Array.isArray(data)) mark = Math.min(data)
+
   switch (locale) {
     case 'zh-CN':
-      if (Math.abs(data) < 1000) {
+      if (Math.abs(mark) < 1000) {
         return { 'value': data, 'unit': '' }
-      } else if (Math.abs(data) / 1e3 < 10) {
+      } else if (Math.abs(mark) / 1e3 < 10) {
         return { 'value': data / 1e3, 'unit': 'qian' }
       } else {
         return { 'value': data / 1e4, 'unit': 'wan' }
       }
     default:
-      if (Math.abs(data) < 1000) {
+      if (Math.abs(mark) < 1000) {
         return { 'value': data, 'unit': '' }
-      } else if (Math.abs(data) / 1e6 < 1000) {
+      } else if (Math.abs(mark) / 1e6 < 1000) {
         return { 'value': data / 1e3, 'unit': 'qian' }
       } else {
         return { 'value': data / 1e6, 'unit': 'baiwan' }

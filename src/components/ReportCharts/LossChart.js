@@ -1,8 +1,8 @@
 import React from "react";
-import {Chart, Interval, Axis, Annotation, Coordinate} from "bizcharts";
-import {useTranslation} from 'react-i18next'
-import {useSelector} from 'react-redux'
-import { fontFamily } from '../../global.config'
+import { Chart, Interval, Axis, Annotation, Coordinate } from "bizcharts";
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { titleStyle, lgTitleStyle } from '../../styles.config'
 
 export const LossChart = ({buildingID}) => {
   const {t} = useTranslation()
@@ -51,17 +51,12 @@ export const LossChart = ({buildingID}) => {
   const scale = {
     value: {
       min: 0,
-      max: 125
+      max: 130
     }
   }
 
   const label = ['value', {
-    style: {
-      fill: '#000',
-      fontWeight: 'bold',
-      fontSize: 12,
-      fontFamily: fontFamily
-    },
+    style: titleStyle,
     offset: 10,
     content: originData => {
       if (originData.type === t(`lossChart.opt_irr`) && originData.stage === 'loss') return originData.type
@@ -89,7 +84,7 @@ export const LossChart = ({buildingID}) => {
   }]
 
   return (
-    <Chart pure scale={scale} height={500} data={dataSource.reverse()} autoFit padding={[0, 20, 0, 100]}>
+    <Chart pure scale={scale} height={500} data={dataSource.reverse()} autoFit padding={[0, 30, 0, 100]}>
       <Coordinate transpose/>
       <Axis name='type' label={null} tickLine={null} line={false}/>
       <Axis name='value' label={null} grid={null}/>
@@ -105,13 +100,7 @@ export const LossChart = ({buildingID}) => {
         top
         position={[t('lossChart.p_loss_ac_wiring'), 0]}
         content={t('lossChart.ac')}
-        style={{
-          fill: '#000000',
-          fontSize: 16,
-          fontWeight: 'bold',
-          textAlign: 'center',
-          fontFamily: fontFamily
-        }}
+        style={lgTitleStyle}
         offsetX={-40}
         offsetY={20}
       />
@@ -119,13 +108,7 @@ export const LossChart = ({buildingID}) => {
         top
         position={[t('lossChart.p_loss_degradation_rest'), 0]}
         content={t('lossChart.dc')}
-        style={{
-          fill: '#000000',
-          fontSize: 16,
-          fontWeight: 'bold',
-          textAlign: 'center',
-          fontFamily: fontFamily
-        }}
+        style={lgTitleStyle}
         offsetX={-40}
         offsetY={20}
       />
@@ -133,13 +116,7 @@ export const LossChart = ({buildingID}) => {
         top
         position={[t('lossChart.p_loss_tilt_azimuth'), 0]}
         content={t('lossChart.irr')}
-        style={{
-          fill: '#000000',
-          fontSize: 16,
-          fontWeight: 'bold',
-          textAlign: 'center',
-          fontFamily: fontFamily
-        }}
+        style={lgTitleStyle}
         offsetX={-40}
         offsetY={20}
       />

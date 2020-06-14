@@ -3,7 +3,7 @@ import { Chart, Interval, Tooltip, Axis, Coordinate, Interaction, Annotation, Le
 import {useTranslation} from 'react-i18next'
 import {useSelector} from 'react-redux'
 import { money2Other } from '../../utils/unitConverter'
-import { fontFamily } from '../../global.config'
+import { lgTextStyle, legendStyle } from '../../styles.config'
 
 export const InvestmentChart = ({buildingID}) => {
   const { t } = useTranslation()
@@ -18,9 +18,17 @@ export const InvestmentChart = ({buildingID}) => {
   }))
   const ttlInvestment = money2Other(reportData[buildingID].ttl_investment)
 
+  const scale = {
+    value: {
+      formatter: text => {
+        return `${text.toLocaleString()} ${t('money.')}`
+      }
+    }
+  }
+
   return (
-    <Chart data={dataSource} height={500} autoFit >
-      <Legend position="right" />
+    <Chart scale={scale} data={dataSource} height={500} autoFit >
+      <Legend position="right" offsetX={-20} itemName={{style: legendStyle}}/>
       <Coordinate type="theta" radius={0.8} innerRadius={0.65} />
       <Axis visible={false} />
       <Tooltip showTitle={false} />
@@ -34,24 +42,12 @@ export const InvestmentChart = ({buildingID}) => {
       <Annotation.Text
         position={['50%', '45%']}
         content={t('investment.name.totalInvestment')}
-        style={{
-          lineHeight: '240px',
-          fontSize: '30',
-          fill: '#262626',
-          textAlign: 'center',
-          fontFamily: fontFamily
-        }}
+        style={lgTextStyle}
       />
       <Annotation.Text
         position={['50%', '55%']}
         content={`${ttlInvestment.value.toFixed(2)} ${t(`money.${ttlInvestment.unit}`)}`}
-        style={{
-          lineHeight: '240px',
-          fontSize: '30',
-          fill: '#262626',
-          textAlign: 'center',
-          fontFamily: fontFamily
-        }}
+        style={lgTextStyle}
       />
     </Chart>
   );
