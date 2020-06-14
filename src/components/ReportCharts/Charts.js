@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { CashFlowChart } from './CashFlowChart'
 import { ACPowerChart } from './ACPowerChart'
 import { LossChart } from './LossChart'
+import { SystemEfficiencyChart } from './SystemEfficiencyChart'
 import * as styles from './Charts.module.scss'
 const Title = Typography.Title
 
@@ -44,6 +45,17 @@ export const Charts = ({ buildingID }) => {
         hoverable
       >
         <LossChart buildingID={buildingID}/>
+      </Card>
+      <Card
+        title={
+          <Title className={styles.text} level={4}>
+            {t('systemEfficiencyChart.title')}
+          </Title>
+        }
+        bordered={false}
+        hoverable
+      >
+        <SystemEfficiencyChart buildingID={buildingID}/>
       </Card>
     </>
   )

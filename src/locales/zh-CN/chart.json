@@ -2,6 +2,7 @@
   "cashflowChart.title": "项目累计现金流",
   "acPowerChart.title": "项目首年每月发电量",
   "lossChart.title": "系统各项损失",
+  "systemEfficiencyChart.title": "系统效率",
 
   "cashflowChart.year": "年份",
   "cashflowChart.gain": "净现金流量",
@@ -42,5 +43,7 @@
   "lossChart.p_loss_dc_wiring": "直流线损",
   "lossChart.p_loss_ac_wiring": "低压汇流线损",
   "lossChart.p_loss_combibox_wiring": "交流线损",
-  "lossChart.transformer_efficiency": "升压变压器损耗"
+  "lossChart.transformer_efficiency": "升压变压器损耗",
+
+  "systemEfficiencyChart.name": "系统效率"
 }
