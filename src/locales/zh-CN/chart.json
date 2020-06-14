@@ -3,6 +3,8 @@
   "acPowerChart.title": "项目首年每月发电量",
   "lossChart.title": "系统各项损失",
   "systemEfficiencyChart.title": "系统效率",
+  "investmentChart.title": "项目投资占比",
+  "gainChart.title": "收益支出",
 
   "cashflowChart.year": "年份",
   "cashflowChart.gain": "净现金流量",

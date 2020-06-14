@@ -2,8 +2,7 @@ import React from "react";
 import {Chart, Interval, Axis, Annotation, Coordinate} from "bizcharts";
 import {useTranslation} from 'react-i18next'
 import {useSelector} from 'react-redux'
-
-const fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', SimSun, sans-serif"
+import { fontFamily } from '../../global.config'
 
 export const LossChart = ({buildingID}) => {
   const {t} = useTranslation()
@@ -48,7 +47,6 @@ export const LossChart = ({buildingID}) => {
       color: colorMap[cat]
     })
   })
-  console.log(dataSource)
 
   const scale = {
     value: {

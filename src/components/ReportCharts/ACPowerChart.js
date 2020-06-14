@@ -11,7 +11,6 @@ export const ACPowerChart = ({buildingID}) => {
     month: t(`acPowerChart.month.${index + 1}`),
     value: p
   }))
-  console.log(dataSource)
 
   const scale = {
     month: {

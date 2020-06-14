@@ -5,6 +5,8 @@ import { CashFlowChart } from './CashFlowChart'
 import { ACPowerChart } from './ACPowerChart'
 import { LossChart } from './LossChart'
 import { SystemEfficiencyChart } from './SystemEfficiencyChart'
+import { InvestmentChart } from './InvestmentChart'
+import { GainChart } from './GainChart'
 import * as styles from './Charts.module.scss'
 const Title = Typography.Title
 
@@ -56,6 +58,28 @@ export const Charts = ({ buildingID }) => {
         hoverable
       >
         <SystemEfficiencyChart buildingID={buildingID}/>
+      </Card>
+      <Card
+        title={
+          <Title className={styles.text} level={4}>
+            {t('investmentChart.title')}
+          </Title>
+        }
+        bordered={false}
+        hoverable
+      >
+        <InvestmentChart buildingID={buildingID}/>
+      </Card>
+      <Card
+        title={
+          <Title className={styles.text} level={4}>
+            {t('gainChart.title')}
+          </Title>
+        }
+        bordered={false}
+        hoverable
+      >
+        <GainChart buildingID={buildingID}/>
       </Card>
     </>
   )
