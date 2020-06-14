@@ -33,6 +33,7 @@ const Report = () => {
     building.buildingID === buildingID
   )
   console.log(reportData[buildingID])
+  console.log(projectData)
 
   useEffect(() => {
     if (!projectData.p_loss_soiling) {
