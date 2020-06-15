@@ -35,6 +35,23 @@ export const globalOptTiltAzimuth = ({projectID}) => async dispatch => {
   })
 }
 
+export const allTiltAzimuthPOA = ({projectID}) => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.post(
+    `/project/${session.idToken.payload.sub}/${projectID}/alltiltazimuthpoa`,
+    {},
+    {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+  )
+  .then(res => res.data)
+  .catch(err => {
+    console.log(err)
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}
+
 export const saveProject = (projectID) => async (dispatch, getState) => {
   const projectData = getState().project
   const session = await Auth.currentSession()

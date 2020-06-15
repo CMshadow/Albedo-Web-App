@@ -8,7 +8,7 @@ import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
-import { getProject, saveProject, globalOptTiltAzimuth } from '../../pages/Project/service'
+import { getProject, saveProject, globalOptTiltAzimuth, allTiltAzimuthPOA } from '../../pages/Project/service'
 import { getPV } from '../../pages/PVTable/service'
 import { getInverter } from '../../pages/InverterTable/service'
 import { saveReport } from '../../pages/Report/service'
@@ -65,6 +65,10 @@ const ProjectLayout = (props) => {
             dispatch(globalOptTiltAzimuth({projectID: projectID}))
             .then(optSpec => {
               dispatch(setProjectData(optSpec))
+            })
+            dispatch(allTiltAzimuthPOA({projectID: projectID}))
+            .then(allTiltAziPOA => {
+              dispatch(setProjectData(allTiltAziPOA))
             })
           }
         })
