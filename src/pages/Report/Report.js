@@ -47,8 +47,8 @@ const Report = () => {
         .then(res => {
           dispatch(genReport({projectID, buildingID: buildingID}))
           .then(res => {
-            dispatch(setReportData({buildingID: buildingID, data: res}))
             dispatch(setBuildingReGenReport({buildingID, reGenReport: false}))
+            dispatch(setReportData({buildingID: buildingID, data: res}))
             setloading(false)
           })
           .catch(err => {

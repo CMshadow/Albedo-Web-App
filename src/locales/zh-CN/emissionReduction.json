@@ -1,0 +1,7 @@
+{
+  "emissionReduction.coal_reduction": "标准煤减排",
+  "emissionReduction.c_reduction": "碳粉尘减排",
+  "emissionReduction.co2_reduction": "二氧化碳减排",
+  "emissionReduction.so2_reduction": "二氧化硫减排",
+  "emissionReduction.nox_reduction": "氮氧化物减排"
+}

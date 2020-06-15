@@ -59,3 +59,22 @@ export const saveReport = ({projectID, buildingID}) => async (dispatch, getState
     throw err
   })
 }
+
+export const getProductionData = ({projectID, buildingID, month, day, dataKey}) =>
+async (dispatch, getState) => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.get(
+    `/project/${session.idToken.payload.sub}/${projectID}/production`,
+    {
+      params: {buildingID: buildingID, month: month, day: day, dataKey: dataKey},
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => res.data)
+  .catch(err => {
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}

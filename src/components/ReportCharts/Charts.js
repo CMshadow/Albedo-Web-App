@@ -6,7 +6,9 @@ import { ACPowerChart } from './ACPowerChart'
 import { LossChart } from './LossChart'
 import { SystemEfficiencyChart } from './SystemEfficiencyChart'
 import { InvestmentChart } from './InvestmentChart'
-import { GainChart } from './GainChart'
+import { EmissionReductionCard } from './EmissionReductionCard'
+import { ProductionChart } from './ProducationChart'
+import { HeatMap } from './HeatMap'
 import * as styles from './Charts.module.scss'
 const Title = Typography.Title
 
@@ -73,13 +75,35 @@ export const Charts = ({ buildingID }) => {
       <Card
         title={
           <Title className={styles.text} level={4}>
-            {t('gainChart.title')}
+            {t('emissionReductionCard.title')}
           </Title>
         }
         bordered={false}
         hoverable
       >
-        <GainChart buildingID={buildingID}/>
+        <EmissionReductionCard buildingID={buildingID}/>
+      </Card>
+      <Card
+        title={
+          <Title className={styles.text} level={4}>
+            {t('emissionReductionCard.title')}
+          </Title>
+        }
+        bordered={false}
+        hoverable
+      >
+        <HeatMap buildingID={buildingID}/>
+      </Card>
+      <Card
+        title={
+          <Title className={styles.text} level={4}>
+            {t('productionChart.title')}
+          </Title>
+        }
+        bordered={false}
+        hoverable
+      >
+        <ProductionChart buildingID={buildingID}/>
       </Card>
     </>
   )

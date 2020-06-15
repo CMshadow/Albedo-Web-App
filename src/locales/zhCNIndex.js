@@ -18,6 +18,7 @@ import acPowerTable from './zh-CN/acPowerTable.json'
 import lossTable from './zh-CN/lossTable.json'
 import irrTable from './zh-CN/irradianceTable.json'
 import reportCharts from './zh-CN/reportCharts.json'
+import emissionReduction from './zh-CN/emissionReduction.json'
 import chart from './zh-CN/chart.json'
 
 export default {
@@ -41,5 +42,6 @@ export default {
   ...acPowerTable,
   ...lossTable,
   ...irrTable,
+  ...emissionReduction,
   ...chart
 }

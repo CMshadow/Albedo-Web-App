@@ -4,7 +4,8 @@
   "lossChart.title": "系统各项损失",
   "systemEfficiencyChart.title": "系统效率",
   "investmentChart.title": "项目投资占比",
-  "gainChart.title": "收益支出",
+  "emissionReductionCard.title": "节能减排",
+  "productionChart.title": "产量",
 
   "cashflowChart.year": "年份",
   "cashflowChart.gain": "净现金流量",
@@ -47,5 +48,13 @@
   "lossChart.p_loss_combibox_wiring": "交流线损",
   "lossChart.transformer_efficiency": "升压变压器损耗",
 
-  "systemEfficiencyChart.name": "系统效率"
+  "systemEfficiencyChart.name": "系统效率",
+
+  "heatMap.tilt": "朝向",
+  "heatMap.azimuth": "倾角",
+  "heatMap.poa": "辐照",
+
+  "productionChart.selectdate": "选择图表日期",
+  "productionChart.month": "按月统计",
+  "productionChart.day": "单日统计"
 }
