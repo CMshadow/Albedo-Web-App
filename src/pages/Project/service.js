@@ -35,14 +35,17 @@ export const globalOptTiltAzimuth = ({projectID}) => async dispatch => {
   })
 }
 
-export const allTiltAzimuthPOA = ({projectID}) => async dispatch => {
+export const allTiltAzimuthPOA = ({projectID, startAzi, endAzi}) => async dispatch => {
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
 
   return axios.post(
     `/project/${session.idToken.payload.sub}/${projectID}/alltiltazimuthpoa`,
     {},
-    {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+    {
+      params: {startAzi: startAzi, endAzi: endAzi},
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
   )
   .then(res => res.data)
   .catch(err => {

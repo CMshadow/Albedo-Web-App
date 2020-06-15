@@ -40,19 +40,21 @@ export const getReport = ({projectID, buildingID}) => async dispatch => {
   })
 }
 
-export const saveReport = ({projectID, buildingID}) => async (dispatch, getState) => {
+export const saveReport = ({projectID}) => async (dispatch, getState) => {
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
-  const reportData = getState().report[buildingID]
-
-  return axios.put(
-    `/project/${session.idToken.payload.sub}/${projectID}/report`,
-    reportData,
-    {
-      params: {buildingID: buildingID},
-      headers: {'COG-TOKEN': session.idToken.jwtToken}
-    }
+  const reportData = getState().report
+  const allPromise = Object.keys(reportData).map(buildingID =>
+    axios.put(
+      `/project/${session.idToken.payload.sub}/${projectID}/report`,
+      reportData[buildingID],
+      {
+        params: {buildingID: buildingID},
+        headers: {'COG-TOKEN': session.idToken.jwtToken}
+      }
+    )
   )
+  return Promise.all(allPromise)
   .then(res => res.data)
   .catch(err => {
     notification.error({message: err.response.data.message})

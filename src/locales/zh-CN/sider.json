@@ -12,5 +12,6 @@
   "sider.menu.pv": "管理光伏组件",
   "sider.menu.inverter": "管理逆变器组件",
 
-  "sider.save": "保存项目"
+  "sider.save": "保存项目",
+  "sider.report.disabled": "该房屋配置尚未完成，无法查看报告"
 }
