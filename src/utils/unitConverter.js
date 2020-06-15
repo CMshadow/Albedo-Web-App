@@ -131,5 +131,9 @@ export const money2Other = (data) => {
         return { 'value': data / 1e6, 'unit': 'baiwan' }
       }
   }
+}
 
+export const kg2other = (data) => {
+  if (data < 1000) return {value: data, unit: 'kg'}
+  else return {value: data / 1000, unit: 't'}
 }

@@ -51,9 +51,10 @@ export const CashFlowChart = ({buildingID}) => {
     <Chart
       scale={scale}
       height={500}
-      autoFit data={dataSource}
+      autoFit
+      data={dataSource}
       interactions={['active-region']}
-      padding='auto'
+      padding={[30, 30, 100, 100]}
     >
       <Legend position='bottom' itemName={{style: legendStyle}} offsetY={-75}/>
       <Axis name='year' title={{style: titleStyle}} />

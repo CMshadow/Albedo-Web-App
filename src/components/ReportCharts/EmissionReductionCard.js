@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, Statistic, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux'
+import { kg2other } from '../../utils/unitConverter'
 
 export const EmissionReductionCard = ({buildingID}) => {
   const { t } = useTranslation()
@@ -10,19 +11,21 @@ export const EmissionReductionCard = ({buildingID}) => {
     'coal_reduction', 'c_reduction', 'co2_reduction', 'so2_reduction', 'nox_reduction'
   ]
 
-  const genCard = (key) => (
+  const genCard = (key) => {
+    const data = kg2other(reportData[buildingID][key])
+    return (
     <Col key={key} span={8}>
       <Card hoverable>
         <Statistic
           title={t(`emissionReduction.${key}`)}
-          value={reportData[buildingID][key]}
+          value={data.value}
           precision={2}
           valueStyle={{ color: '#7cb305' }}
-          suffix="kg"
+          suffix={t(`emissionReduction.${data.unit}`)}
         />
       </Card>
     </Col>
-  )
+  )}
 
   return (
     <>

@@ -50,11 +50,16 @@
 
   "systemEfficiencyChart.name": "系统效率",
 
+  "emissionReduction.kg": "千克",
+  "emissionReduction.t": "吨",
+
   "heatMap.tilt": "朝向",
   "heatMap.azimuth": "倾角",
   "heatMap.poa": "辐照",
 
   "productionChart.selectdate": "选择图表日期",
-  "productionChart.month": "按月统计",
-  "productionChart.day": "单日统计"
+  "productionChart.monthStatics": "按月统计",
+  "productionChart.dayStatics": "单日统计",
+  "productionChart.day": "日",
+  "productionChart.hour": "小时"
 }

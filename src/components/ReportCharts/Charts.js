@@ -7,7 +7,7 @@ import { LossChart } from './LossChart'
 import { SystemEfficiencyChart } from './SystemEfficiencyChart'
 import { InvestmentChart } from './InvestmentChart'
 import { EmissionReductionCard } from './EmissionReductionCard'
-import { ProductionChart } from './ProducationChart'
+import { ProductionChart } from './ProductionChart'
 import { HeatMap } from './HeatMap'
 import * as styles from './Charts.module.scss'
 const Title = Typography.Title
