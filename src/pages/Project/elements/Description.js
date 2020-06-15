@@ -1,7 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Descriptions, Card } from 'antd';
+import { Descriptions, Card, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
+const Title = Typography.Title
 
 const Item = Descriptions.Item
 
@@ -9,9 +10,13 @@ export const Description = ({loading}) => {
   const { t } = useTranslation()
   const projectData = useSelector(state => state.project)
 
+  const title = (
+    <Title style={{textAlign: 'center'}} level={3}>{projectData.projectTitle}</Title>
+  )
+
   return (
     <Card loading={loading}>
-      <Descriptions title={projectData.projectTitle} column={2}>
+      <Descriptions title={title} column={2}>
         <Item label={t('project.descriptions.projectCreator')}>
           {projectData.projectCreator}
         </Item>

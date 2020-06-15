@@ -94,11 +94,11 @@ export const ACPowerTable = ({ buildingID }) => {
   return (
     <Card
       title={
-        <Title className='cardTitle' level={4}>
+        <Title style={{textAlign: 'center'}} level={4}>
           {projectData.projectTitle + t('acPowerTable.title')}
         </Title>
       }
-      headStyle={{textAlign: 'center'}}
+      hoverable
     >
       <Table
         bordered

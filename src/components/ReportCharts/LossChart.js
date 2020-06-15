@@ -1,8 +1,10 @@
 import React from "react";
+import { Card, Typography } from 'antd'
 import { Chart, Interval, Axis, Annotation, Coordinate } from "bizcharts";
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { titleStyle, lgTitleStyle } from '../../styles.config'
+const Title = Typography.Title
 
 export const LossChart = ({buildingID}) => {
   const {t} = useTranslation()
@@ -84,62 +86,72 @@ export const LossChart = ({buildingID}) => {
   }]
 
   return (
-    <Chart pure scale={scale} height={500} data={dataSource.reverse()} autoFit padding={[0, 30, 0, 100]}>
-      <Coordinate transpose/>
-      <Axis name='type' label={null} tickLine={null} line={false}/>
-      <Axis name='value' label={null} grid={null}/>
-      <Interval
-        type="interval"
-        position="type*value"
-        size={20}
-        adjust={adjust}
-        label={label}
-        color={color}
-      />
-      <Annotation.Text
-        top
-        position={[t('lossChart.p_loss_ac_wiring'), 0]}
-        content={t('lossChart.ac')}
-        style={lgTitleStyle}
-        offsetX={-40}
-        offsetY={20}
-      />
-      <Annotation.Text
-        top
-        position={[t('lossChart.p_loss_degradation_rest'), 0]}
-        content={t('lossChart.dc')}
-        style={lgTitleStyle}
-        offsetX={-40}
-        offsetY={20}
-      />
-      <Annotation.Text
-        top
-        position={[t('lossChart.p_loss_tilt_azimuth'), 0]}
-        content={t('lossChart.irr')}
-        style={lgTitleStyle}
-        offsetX={-40}
-        offsetY={20}
-      />
-      <Annotation.Line
-        top
-        start={['-9%', "28.5%"]}
-        end={['100%', "28.5%"]}
-        style={{
-          stroke: '#595959',
-          lineDash: [2, 2],
-          strokeWidth: 5
-        }}
-      />
-      <Annotation.Line
-        top
-        start={['-9%', "71.5%"]}
-        end={['100%', "71.5%"]}
-        style={{
-          stroke: '#595959',
-          lineDash: [2, 2],
-          strokeWidth: 5
-        }}
-      />
-    </Chart>
+    <Card
+      title={
+        <Title style={{textAlign: 'center'}} level={4}>
+          {t('lossChart.title')}
+        </Title>
+      }
+      bodyStyle={{padding: 0}}
+      hoverable
+    >
+      <Chart pure scale={scale} height={500} data={dataSource.reverse()} autoFit padding={[0, 30, 0, 80]}>
+        <Coordinate transpose/>
+        <Axis name='type' label={null} tickLine={null} line={false}/>
+        <Axis name='value' label={null} grid={null}/>
+        <Interval
+          type="interval"
+          position="type*value"
+          size={20}
+          adjust={adjust}
+          label={label}
+          color={color}
+        />
+        <Annotation.Text
+          top
+          position={[t('lossChart.p_loss_ac_wiring'), 0]}
+          content={t('lossChart.ac')}
+          style={lgTitleStyle}
+          offsetX={-40}
+          offsetY={20}
+        />
+        <Annotation.Text
+          top
+          position={[t('lossChart.p_loss_degradation_rest'), 0]}
+          content={t('lossChart.dc')}
+          style={lgTitleStyle}
+          offsetX={-40}
+          offsetY={20}
+        />
+        <Annotation.Text
+          top
+          position={[t('lossChart.p_loss_tilt_azimuth'), 0]}
+          content={t('lossChart.irr')}
+          style={lgTitleStyle}
+          offsetX={-40}
+          offsetY={20}
+        />
+        <Annotation.Line
+          top
+          start={['-9%', "28.5%"]}
+          end={['100%', "28.5%"]}
+          style={{
+            stroke: '#595959',
+            lineDash: [2, 2],
+            strokeWidth: 5
+          }}
+        />
+        <Annotation.Line
+          top
+          start={['-9%', "71.5%"]}
+          end={['100%', "71.5%"]}
+          style={{
+            stroke: '#595959',
+            lineDash: [2, 2],
+            strokeWidth: 5
+          }}
+        />
+      </Chart>
+    </Card>
   );
 }

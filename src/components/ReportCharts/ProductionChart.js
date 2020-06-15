@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { DatePicker, Row, Divider, Typography, Space, Radio, Spin } from 'antd'
+import { DatePicker, Row, Divider, Typography, Space, Radio, Spin, Card } from 'antd'
 import moment from 'moment';
 import { Chart, Legend, Axis, Line, Point } from 'bizcharts';
 import { titleStyle, legendStyle } from '../../styles.config'
 import { getProductionData } from '../../pages/Report/service'
 import { wh2other } from '../../utils/unitConverter'
-
+const Title = Typography.Title
 const Text = Typography.Text
 const dateFormat = 'YYYY/MM/DD'
 const monthFormat = 'YYYY/MM'
@@ -71,7 +71,14 @@ export const ProductionChart = ({buildingID}) => {
   }
 
   return (
-    <>
+    <Card
+      title={
+        <Title style={{textAlign: 'center'}} level={4}>
+          {t('productionChart.title')}
+        </Title>
+      }
+      hoverable
+    >
       <Row justify='center'>
         <Space>
           <Text strong>{t('productionChart.selectdate')}</Text>
@@ -85,7 +92,7 @@ export const ProductionChart = ({buildingID}) => {
             defaultValue={moment()}
             format={mode === 'month' ? monthFormat : dateFormat}
             picker={mode === 'month' ? "month" : 'date'}
-            onChange={date => setdate(date)}
+            onChange={date => date ? setdate(date) : null}
           />
         </Space>
       </Row>
@@ -99,13 +106,13 @@ export const ProductionChart = ({buildingID}) => {
           data={dataSource}
           interactions={['active-region']}
         >
-          <Legend position='bottom' itemName={{style: legendStyle}} offsetY={-55}/>
+          <Legend position='bottom' itemName={{style: legendStyle}} offsetY={-10}/>
           <Axis name='date' title={{style: titleStyle}} />
           <Axis name='value' title={{style: titleStyle}} />
           <Line shape="smooth" position="date*value" color={["type", ['#1890ff', '#faad14']]} />
           <Point position="date*value" color={["type", ['#1890ff', '#faad14']]} />
         </Chart>
       </Spin>
-    </>
+    </Card>
   )
 }

@@ -46,6 +46,9 @@ const EditableCell = ({title, editable, children, dataIndex, record, handleSave,
   const save = async e => {
     try {
       const values = await form.validateFields();
+      Object.keys(values).forEach(key => {
+        values[key] = Math.abs(values[key])
+      })
       toggleEdit();
       handleSave({ ...record, ...values });
     } catch (errInfo) {
@@ -287,6 +290,18 @@ export const GainTable = ({ buildingID }) => {
     const paybackPeriodAvg = Number(
       ((paybackPeriodToGrid + paybackPeriodSelfUse)/2).toFixed(2)
     )
+    let irrToGrid = 'N/A'
+    try {
+      irrToGrid = finance.IRR(...netCashFlowToGrid)
+    } catch (e) {
+      console.log(e)
+    }
+    let irrSelfUse = 'N/A'
+    try {
+      irrSelfUse = finance.IRR(...netCashFlowSelfUse)
+    } catch (e) {
+      console.log(e)
+    }
     return (
       <>
         <Table.Summary.Row className='summaryRow'>
@@ -321,10 +336,7 @@ export const GainTable = ({ buildingID }) => {
           </Table.Summary.Cell>
           <Table.Summary.Cell colSpan={2}>
             <Text strong>
-              {
-                netCashFlowToGrid.length > 0 && netCashFlowToGrid.every(val => !isNaN(val)) ?
-                finance.IRR(...netCashFlowToGrid) : 0
-              }
+              {irrToGrid}
             </Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
@@ -334,10 +346,7 @@ export const GainTable = ({ buildingID }) => {
           </Table.Summary.Cell>
           <Table.Summary.Cell colSpan={2}>
             <Text strong>
-              {
-                netCashFlowSelfUse.length > 0 && netCashFlowSelfUse.every(val => !isNaN(val))?
-                finance.IRR(...netCashFlowSelfUse) : 0
-              }
+              {irrSelfUse}
             </Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
@@ -378,11 +387,11 @@ export const GainTable = ({ buildingID }) => {
   return (
     <Card
       title={
-        <Title className='cardTitle' level={4}>
+        <Title style={{textAlign: 'center'}} level={4}>
           {projectData.projectTitle + t('gain.title')}
         </Title>
       }
-      headStyle={{textAlign: 'center'}}
+      hoverable
     >
       <Table
         components={components}

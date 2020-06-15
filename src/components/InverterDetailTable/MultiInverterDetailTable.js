@@ -53,6 +53,7 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
         </Title>
       }
       headStyle={{textAlign: 'center'}}
+      bordered={false}
     >
       <List
         grid={listGrid}

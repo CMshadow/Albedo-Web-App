@@ -1,8 +1,10 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import { Card, Typography } from 'antd'
 import { Chart, Interval, Axis, Tooltip } from 'bizcharts';
 import { titleStyle } from '../../styles.config'
+const Title = Typography.Title
 
 export const ACPowerChart = ({buildingID}) => {
   const { t } = useTranslation()
@@ -28,17 +30,26 @@ export const ACPowerChart = ({buildingID}) => {
   }
 
   return (
-    <Chart
-      scale={scale}
-      height={500}
-      autoFit data={dataSource}
-      interactions={['active-region']}
-      padding='auto'
+    <Card
+      title={
+        <Title style={{textAlign: 'center'}} level={4}>
+          {t('acPowerChart.title')}
+        </Title>
+      }
+      hoverable
     >
-      <Axis name='month' title={{style: titleStyle}} />
-      <Axis name='value' title={{style: titleStyle}} />
-      <Interval color='#1890ff' position="month*value" />
-      <Tooltip shared />
-    </Chart>
+      <Chart
+        scale={scale}
+        height={500}
+        autoFit data={dataSource}
+        interactions={['active-region']}
+        padding='auto'
+      >
+        <Axis name='month' title={{style: titleStyle}} />
+        <Axis name='value' title={{style: titleStyle}} />
+        <Interval color='#1890ff' position="month*value" />
+        <Tooltip shared />
+      </Chart>
+    </Card>
   )
 }

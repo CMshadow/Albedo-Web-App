@@ -53,6 +53,7 @@ export const MultiPVDetailTable = ({ buildingID }) => {
           {projectData.projectTitle + t('table.title.pvDetail')}
         </Title>
       }
+      bordered={false}
       headStyle={{textAlign: 'center'}}
     >
       <List

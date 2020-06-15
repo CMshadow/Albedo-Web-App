@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { Spin, Tabs } from 'antd'
+import { Spin, Tabs, Card, Row, Col } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { InvestmentTable } from '../../components/InvestmentTable/InvestmentTable'
-import { GainTable } from '../../components/GainTable/GainTable'
-import { ACPowerTable } from '../../components/ACPowerTable/ACPowerTable'
-import { LossTable } from '../../components/LossTable/LossTable'
-import { IrradianceTable } from '../../components/IrradianceTable/IrradianceTable'
+import { InvestTab } from './tabs/InvestTab'
+import { GainTab } from './tabs/GainTab'
+import { ProdTab } from './tabs/ProdTab'
+import { LossTab } from './tabs/LossTab'
+import { IrrTab } from './tabs/IrrTab'
 import { MultiPVDetailTable } from '../../components/PVDetailTable/MultiPVDetailTable'
 import { MultiInverterDetailTable } from '../../components/InverterDetailTable/MultiInverterDetailTable'
-import { Charts } from '../../components/ReportCharts/Charts'
+import { EmissionReductionCard } from '../../components/EmissionReductionCard/EmissionReductionCard'
+import { ReportHeadDescription } from '../../components/Descriptions/ReportHeadDescription'
 import { genReport, getReport } from './service'
 import { saveProject } from '../Project/service'
 import { setReportData, setBuildingReGenReport } from '../../store/action/index'
@@ -71,36 +72,65 @@ const Report = () => {
   },[buildingID, curBuilding, curBuilding.reGenReport, dispatch, history, projectData.buildings, projectData.p_loss_soiling, projectID, reportData])
 
   return (
-    loading ?
-    <div className={styles.spin}>
-      <Spin indicator={<LoadingOutlined spin />} size='large'/>
-    </div> :
-    <Tabs defaultActiveKey="1" type="card" className={styles.tabs}>
-      <TabPane tab={t('report.investmentTable')} key="1">
-        <InvestmentTable buildingID={buildingID}/>
-      </TabPane>
-      <TabPane tab={t('report.gainTable')} key="2">
-        <GainTable buildingID={buildingID}/>
-      </TabPane>
-      <TabPane tab={t('report.acPowerTable')} key="3">
-        <ACPowerTable buildingID={buildingID}/>
-      </TabPane>
-      <TabPane tab={t('report.lossTable')} key="4">
-        <LossTable buildingID={buildingID}/>
-      </TabPane>
-      <TabPane tab={t('report.pvDetail')} key="5">
-        <MultiPVDetailTable buildingID={buildingID}/>
-      </TabPane>
-      <TabPane tab={t('report.inverterDetail')} key="6">
-        <MultiInverterDetailTable buildingID={buildingID}/>
-      </TabPane>
-      <TabPane tab={t('report.irrTable')} key="7">
-        <IrradianceTable buildingID={buildingID}/>
-      </TabPane>
-      <TabPane tab={t('report.charts')} key="8">
-        <Charts buildingID={buildingID}/>
-      </TabPane>
-    </Tabs>
+    <Spin indicator={<LoadingOutlined spin />} size='large' spinning={loading}>
+      {
+        loading ?
+        <Card loading /> :
+        <>
+          <Row gutter={[15, 15]}>
+            <Col span={24}>
+              <ReportHeadDescription buildingID={buildingID}/>
+            </Col>
+          </Row>
+          <Row gutter={[15, 15]}>
+            <Col span={24}>
+              <Card bodyStyle={{padding: 0}} loading={loading}>
+                <Tabs
+                  defaultActiveKey="1"
+                  type="card"
+                  className={styles.tabs}
+                  tabBarStyle={{
+                    display: 'flex',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <TabPane tab={t('report.irrTable')} key="1">
+                    <IrrTab buildingID={buildingID}/>
+                  </TabPane>
+                  <TabPane tab={t('report.acPowerTable')} key="2">
+                    <ProdTab buildingID={buildingID}/>
+                  </TabPane>
+                  <TabPane tab={t('report.lossTable')} key="3">
+                    <LossTab buildingID={buildingID}/>
+                  </TabPane>
+                  <TabPane tab={t('report.investmentTable')} key="4">
+                    <InvestTab buildingID={buildingID}/>
+                  </TabPane>
+                  <TabPane tab={t('report.gainTable')} key="5">
+                    <GainTab buildingID={buildingID}/>
+                  </TabPane>
+                  <TabPane tab={t('report.pvDetail')} key="6">
+                    <Card bordered={false}>
+                      <MultiPVDetailTable buildingID={buildingID}/>
+                    </Card>
+                  </TabPane>
+                  <TabPane tab={t('report.inverterDetail')} key="7">
+                    <Card bordered={false}>
+                      <MultiInverterDetailTable buildingID={buildingID}/>
+                    </Card>
+                  </TabPane>
+                  <TabPane tab={t('report.emissionReduction')} key="8">
+                    <Card bordered={false}>
+                      <EmissionReductionCard buildingID={buildingID}/>
+                    </Card>
+                  </TabPane>
+                </Tabs>
+              </Card>
+            </Col>
+          </Row>
+        </>
+      }
+    </Spin>
   )
 }
 

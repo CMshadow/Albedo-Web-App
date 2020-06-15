@@ -4,8 +4,10 @@
   "lossChart.title": "系统各项损失",
   "systemEfficiencyChart.title": "系统效率",
   "investmentChart.title": "项目投资占比",
-  "emissionReductionCard.title": "节能减排",
-  "productionChart.title": "产量",
+  "heatMap.title": "各朝向倾角辐射值",
+  "emissionReductionCard.title": "25年节能减排",
+  "productionChart.title": "系统首年上网发电量",
+  "irrChart.title": "阵列朝向倾角辐照量",
 
   "cashflowChart.year": "年份",
   "cashflowChart.gain": "净现金流量",
@@ -61,5 +63,8 @@
   "productionChart.monthStatics": "按月统计",
   "productionChart.dayStatics": "单日统计",
   "productionChart.day": "日",
-  "productionChart.hour": "小时"
+  "productionChart.hour": "小时",
+
+  "irrChart.selectspec": "选择朝向倾角",
+  "irrChart.irr": "总辐射量"
 }

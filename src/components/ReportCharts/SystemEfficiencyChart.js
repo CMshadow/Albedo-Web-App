@@ -1,7 +1,9 @@
 import React from "react";
+import { Card, Typography } from 'antd'
 import { Chart, Point, Annotation, Axis, Coordinate, registerShape } from "bizcharts";
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+const Title = Typography.Title
 
 // 自定义Shape 部分
 registerShape('point', 'pointer', {
@@ -48,94 +50,104 @@ export const SystemEfficiencyChart = ({buildingID}) => {
   const data = [{ value: systemEfficiency }];
 
   return (
-    <Chart
-      height={500}
-      data={data}
-      padding={[0, 0, 30, 0]}
-      scale={{
-        value:{
-          min: 0,
-          max: 100,
-          tickInterval: 10,
-        }
-      }}
-      forceFit
+    <Card
+      title={
+        <Title style={{textAlign: 'center'}} level={4}>
+          {t('systemEfficiencyChart.title')}
+        </Title>
+      }
+      bodyStyle={{padding: 0, minHeight: 500}}
+      hoverable
     >
-      <Coordinate
-      type="polar"
-      radius={0.75}
-      startAngle={(-9 / 8) * Math.PI}
-      endAngle={(1 / 8) * Math.PI}
-      />
-      <Axis name="1" />
-      <Axis
-        name="value"
-        line={null}
-        label={{
-          offset: -36,
-          style: {
-            fontSize: 18,
-            textAlign: 'center',
-            textBaseline: 'middle',
-          },
-        }}
-        subTickLine={{
-          count: 4,
-          length: -15,
-        }}
-        tickLine={{
-          length: -24,
-        }}
-        grid={null}
-      />
-      <Point
-        position="value*1"
-        color="#faad14"
-        shape="pointer"
-        animate={{
-          appear: {
-            animation: 'fade-in'
+      <Chart
+        height={400}
+        data={data}
+        padding={[0, 0, 30, 0]}
+        scale={{
+          value:{
+            min: 0,
+            max: 100,
+            tickInterval: 10,
           }
         }}
-      />
-      <Annotation.Arc
-        top={false}
-        start={[0, 1]}
-        end={[100, 1]}
-        style={{
-          stroke:'#CBCBCB',
-          lineWidth:18,
-          lineDash:null,
-        }}
-      />
-      <Annotation.Arc
-        start={[0, 1]}
-        end={[data[0].value, 1]}
-        style={{
-          stroke: '#1890ff',
-          lineWidth: 18,
-          lineDash: null,
-        }}
-      />
-      <Annotation.Text
-        position={['50%', '85%']}
-        content={t('systemEfficiencyChart.name')}
-        style={{
-          fontSize: 20,
-          fill: '#545454',
-          textAlign: 'center',
-        }}
-      />
-      <Annotation.Text
-        position={['50%', '90%']}
-        content={`${data[0].value} %`}
-        style={{
-          fontSize: 36,
-          fill: '#545454',
-          textAlign: 'center',
-        }}
-        offsetY={15}
-      />
-    </Chart>
+        forceFit
+      >
+        <Coordinate
+        type="polar"
+        radius={0.75}
+        startAngle={(-9 / 8) * Math.PI}
+        endAngle={(1 / 8) * Math.PI}
+        />
+        <Axis name="1" />
+        <Axis
+          name="value"
+          line={null}
+          label={{
+            offset: -36,
+            style: {
+              fontSize: 18,
+              textAlign: 'center',
+              textBaseline: 'middle',
+            },
+          }}
+          subTickLine={{
+            count: 4,
+            length: -15,
+          }}
+          tickLine={{
+            length: -24,
+          }}
+          grid={null}
+        />
+        <Point
+          position="value*1"
+          color="#faad14"
+          shape="pointer"
+          animate={{
+            appear: {
+              animation: 'fade-in'
+            }
+          }}
+        />
+        <Annotation.Arc
+          top={false}
+          start={[0, 1]}
+          end={[100, 1]}
+          style={{
+            stroke:'#CBCBCB',
+            lineWidth:18,
+            lineDash:null,
+          }}
+        />
+        <Annotation.Arc
+          start={[0, 1]}
+          end={[data[0].value, 1]}
+          style={{
+            stroke: '#1890ff',
+            lineWidth: 18,
+            lineDash: null,
+          }}
+        />
+        <Annotation.Text
+          position={['50%', '85%']}
+          content={t('systemEfficiencyChart.name')}
+          style={{
+            fontSize: 20,
+            fill: '#545454',
+            textAlign: 'center',
+          }}
+        />
+        <Annotation.Text
+          position={['50%', '90%']}
+          content={`${data[0].value} %`}
+          style={{
+            fontSize: 36,
+            fill: '#545454',
+            textAlign: 'center',
+          }}
+          offsetY={15}
+        />
+      </Chart>
+    </Card>
   )
 }

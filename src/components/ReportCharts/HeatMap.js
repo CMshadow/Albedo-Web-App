@@ -1,8 +1,10 @@
 import React from 'react'
+import { Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import ReactEcharts from "echarts-for-react";
 import 'echarts-gl'
+const Title = Typography.Title
 
 export const HeatMap = ({buildingID}) => {
   const { t } = useTranslation()
@@ -66,6 +68,15 @@ export const HeatMap = ({buildingID}) => {
 }
 
   return (
-    <ReactEcharts option={option} style={{height: '800px', width: '100%'}}/>
+    <Card
+      title={
+        <Title style={{textAlign: 'center'}} level={4}>
+          {t('heatMap.title')}
+        </Title>
+      }
+      hoverable
+    >
+      <ReactEcharts option={option} style={{height: '800px', width: '100%'}}/>
+    </Card>
   )
 }

@@ -75,7 +75,7 @@ export const IrradianceTable = ({ buildingID }) => {
           </Table.Summary.Cell>
           {
             Object.keys(setupIrrSum).map(key =>
-              <Table.Summary.Cell colSpan={2}>
+              <Table.Summary.Cell colSpan={2} key={key}>
                 <Text strong>{`${setupIrrSum[key].toFixed(2)} MJ/㎡`}</Text>
               </Table.Summary.Cell>
             )
@@ -93,6 +93,7 @@ export const IrradianceTable = ({ buildingID }) => {
         </Title>
       }
       headStyle={{textAlign: 'center'}}
+      hoverable
     >
       <Table
         bordered

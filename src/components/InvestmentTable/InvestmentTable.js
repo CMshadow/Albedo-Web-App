@@ -15,11 +15,12 @@ const EditableRow = ({ index, ...props }) => {
   const [form] = Form.useForm();
   // 通用required项提示文本
   const validateMessages = {
-    required: t('form.required')
+    required: t('form.required'),
+    min: t('form.min.0')
   };
 
   return (
-    <Form form={form} component={false} validateMessages={validateMessages}>
+    <Form form={form} component={false} validateMessages={validateMessages} >
       <EditableContext.Provider value={form}>
         <tr {...props} />
       </EditableContext.Provider>
@@ -44,6 +45,7 @@ const EditableCell = ({title, editable, children, dataIndex, record, handleSave,
   const save = async e => {
     try {
       const values = await form.validateFields();
+      if (values.unitPrice < 0) values.unitPrice = 0
       toggleEdit();
       handleSave({ ...record, ...values });
     } catch (errInfo) {
@@ -79,7 +81,7 @@ const EditableCell = ({title, editable, children, dataIndex, record, handleSave,
       </Form.Item>
     ) : (
       <div
-        className={record[dataIndex] ? "editable-cell-wrap" : "editable-cell-wrap-empty"}
+        className={record[dataIndex] !== null ? "editable-cell-wrap" : "editable-cell-wrap-empty"}
         onClick={toggleEdit}
       >
         {children}
@@ -135,8 +137,7 @@ export const InvestmentTable = ({ buildingID }) => {
   const DCLength = buildingData.data.flatMap((spec, specIndex) =>
     spec.inverter_wiring.flatMap((inverterSpec, inverterSpecIndex) =>
       inverterSpec.dc_cable_len.map((len, lenIndex) => ({
-        name: reportData[buildingID]
-          .setup_dc_wir_choice[specIndex][inverterSpecIndex][lenIndex],
+        name: `${reportData[buildingID].setup_dc_wir_choice[specIndex][inverterSpecIndex][lenIndex]} (DC)`,
         count: len
       }))
     )
@@ -145,8 +146,7 @@ export const InvestmentTable = ({ buildingID }) => {
   // 统计每种用到的AC线型号及线长
   const ACLength = buildingData.data.flatMap((spec, specIndex) =>
     spec.inverter_wiring.flatMap((inverterSpec, inverterSpecIndex) => ({
-      name: reportData[buildingID]
-        .setup_ac_wir_choice[specIndex][inverterSpecIndex],
+      name: `${reportData[buildingID].setup_ac_wir_choice[specIndex][inverterSpecIndex]} (AC)`,
       count: inverterSpec.ac_cable_len
     }))
   )
@@ -252,7 +252,7 @@ export const InvestmentTable = ({ buildingID }) => {
         series: 10,
         name: t('investment.name.combibox_wiring'),
         description: reportData[buildingID] ?
-          reportData[buildingID].combibox_wir_choice :
+          `${reportData[buildingID].combibox_wir_choice} (AC)` :
           null,
         unit: t('investment.unit.price/m'),
         quantity: buildingData.combibox_cable_len,
@@ -501,11 +501,11 @@ export const InvestmentTable = ({ buildingID }) => {
   return (
     <Card
       title={
-        <Title className='cardTitle' level={4}>
+        <Title style={{textAlign: 'center'}} level={4}>
           {projectData.projectTitle + t('investment.title')}
         </Title>
       }
-      headStyle={{textAlign: 'center'}}
+      hoverable
     >
       <Table
         components={components}

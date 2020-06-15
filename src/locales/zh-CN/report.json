@@ -6,7 +6,7 @@
   "report.pvDetail": "光伏组件参数表",
   "report.inverterDetail": "逆变器参数表",
   "report.irrTable": "辐射量表",
-  "report.charts": "图表",
+  "report.emissionReduction": "节能减排",
 
   "report.paramsForm.title": "设置参数",
 
@@ -43,5 +43,12 @@
 
   "report.paramsForm.Ub": "并网电压",
   "report.paramsForm.ACVolDropFac": "交流侧允许压降系数",
-  "report.paramsForm.DCVolDropFac": "直流侧允许压降系数"
+  "report.paramsForm.DCVolDropFac": "直流侧允许压降系数",
+
+  "report.head.buildingName": "房屋名称",
+  "report.head.ttl_dc_power_capacity": "项目装机总量",
+  "report.head.year_AC_power": "首年发电量",
+  "report.head.system_efficiency": "系统效率",
+  "report.head.kWh_over_kWp": "首年有效发电小时数",
+  "report.head.ttl_investment": "项目总投资"
 }

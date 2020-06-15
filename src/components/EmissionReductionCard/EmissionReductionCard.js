@@ -1,8 +1,9 @@
 import React from 'react'
-import { Card, Statistic, Row, Col } from 'antd';
+import { Card, Statistic, Row, Col, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux'
 import { kg2other } from '../../utils/unitConverter'
+const Title = Typography.Title
 
 export const EmissionReductionCard = ({buildingID}) => {
   const { t } = useTranslation()
@@ -28,7 +29,14 @@ export const EmissionReductionCard = ({buildingID}) => {
   )}
 
   return (
-    <>
+    <Card
+      title={
+        <Title style={{textAlign: 'center'}} level={4}>
+          {t('emissionReductionCard.title')}
+        </Title>
+      }
+      bordered={false}
+    >
       <Row gutter={[8, 8]}>
         {
           keys.slice(0,-2).map(key => genCard(key))
@@ -39,6 +47,6 @@ export const EmissionReductionCard = ({buildingID}) => {
           keys.slice(-2,).map(key => genCard(key))
         }
       </Row>
-    </>
+    </Card>
   )
 }

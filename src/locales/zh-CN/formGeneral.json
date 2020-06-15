@@ -1,4 +1,5 @@
 {
   "form.required": "必填",
-  "form.confirm": "确认"
+  "form.confirm": "确认",
+  "form.min.0": "最小值0"
 }

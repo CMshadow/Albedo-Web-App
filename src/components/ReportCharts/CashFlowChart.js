@@ -1,10 +1,12 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
+import { Card, Typography } from 'antd'
 import { Chart, Interval, Axis, Tooltip, Legend } from 'bizcharts';
 import { createDateSource } from '../../utils/createGainData'
 import { money2Other } from '../../utils/unitConverter'
 import { titleStyle, legendStyle } from '../../styles.config'
+const Title = Typography.Title
 
 export const CashFlowChart = ({buildingID}) => {
   const { t } = useTranslation()
@@ -48,19 +50,28 @@ export const CashFlowChart = ({buildingID}) => {
   const color = ['type', ['#1890ff', '#faad14']]
 
   return (
-    <Chart
-      scale={scale}
-      height={500}
-      autoFit
-      data={dataSource}
-      interactions={['active-region']}
-      padding={[30, 30, 100, 100]}
+    <Card
+      title={
+        <Title style={{textAlign: 'center'}} level={4}>
+          {t('cashflowChart.title')}
+        </Title>
+      }
+      hoverable
     >
-      <Legend position='bottom' itemName={{style: legendStyle}} offsetY={-75}/>
-      <Axis name='year' title={{style: titleStyle}} />
-      <Axis name='value' title={{style: titleStyle}} />
-      <Interval adjust={adjust} color={color} position="year*value" />
-      <Tooltip shared />
-    </Chart>
+      <Chart
+        scale={scale}
+        height={500}
+        autoFit
+        data={dataSource}
+        interactions={['active-region']}
+        padding={[30, 30, 100, 100]}
+      >
+        <Legend position='bottom' itemName={{style: legendStyle}} offsetY={-10}/>
+        <Axis name='year' title={{style: titleStyle}} />
+        <Axis name='value' title={{style: titleStyle}} />
+        <Interval adjust={adjust} color={color} position="year*value" />
+        <Tooltip shared />
+      </Chart>
+    </Card>
   )
 }
