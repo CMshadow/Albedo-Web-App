@@ -134,12 +134,12 @@ export const GainTable = ({ buildingID }) => {
           title: t('gain.togrid'),
           dataIndex: 'cash-in-flow-togrid',
           width: '10%',
-          render: text => text.toLocaleString()
+          render: text => text >= 0 ? text.toLocaleString() : null
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'cash-in-flow-selfuse',
           width: '10%',
-          render: text => text.toLocaleString()
+          render: text => text >= 0 ? text.toLocaleString() : null
         }
       ]
     }, {
@@ -150,12 +150,12 @@ export const GainTable = ({ buildingID }) => {
           title: t('gain.togrid'),
           dataIndex: 'cash-out-flow-togrid',
           width: '10%',
-          render: text => text.toLocaleString()
+          render: text => text >= 0 ? text.toLocaleString() : null
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'cash-out-flow-selfuse',
           width: '10%',
-          render: text => text.toLocaleString()
+          render: text => text >= 0 ? text.toLocaleString() : null
         }
       ]
     }, {
@@ -166,12 +166,12 @@ export const GainTable = ({ buildingID }) => {
           title: t('gain.togrid'),
           dataIndex: 'net-cash-flow-togrid',
           width: '10%',
-          render: text => text.toLocaleString()
+          render: text => text >= 0 ? text.toLocaleString() : null
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'net-cash-flow-selfuse',
           width: '10%',
-          render: text => text.toLocaleString()
+          render: text => text >= 0 ? text.toLocaleString() : null
         }
       ]
     }, {
@@ -182,12 +182,12 @@ export const GainTable = ({ buildingID }) => {
           title: t('gain.togrid'),
           dataIndex: 'acc-net-cash-flow-togrid',
           width: '10%',
-          render: text => text.toLocaleString()
+          render: text => text >= 0 ? text.toLocaleString() : null
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'acc-net-cash-flow-selfuse',
           width: '10%',
-          render: text => text.toLocaleString()
+          render: text => text >= 0 ? text.toLocaleString() : null
         }
       ]
     }

@@ -9,7 +9,6 @@ const Text = Typography.Text
 
 export const ACPowerTable = ({ buildingID }) => {
   const { t } = useTranslation()
-  const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
 
   const dataSource = reportData[buildingID].year25_AC_power.map((record, index) => ({
@@ -49,6 +48,7 @@ export const ACPowerTable = ({ buildingID }) => {
     const ttlACPower = wh2other(dataSource.reduce((sum, record) =>
       sum + other2wh(record.acpower, record.unit), 0
     ))
+    const avgACPower = wh2other(other2wh(ttlACPower.value / 25, ttlACPower.unit))
     const ttlKwhOverWkp = dataSource.reduce((sum, record) =>
       sum + record.kwhOverKwp, 0
     )
@@ -70,10 +70,10 @@ export const ACPowerTable = ({ buildingID }) => {
             <Text strong>{t('acPowerTable.avgACPower')}</Text>
           </Table.Summary.Cell>
           <Table.Summary.Cell>
-            <Text strong>{ttlACPower.unit}</Text>
+            <Text strong>{avgACPower.unit}</Text>
           </Table.Summary.Cell>
           <Table.Summary.Cell>
-            <Text strong>{Number((ttlACPower.value / 25).toFixed(2))}</Text>
+            <Text strong>{Number(avgACPower.value.toFixed(2))}</Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
         <Table.Summary.Row className={styles.summaryRow}>
