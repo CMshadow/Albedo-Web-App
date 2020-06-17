@@ -23,7 +23,7 @@
   "Inverter.note": "逆变器备注",
   "Inverter.inverterWidth": "逆变器宽度",
   "Inverter.inverterLength": "逆变器长度",
-  "Inverter.inverterHeight": "逆变器高度",
+  "Inverter.inverterHeight": "逆变器厚度",
   "Inverter.inverterWeight": "逆变器重量",
   "Inverter.size": "外形尺寸",
   "Inverter.vdcMin": "Vdcmin: 最低直流输入电压",

@@ -1,0 +1,47 @@
+{
+  "investment.title": "Table of Project Investment",
+  "investment.project-title": "Project Name",
+  "investment.project-scale": "Project Size",
+
+  "investment.series": "Category",
+  "investment.name": "Item",
+  "investment.description": "Model/Description",
+  "investment.unit": "Unit",
+  "investment.quantity": "Quantity",
+  "investment.unitPrice": "Unit Price",
+  "investment.totalPrice": "Total",
+  "investment.investmentWeight": "Percentage",
+
+  "investment.series.one": "A",
+  "investment.series.two": "B",
+  "investment.series.three": "C",
+
+  "investment.name.costList": "Cost",
+  "investment.name.pv": "PV Module",
+  "investment.name.rack": "PV Rack & Support",
+  "investment.name.inverter": "Inverter",
+  "investment.name.combibox": "AC Combiner Box",
+  "investment.name.meter": "Gateway Electricity Meter",
+  "investment.name.router": "Wireless Router",
+  "investment.name.comm": "Communication Gateway",
+  "investment.name.dc_wiring": "DC Cable",
+  "investment.name.ac_wiring": "AC Cable (Inverter(s) to Combiner Box)",
+  "investment.name.combibox_wiring": "AC Cable (Combiner Box to Meter)",
+  "investment.name.rooftop": "Rooftop Reinforcement",
+  "investment.name.other": "Other",
+  "investment.name.unitInvestment": "Investment Per kW",
+  "investment.name.totalInvestment": "Total Investment",
+
+  "investment.description.rack": "Steel/Aluminum Alloy Rack & Support",
+  "investment.description.rooftop": "EPC Fee",
+  "investment.description.other": "Labor Fee",
+
+  "investment.unit.price/kuai": "$/each",
+  "investment.unit.price/tai": "$/each",
+  "investment.unit.price/tao": "$/set",
+  "investment.unit.price/xiang": "$/project",
+  "investment.unit.price/m": "$/m",
+  "investment.unit.price": "$",
+  "investment.unit.price/W": "$/W",
+  "investment.unit.price/KW": "$/kW"
+}

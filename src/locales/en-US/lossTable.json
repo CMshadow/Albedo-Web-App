@@ -1,0 +1,19 @@
+{
+  "lossTable.title": "Table of PV System Loss",
+
+  "lossTable.p_loss_tilt_azimuth": "Percent Irradiance of Tilt & Azimuth from Optimal Orientation",
+  "lossTable.p_loss_mismatch": "Mismatch Loss",
+  "lossTable.p_loss_soiling": "Soiling Loss",
+  "lossTable.p_loss_eff_irradiance": "Loss of Effective Irradiance",
+  "lossTable.p_loss_temperature": "Temperature Loss",
+  "lossTable.p_loss_degradation": "Light-induced Degradation (Year 1)",
+  "lossTable.p_loss_degradation_rest": "Light-induced Degradation (Year 2-25)",
+  "lossTable.p_loss_connection": "Connection Loss",
+  "lossTable.p_loss_conversion": "Inverter Loss",
+  "lossTable.p_loss_transformer": "Transformer Loss",
+  "lossTable.p_loss_dc_wiring": "DC Wiring",
+  "lossTable.p_loss_ac_wiring": "AC Wiring (Inverter(s) to Combiner Box)",
+  "lossTable.p_loss_combibox_wiring": "AC Wiring (Combiner Box to Meter)",
+  "lossTable.p_loss_system": "Ovverall System Loss",
+  "lossTable.system_efficiency": "System Efficiency"
+}
