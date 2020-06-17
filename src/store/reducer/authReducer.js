@@ -6,14 +6,12 @@ const initialState = {
 
 const setCognitoUser = (state, action) => {
   return {
-    ...state,
     cognitoUser: action.cognitoUser
   }
 }
 
 const setCognitoUserSession = (state, action) => {
   return {
-    ...state,
     cognitoUser: {
       ...state.cognitoUser,
       signInUserSession: action.session

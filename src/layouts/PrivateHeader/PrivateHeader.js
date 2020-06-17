@@ -19,8 +19,9 @@ const PrivateHeader = (props) => {
   const projectExist = Object.keys(useSelector(state => state.project)).length !== 0
 
   const signOut = () => {
-    Auth.signOut();
     dispatch(setCognitoUser(null))
+    localStorage.removeItem('persist:root')
+    Auth.signOut();
     history.push('/user/login');
     return;
   }
