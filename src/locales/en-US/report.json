@@ -1,0 +1,54 @@
+{
+  "report.investmentTable": "Table of Project Investment",
+  "report.gainTable": "Table of Project Cash Flow",
+  "report.acPowerTable": "Table of Yearly Energy Generation",
+  "report.lossTable": "Table of PV System Loss",
+  "report.pvDetail": "Table of PV Module",
+  "report.inverterDetail": "Table of Inverter",
+  "report.irrTable": "Table of Irradiance",
+  "report.emissionReduction": "Emission Reduction",
+
+  "report.paramsForm.title": "Set Parameter",
+
+  "report.paramsForm.irradiance": "Irradiance Loss",
+  "report.paramsForm.dc": "DC Loss",
+  "report.paramsForm.ac": "AC Loss",
+  "report.paramsForm.grid": "并网端损耗",
+  "report.paramsForm.system": "System Parameter",
+  "report.paramsForm.wiring": "Electrical",
+
+  "report.paramsForm.p_loss_soiling": "Soiling Loss (%)",
+  "report.paramsForm.p_loss_connection": "Connection Loss (%)",
+  "report.paramsForm.p_loss_mismatch": "Mismatch Loss (%)",
+  "report.paramsForm.loss_0": "No Loss",
+  "report.paramsForm.loss_1": "1% Loss",
+  "report.paramsForm.loss_5": "5% Loss",
+  "report.paramsForm.availability_0": "Completely Fail",
+  "report.paramsForm.availability_100": "100% Efficiency",
+
+  "report.paramsForm.disabled": "Auto",
+  "report.paramsForm.pv": "Depends on Module",
+  "report.paramsForm.or": "Or",
+  "report.paramsForm.overwrite": "Overwrite",
+
+  "report.paramsForm.p_loss_tilt_azimuth": "Irradiance Reduction at Tilt & Azimuth (%)",
+  "report.paramsForm.p_loss_eff_irradiance": "Effective Irradiance Loss (%)",
+  "report.paramsForm.p_loss_temperature": "Temperature Loss (%)",
+  "report.paramsForm.year1Decay": "Light-induced Degradation (Year 1) (%)",
+  "report.paramsForm.year2To25Decay": "Light-induced Degradation (Year 2-25) (%)",
+  "report.paramsForm.p_loss_dc_wiring": "DC Wiring Loss (%)",
+  "report.paramsForm.p_loss_conversion": "Inverter Loss (%)",
+  "report.paramsForm.transformer_efficiency": "Transformer Efficiency (%)",
+  "report.paramsForm.p_loss_ac_wiring": "AC Wiring Loss (Inverter(s) to Combiner Box) (%)",
+
+  "report.paramsForm.Ub": "Gird Voltage",
+  "report.paramsForm.ACVolDropFac": "Allowable AC Voltage Drop",
+  "report.paramsForm.DCVolDropFac": "Allowable DC Voltage Drop",
+
+  "report.head.buildingName": "Building Name",
+  "report.head.ttl_dc_power_capacity": "System Size",
+  "report.head.year_AC_power": "First Year Production",
+  "report.head.system_efficiency": "System Efficiency",
+  "report.head.kWh_over_kWp": "First Year kWh/kWp",
+  "report.head.ttl_investment": "Project Investment"
+}

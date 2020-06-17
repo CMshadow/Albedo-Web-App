@@ -1,0 +1,70 @@
+{
+  "project.create-project": "Create New Project",
+  "project.map.googleMap": "Google Map",
+  "project.map.aMap": "Gaode Map",
+
+  "project.create.title": "Project Name",
+  "project.create.title.placeholder": "My Project",
+  "project.create.address": "Project Address",
+  "project.create.address.placeholder": "Enter address and search",
+  "project.create.address.hint": "Accurate address is not required, as long as the correct city is selected, the weather data can be loaded",
+  "project.create.validation": "Verify Address",
+  "project.create.type": "Project Type",
+  "project.type.domestic": "Residential",
+  "project.type.commercial": "Commercial",
+  "project.create.proParams": "Advanced Setting",
+
+  "project.create.albedo": "Albedo",
+  "project.create.albedo.shadow": "No Reflection",
+  "project.create.albedo.forest": "Forest",
+  "project.create.albedo.grassland": "Grassland",
+  "project.create.albedo.urban": "Urban",
+  "project.create.albedo.desert": "Desert",
+  "project.create.albedo.full": "All Reflection",
+
+  "project.error.invalid-address": "Address cannot be verified",
+
+  "project.createdAt": "Date of Creation",
+  "project.updatedAt": "Last Modified",
+  "table.projectTitle": "Project Name",
+  "table.projectAddress": "Project Address",
+
+  "project.descriptions.projectAddress": "Project Address",
+  "project.descriptions.projectCreator": "Creator",
+  "project.descriptions.projectType": "Project Type",
+  "project.descriptions.createdAt": "Date of Creation",
+  "project.descriptions.updatedAt": "Last Modified",
+
+  "project.optimal.title": "Optimal Orientation",
+  "project.optimal.optTilt": "Optimal Tilt",
+  "project.optimal.optAzi": "Optimal Azimuth",
+  "project.optimal.optPOA": "Max Annual POA Irradiance",
+
+  "project.success.deleteProject": "Project Successfully Deleted",
+
+  "project.add.building": "Add Building",
+  "project.add.buildingName": "Building Name",
+  "project.add.combibox_cable_len": "Cable length (AC combiner box to meter)",
+  "project.add.spec": " add PV array",
+  "project.add.spec.prefix": "For building ",
+
+  "project.spec.tilt_angle": "Array Tilt",
+  "project.spec.azimuth": "Array Azimuth",
+  "project.spec.pv": "PV Module",
+  "project.spec.inverters": "Manager Inverter",
+  "project.add.inverterSpec": "Add Inverter",
+
+  "project.error.tilt":"Tilting should be between 0° and 60°",
+  "project.error.azimuth":"Azimuth should be between 0 and 360°",
+
+  "project.spec.serial": "Inverter number",
+  "project.spec.inverter": "Inverter model",
+  "project.spec.string_per_inverter": "Number of parallel string",
+  "project.spec.panels_per_string": "Numbber of module in series",
+  "project.spec.ac_cable_len": "Cable length of inverter to combiner box",
+  "project.spec.dc_cable_len": "Cable length of each string to inverter",
+  "project.spec.dc_cable_len.hint": "Cable length of each string should be seprated by a comma (i.e.: 20,25,30)",
+  "project.spec.dc_cable_len.error.only-number": "Cannot enter element other than number",
+  "project.spec.dc_cable_len.error.spi-not-match": "Entered value(s) does not match the number of strings",
+  "project.spec.total_panels": "Total module count"
+}

@@ -1,0 +1,11 @@
+{
+  "irrTable.title": "Monthly Irradiance Table of Proposed Rooftop Array",
+
+  "irrTable.irradiance": "Tota POA Irradiance",
+  "irrTable.irradianceYear": "Annual Total Irradiance",
+  "irrTable.avgPkHr": "Daily Average Peak Sun Hours",
+  "irrTable.month": "",
+
+  "irrTable.tilt": "Array Tilt",
+  "irrTable.azimuth": "Array Azimuth"
+}

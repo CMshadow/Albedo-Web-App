@@ -1,0 +1,43 @@
+{
+  "gain.title": "Project Cash Flow",
+
+  "gain.series": "Category",
+  "gain.name": "Item",
+  "gain.unit": "Unit",
+  "gain.description": "Description",
+  "gain.total": "Total",
+
+  "gain.series.one": "A",
+  "gain.series.two": "B",
+  "gain.series.three": "C",
+
+  "gain.name.feed-in-tariff": "Incentive",
+  "gain.name.rate-of-electricity": "Rate",
+  "gain.name.investment-gain": "Benifit of Investment",
+  "gain.name.construction": "Construction",
+
+  "gain.unit.price/kwh": "$/kWh",
+  "gain.unit.price": "$",
+  "gain.unit.year": "Year",
+
+  "gain.description.feed-in-tariff": "Feed-in Tariff",
+  "gain.description.export-credit": "Export Rate",
+  "gain.description.final-export-credit": "Total Rate of Gain",
+  "gain.description.rate-of-electricity": "Utility Rate",
+
+  "gain.togrid": "All Export",
+  "gain.selfuse": "All Self-consumption",
+  "gain.average": "Average",
+  "gain.cash-in-flow": "Cash Inflow",
+  "gain.cash-out-flow": "Cash Outflow",
+  "gain.net-cash-flow": "Net Cash Flow",
+  "gain.acc-net-cash-flow": "Cumulative Net Cash Flow",
+
+  "gain.year.prefix": "",
+  "gain.year.suffix": "",
+
+  "gain.cash-in-flow.25year": "Total Gain over 25 Years",
+  "gain.cash-in-flow.irr": "Rate of Return",
+  "gain.payback-period": "Payback Period",
+  "gain.cannot-payback": "No payback within 25-year period"
+}

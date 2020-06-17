@@ -1,0 +1,16 @@
+{
+  "sider.company": "Albedo Inc.",
+  "sider.edition": "DEV-Alpha",
+  "sider.menu.project": "Manage Project",
+
+
+  "sider.menu.back-project": "Return to manage project",
+  "sider.menu.projectDetail": "Project Info",
+  "sider.menu.report": "Open Report",
+  "sider.menu.report.prefix": "Report of building",
+  "sider.menu.report.suffix": "",
+  "sider.menu.pv": "Manage Module",
+  "sider.menu.inverter": "Manage Inverter",
+
+  "sider.save": "Save Project"
+}
