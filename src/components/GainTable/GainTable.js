@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { HeaderTable } from './HeaderTable'
 import { createDateSource } from '../../utils/createGainData'
 import { updateReportAttributes } from '../../store/action/index'
+import { MoneyText } from '../../utils/genMoneyText'
 import './GainTable.scss'
 const EditableContext = React.createContext();
 const Title = Typography.Title
@@ -90,7 +91,6 @@ const EditableCell = ({title, editable, children, dataIndex, record, handleSave,
 export const GainTable = ({ buildingID }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
 
   const [dataSource, setdataSource] = useState(
@@ -133,11 +133,13 @@ export const GainTable = ({ buildingID }) => {
         {
           title: t('gain.togrid'),
           dataIndex: 'cash-in-flow-togrid',
-          width: '10%'
+          width: '10%',
+          render: text => text.toLocaleString()
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'cash-in-flow-selfuse',
-          width: '10%'
+          width: '10%',
+          render: text => text.toLocaleString()
         }
       ]
     }, {
@@ -147,11 +149,13 @@ export const GainTable = ({ buildingID }) => {
         {
           title: t('gain.togrid'),
           dataIndex: 'cash-out-flow-togrid',
-          width: '10%'
+          width: '10%',
+          render: text => text.toLocaleString()
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'cash-out-flow-selfuse',
-          width: '10%'
+          width: '10%',
+          render: text => text.toLocaleString()
         }
       ]
     }, {
@@ -161,11 +165,13 @@ export const GainTable = ({ buildingID }) => {
         {
           title: t('gain.togrid'),
           dataIndex: 'net-cash-flow-togrid',
-          width: '10%'
+          width: '10%',
+          render: text => text.toLocaleString()
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'net-cash-flow-selfuse',
-          width: '10%'
+          width: '10%',
+          render: text => text.toLocaleString()
         }
       ]
     }, {
@@ -175,11 +181,13 @@ export const GainTable = ({ buildingID }) => {
         {
           title: t('gain.togrid'),
           dataIndex: 'acc-net-cash-flow-togrid',
-          width: '10%'
+          width: '10%',
+          render: text => text.toLocaleString()
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'acc-net-cash-flow-selfuse',
-          width: '10%'
+          width: '10%',
+          render: text => text.toLocaleString()
         }
       ]
     }
@@ -315,7 +323,7 @@ export const GainTable = ({ buildingID }) => {
             <Text strong>{t('gain.togrid')}</Text>
           </Table.Summary.Cell>
           <Table.Summary.Cell colSpan={2}>
-            <Text strong>{ttlCashInFlowToGrid}</Text>
+            <Text strong>{ttlCashInFlowToGrid.toLocaleString()}</Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
         <Table.Summary.Row className='summaryRow'>
@@ -323,7 +331,7 @@ export const GainTable = ({ buildingID }) => {
             <Text strong>{t('gain.selfuse')}</Text>
           </Table.Summary.Cell>
           <Table.Summary.Cell colSpan={2}>
-            <Text strong>{ttlCashInFlowSelfUse}</Text>
+            <Text strong>{ttlCashInFlowSelfUse.toLocaleString()}</Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
         <Table.Summary.Row className='summaryRow'>

@@ -20,7 +20,6 @@ const PrivateHeader = (props) => {
 
   const signOut = () => {
     dispatch(setCognitoUser(null))
-    localStorage.removeItem('persist:root')
     Auth.signOut();
     history.push('/user/login');
     return;

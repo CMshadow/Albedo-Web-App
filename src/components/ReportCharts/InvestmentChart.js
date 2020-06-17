@@ -3,7 +3,7 @@ import { Card, Typography } from 'antd'
 import { Chart, Interval, Tooltip, Axis, Coordinate, Interaction, Annotation, Legend } from "bizcharts";
 import {useTranslation} from 'react-i18next'
 import {useSelector} from 'react-redux'
-import { money2Other } from '../../utils/unitConverter'
+import { MoneyText } from '../../utils/genMoneyText'
 import { lgTextStyle, legendStyle } from '../../styles.config'
 const Title = Typography.Title
 
@@ -18,12 +18,11 @@ export const InvestmentChart = ({buildingID}) => {
     value: record.totalPrice,
     percent: record.totalPrice / reportData[buildingID].ttl_investment
   }))
-  const ttlInvestment = money2Other(reportData[buildingID].ttl_investment)
 
   const scale = {
     value: {
       formatter: text => {
-        return `${text.toLocaleString()} ${t('money.')}`
+        return MoneyText({t:t, money: text, abbr:true})
       }
     }
   }
@@ -56,7 +55,7 @@ export const InvestmentChart = ({buildingID}) => {
         />
         <Annotation.Text
           position={['50%', '55%']}
-          content={`${ttlInvestment.value.toFixed(2)} ${t(`money.${ttlInvestment.unit}`)}`}
+          content={MoneyText({t: t, money: reportData[buildingID].ttl_investment, abbr:true})}
           style={lgTextStyle}
         />
       </Chart>

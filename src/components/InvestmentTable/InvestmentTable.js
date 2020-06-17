@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { TableHeadDescription } from '../Descriptions/TableHeadDescription'
 import { other2w, w2other } from '../../utils/unitConverter'
 import { updateReportAttributes } from '../../store/action/index'
+import { MoneyText } from '../../utils/genMoneyText'
 import './InvestmentTable.scss'
 const EditableContext = React.createContext();
 const Title = Typography.Title
@@ -369,11 +370,11 @@ export const InvestmentTable = ({ buildingID }) => {
       render: (text, row, index) => {
         if (disabledRowKeys.includes(row.key)) {
           return {
-            children: text >= 0 ? text.toFixed(2) : null,
+            children: text >= 0 ? <MoneyText t={t} money={Number(text.toFixed(2))}/> : null,
             props: {colSpan: 0}
           };
         }
-        return text >= 0 ? text.toFixed(2) : null
+        return text >= 0 ? <MoneyText t={t} money={Number(text.toFixed(2))}/> : null
       },
     },{
       title: t('investment.investmentWeight'),
@@ -467,11 +468,9 @@ export const InvestmentTable = ({ buildingID }) => {
           </Table.Summary.Cell>
           <Table.Summary.Cell colSpan={4} />
           <Table.Summary.Cell>
-            <Text strong>{reportData[buildingID].ttl_investment}</Text>
+            <Text strong><MoneyText t={t} money={reportData[buildingID].ttl_investment}/></Text>
           </Table.Summary.Cell>
-          <Table.Summary.Cell>
-            <Text strong>{t('investment.unit.price')}</Text>
-          </Table.Summary.Cell>
+          <Table.Summary.Cell />
         </Table.Summary.Row>
         <Table.Summary.Row className='summaryRow'>
           <Table.Summary.Cell>

@@ -2,20 +2,20 @@ import * as actionTypes from '../action/actionTypes';
 
 const initialState = {
   cognitoUser: null,
+  signInUserSession: null
 };
 
 const setCognitoUser = (state, action) => {
   return {
+    ...state,
     cognitoUser: action.cognitoUser
   }
 }
 
 const setCognitoUserSession = (state, action) => {
   return {
-    cognitoUser: {
-      ...state.cognitoUser,
-      signInUserSession: action.session
-    }
+    ...state,
+    signInUserSession: action.session
   }
 }
 

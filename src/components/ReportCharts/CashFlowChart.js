@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Card, Typography } from 'antd'
 import { Chart, Interval, Axis, Tooltip, Legend } from 'bizcharts';
 import { createDateSource } from '../../utils/createGainData'
-import { money2Other } from '../../utils/unitConverter'
+import { MoneyText } from '../../utils/genMoneyText'
 import { titleStyle, legendStyle } from '../../styles.config'
 const Title = Typography.Title
 
@@ -35,10 +35,7 @@ export const CashFlowChart = ({buildingID}) => {
       alias: t('cashflowChart.gain'),
       tickCount: 10,
       nice: true,
-      formatter: text => {
-        const newVal = money2Other(text)
-        return `${newVal.value.toFixed(2)}${t(`money.${newVal.unit}`)}`
-      }
+      formatter: text => MoneyText({t: t, money: text, abbr: true})
     },
   }
 

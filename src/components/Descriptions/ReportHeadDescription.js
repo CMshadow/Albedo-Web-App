@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Descriptions, Card, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { money2Other } from '../../utils/unitConverter'
+import { MoneyText } from '../../utils/genMoneyText'
 const Title = Typography.Title
 
 const Item = Descriptions.Item
@@ -16,8 +16,7 @@ export const ReportHeadDescription = ({buildingID}) => {
 
   let ttl_investment = null
   if (curBuildingReport.ttl_investment) {
-    const investment = money2Other(curBuildingReport.ttl_investment)
-    ttl_investment = `${investment.value} ${t(`money.${investment.unit}`)}`
+    ttl_investment = MoneyText({t:t, money: curBuildingReport.ttl_investment, abbr: true})
   }
 
   const title = (
