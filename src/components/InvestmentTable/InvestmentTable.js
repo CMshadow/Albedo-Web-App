@@ -81,7 +81,7 @@ const EditableCell = ({title, editable, children, dataIndex, record, handleSave,
       </Form.Item>
     ) : (
       <div
-        className={record[dataIndex] !== null ? "editable-cell-wrap" : "editable-cell-wrap-empty"}
+        className={record[dataIndex] !== undefined ? "editable-cell-wrap" : "editable-cell-wrap-empty"}
         onClick={toggleEdit}
       >
         {children}

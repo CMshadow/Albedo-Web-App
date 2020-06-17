@@ -9,8 +9,9 @@ const Title = Typography.Title
 export const HeatMap = ({buildingID}) => {
   const { t } = useTranslation()
   const projectData = useSelector(state => state.project)
-  const poaMax = Math.max(...projectData.tiltAzimuthPOA.map(ary => ary[2]))
-  const poaMin = Math.min(...projectData.tiltAzimuthPOA.map(ary => ary[2]))
+  const tiltAzimuthPOA = projectData.tiltAzimuthPOA || [[0, 0, 0]]
+  const poaMax = Math.max(...tiltAzimuthPOA.map(ary => ary[2]))
+  const poaMin = Math.min(...tiltAzimuthPOA.map(ary => ary[2]))
 
   const option = {
     backgroundColor: '#fff',
@@ -63,7 +64,7 @@ export const HeatMap = ({buildingID}) => {
     },
     series: [{
       type: 'scatter3D',
-      data: projectData.tiltAzimuthPOA
+      data: tiltAzimuthPOA
     }]
 }
 

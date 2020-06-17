@@ -330,7 +330,9 @@ export const GainTable = ({ buildingID }) => {
           <Table.Summary.Cell rowSpan={2} colSpan={2}>
             <Text strong>{t('gain.cash-in-flow.irr')}</Text>
           </Table.Summary.Cell>
-          <Table.Summary.Cell rowSpan={2} />
+          <Table.Summary.Cell rowSpan={2}>
+            %
+          </Table.Summary.Cell>
           <Table.Summary.Cell colSpan={2}>
             <Text strong>{t('gain.togrid')}</Text>
           </Table.Summary.Cell>

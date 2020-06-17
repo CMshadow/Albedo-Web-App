@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import Register from './pages/user/Register/index';
@@ -19,6 +20,7 @@ import NotFound404 from './pages/404';
 const Router = () => {
   return(
     <BrowserRouter>
+      <ScrollToTop />
       <Switch>
         <Route path="/user">
           <UserLayout>
@@ -46,7 +48,8 @@ const Router = () => {
           <BasicLayout>
             <Switch>
               <PrivateRoute path='/dashboard' component={ProjectTable} />
-              <Route path='*' component={NotFound404} />
+              <Redirect path='*' to="/user/login"/>
+              {/* <Route path='*' component={NotFound404} /> */}
             </Switch>
           </BasicLayout>
         </PrivateRoute>

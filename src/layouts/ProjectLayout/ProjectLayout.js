@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Row, Button, Spin, Space } from 'antd';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Layout, Menu, Row, Button, Spin, Space, Tooltip } from 'antd';
 import { SettingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -25,7 +25,6 @@ const ProjectLayout = (props) => {
   const { t } = useTranslation();
   const [loading, setloading] = useState(false)
   const projectData = useSelector(state => state.project)
-  const reportData = useSelector(state => state.report)
   const cognitoUser = useSelector(state => state.auth.cognitoUser)
   const projectID = history.location.pathname.split('/')[2]
   const selectMenu = history.location.pathname.split('/')[3]
@@ -34,18 +33,50 @@ const ProjectLayout = (props) => {
     history.push(`/project/${projectID}/${key}`)
   }
 
+  const genReportSubMenu = () => {
+    return projectData.buildings &&
+    projectData.buildings.filter(building =>
+      building.data.length > 0 &&
+      building.data[0].inverter_wiring.length > 0
+    ).map(building => {
+      let disabled = false
+      if (
+        building.data.some(obj => !obj.pv_panel_parameters.tilt_angle) ||
+        building.data.some(obj => obj.inverter_wiring.some(inverterSpec =>
+          !inverterSpec.panels_per_string
+        ))
+      ) disabled = true
+      return (
+        <Menu.Item key={`report/${building.buildingID}`} disabled={disabled}>
+          <Tooltip title={disabled ? t('sider.report.disabled') : null}>
+            {
+              t('sider.menu.report.prefix') +
+              `${building.buildingName}` +
+              t('sider.menu.report.suffix')
+            }
+          </Tooltip>
+        </Menu.Item>
+      )
+    })
+  }
+
   const saveProjectClick = () => {
     setloading(true)
     dispatch(saveProject(projectID))
     .then(async res => {
-      const allSavingPromise = [Object.keys(reportData).map(buildingID =>
-        dispatch(saveReport({projectID, buildingID}))
-      )]
-      Promise.all(allSavingPromise)
+      dispatch(saveReport({projectID}))
       dispatch(updateProjectAttributes({updatedAt: res.Attributes.updatedAt}))
       setloading(false)
     })
   }
+
+  const saveProjectOnExit = useCallback(() => {
+    dispatch(saveProject(projectID))
+    .then(async res => {
+      dispatch(saveReport({projectID}))
+      dispatch(updateProjectAttributes({updatedAt: res.Attributes.updatedAt}))
+    })
+  }, [dispatch, projectID])
 
   // 读pv 逆变器 项目数据 最佳倾角朝向
   useEffect(() => {
@@ -66,9 +97,16 @@ const ProjectLayout = (props) => {
             .then(optSpec => {
               dispatch(setProjectData(optSpec))
             })
-            dispatch(allTiltAzimuthPOA({projectID: projectID}))
-            .then(allTiltAziPOA => {
-              dispatch(setProjectData(allTiltAziPOA))
+            const allTiltAziPOA = [
+              dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 0, endAzi: 90})),
+              dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 90, endAzi: 180})),
+              dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 180, endAzi: 270})),
+              dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 270, endAzi: 360}))
+            ]
+            Promise.all(allTiltAziPOA).then(allPOARes => {
+              dispatch(setProjectData({
+                tiltAzimuthPOA: allPOARes.flatMap(obj => obj.allTiltAziPOA)
+              }))
             })
           }
         })
@@ -77,8 +115,10 @@ const ProjectLayout = (props) => {
         })
       })
     })
-
-  }, [dispatch, history, projectID, t])
+    return () => {
+      saveProjectOnExit()
+    }
+  }, [dispatch, history, projectID, saveProjectOnExit, t])
 
   return (
     <Layout>
@@ -113,20 +153,7 @@ const ProjectLayout = (props) => {
                   </Space>
                 }
               >
-                { projectData.buildings &&
-                  projectData.buildings.filter(building =>
-                    building.data.length > 0 &&
-                    building.data[0].inverter_wiring.length > 0
-                  ).map(building => (
-                    <Menu.Item key={`report/${building.buildingID}`}>
-                      {
-                        t('sider.menu.report.prefix') +
-                        `${building.buildingName}` +
-                        t('sider.menu.report.suffix')
-                      }
-                    </Menu.Item>
-                  ))
-                }
+                {genReportSubMenu()}
               </SubMenu>
               <Menu.Item key="pv" className={styles.menuItem}>
                 {t('sider.menu.pv')}
