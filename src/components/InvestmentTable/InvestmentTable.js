@@ -288,6 +288,7 @@ export const InvestmentTable = ({ buildingID }) => {
     {
       title: t('investment.series'),
       dataIndex: 'series',
+      align: 'center',
       render: (text, row, index) => {
         if (strongRowKeys.includes(row.key)) {
           return <strong>{text}</strong>
@@ -502,7 +503,7 @@ export const InvestmentTable = ({ buildingID }) => {
     <Card
       title={
         <Title style={{textAlign: 'center'}} level={4}>
-          {projectData.projectTitle + t('investment.title')}
+          {t('investment.title')}
         </Title>
       }
       hoverable

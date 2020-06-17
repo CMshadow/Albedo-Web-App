@@ -151,10 +151,10 @@ const Register = (props) => {
 
   const genPopoverContent = () => (
     visible && (
-      <div style={{ padding: '4px 0' }}>
+      <div className={styles.popover}>
         {passwordStatusMap[getPasswordStatus()]}
         {renderPasswordProgress()}
-        <div style={{ marginTop: 10 }}>
+        <div className={styles.popoverContent}>
           <Row align='middle'>
             {
               checkPsswordLength() ?
@@ -248,7 +248,7 @@ const Register = (props) => {
         </Row>
         <Popover
           content={genPopoverContent}
-          overlayStyle={{ width: 240 }}
+          overlayStyle={{ width: 300 }}
           placement="right"
           visible={visible}
         >

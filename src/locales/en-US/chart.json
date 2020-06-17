@@ -1,12 +1,12 @@
 {
   "cashflowChart.title": "Cumulative Net Cash Flow",
-  "acPowerChart.title": "First Year Monthy Energy Generation",
-  "lossChart.title": "System Losses",
+  "acPowerChart.title": "First Year Monthy Production",
+  "lossChart.title": "System Loss",
   "systemEfficiencyChart.title": "System Efficiency",
   "investmentChart.title": "Project Investment",
   "heatMap.title": "POA Irradiance with Array Orientations",
-  "emissionReductionCard.title": "Emission Reduction of 25 Yaer Lifespan",
-  "productionChart.title": "First Year Energy Generation",
+  "emissionReductionCard.title": "Emission Reduction of 25 Yaer Lifetime",
+  "productionChart.title": "First Year Production",
   "irrChart.title": "Monthly POA Irradiance",
 
   "cashflowChart.year": "Year",
@@ -27,7 +27,7 @@
   "acPowerChart.month.10": "October",
   "acPowerChart.month.11": "November",
   "acPowerChart.month.12": "December",
-  "acPowerChart.production": "Total Generation",
+  "acPowerChart.production": "Total Production",
 
   "lossChart.opt": "Optimal Scenario",
   "lossChart.irr": "Irradiance",
@@ -35,7 +35,7 @@
   "lossChart.ac": "AC",
 
   "lossChart.opt_irr": "Optimal Tilt & Azimuth",
-  "lossChart.p_loss_tilt_azimuth": "Tilt & Orientation",
+  "lossChart.p_loss_tilt_azimuth": "Tilt & Azimuth",
   "lossChart.p_loss_mismatch": "Mismatch",
   "lossChart.p_loss_soiling": "Soiling",
   "lossChart.p_loss_eff_irradiance": "Effective Irradiance",
@@ -59,7 +59,7 @@
   "heatMap.azimuth": "Azimuth",
   "heatMap.poa": "POA Irradiance",
 
-  "productionChart.selectdate": "Select Date",
+  "productionChart.selectdate": "Select",
   "productionChart.monthStatics": "By Month",
   "productionChart.dayStatics": "By Day",
   "productionChart.day": "Day",

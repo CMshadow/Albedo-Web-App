@@ -89,7 +89,7 @@ export const IrradianceTable = ({ buildingID }) => {
     <Card
       title={
         <Title className={styles.cardTitle} level={4}>
-          {projectData.projectTitle + t('irrTable.title')}
+          {t('irrTable.title')}
         </Title>
       }
       headStyle={{textAlign: 'center'}}

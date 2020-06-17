@@ -1,5 +1,5 @@
 {
-  "acPowerTable.title": "Yearly Energy Generation",
+  "acPowerTable.title": "Yearly Production",
 
   "acPowerTable.year": "Year",
   "acPowerTable.unit": "Unit",
@@ -9,7 +9,7 @@
   "acPowerTable.year.prefix": "",
   "acPowerTable.year.suffix": "",
 
-  "acPowerTable.totalACPower": "Lifespan Generation",
+  "acPowerTable.totalACPower": "Lifetime Production",
   "acPowerTable.avgACPower": "Annual Average Generation",
   "acPowerTable.avgKwhOverKwp": "Annual Average kWh/kWp",
 

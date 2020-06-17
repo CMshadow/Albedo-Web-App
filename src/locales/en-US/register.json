@@ -6,7 +6,7 @@
   "user.logo.welcome": "Professional PV System Design Software",
 
   "user.register.welcome": "Register a new account",
-  "user.to-sign-in": "Use existing account to login",
+  "user.to-sign-in": "Use an account to login",
   "user.to-sign-up": "Create a new account",
 
   "user.required": "Required field",
@@ -29,7 +29,7 @@
   "user.placeholder.firstname": "First name",
   "user.placeholder.lastname": "Last name",
   "user.placeholder.email": "Email address",
-  "user.placeholder.password": "At least 8 characters, with at least one lowercase letter, uppercase letter, and a number",
+  "user.placeholder.password": "Password",
   "user.placeholder.verification": "Verification code",
 
   "user.error.register": "Registration failed",

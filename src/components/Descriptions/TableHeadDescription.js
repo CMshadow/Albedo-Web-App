@@ -14,7 +14,7 @@ export const TableHeadDescription = ({buildingID}) => {
   return (
     <Descriptions column={2} bordered className='tableHeader'>
       <Item label={t('investment.project-title')} span={1}>
-        {projectData.projectTitle + t('investment.title')}
+        {projectData.projectTitle}
       </Item>
       <Item label={t('investment.project-scale')} span={1}>
         {`${DCCapacity.value} ${DCCapacity.unit}`}

@@ -23,6 +23,6 @@
   "table.title.inverterDetail": "Table of major inverter parameter",
 
   "table.yes/no": "Yes/No",
-  "table.true": "True",
-  "table.false": "False"
+  "table.true": "Yes",
+  "table.false": "No"
 }

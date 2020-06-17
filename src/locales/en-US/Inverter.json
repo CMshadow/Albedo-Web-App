@@ -2,7 +2,7 @@
   "InverterTable.add-Inverter": "Add New Inverter",
   "InverterTable.edit-Inverter": "Modify Inverter",
 
-  "InverterTable.proParams": "Advanced parameters (Only to be used in simulation，and will not be displayed)",
+  "InverterTable.proParams": "Advanced parameters (Only to be used in simulation, and will not be displayed)",
 
   "InverterTable.table": "Table of inverter parameters",
   "InverterTable.table.name": "Inverter Model",

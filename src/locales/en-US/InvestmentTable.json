@@ -1,7 +1,7 @@
 {
-  "investment.title": "Table of Project Investment",
+  "investment.title": "Project Investment Table",
   "investment.project-title": "Project Name",
-  "investment.project-scale": "Project Size",
+  "investment.project-scale": "Project Capacity",
 
   "investment.series": "Category",
   "investment.name": "Item",
@@ -25,7 +25,7 @@
   "investment.name.router": "Wireless Router",
   "investment.name.comm": "Communication Gateway",
   "investment.name.dc_wiring": "DC Cable",
-  "investment.name.ac_wiring": "AC Cable (Inverter(s) to Combiner Box)",
+  "investment.name.ac_wiring": "AC Cable (Inverters to Combiner Box)",
   "investment.name.combibox_wiring": "AC Cable (Combiner Box to Meter)",
   "investment.name.rooftop": "Rooftop Reinforcement",
   "investment.name.other": "Other",
@@ -36,10 +36,10 @@
   "investment.description.rooftop": "EPC Fee",
   "investment.description.other": "Labor Fee",
 
-  "investment.unit.price/kuai": "$/each",
-  "investment.unit.price/tai": "$/each",
-  "investment.unit.price/tao": "$/set",
-  "investment.unit.price/xiang": "$/project",
+  "investment.unit.price/kuai": "$/Each",
+  "investment.unit.price/tai": "$/Each",
+  "investment.unit.price/tao": "$/Set",
+  "investment.unit.price/xiang": "$/Project",
   "investment.unit.price/m": "$/m",
   "investment.unit.price": "$",
   "investment.unit.price/W": "$/W",

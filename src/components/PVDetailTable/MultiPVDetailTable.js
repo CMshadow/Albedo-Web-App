@@ -50,7 +50,7 @@ export const MultiPVDetailTable = ({ buildingID }) => {
     <Card
       title={
         <Title className='cardTitle' level={4}>
-          {projectData.projectTitle + t('table.title.pvDetail')}
+          {t('table.title.pvDetail')}
         </Title>
       }
       bordered={false}

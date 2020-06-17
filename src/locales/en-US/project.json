@@ -42,29 +42,29 @@
 
   "project.success.deleteProject": "Project Successfully Deleted",
 
-  "project.add.building": "Add Building",
+  "project.add.building": "Add a Building",
   "project.add.buildingName": "Building Name",
   "project.add.combibox_cable_len": "Cable length (AC combiner box to meter)",
-  "project.add.spec": " add PV array",
-  "project.add.spec.prefix": "For building ",
+  "project.add.spec": "",
+  "project.add.spec.prefix": "Add PV array for Building  ",
 
   "project.spec.tilt_angle": "Array Tilt",
   "project.spec.azimuth": "Array Azimuth",
   "project.spec.pv": "PV Module",
-  "project.spec.inverters": "Manager Inverter",
-  "project.add.inverterSpec": "Add Inverter",
+  "project.spec.inverters": "Manage Inverters",
+  "project.add.inverterSpec": "Add a Inverter",
 
   "project.error.tilt":"Tilting should be between 0° and 60°",
   "project.error.azimuth":"Azimuth should be between 0 and 360°",
 
-  "project.spec.serial": "Inverter number",
+  "project.spec.serial": "Inverter serial",
   "project.spec.inverter": "Inverter model",
-  "project.spec.string_per_inverter": "Number of parallel string",
-  "project.spec.panels_per_string": "Numbber of module in series",
-  "project.spec.ac_cable_len": "Cable length of inverter to combiner box",
-  "project.spec.dc_cable_len": "Cable length of each string to inverter",
-  "project.spec.dc_cable_len.hint": "Cable length of each string should be seprated by a comma (i.e.: 20,25,30)",
+  "project.spec.string_per_inverter": "Number of parallel strings",
+  "project.spec.panels_per_string": "Number of PV modules in series",
+  "project.spec.ac_cable_len": "Cable length of the inverter to the combiner box",
+  "project.spec.dc_cable_len": "Cable length of each string to the inverter",
+  "project.spec.dc_cable_len.hint": "Cable length of each string should be seprated by a comma (i.e. 20,25,30)",
   "project.spec.dc_cable_len.error.only-number": "Cannot enter element other than number",
-  "project.spec.dc_cable_len.error.spi-not-match": "Entered value(s) does not match the number of strings",
-  "project.spec.total_panels": "Total module count"
+  "project.spec.dc_cable_len.error.spi-not-match": "Entered value(s) does not match the number of parallel strings",
+  "project.spec.total_panels": "Total PV module count"
 }

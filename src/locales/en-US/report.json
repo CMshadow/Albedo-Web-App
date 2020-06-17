@@ -1,19 +1,19 @@
 {
-  "report.investmentTable": "Table of Project Investment",
-  "report.gainTable": "Table of Project Cash Flow",
-  "report.acPowerTable": "Table of Yearly Energy Generation",
-  "report.lossTable": "Table of PV System Loss",
-  "report.pvDetail": "Table of PV Module",
-  "report.inverterDetail": "Table of Inverter",
-  "report.irrTable": "Table of Irradiance",
+  "report.investmentTable": "Project Investment",
+  "report.gainTable": "Project Cash Flow",
+  "report.acPowerTable": "Production",
+  "report.lossTable": "PV System Loss",
+  "report.pvDetail": "PV Modules",
+  "report.inverterDetail": "Inverters",
+  "report.irrTable": "Irradiance",
   "report.emissionReduction": "Emission Reduction",
 
-  "report.paramsForm.title": "Set Parameter",
+  "report.paramsForm.title": "Set Parameters",
 
-  "report.paramsForm.irradiance": "Irradiance Loss",
-  "report.paramsForm.dc": "DC Loss",
-  "report.paramsForm.ac": "AC Loss",
-  "report.paramsForm.grid": "并网端损耗",
+  "report.paramsForm.irradiance": "Irradiance",
+  "report.paramsForm.dc": "DC",
+  "report.paramsForm.ac": "AC",
+  "report.paramsForm.grid": "Grid",
   "report.paramsForm.system": "System Parameter",
   "report.paramsForm.wiring": "Electrical",
 
@@ -28,7 +28,7 @@
 
   "report.paramsForm.disabled": "Auto",
   "report.paramsForm.pv": "Depends on Module",
-  "report.paramsForm.or": "Or",
+  "report.paramsForm.or": "or",
   "report.paramsForm.overwrite": "Overwrite",
 
   "report.paramsForm.p_loss_tilt_azimuth": "Irradiance Reduction at Tilt & Azimuth (%)",

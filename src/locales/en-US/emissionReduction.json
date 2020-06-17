@@ -1,7 +1,7 @@
 {
   "emissionReduction.coal_reduction": "Coal",
   "emissionReduction.c_reduction": "Soot",
-  "emissionReduction.co2_reduction": "Carbon dioxide",
-  "emissionReduction.so2_reduction": "Sulfur dioxide",
-  "emissionReduction.nox_reduction": "Nitrogen oxides"
+  "emissionReduction.co2_reduction": "Carbon Dioxide",
+  "emissionReduction.so2_reduction": "Sulfur Dioxide",
+  "emissionReduction.nox_reduction": "Nitrogen Oxides"
 }

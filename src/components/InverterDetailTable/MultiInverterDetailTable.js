@@ -49,7 +49,7 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
     <Card
       title={
         <Title className='cardTitle' level={4}>
-          {projectData.projectTitle + t('table.title.inverterDetail')}
+          {t('table.title.inverterDetail')}
         </Title>
       }
       headStyle={{textAlign: 'center'}}

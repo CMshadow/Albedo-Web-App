@@ -29,7 +29,7 @@ export const SearchString = ({colKey, onClick}) => {
         <Input
           className={styles.input}
           ref={node => {searchInputRef = node}}
-          placeholder={`${t('filter.search')}${t(`table.${colKey}`)}`}
+          placeholder={`${t('filter.search')} ${t(`table.${colKey}`)}`}
           value={selectedKeys[0]}
           onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => handleSearch(selectedKeys, confirm, colKey)}

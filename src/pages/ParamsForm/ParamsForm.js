@@ -9,9 +9,9 @@ import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;
 
-const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
-const labelCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 24}, lg: {span: 8} };
-const wrapperCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 24}, lg: {span: 12, offset: 1} };
+const rowGutter = { xs: 8, sm: 16};
+const labelCol = { span: 16, offset: 4 };
+const wrapperCol = { span: 16, offset: 4 };
 
 
 const ParamsForm = () => {
@@ -171,15 +171,16 @@ const ParamsForm = () => {
   return (
     <Card className={styles.card} hoverable title={t('report.paramsForm.title')}>
       <Form
-        colon={false}
         form={form}
         name="report-params"
         scrollToFirstError
         validateMessages={validateMessages}
+        labelAlign='left'
         labelCol={labelCol}
         wrapperCol={wrapperCol}
         hideRequiredMark
         onFinish={submitForm}
+        size='large'
       >
         <Divider>{t('report.paramsForm.irradiance')}</Divider>
         {genFormItems(irrandianceKeys, 2)}

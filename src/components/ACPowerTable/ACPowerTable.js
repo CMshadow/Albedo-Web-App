@@ -95,7 +95,7 @@ export const ACPowerTable = ({ buildingID }) => {
     <Card
       title={
         <Title style={{textAlign: 'center'}} level={4}>
-          {projectData.projectTitle + t('acPowerTable.title')}
+          {t('acPowerTable.title')}
         </Title>
       }
       hoverable

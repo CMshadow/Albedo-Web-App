@@ -65,6 +65,6 @@
   "project.spec.dc_cable_len": "每条组串到逆变器线缆长度",
   "project.spec.dc_cable_len.hint": "每条组串线缆长度以逗号隔开，如:20,25,30",
   "project.spec.dc_cable_len.error.only-number": "输入不能包含非数字元素",
-  "project.spec.dc_cable_len.error.spi-not-match": "与组串数不符",
+  "project.spec.dc_cable_len.error.spi-not-match": "与并联组串数不符",
   "project.spec.total_panels": "光伏组件总数"
 }

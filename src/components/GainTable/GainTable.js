@@ -390,7 +390,7 @@ export const GainTable = ({ buildingID }) => {
     <Card
       title={
         <Title style={{textAlign: 'center'}} level={4}>
-          {projectData.projectTitle + t('gain.title')}
+          {t('gain.title')}
         </Title>
       }
       hoverable

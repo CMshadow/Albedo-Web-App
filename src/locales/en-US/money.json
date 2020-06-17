@@ -1,5 +1,5 @@
 {
   "money.": "$",
-  "money.qian": "千元",
-  "money.wan": "万元"
+  "money.qian": "K",
+  "money.baiwan": "M"
 }

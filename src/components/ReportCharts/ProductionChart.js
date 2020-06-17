@@ -8,10 +8,9 @@ import { Chart, Legend, Axis, Line, Point } from 'bizcharts';
 import { titleStyle, legendStyle } from '../../styles.config'
 import { getProductionData } from '../../pages/Report/service'
 import { wh2other } from '../../utils/unitConverter'
+import { getLanguage } from '../../utils/getLanguage'
 const Title = Typography.Title
 const Text = Typography.Text
-const dateFormat = 'YYYY/MM/DD'
-const monthFormat = 'YYYY/MM'
 
 export const ProductionChart = ({buildingID}) => {
   const { t } = useTranslation()
@@ -22,6 +21,16 @@ export const ProductionChart = ({buildingID}) => {
   const [date, setdate] = useState(moment())
   const [loading, setloading] = useState(false)
   const [dataSource, setdataSource] = useState([])
+
+  let dateFormat
+  let monthFormat
+  if (getLanguage === 'zh-CN') {
+    dateFormat = 'YYYY/MM/DD'
+    monthFormat = 'YYYY/MM'
+  } else {
+    dateFormat = 'MM/DD/YYYY'
+    monthFormat = 'MM/YYYY'
+  }
 
   useEffect(() => {
     const month = date.month() + 1

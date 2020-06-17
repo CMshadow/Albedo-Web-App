@@ -13,7 +13,7 @@
 
   "gain.name.feed-in-tariff": "Incentive",
   "gain.name.rate-of-electricity": "Rate",
-  "gain.name.investment-gain": "Benifit of Investment",
+  "gain.name.investment-gain": "Benefit of Investment",
   "gain.name.construction": "Construction",
 
   "gain.unit.price/kwh": "$/kWh",
@@ -37,7 +37,7 @@
   "gain.year.suffix": "",
 
   "gain.cash-in-flow.25year": "Total Gain over 25 Years",
-  "gain.cash-in-flow.irr": "Rate of Return",
+  "gain.cash-in-flow.irr": "Interial Rate of Return",
   "gain.payback-period": "Payback Period",
-  "gain.cannot-payback": "No payback within 25-year period"
+  "gain.cannot-payback": "Unprofitable within 25-year"
 }
