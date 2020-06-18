@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 
 const PublicRoute = ({ children, ...rest }) => {
   const cognitoUser = useSelector(state => state.auth.cognitoUser);
-  console.log(!cognitoUser)
   return (
     <Route
       {...rest}
