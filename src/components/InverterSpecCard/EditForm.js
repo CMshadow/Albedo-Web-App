@@ -99,19 +99,6 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
     setediting(false)
   }
 
-  const invModelOnChange = inverterID => {
-    const invUserID = inverterData.data.find(inv => inv.inverterID === inverterID).userID
-    dispatch(manualInverter({
-      projectID: projectID, invID: inverterID, invUserID: invUserID,
-      pvID: specData.pv_panel_parameters.pv_model.pvID,
-      pvUserID: specData.pv_panel_parameters.pv_model.userID,
-      ttlPV: specData.pv_panel_parameters.pvNum
-    }))
-    .then(res => {
-      console.log(res)
-    })
-  }
-
   return (
     <div>
       <Form
@@ -142,7 +129,6 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
                     value: record.inverterID
                   }))
                 }
-                onSelect={invModelOnChange}
               />
             </FormItem>
           </Col>

@@ -13,10 +13,12 @@ export const LossTab = ({buildingID}) => {
         </Col>
       </Row>
       <Row gutter={[12, 25]}>
-        <Col xl={24} xxl={16}>
+        <Col span={24}>
           <LossChart buildingID={buildingID}/>
         </Col>
-        <Col xl={24} xxl={8}>
+      </Row>
+      <Row gutter={[12, 25]}>
+        <Col span={24}>
           <SystemEfficiencyChart buildingID={buildingID}/>
         </Col>
       </Row>

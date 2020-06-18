@@ -109,8 +109,6 @@ const addPVSpec = (state, action) => {
       azimuth: null,
       mode: null,
       pv_model: {pvID: null, userID: null},
-      capacity: 0,
-      ttlPV: 0
     },
     inverter_wiring: []
   })
@@ -132,10 +130,10 @@ const editPVSpec = (state, action) => {
     pv_model: {pvID: action.pvID, userID: action.pv_userID}
   }
   newBuildings[buildingIndex].reGenReport = true
-  if (action.invPlan.plan.length > 0) {
+  if (action.invPlan.plan) {
     newBuildings[buildingIndex].data[action.specIndex].inverter_wiring =
     action.invPlan.plan.map((plan, index) => ({
-      inverter_serial_number: index,
+      inverter_serial_number: index + 1,
       panels_per_string: plan.pps,
       string_per_inverter: plan.spi,
       inverter_model: {
@@ -146,7 +144,6 @@ const editPVSpec = (state, action) => {
       dc_cable_len: new Array(plan.spi).fill(0)
     }))
   }
-  console.log(newBuildings)
   return {
     ...state,
     buildings: newBuildings
