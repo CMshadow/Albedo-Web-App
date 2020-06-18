@@ -2,16 +2,21 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 
-const PublicRoute = ({ component: Component, ...rest }) => {
+const PublicRoute = ({ children, ...rest }) => {
   const cognitoUser = useSelector(state => state.auth.cognitoUser);
+  console.log(!cognitoUser)
   return (
-    <Route {...rest} render={props => {
-      if (cognitoUser) {
-        return <Redirect to='/dashboard' />
-      } else {
-        return <Component {...props} />
+    <Route
+      {...rest}
+      render={({ location }) =>
+        !cognitoUser ? (
+          children
+        ) : (
+          <Redirect
+            to={{pathname: '/dashboard'}}
+          />
+        )
       }
-    }}
     />
   );
 };

@@ -2,16 +2,20 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ children, ...rest }) => {
   const cognitoUser = useSelector(state => state.auth.cognitoUser);
   return (
-    <Route {...rest} render={props => {
-      if (!cognitoUser) {
-        return <Redirect to='/user/login' />
-      } else {
-        return <Component {...props} />
+    <Route
+      {...rest}
+      render={({ location }) =>
+        cognitoUser ? (
+          children
+        ) : (
+          <Redirect
+            to={{pathname: "/user/login"}}
+          />
+        )
       }
-    }}
     />
   );
 };
