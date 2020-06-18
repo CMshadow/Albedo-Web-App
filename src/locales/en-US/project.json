@@ -68,6 +68,17 @@
   "project.spec.dc_cable_len": "Cable length of each string to the inverter",
   "project.spec.dc_cable_len.hint": "Cable length of each string should be seprated by a comma (i.e. 20,25,30)",
   "project.spec.dc_cable_len.error.only-number": "Cannot enter element other than number",
-  "project.spec.dc_cable_len.error.spi-not-match": "Entered value(s) does not match the number of parallel strings",
-  "project.spec.total_panels": "Total PV module count"
+  "project.spec.dc_cable_len.error.spi-not-match": "Entered values does not match the number of parallel strings",
+  "project.spec.total_panels": "Total PV module count",
+
+  "project.autoInverter.title": "Optimal Inverter Settings",
+  "project.autoInverter.invModel": "Inverter Model",
+  "project.autoInverter.requiredInv": "Number of Inverters",
+  "project.autoInverter.capacity": "Actual DC Capacity",
+  "project.autoInverter.pvConnected": "Number of PV Modules",
+  "project.autoInverter.detail": "Inverter Details",
+  "autoInverter.use": "Use Auto Settings",
+  "autoInverter.notuse": "Discard Auto Settings",
+  "autoInverter.confirm": "Confirm Auto Settings",
+  "autoInverter.cancel": "Clear Auto Settings"
 }
