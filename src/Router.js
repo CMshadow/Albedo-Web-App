@@ -27,29 +27,51 @@ const Router = () => {
         <Route path="/user">
           <UserLayout>
             <Switch>
-              <PublicRoute path='/user/login' component={Login} />
-              <PublicRoute path="/user/register" component={Register} />
-              <PublicRoute path="/user/verify" component={Verification} />
-              <Route path='*' component={NotFound404} />
+              <PublicRoute path='/user/login'>
+                <Login/>
+              </PublicRoute>
+              <PublicRoute path="/user/register">
+                <Register />
+              </PublicRoute>
+              <PublicRoute path="/user/verify">
+                <Verification/>
+              </PublicRoute>
+              <Route path='*'>
+                <NotFound404/>
+              </Route>
             </Switch>
           </UserLayout>
         </Route>
         <PrivateRoute path="/project">
           <ProjectLayout>
             <Switch>
-              <PrivateRoute path='/project/:projectID/dashboard' component={Dashboard} />
-              <PrivateRoute path="/project/:projectID/report/params" component={ParamsForm} />
-              <PrivateRoute path="/project/:projectID/report/:buildingID" component={Report} />
-              <PrivateRoute path="/project/:projectID/pv" component={PVTable} />
-              <PrivateRoute path="/project/:projectID/inverter" component={InverterTable} />
-              <Route path='*' component={NotFound404} />
+              <PrivateRoute path='/project/:projectID/dashboard'>
+                <Dashboard/>
+              </PrivateRoute>
+              <PrivateRoute path="/project/:projectID/report/params">
+                <ParamsForm/>
+              </PrivateRoute>
+              <PrivateRoute path="/project/:projectID/report/:buildingID">
+                <Report/>
+              </PrivateRoute>
+              <PrivateRoute path="/project/:projectID/pv">
+                <PVTable/>
+              </PrivateRoute>
+              <PrivateRoute path="/project/:projectID/inverter">
+                <InverterTable/>
+              </PrivateRoute>
+              <PrivateRoute path='*'>
+                <NotFound404/>
+              </PrivateRoute>
             </Switch>
           </ProjectLayout>
         </PrivateRoute>
         <PrivateRoute path="/">
           <BasicLayout>
             <Switch>
-              <PrivateRoute path='/dashboard' component={ProjectTable} />
+              <PrivateRoute path='/dashboard'>
+                <ProjectTable/>
+              </PrivateRoute>
               <Redirect path='*' to="/user/login"/>
               {/* <Route path='*' component={NotFound404} /> */}
             </Switch>
