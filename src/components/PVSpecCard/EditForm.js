@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Form, Input, Row, Col, Select, Button, Drawer } from 'antd';
+import { useLocation } from 'react-router-dom'
+import { Form, Input, Row, Col, Select, Button, Drawer, Divider, notification, Spin, Space, Typography } from 'antd';
 import { TableOutlined } from '@ant-design/icons'
 import { editPVSpec, setPVActiveData } from '../../store/action/index'
+import { setInverterActiveData } from '../../store/action/index'
 import { PVTableViewOnly } from '../PVTable/PVTableViewOnly'
+import { InverterTableViewOnly } from '../InverterTable/InverterTableViewOnly'
+import { manualInverter } from '../../pages/Project/service'
 const FormItem = Form.Item;
+const Text = Typography.Text
 
 const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
 
@@ -13,10 +18,16 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [form] = Form.useForm()
-  const [showDrawer, setshowDrawer] = useState(false)
+  const [showPVDrawer, setshowPVDrawer] = useState(false)
+  const [showInvDrawer, setshowInvDrawer] = useState(false)
   const [tilt, settilt] = useState({value: null})
   const [azimuth, setazimuth] = useState({value: null})
+  const [capacity, setcapacity] = useState(null)
+  const [autoInvLoading, setautoInvLoading] = useState(false)
+  const [autoInvPlan, setautoInvPlan] = useState([])
   const pvData = useSelector(state => state.pv)
+  const inverterData = useSelector(state => state.inverter)
+  const projectID = useLocation().pathname.split('/')[2]
 
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID)
@@ -45,8 +56,8 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
 
   const submitForm = (values) => {
     dispatch(editPVSpec({
-      buildingID, specIndex, ...values,
-      pv_userID: pvData.data.find(record => record.pvID === values.pvID).userID
+      buildingID, specIndex, ...values, invPlan: autoInvPlan,
+      pv_userID: pvData.data.find(record => record.pvID === values.pvID).userID,
     }))
     setediting(false)
   }
@@ -85,9 +96,63 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     };
   }
 
+  const invModelOnChange = inverterID => {
+    setautoInvLoading(true)
+    const capacity = Number(form.getFieldValue('capacity'))
+    const pvID = form.getFieldValue('pvID')
+    const pvUserID = pvData.data.find(pv => pv.pvID === pvID).userID
+    const pvPmax = pvData.data.find(pv => pv.pvID === pvID).pmax
+    const ttlPV = Math.floor(capacity * 1000 / pvPmax)
+    const invUserID = inverterData.data.find(inv => inv.inverterID === inverterID).userID
+    const invName = inverterData.data.find(inv => inv.inverterID === inverterID).name
+    dispatch(manualInverter({
+      projectID: projectID, invID: inverterID, invUserID: invUserID,
+      pvID: pvID, pvUserID: pvUserID, ttlPV: ttlPV
+    }))
+    .then(res => {
+      setautoInvLoading(false)
+      const notiKey = 'notification'
+      const description = (
+        <>
+          <Row>{`${t('project.autoInverter.invModel')}: ${invName}`}</Row>
+          <Row>{`${t('project.autoInverter.requiredInv')}: ${res.plan.length}`}</Row>
+          <Row>{`${t('project.autoInverter.capacity')}: ${(ttlPV - res.wasted) * pvPmax} kW`}</Row>
+          <Row>{`${t('project.autoInverter.pvConnected')}: ${(ttlPV - res.wasted)}`}</Row>
+          <Row>{t('project.autoInverter.detail')}</Row>
+        </>
+      )
+      const btn = (
+        <Space>
+          <Button type="primary" onClick={() => {
+            setautoInvPlan({
+              plan: res.plan, inverterID: inverterID, inverterUserID: invUserID
+            })
+            notification.close(notiKey)
+          }}>
+            Use
+          </Button>
+          <Button onClick={() => {
+            form.setFieldsValue({inverterID: ''})
+            setautoInvPlan([])
+            notification.close(notiKey)
+          }}>
+            Cancel
+          </Button>
+        </Space>
+      )
+      notification.info({
+        key: notiKey,
+        btn: btn,
+        message: t('project.autoInverter.title'),
+        description: description,
+        duration: null,
+      })
+    })
+  }
+
 
   return (
-    <div>
+    <Spin spinning={autoInvLoading}>
       <Form
         colon={false}
         form={form}
@@ -119,7 +184,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
             <Button
               shape="circle"
               icon={<TableOutlined />}
-              onClick={() => setshowDrawer(true)}
+              onClick={() => setshowPVDrawer(true)}
             />
           </Col>
         </Row>
@@ -157,17 +222,62 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
             </FormItem>
           </Col>
         </Row>
-        <FormItem>
-          <Button type='primary' onClick={handleOk}>{t('form.confirm')}</Button>
-        </FormItem>
+        <Divider>{t('project.spec.optional')}</Divider>
+        <Row gutter={8}>
+          <Col span={8}>
+            <FormItem
+              name='capacity'
+              label={t('project.spec.capacity')}
+              rules={[{required: true}]}
+            >
+              <Input
+                addonAfter='kW'
+                type='number'
+                value={capacity}
+                onChange={e => setcapacity(e.target.value)}
+              />
+            </FormItem>
+          </Col>
+          <Col span={12} offset={2}>
+            <FormItem
+              name='inverterID'
+              label={t('project.spec.inverter')}
+              rules={[{required: true}]}
+            >
+              <Select
+                disabled={!capacity}
+                options={
+                  inverterData.activeData.map(record => ({
+                    label: record.name,
+                    value: record.inverterID
+                  }))
+                }
+                onSelect={invModelOnChange}
+              />
+            </FormItem>
+          </Col>
+          <Col span={2}>
+            <Button
+              shape="circle"
+              icon={<TableOutlined />}
+              onClick={() => setshowInvDrawer(true)}
+            />
+          </Col>
+        </Row>
+        <Divider style={{marginTop: 0}}/>
+        <Row align='middle' justify='center'>
+          <FormItem>
+            <Button type='primary' onClick={handleOk}>{t('form.confirm')}</Button>
+          </FormItem>
+        </Row>
       </Form>
       <Drawer
         bodyStyle={{padding: '0px'}}
         title={t('PVtable.table')}
         placement="right"
         closable={false}
-        onClose={() => setshowDrawer(false)}
-        visible={showDrawer}
+        onClose={() => setshowPVDrawer(false)}
+        visible={showPVDrawer}
         width='50vw'
       >
         <PVTableViewOnly
@@ -176,6 +286,21 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
           setactiveData={(activeData) => dispatch(setPVActiveData(activeData))}
         />
       </Drawer>
-    </div>
+      <Drawer
+        bodyStyle={{padding: '0px'}}
+        title={t('InverterTable.table')}
+        placement="right"
+        closable={false}
+        onClose={() => setshowInvDrawer(false)}
+        visible={showInvDrawer}
+        width='50vw'
+      >
+        <InverterTableViewOnly
+          data={inverterData.data}
+          activeData={inverterData.activeData}
+          setactiveData={(activeData) => dispatch(setInverterActiveData(activeData))}
+        />
+      </Drawer>
+    </Spin>
   )
 }

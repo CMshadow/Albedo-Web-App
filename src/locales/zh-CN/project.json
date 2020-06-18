@@ -50,8 +50,11 @@
 
   "project.spec.tilt_angle": "组件倾角",
   "project.spec.azimuth": "组件朝向",
+  "project.spec.optional": "自动生成逆变器配置(选填)",
+  "project.spec.capacity": "装机容量",
+  "project.spec.pvNum": "所需组件数",
   "project.spec.pv": "光伏组件",
-  "project.spec.inverters": "管理逆变器",
+  "project.spec.inverters": "管理逆变器配置",
   "project.add.inverterSpec": "添加逆变器配置",
 
   "project.error.tilt":"倾角在0°到60°之间",
@@ -66,5 +69,12 @@
   "project.spec.dc_cable_len.hint": "每条组串线缆长度以逗号隔开，如:20,25,30",
   "project.spec.dc_cable_len.error.only-number": "输入不能包含非数字元素",
   "project.spec.dc_cable_len.error.spi-not-match": "与并联组串数不符",
-  "project.spec.total_panels": "光伏组件总数"
+  "project.spec.total_panels": "光伏组件总数",
+
+  "project.autoInverter.title": "最佳逆变器配置",
+  "project.autoInverter.invModel": "逆变器型号",
+  "project.autoInverter.requiredInv": "所需逆变器数量",
+  "project.autoInverter.capacity": "实际装机容量",
+  "project.autoInverter.pvConnected": "连接光伏组件总数量",
+  "project.autoInverter.detail": "每个逆变器详细"
 }

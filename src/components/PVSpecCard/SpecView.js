@@ -23,6 +23,8 @@ export const SpecView = ({buildingID, specIndex}) => {
       <Item label={t('project.spec.pv')} span={2}>{pvName}</Item>
       <Item label={t('project.spec.tilt_angle')}>{spec.tilt_angle}°</Item>
       <Item label={t('project.spec.azimuth')}>{spec.azimuth}°</Item>
+      <Item label={t('project.spec.capacity')}>{spec.capacity} kW</Item>
+      <Item label={t('project.spec.pvNum')}>{spec.pvNum}</Item>
     </Descriptions>
   )
 }

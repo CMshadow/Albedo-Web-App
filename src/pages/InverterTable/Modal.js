@@ -11,8 +11,8 @@ const { Option } = Select;
 const { Panel } = Collapse;
 
 const rowGutter = { xs: 8, sm: 16, md: 32};
-const labelCol = { xs: {span: 24}, sm: {span:24}, md: {span: 24}, lg: {span: 16}, xl: {span: 12}};
-const wrapperCol = { xs: {span: 24}, sm: {span:24}, md: {span: 24}, lg: {span: 8}, xl: {span: 12}};
+const labelCol = { lg: {span: 24}, xl: {span: 16}, xxl: {span: 12} };
+const wrapperCol = { lg: {span: 24}, xl: {span: 8}, xxl: {span: 12} };
 
 // Inverter表单默认值
 const initValues = {
@@ -217,7 +217,7 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
       okText={t('action.confirm')}
       cancelText={t('action.cancel')}
       maskClosable={false}
-      width={'80vw'}
+      width={'90vw'}
       style={{ top: 20 }}
       afterClose={onClose}
     >

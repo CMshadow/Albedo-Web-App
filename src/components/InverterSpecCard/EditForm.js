@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom'
 import { Form, Input, InputNumber, Row, Col, Select, Button, Drawer, Tooltip } from 'antd';
 import { TableOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { editInverterSpec, setInverterActiveData } from '../../store/action/index'
 import { InverterTableViewOnly } from '../InverterTable/InverterTableViewOnly'
+import { manualInverter } from '../../pages/Project/service'
 import * as styles from './EditForm.module.scss'
 const FormItem = Form.Item;
 
@@ -16,13 +18,13 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
   const [form] = Form.useForm()
   const [showDrawer, setshowDrawer] = useState(false)
   const inverterData = useSelector(state => state.inverter)
-
+  const projectID = useLocation().pathname.split('/')[2]
 
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
-  const invSpec = buildings[buildingIndex].data[specIndex]
-    .inverter_wiring[invIndex]
+  const specData = buildings[buildingIndex].data[specIndex]
+  const invSpec = specData.inverter_wiring[invIndex]
   const [dc_cable_len, setdc_cable_len] = useState({
     value: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
   })
@@ -97,6 +99,19 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
     setediting(false)
   }
 
+  const invModelOnChange = inverterID => {
+    const invUserID = inverterData.data.find(inv => inv.inverterID === inverterID).userID
+    dispatch(manualInverter({
+      projectID: projectID, invID: inverterID, invUserID: invUserID,
+      pvID: specData.pv_panel_parameters.pv_model.pvID,
+      pvUserID: specData.pv_panel_parameters.pv_model.userID,
+      ttlPV: specData.pv_panel_parameters.pvNum
+    }))
+    .then(res => {
+      console.log(res)
+    })
+  }
+
   return (
     <div>
       <Form
@@ -127,6 +142,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
                     value: record.inverterID
                   }))
                 }
+                onSelect={invModelOnChange}
               />
             </FormItem>
           </Col>

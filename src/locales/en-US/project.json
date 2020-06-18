@@ -50,8 +50,11 @@
 
   "project.spec.tilt_angle": "Array Tilt",
   "project.spec.azimuth": "Array Azimuth",
+  "project.spec.optional": "Autogen Inverter Settings (Optional)",
+  "project.spec.capacity": "DC Capacity",
+  "project.spec.pvNum": "Number of PV Modules",
   "project.spec.pv": "PV Module",
-  "project.spec.inverters": "Manage Inverters",
+  "project.spec.inverters": "Manage Inverter Settings",
   "project.add.inverterSpec": "Add a Inverter",
 
   "project.error.tilt":"Tilting should be between 0° and 60°",
