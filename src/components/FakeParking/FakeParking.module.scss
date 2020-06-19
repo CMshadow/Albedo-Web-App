@@ -1,8 +1,83 @@
+.body {
+  background-color: rgba(0,132,61,1);
+  min-height: 100vh;
+  padding: 24px 20px 20px;
+}
+
 .h1 {
-  font-weight: 900;
-  font-size: 2em;
-  padding: 16px 0;
+  margin: 0px;
+  font-weight: bold;
+  font-size: 32px;
+  padding: 5px 0;
   list-height: 0.95;
   color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', SimSun, sans-serif
+  font-family: roboto, sans-serif;
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: roboto, sans-serif;
+}
+
+.smtext {
+  line-height: 1.3;
+  color: white;
+  font-size: 14px;
+  font-family: roboto, sans-serif;
+  margin-bottom: 14px;
+}
+
+.parking {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: roboto, sans-serif;
+}
+
+.content {
+  padding-top: 20px;
+}
+
+.secondline {
+  padding: 24px 0px 0px;
+  color: white;
+  font-size: 12px;
+  font-family: roboto, sans-serif;
+}
+
+.num {
+  margin: -5px 0px 0px 0px;
+}
+
+.numstring {
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+  font-family: roboto, sans-serif
+}
+
+.qrcode {
+  height: 24px;
+  width: 24px;
+  margin-right: 8px;
+}
+
+.divider1 {
+  margin-top: 27px;
+  margin-bottom: 8px;
+  background-color: rgba(255,255,255,0.3);
+}
+
+.divider2 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  background-color: rgba(255,255,255,0.3);
+}
+
+.icon {
+  width: 17px;
+  height: 17px;
+  margin-right: 8px;
 }
