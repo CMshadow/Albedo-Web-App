@@ -62,6 +62,23 @@ export const saveReport = ({projectID}) => async (dispatch, getState) => {
   })
 }
 
+export const deleteReport = ({projectID}) => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.delete(
+    `/project/${session.idToken.payload.sub}/${projectID}/report`,
+    {
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => res.data)
+  .catch(err => {
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}
+
 export const getProductionData = ({projectID, buildingID, month, day, dataKey}) =>
 async (dispatch, getState) => {
   const session = await Auth.currentSession()
@@ -71,6 +88,23 @@ async (dispatch, getState) => {
     `/project/${session.idToken.payload.sub}/${projectID}/production`,
     {
       params: {buildingID: buildingID, month: month, day: day, dataKey: dataKey},
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => res.data)
+  .catch(err => {
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}
+
+export const deleteProductionData = ({projectID}) => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.delete(
+    `/project/${session.idToken.payload.sub}/${projectID}/production`,
+    {
       headers: {'COG-TOKEN': session.idToken.jwtToken}
     }
   )

@@ -4,6 +4,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { deleteProject, getProject } from './service';
+import { deleteReport, deleteProductionData } from '../Report/service'
 
 // Project列表中触发删除一个Project
 export const DeleteAction = ({record, setdata}) => {
@@ -13,10 +14,19 @@ export const DeleteAction = ({record, setdata}) => {
   const onDelete = () => {
     dispatch(deleteProject({projectID: record.projectID}))
     .then(() => {
-      message.success(t('project.success.deleteProject'))
-      dispatch(getProject()).then(data => {
-        setdata(data)
+      dispatch(deleteReport({projectID: record.projectID}))
+      .then(() => {
+        dispatch(deleteProductionData({projectID: record.projectID}))
+        .then(() => {
+          message.success(t('project.success.deleteProject'))
+          dispatch(getProject()).then(data => {
+            setdata(data)
+          })
+        })
       })
+    })
+    .catch(e => {
+      console.log(e)
     })
   }
 

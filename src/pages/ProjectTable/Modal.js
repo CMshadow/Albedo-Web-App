@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { amapGeocoder, googleGeocoder, getApiKey, createProject } from './service';
 import { Tabs, Form, Input, Select, Modal, Divider, Button, notification, Tooltip, Collapse, Slider } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { getLanguage } from '../../utils/getLanguage';
 import { genFullName } from '../../utils/genFullName';
 import GoogleMap from './GoogleMap';
 import AMap from './AMap';
@@ -35,7 +34,7 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
   const [googleMapKey, setgoogleMapKey] = useState('')
   const [aMapKey, setaMapKey] = useState('')
   const [aMapWebKey, setaMapWebKey] = useState('')
-  const [selectedMap, setselectedMap] = useState(getLanguage() === 'zh-CN' ? 'aMap' : 'googleMap')
+  const [selectedMap, setselectedMap] = useState(cognitoUser.attributes.locale === 'zh-CN' ? 'aMap' : 'googleMap')
   const [form] = Form.useForm();
 
   // albedo几个预设值
