@@ -8,12 +8,11 @@ import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
-import { getApiKey } from '../../pages/ProjectTable/service'
 import { getProject, saveProject, globalOptTiltAzimuth, allTiltAzimuthPOA } from '../../pages/Project/service'
 import { getPV, getOfficialPV } from '../../pages/PVTable/service'
 import { getInverter, getOfficialInverter } from '../../pages/InverterTable/service'
 import { saveReport } from '../../pages/Report/service'
-import { setProjectData, setPVData, setOfficialPVData, setInverterData, setOfficialInverterData, updateProjectAttributes, setMapKey } from '../../store/action/index';
+import { setProjectData, setPVData, setOfficialPVData, setInverterData, setOfficialInverterData, updateProjectAttributes } from '../../store/action/index';
 
 import * as styles from './ProjectLayout.module.scss';
 
@@ -82,11 +81,6 @@ const ProjectLayout = (props) => {
 
   // 读pv 逆变器 项目数据 最佳倾角朝向
   useEffect(() => {
-    dispatch(getApiKey())
-    .then(data => {
-      dispatch(setMapKey(data.A_MAP_WEB_API_KEY))
-    })
-
     dispatch(getPV())
     .then(res => dispatch(setPVData(res)))
     .catch(err => history.push('/dashboard'))
@@ -155,9 +149,6 @@ const ProjectLayout = (props) => {
               <Menu.Item key='dashboard' className={styles.menuItem}>
                 {t('sider.menu.projectDetail')}
               </Menu.Item>
-              {/* <Menu.Item key="modeling" className={styles.menuItem}>
-                {t('sider.menu.modeling')}
-              </Menu.Item> */}
               <SubMenu
                 disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
                 key='report'
@@ -166,7 +157,7 @@ const ProjectLayout = (props) => {
                   <Space>
                     {t('sider.menu.report')}
                     <Button
-
+                      
                       shape="circle"
                       ghost
                       type='link'
