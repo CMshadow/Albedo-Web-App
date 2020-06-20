@@ -10,6 +10,7 @@ import UserLayout from './layouts/UserLayout/UserLayout';
 import BasicLayout from './layouts/BasicLayout/BasicLayout';
 import ProjectLayout from './layouts/ProjectLayout/ProjectLayout'
 import ProjectTable from './pages/ProjectTable/ProjectTable';
+import ModelingPage from './pages/Modeling/Modeling'
 import PVTable from './pages/PVTable/index';
 import Report from './pages/Report/Report'
 import ParamsForm from './pages/ParamsForm/ParamsForm'
@@ -65,6 +66,16 @@ const Router = () => {
               </PrivateRoute>
             </Switch>
           </ProjectLayout>
+        </PrivateRoute>
+        <PrivateRoute path="/modeling">
+          <Switch>
+            <PrivateRoute path='/modeling/:projectID'>
+              <ModelingPage/>
+            </PrivateRoute>
+            <PrivateRoute path='*'>
+              <NotFound404/>
+            </PrivateRoute>
+          </Switch>
         </PrivateRoute>
         <PrivateRoute path="/">
           <BasicLayout>
