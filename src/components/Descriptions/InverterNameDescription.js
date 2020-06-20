@@ -6,7 +6,8 @@ const Item = Descriptions.Item
 
 export const InverterNameDescription = ({inverterID, count}) => {
   const { t } = useTranslation()
-  const inverterData = useSelector(state => state.inverter).data
+  const inverterRedux = useSelector(state => state.inverter)
+  const inverterData = inverterRedux.data.concat(inverterRedux.officialData)
   const inverterSpec = inverterData.find(pv => pv.inverterID === inverterID)
 
   return (

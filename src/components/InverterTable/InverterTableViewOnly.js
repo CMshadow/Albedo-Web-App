@@ -42,6 +42,15 @@ export const InverterTableViewOnly = ({data, activeData, setactiveData}) => {
       })
     }
   })
+  // 生成表单组件提供商
+  tableCols.splice(0, 0, {
+    title: t('InverterTable.table.companyName'),
+    dataIndex: 'companyName',
+    key: 'companyName',
+    sorter: (a, b) => a.companyName - b.companyName,
+    width: 200,
+    ...SearchString({colKey: 'companyName', data, setactiveData}),
+  })
   // 生成表单组件名称列属性
   tableCols.splice(0, 0, {
     title: t('InverterTable.table.name'),
@@ -50,7 +59,7 @@ export const InverterTableViewOnly = ({data, activeData, setactiveData}) => {
     sorter: (a, b) => a.name - b.name,
     fixed: 'left',
     width: 250,
-    ...SearchString({colKey: 'name', onClick: onClickName}),
+    ...SearchString({colKey: 'name', onClick: onClickName, data, setactiveData}),
   })
 
   return (

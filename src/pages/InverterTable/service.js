@@ -36,6 +36,25 @@ export const getInverter = () => async dispatch => {
   })
 }
 
+export const getOfficialInverter = (region) => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.get(
+    `/inverter/official`,
+    {
+      params: {region: region},
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => res.data)
+  .catch(err => {
+    console.log(err)
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}
+
 export const deleteInverter = ({inverterID}) => async dispatch => {
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))

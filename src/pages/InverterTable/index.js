@@ -1,18 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Card } from 'antd';
+import React, { useState } from 'react';
+import { Button, Card, Tabs } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { InverterModal } from './Modal';
-import { getInverter, deleteInverter } from './service';
+import { getInverter } from './service';
 import { InverterTable } from '../../components/InverterTable/InverterTable'
+import { InverterTableViewOnly } from '../../components/InverterTable/InverterTableViewOnly'
+import { setInverterData } from '../../store/action/index'
 import * as styles from './index.module.scss';
+const { TabPane } = Tabs;
 
 const InverterTablePage = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [data, setdata] = useState([]);
-  const [activeData, setactiveData] = useState([]);
+  const myData = useSelector(state => state.inverter.data)
+  const [activeMyData, setactiveMyData] = useState(myData)
+  const officialData = useSelector(state => state.inverter.officialData)
+  const [activeOfficialData, setactiveOfficialData] = useState(officialData)
   const [loading, setloading] = useState(false);
   const [showModal, setshowModal] = useState(false);
   const [editRecord, seteditRecord] = useState(null);
@@ -22,59 +27,59 @@ const InverterTablePage = (props) => {
     setloading(true)
     const response = dispatch(getInverter())
     response.then(data => {
-      setdata(data)
-      setactiveData(data)
+      dispatch(setInverterData(data))
+      setactiveMyData(data)
       setloading(false)
     })
   }
 
-  // 组件渲染后自动获取表单数据
-  useEffect(() => {
-    setloading(true)
-    const response = dispatch(getInverter())
-    response.then(data => {
-      setdata(data)
-      setactiveData(data)
-      setloading(false)
-    })
-  }, [dispatch])
-
   return (
     <Card bodyStyle={{padding: '20px 12px'}}>
-      <Button
-        className={styles.leftBut}
-        type="primary"
-        size='large'
-        onClick={() => setshowModal(true)}
+      <Tabs
+        defaultActiveKey="1"
+        type="card"
       >
-        {t('InverterTable.add-Inverter')}
-      </Button>
-      <Button
-        className={styles.rightBut}
-        shape="circle"
-        onClick={() => fetchData()}
-        icon={<SyncOutlined spin={loading}/>}
-      />
-      <InverterTable
-        loading={loading}
-        data={data}
-        setdata={setdata}
-        activeData={activeData}
-        setactiveData={setactiveData}
-        getInverter={getInverter}
-        deleteInverter={deleteInverter}
-        setshowModal={setshowModal}
-        seteditRecord={seteditRecord}
-        showActionCol
-      />
-      <InverterModal
-        showModal={showModal}
-        setshowModal={setshowModal}
-        setdata={setdata}
-        setactiveData={setactiveData}
-        editRecord={editRecord}
-        seteditRecord={seteditRecord}
-      />
+        <TabPane tab={t('InverterTable.my')} key="1">
+          <Button
+            className={styles.leftBut}
+            type="primary"
+            size='large'
+            onClick={() => setshowModal(true)}
+          >
+            {t('InverterTable.add-Inverter')}
+          </Button>
+          <Button
+            className={styles.rightBut}
+            shape="circle"
+            onClick={() => fetchData()}
+            icon={<SyncOutlined spin={loading}/>}
+          />
+          <InverterTable
+            loading={loading}
+            data={myData}
+            activeData={activeMyData}
+            setactiveData={setactiveMyData}
+            setshowModal={setshowModal}
+            seteditRecord={seteditRecord}
+            showActionCol
+          />
+          <InverterModal
+            showModal={showModal}
+            setshowModal={setshowModal}
+            setactiveData={setactiveMyData}
+            editRecord={editRecord}
+            seteditRecord={seteditRecord}
+          />
+        </TabPane>
+        <TabPane tab={t('InverterTable.official')} key="2">
+          <InverterTableViewOnly
+            loading={loading}
+            data={officialData}
+            activeData={activeOfficialData}
+            setactiveData={setactiveOfficialData}
+          />
+        </TabPane>
+      </Tabs>
     </Card>
   )
 }

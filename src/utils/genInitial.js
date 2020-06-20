@@ -5,7 +5,7 @@ export const genInitial = (cognitoUser) => {
       case 'zh-CN':
         return cognitoUser.attributes.given_name;
       default:
-        return cognitoUser.attributes.given_name[0] + cognitoUser.attributes.last_name[0]
+        return cognitoUser.attributes.given_name[0] + cognitoUser.attributes.family_name[0]
     }
   }
 }

@@ -7,10 +7,12 @@
   "sider.menu.back-project": "Return to Manage Projects",
   "sider.menu.projectDetail": "Project Info",
   "sider.menu.report": "Open Report",
-  "sider.menu.report.prefix": "Report of building  ",
+  "sider.menu.report.prefix": "Report of  ",
   "sider.menu.report.suffix": "",
   "sider.menu.pv": "Manage Module",
   "sider.menu.inverter": "Manage Inverter",
 
-  "sider.save": "Save"
+  "sider.save": "Save",
+
+  "sider.tiltAzimuthPOA.success": "Tilt Azimuth POA data is ready"
 }

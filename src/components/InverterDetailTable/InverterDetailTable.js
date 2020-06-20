@@ -7,7 +7,8 @@ import { getLanguage } from '../../utils/getLanguage'
 
 export const InverterDetailTable = ({ inverterID, count }) => {
   const { t } = useTranslation()
-  const inverterData = useSelector(state => state.inverter).data
+  const inverterRedux = useSelector(state => state.inverter)
+  const inverterData = inverterRedux.data.concat(inverterRedux.officialData)
   const inverterSpec = inverterData.find(inverter => inverter.inverterID === inverterID)
 
   const KeysAndUnits = [

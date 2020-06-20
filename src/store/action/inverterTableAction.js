@@ -7,9 +7,9 @@ export const setInverterData = (data) => (dispatch, getState) => {
   });
 }
 
-export const setInverterActiveData = (activeData) => (dispatch, getState) => {
+export const setOfficialInverterData = (data) => (dispatch, getState) => {
   return dispatch({
-    type: actionTypes.SET_INVERTER_ACTIVEDATA,
-    activeData: activeData
-  })
+    type: actionTypes.SET_OFFICIAL_INVERTER_DATA,
+    data: data
+  });
 }

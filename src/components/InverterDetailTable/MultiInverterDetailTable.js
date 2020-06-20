@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { InverterDetailTable } from './InverterDetailTable'
 const Title = Typography.Title
-const Text = Typography.Text
 
 const reduceUnique = data => {
   return data.reduce((acc, val) => {
@@ -18,7 +17,9 @@ const reduceUnique = data => {
 export const MultiInverterDetailTable = ({ buildingID }) => {
   const { t } = useTranslation()
   const projectData = useSelector(state => state.project)
-  const inverterData = useSelector(state => state.inverter).data
+  const inverterData = useSelector(state => state.inverter.data).concat(
+    useSelector(state => state.inverter.officialData)
+  )
   const buildingData = projectData.buildings.find(building =>
     building.buildingID === buildingID
   )

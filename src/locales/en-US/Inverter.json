@@ -5,7 +5,10 @@
   "InverterTable.proParams": "Advanced parameters (Only to be used in simulation, and will not be displayed)",
 
   "InverterTable.table": "Table of inverter parameters",
+  "InverterTable.my": "My Inverters",
+  "InverterTable.official": "Official Inverters",
   "InverterTable.table.name": "Inverter Model",
+  "InverterTable.table.companyName": "Providers",
   "InverterTable.table.paco": "Rated Output Power",
   "InverterTable.table.vac": "Rated Output Voltage",
   "InverterTable.table.pdcMax": "Max Input Power",

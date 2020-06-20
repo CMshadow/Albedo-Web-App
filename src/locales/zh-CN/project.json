@@ -78,6 +78,7 @@
   "project.autoInverter.capacity": "实际装机容量",
   "project.autoInverter.pvConnected": "连接光伏组件总数量",
   "project.autoInverter.detail": "每个逆变器详细",
+  "project.autoinverter.error.miss-pvID": "没有选择光伏组件",
   "autoInverter.use": "使用自动配置",
   "autoInverter.notuse": "不使用自动配置",
   "autoInverter.confirm": "确定自动配置",

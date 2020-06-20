@@ -5,6 +5,7 @@ import { Form, Input, Select, Checkbox, Row, Col, Modal, Divider, message, Colla
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import * as styles from './Modal.module.scss';
 import { addInverter, getInverter, updateInverter } from './service';
+import { setInverterData } from '../../store/action/index'
 import { getLanguage } from '../../utils/getLanguage';
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -23,7 +24,7 @@ const initValues = {
   'radiator': 'forcedConvection'
 }
 
-export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, editRecord, seteditRecord}) => {
+export const InverterModal = ({showModal, setshowModal, setactiveData, editRecord, seteditRecord}) => {
   const { t } = useTranslation();
   const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
@@ -190,7 +191,7 @@ export const InverterModal = ({showModal, setshowModal, setdata, setactiveData, 
         editRecord ?
         message.success(t('Inverter.success.updateInverter')) :
         message.success(t('Inverter.success.createInverter'))
-        setdata(data)
+        dispatch(setInverterData(data))
         setactiveData(data)
       })
     }).catch(err => {

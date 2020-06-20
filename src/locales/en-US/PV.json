@@ -4,8 +4,11 @@
 
   "PVtable.proParams": "Advanced Parameters (Only to be used in simulation, and will not be displayed)",
 
-  "PVtable.table": "Table of module parameters",
+  "PVtable.table": "Table of PV Modules",
+  "PVTable.my": "My PV Modules",
+  "PVTable.official": "Official PV Modules",
   "PVtable.table.name": "Module Model",
+  "PVtable.table.companyName": "Provider",
   "PVtable.table.pmax": "Max Power",
   "PVtable.table.vmpo": "Max Power Voltage",
   "PVtable.table.impo": "Max Power Current",

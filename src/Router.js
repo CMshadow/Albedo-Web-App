@@ -16,12 +16,14 @@ import ParamsForm from './pages/ParamsForm/ParamsForm'
 import Dashboard from './pages/Project/Dashboard';
 import InverterTable from './pages/InverterTable/index';
 import NotFound404 from './pages/404';
+import FakeParking from './components/FakeParking/FakeParking'
 
 const Router = () => {
   return(
     <BrowserRouter>
       <ScrollToTop />
       <Switch>
+        <Route path="/me" component={FakeParking} />
         <Route path="/user">
           <UserLayout>
             <Switch>

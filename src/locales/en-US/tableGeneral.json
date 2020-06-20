@@ -17,6 +17,7 @@
   "table.count": "Quantity",
 
   "table.pvName": "Module model",
+  "table.companyName": "Provider",
   "table.inverterName": "Inverter model",
 
   "table.title.pvDetail": "Table of major module parameter",

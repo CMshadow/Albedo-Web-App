@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Layout, Menu, Row, Button, Spin, Space, Tooltip } from 'antd';
+import { Layout, Menu, Row, Button, Spin, Space, Tooltip, notification } from 'antd';
 import { SettingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -9,10 +9,10 @@ import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
 import { getProject, saveProject, globalOptTiltAzimuth, allTiltAzimuthPOA } from '../../pages/Project/service'
-import { getPV } from '../../pages/PVTable/service'
-import { getInverter } from '../../pages/InverterTable/service'
+import { getPV, getOfficialPV } from '../../pages/PVTable/service'
+import { getInverter, getOfficialInverter } from '../../pages/InverterTable/service'
 import { saveReport } from '../../pages/Report/service'
-import { setProjectData, setPVData, setPVActiveData, setInverterData, setInverterActiveData, updateProjectAttributes } from '../../store/action/index';
+import { setProjectData, setPVData, setOfficialPVData, setInverterData, setOfficialInverterData, updateProjectAttributes } from '../../store/action/index';
 
 import * as styles from './ProjectLayout.module.scss';
 
@@ -44,7 +44,8 @@ const ProjectLayout = (props) => {
         building.data.some(obj => !obj.pv_panel_parameters.tilt_angle) ||
         building.data.some(obj => obj.inverter_wiring.some(inverterSpec =>
           !inverterSpec.panels_per_string
-        ))
+        )) ||
+        !projectData.tiltAzimuthPOA
       ) disabled = true
       return (
         <Menu.Item key={`report/${building.buildingID}`} disabled={disabled}>
@@ -81,44 +82,55 @@ const ProjectLayout = (props) => {
   // 读pv 逆变器 项目数据 最佳倾角朝向
   useEffect(() => {
     dispatch(getPV())
+    .then(res => dispatch(setPVData(res)))
+    .catch(err => history.push('/dashboard'))
+
+    dispatch(getOfficialPV(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US'))
+    .then(res => dispatch(setOfficialPVData(res)))
+    .catch(err => history.push('/dashboard'))
+
+    dispatch(getInverter())
+    .then(res => dispatch(setInverterData(res)))
+    .catch(err => history.push('/dashboard'))
+
+    dispatch(getOfficialInverter(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US'))
+    .then(res => dispatch(setOfficialInverterData(res)))
+    .catch(err => history.push('/dashboard'))
+
+    dispatch(getProject({projectID: projectID}))
     .then(res => {
-      dispatch(setPVData(res))
-      dispatch(setPVActiveData(res))
-      dispatch(getInverter())
-      .then(res => {
-        dispatch(setInverterData(res))
-        dispatch(setInverterActiveData(res))
-        dispatch(getProject({projectID: projectID}))
-        .then(res => {
-          dispatch(setProjectData(res))
-          setloading(false)
-          if (!res.optTilt || !res.optAzimuth || !res.optPOA) {
-            dispatch(globalOptTiltAzimuth({projectID: projectID}))
-            .then(optSpec => {
-              dispatch(setProjectData(optSpec))
-            })
-            const allTiltAziPOA = [
-              dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 0, endAzi: 90})),
-              dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 90, endAzi: 180})),
-              dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 180, endAzi: 270})),
-              dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 270, endAzi: 360}))
-            ]
-            Promise.all(allTiltAziPOA).then(allPOARes => {
-              dispatch(setProjectData({
-                tiltAzimuthPOA: allPOARes.flatMap(obj => obj.allTiltAziPOA)
-              }))
-            })
-          }
+      dispatch(setProjectData(res))
+      setloading(false)
+      if (!res.optTilt || !res.optAzimuth || !res.optPOA || !res.tiltAzimuthPOA) {
+        dispatch(globalOptTiltAzimuth({projectID: projectID}))
+        .then(optSpec => {
+          dispatch(setProjectData(optSpec))
         })
-        .catch(err => {
-          history.push('/dashboard')
+        const allTiltAziPOA = [
+          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 0, endAzi: 90})),
+          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 90, endAzi: 180})),
+          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 180, endAzi: 270})),
+          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 270, endAzi: 360}))
+        ]
+        Promise.all(allTiltAziPOA).then(allPOARes => {
+          notification.success({
+            message:t('sider.tiltAzimuthPOA.success')
+          })
+          dispatch(setProjectData({
+            tiltAzimuthPOA: allPOARes.flatMap(obj => obj.allTiltAziPOA)
+          }))
         })
-      })
+      }
     })
+    .catch(err => {
+      dispatch(setProjectData(null))
+      history.push('/dashboard')
+    })
+
     return () => {
       saveProjectOnExit()
     }
-  }, [dispatch, history, projectID, saveProjectOnExit, t])
+  }, [cognitoUser.attributes.locale, dispatch, history, projectID, saveProjectOnExit, t])
 
   return (
     <Layout>
@@ -138,17 +150,19 @@ const ProjectLayout = (props) => {
                 {t('sider.menu.projectDetail')}
               </Menu.Item>
               <SubMenu
+                disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
                 key='report'
                 className={styles.menuItem}
                 title={
                   <Space>
                     {t('sider.menu.report')}
                     <Button
+                      
                       shape="circle"
                       ghost
                       type='link'
                       onClick={() => {history.push(`/project/${projectID}/report/params`)}}
-                      icon={<SettingOutlined />}
+                      icon={<SettingOutlined style={{margin: 0}}/>}
                     />
                   </Space>
                 }

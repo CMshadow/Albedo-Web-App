@@ -9,7 +9,9 @@ export const SpecView = ({buildingID, specIndex}) => {
   const { t } = useTranslation()
 
   const buildings = useSelector(state => state.project.buildings)
-  const pvData = useSelector(state => state.pv.data)
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
 
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
@@ -21,11 +23,11 @@ export const SpecView = ({buildingID, specIndex}) => {
 
   const capacity = buildings[buildingIndex].data[specIndex].inverter_wiring
   .reduce((acc, obj) =>
-    obj.panels_per_string * obj.string_per_inverter * pvData[pvIndex].pmax, 0
+    acc + obj.panels_per_string * obj.string_per_inverter * pvData[pvIndex].pmax, 0
   )
   const pvNum = buildings[buildingIndex].data[specIndex].inverter_wiring
   .reduce((acc, obj) =>
-    obj.panels_per_string * obj.string_per_inverter, 0
+    acc + obj.panels_per_string * obj.string_per_inverter, 0
   )
 
   return (

@@ -77,6 +77,7 @@
   "project.autoInverter.capacity": "Actual DC Capacity",
   "project.autoInverter.pvConnected": "Number of PV Modules",
   "project.autoInverter.detail": "Inverter Details",
+  "project.autoinverter.error.miss-pvID": "Please select a PV Module",
   "autoInverter.use": "Use Auto Settings",
   "autoInverter.notuse": "Discard Auto Settings",
   "autoInverter.confirm": "Confirm Auto Settings",

@@ -14,8 +14,7 @@ const colKeys = [
 ]
 
 export const PVTable = ({
-  loading, data, setdata, activeData, setactiveData, getPV, deletePV,
-  setshowModal, seteditRecord, showActionCol=false
+  loading, data, activeData, setactiveData, setshowModal, seteditRecord, showActionCol=false
 }) => {
   const { t } = useTranslation();
   const [showDrawer, setshowDrawer] = useState(false)
@@ -68,7 +67,7 @@ export const PVTable = ({
     sorter: (a, b) => a.name - b.name,
     fixed: 'left',
     width: 250,
-    ...SearchString({colKey: 'name', onClick: onClickName}),
+    ...SearchString({colKey: 'name', onClick: onClickName, data, setactiveData}),
   })
   // 生成表单组件材质列属性
   tableCols.push({
@@ -101,10 +100,7 @@ export const PVTable = ({
           <Divider type='vertical' />
           <DeleteAction
             record={record}
-            setdata={setdata}
             setactiveData={setactiveData}
-            deletePV={deletePV}
-            getPV={getPV}
           />
         </div>
       ),

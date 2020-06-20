@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { HeaderTable } from './HeaderTable'
 import { createDateSource } from '../../utils/createGainData'
 import { updateReportAttributes } from '../../store/action/index'
-import { MoneyText } from '../../utils/genMoneyText'
 import './GainTable.scss'
 const EditableContext = React.createContext();
 const Title = Typography.Title
@@ -134,12 +133,12 @@ export const GainTable = ({ buildingID }) => {
           title: t('gain.togrid'),
           dataIndex: 'cash-in-flow-togrid',
           width: '10%',
-          render: text => text >= 0 ? text.toLocaleString() : null
+          render: text => text !== undefined ? text.toLocaleString() : null
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'cash-in-flow-selfuse',
           width: '10%',
-          render: text => text >= 0 ? text.toLocaleString() : null
+          render: text => text !== undefined ? text.toLocaleString() : null
         }
       ]
     }, {
@@ -150,12 +149,12 @@ export const GainTable = ({ buildingID }) => {
           title: t('gain.togrid'),
           dataIndex: 'cash-out-flow-togrid',
           width: '10%',
-          render: text => text >= 0 ? text.toLocaleString() : null
+          render: text => text !== undefined ? text.toLocaleString() : null
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'cash-out-flow-selfuse',
           width: '10%',
-          render: text => text >= 0 ? text.toLocaleString() : null
+          render: text => text !== undefined ? text.toLocaleString() : null
         }
       ]
     }, {
@@ -166,12 +165,12 @@ export const GainTable = ({ buildingID }) => {
           title: t('gain.togrid'),
           dataIndex: 'net-cash-flow-togrid',
           width: '10%',
-          render: text => text >= 0 ? text.toLocaleString() : null
+          render: text => text !== undefined ? text.toLocaleString() : null
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'net-cash-flow-selfuse',
           width: '10%',
-          render: text => text >= 0 ? text.toLocaleString() : null
+          render: text => text !== undefined ? text.toLocaleString() : null
         }
       ]
     }, {
@@ -182,12 +181,12 @@ export const GainTable = ({ buildingID }) => {
           title: t('gain.togrid'),
           dataIndex: 'acc-net-cash-flow-togrid',
           width: '10%',
-          render: text => text >= 0 ? text.toLocaleString() : null
+          render: text => text !== undefined ? text.toLocaleString() : null
         }, {
           title: t('gain.selfuse'),
           dataIndex: 'acc-net-cash-flow-selfuse',
           width: '10%',
-          render: text => text >= 0 ? text.toLocaleString() : null
+          render: text => text !== undefined ? text.toLocaleString() : null
         }
       ]
     }
