@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { PVDetailTable } from './PVDetailTable'
 const Title = Typography.Title
-const Text = Typography.Text
 
 const reduceUnique = data => {
   return data.reduce((acc, val) => {

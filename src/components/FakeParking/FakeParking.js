@@ -6,7 +6,6 @@ import car from '../../assets/car.png'
 import p from '../../assets/p.png'
 import moment from 'moment'
 const { Content } = Layout
-const Title = Typography.Title
 const Text = Typography.Text
 
 const FakeParking = () => {

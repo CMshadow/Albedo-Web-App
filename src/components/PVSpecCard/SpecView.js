@@ -23,11 +23,11 @@ export const SpecView = ({buildingID, specIndex}) => {
 
   const capacity = buildings[buildingIndex].data[specIndex].inverter_wiring
   .reduce((acc, obj) =>
-    obj.panels_per_string * obj.string_per_inverter * pvData[pvIndex].pmax, 0
+    acc + obj.panels_per_string * obj.string_per_inverter * pvData[pvIndex].pmax, 0
   )
   const pvNum = buildings[buildingIndex].data[specIndex].inverter_wiring
   .reduce((acc, obj) =>
-    obj.panels_per_string * obj.string_per_inverter, 0
+    acc + obj.panels_per_string * obj.string_per_inverter, 0
   )
 
   return (

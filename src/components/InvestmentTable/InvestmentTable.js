@@ -328,6 +328,9 @@ export const InvestmentTable = ({ buildingID }) => {
       dataIndex: 'quantity',
       editable: true,
       render: (text, row, index) => {
+        const dcReg = /1\.3./
+        const acReg = /1\.4./
+        const combiboxReg = /10/
         if (disabledRowKeys.includes(row.key)) {
           return {
             children: text,
@@ -337,6 +340,9 @@ export const InvestmentTable = ({ buildingID }) => {
         if (row.key === 2) {
           const newText = w2other(text)
           return `${newText.value} ${newText.unit}`
+        }
+        if (dcReg.test(row.key) || acReg.test(row.key) || combiboxReg.test(row.key)) {
+          return `${text} m`
         }
         return text
       },
