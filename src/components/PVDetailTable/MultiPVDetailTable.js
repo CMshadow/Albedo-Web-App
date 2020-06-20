@@ -18,7 +18,9 @@ const reduceUnique = data => {
 export const MultiPVDetailTable = ({ buildingID }) => {
   const { t } = useTranslation()
   const projectData = useSelector(state => state.project)
-  const pvData = useSelector(state => state.pv).data
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
   const buildingData = projectData.buildings.find(building =>
     building.buildingID === buildingID
   )

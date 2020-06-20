@@ -17,8 +17,7 @@ const colKeys = [
 ]
 
 export const InverterTable = ({
-  loading, data, setdata, activeData, setactiveData, getInverter, deleteInverter,
-  setshowModal, seteditRecord, showActionCol=false
+  loading, data, activeData, setactiveData, setshowModal, seteditRecord, showActionCol=false
 }) => {
   const { t } = useTranslation();
   const [showDrawer, setshowDrawer] = useState(false)
@@ -55,7 +54,7 @@ export const InverterTable = ({
     sorter: (a, b) => a.name - b.name,
     fixed: 'left',
     width: 250,
-    ...SearchString({colKey: 'name', onClick: onClickName}),
+    ...SearchString({colKey: 'name', onClick: onClickName, data, setactiveData}),
   })
   // 生成表单操作列属性
   if (showActionCol) {
@@ -78,10 +77,7 @@ export const InverterTable = ({
           <Divider type='vertical' />
           <DeleteAction
             record={record}
-            setdata={setdata}
             setactiveData={setactiveData}
-            deleteInverter={deleteInverter}
-            getInverter={getInverter}
           />
         </div>
       ),

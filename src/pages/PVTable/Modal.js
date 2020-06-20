@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Form, Input, Select, Row, Col, Modal, Divider, message, Collapse } from 'antd';
 import * as styles from './Modal.module.scss';
 import { addPV, getPV, updatePV } from './service';
+import { setPVData } from '../../store/action/index'
 const FormItem = Form.Item;
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -20,7 +21,7 @@ const initValues = {
   'year2To25Decay': '0.7'
 }
 
-export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRecord, seteditRecord}) => {
+export const PVModal = ({showModal, setactiveData, setshowModal, editRecord, seteditRecord}) => {
   const { t } = useTranslation();
   const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
@@ -148,7 +149,7 @@ export const PVModal = ({showModal, setshowModal, setdata, setactiveData, editRe
         message.success(t('PV.success.createPV'))
         setloading(false)
         setshowModal(false)
-        setdata(data)
+        dispatch(setPVData(data))
         setactiveData(data)
       })
     }).catch(err => {

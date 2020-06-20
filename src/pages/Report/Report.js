@@ -33,8 +33,6 @@ const Report = () => {
   const curBuilding = projectData.buildings.find(building =>
     building.buildingID === buildingID
   )
-  console.log(reportData[buildingID])
-  console.log(projectData)
 
   useEffect(() => {
     if (!projectData.p_loss_soiling) {

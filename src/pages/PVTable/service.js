@@ -36,6 +36,25 @@ export const getPV = () => async dispatch => {
   })
 }
 
+export const getOfficialPV = (region) => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.get(
+    `/pv/official`,
+    {
+      params: {region: region},
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => res.data)
+  .catch(err => {
+    console.log(err)
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}
+
 export const deletePV = ({pvID}) => async dispatch => {
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))

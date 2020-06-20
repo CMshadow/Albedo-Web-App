@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { HeaderTable } from './HeaderTable'
 import { createDateSource } from '../../utils/createGainData'
 import { updateReportAttributes } from '../../store/action/index'
-import { MoneyText } from '../../utils/genMoneyText'
 import './GainTable.scss'
 const EditableContext = React.createContext();
 const Title = Typography.Title

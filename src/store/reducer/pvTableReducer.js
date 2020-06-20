@@ -2,7 +2,9 @@ import * as actionTypes from '../action/actionTypes';
 
 const initialState = {
   data: [],
-  activeData: []
+  activeData: [],
+  officialData: [],
+  activeOfficialData: []
 };
 
 const setPVData = (state, action) => {
@@ -12,10 +14,10 @@ const setPVData = (state, action) => {
   }
 }
 
-const setPVActiveData = (state, action) => {
+const setOfficialPVData = (state, action) => {
   return {
     ...state,
-    activeData: action.activeData
+    officialData: action.data
   }
 }
 
@@ -23,8 +25,8 @@ const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_PV_DATA:
       return setPVData(state, action);
-    case actionTypes.SET_PV_ACTIVEDATA:
-      return setPVActiveData(state, action);
+    case actionTypes.SET_OFFICIAL_PV_DATA:
+      return setOfficialPVData(state, action)
     default: return state;
   }
 };

@@ -4,6 +4,10 @@ export {
 } from './authAction'
 
 export {
+  setLocale
+} from './localeAction'
+
+export {
   setProjectData,
   updateProjectAttributes,
   releaseProjectData,
@@ -21,12 +25,12 @@ export {
 
 export {
   setPVData,
-  setPVActiveData
+  setOfficialPVData,
 } from './pvTableAction'
 
 export {
   setInverterData,
-  setInverterActiveData
+  setOfficialInverterData,
 } from './inverterTableAction'
 
 export {

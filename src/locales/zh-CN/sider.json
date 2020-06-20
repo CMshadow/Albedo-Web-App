@@ -13,5 +13,7 @@
   "sider.menu.inverter": "管理逆变器",
 
   "sider.save": "保存项目",
-  "sider.report.disabled": "该房屋配置尚未完成，无法查看报告"
+  "sider.report.disabled": "该房屋配置尚未完成，无法查看报告",
+
+  "sider.tiltAzimuthPOA.success": "已生成朝向倾角POA数据"
 }

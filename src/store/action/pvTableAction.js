@@ -7,9 +7,9 @@ export const setPVData = (data) => (dispatch, getState) => {
   });
 }
 
-export const setPVActiveData = (activeData) => (dispatch, getState) => {
+export const setOfficialPVData = (data) => (dispatch, getState) => {
   return dispatch({
-    type: actionTypes.SET_PV_ACTIVEDATA,
-    activeData: activeData
-  })
+    type: actionTypes.SET_OFFICIAL_PV_DATA,
+    data: data
+  });
 }

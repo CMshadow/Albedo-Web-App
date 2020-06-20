@@ -6,7 +6,8 @@ const Item = Descriptions.Item
 
 export const PVNameDescription = ({pvID, count}) => {
   const { t } = useTranslation()
-  const pvData = useSelector(state => state.pv).data
+  const pvRedux = useSelector(state => state.pv)
+  const pvData = pvRedux.data.concat(pvRedux.officialData)
   const pvSpec = pvData.find(pv => pv.pvID === pvID)
 
   return (

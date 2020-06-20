@@ -18,7 +18,9 @@ const reduceUnique = data => {
 export const MultiInverterDetailTable = ({ buildingID }) => {
   const { t } = useTranslation()
   const projectData = useSelector(state => state.project)
-  const inverterData = useSelector(state => state.inverter).data
+  const inverterData = useSelector(state => state.inverter.data).concat(
+    useSelector(state => state.inverter.officialData)
+  )
   const buildingData = projectData.buildings.find(building =>
     building.buildingID === buildingID
   )

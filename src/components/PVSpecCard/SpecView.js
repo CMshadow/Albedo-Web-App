@@ -9,7 +9,9 @@ export const SpecView = ({buildingID, specIndex}) => {
   const { t } = useTranslation()
 
   const buildings = useSelector(state => state.project.buildings)
-  const pvData = useSelector(state => state.pv.data)
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
 
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)

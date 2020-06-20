@@ -8,7 +8,9 @@ export const SpecView = ({buildingID, specIndex, invIndex}) => {
   const { t } = useTranslation()
 
   const buildings = useSelector(state => state.project.buildings)
-  const inverterData = useSelector(state => state.inverter.data)
+  const inverterData = useSelector(state => state.inverter.data).concat(
+    useSelector(state => state.inverter.officialData)
+  )
 
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)

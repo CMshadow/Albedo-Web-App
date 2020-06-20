@@ -2,7 +2,7 @@ import * as actionTypes from '../action/actionTypes';
 
 const initialState = {
   data: [],
-  activeData: []
+  officialData: []
 };
 
 const setInverterData = (state, action) => {
@@ -12,10 +12,10 @@ const setInverterData = (state, action) => {
   }
 }
 
-const setInverterActiveData = (state, action) => {
+const setOfficialInverterData = (state, action) => {
   return {
     ...state,
-    activeData: action.activeData
+    officialData: action.data
   }
 }
 
@@ -23,8 +23,8 @@ const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_INVERTER_DATA:
       return setInverterData(state, action);
-    case actionTypes.SET_INVERTER_ACTIVEDATA:
-      return setInverterActiveData(state, action);
+    case actionTypes.SET_OFFICIAL_INVERTER_DATA:
+      return setOfficialInverterData(state, action);
     default: return state;
   }
 };

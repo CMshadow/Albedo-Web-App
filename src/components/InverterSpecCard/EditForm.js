@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom'
 import { Form, Input, InputNumber, Row, Col, Select, Button, Drawer, Tooltip } from 'antd';
 import { TableOutlined, QuestionCircleOutlined } from '@ant-design/icons'
-import { editInverterSpec, setInverterActiveData } from '../../store/action/index'
+import { editInverterSpec } from '../../store/action/index'
 import { InverterTableViewOnly } from '../InverterTable/InverterTableViewOnly'
-import { manualInverter } from '../../pages/Project/service'
 import * as styles from './EditForm.module.scss'
 const FormItem = Form.Item;
 
@@ -17,8 +15,11 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
   const { t } = useTranslation()
   const [form] = Form.useForm()
   const [showDrawer, setshowDrawer] = useState(false)
-  const inverterData = useSelector(state => state.inverter)
-  const projectID = useLocation().pathname.split('/')[2]
+  const inverterData = useSelector(state => state.inverter.data).concat(
+    useSelector(state => state.inverter.officialData)
+  )
+  const [invActiveData, setinvActiveData] = useState(inverterData)
+
 
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID)
@@ -92,7 +93,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
     values.dc_cable_len = values.dc_cable_len.split(',').map(v => Number(v))
     dispatch(editInverterSpec({
       buildingID, specIndex, invIndex, ...values,
-      inverter_userID: inverterData.data.find(
+      inverter_userID: inverterData.find(
         record => record.inverterID === values.inverterID
       ).userID
     }))
@@ -124,7 +125,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
             >
               <Select
                 options={
-                  inverterData.activeData.map(record => ({
+                  invActiveData.map(record => ({
                     label: record.name,
                     value: record.inverterID
                   }))
@@ -214,9 +215,9 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
         width='50vw'
       >
         <InverterTableViewOnly
-          data={inverterData.data}
-          activeData={inverterData.activeData}
-          setactiveData={(activeData) => dispatch(setInverterActiveData(activeData))}
+          data={inverterData}
+          activeData={invActiveData}
+          setactiveData={setinvActiveData}
         />
       </Drawer>
     </div>

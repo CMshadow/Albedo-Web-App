@@ -106,8 +106,12 @@ export const InvestmentTable = ({ buildingID }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const projectData = useSelector(state => state.project)
-  const pvData = useSelector(state => state.pv).data
-  const inverterData = useSelector(state => state.inverter).data
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
+  const inverterData = useSelector(state => state.inverter.data).concat(
+    useSelector(state => state.inverter.officialData)
+  )
   const reportData = useSelector(state => state.report)
 
   const buildingData = projectData.buildings.find(building =>

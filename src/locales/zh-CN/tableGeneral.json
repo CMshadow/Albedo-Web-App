@@ -17,6 +17,7 @@
   "table.count": "数量",
 
   "table.pvName": "光伏组件名称",
+  "table.companyName": "提供者",
   "table.inverterName": "逆变器名称",
 
   "table.title.pvDetail": "光伏组件主要参数表",

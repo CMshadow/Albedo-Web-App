@@ -5,8 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom'
 import { Form, Input, Row, Col, Select, Button, Drawer, Divider, notification, Spin, Space, Descriptions, Tooltip } from 'antd';
 import { TableOutlined } from '@ant-design/icons'
-import { editPVSpec, setPVActiveData } from '../../store/action/index'
-import { setInverterActiveData } from '../../store/action/index'
+import { editPVSpec } from '../../store/action/index'
 import { PVTableViewOnly } from '../PVTable/PVTableViewOnly'
 import { InverterTableViewOnly } from '../InverterTable/InverterTableViewOnly'
 import { manualInverter } from '../../pages/Project/service'
@@ -30,6 +29,9 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   const pvData = useSelector(state => state.pv)
   const inverterData = useSelector(state => state.inverter)
   const projectID = useLocation().pathname.split('/')[2]
+  const [pvActiveData, setpvActiveData] = useState(pvData.data.concat(pvData.officialData))
+  const [invActiveData, setinvActiveData] = useState(inverterData.data.concat(inverterData.officialData))
+
 
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID)
@@ -59,7 +61,9 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   const submitForm = (values) => {
     dispatch(editPVSpec({
       buildingID, specIndex, ...values, invPlan: autoInvPlan,
-      pv_userID: pvData.data.find(record => record.pvID === values.pvID).userID,
+      pv_userID: pvData.data.concat(pvData.officialData).find(record =>
+        record.pvID === values.pvID
+      ).userID,
     }))
     setediting(false)
   }
@@ -103,11 +107,20 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     const inverterID = form.getFieldValue('inverterID')
     const capacity = Number(form.getFieldValue('capacity'))
     const pvID = form.getFieldValue('pvID')
-    const pvUserID = pvData.data.find(pv => pv.pvID === pvID).userID
-    const pvPmax = pvData.data.find(pv => pv.pvID === pvID).pmax
+    if (!pvID) {
+      notification.error({
+        message: t('project.autoinverter.error.miss-pvID'),
+      })
+      setautoInvLoading(false)
+      return
+    }
+    const pvUserID = pvData.data.concat(pvData.officialData).find(pv => pv.pvID === pvID).userID
+    const pvPmax = pvData.data.concat(pvData.officialData).find(pv => pv.pvID === pvID).pmax
     const ttlPV = Math.floor(capacity * 1000 / pvPmax)
-    const invUserID = inverterData.data.find(inv => inv.inverterID === inverterID).userID
-    const invName = inverterData.data.find(inv => inv.inverterID === inverterID).name
+    const invUserID = inverterData.data.concat(inverterData.officialData)
+      .find(inv => inv.inverterID === inverterID).userID
+    const invName = inverterData.data.concat(inverterData.officialData)
+      .find(inv => inv.inverterID === inverterID).name
     dispatch(manualInverter({
       projectID: projectID, invID: inverterID, invUserID: invUserID,
       pvID: pvID, pvUserID: pvUserID, ttlPV: ttlPV
@@ -134,7 +147,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
             <Row>
               <Col span={24}>
                 {res.plan.map((obj, i) => (
-                  <Row>
+                  <Row key={i}>
                     {`
                       ${t('project.spec.string_per_inverter')}: ${obj.spi},
                       ${t('project.spec.panels_per_string')}: ${obj.pps}
@@ -205,7 +218,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
             >
               <Select
                 options={
-                  pvData.activeData.map(record => ({
+                  pvActiveData.map(record => ({
                     label: record.name,
                     value: record.pvID
                   }))
@@ -286,7 +299,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
               <Select
                 disabled={!capacity}
                 options={
-                  inverterData.activeData.map(record => ({
+                  invActiveData.map(record => ({
                     label: record.name,
                     value: record.inverterID
                   }))
@@ -334,9 +347,9 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         width='50vw'
       >
         <PVTableViewOnly
-          data={pvData.data}
-          activeData={pvData.activeData}
-          setactiveData={(activeData) => dispatch(setPVActiveData(activeData))}
+          data={pvData.data.concat(pvData.officialData)}
+          activeData={pvActiveData}
+          setactiveData={setpvActiveData}
         />
       </Drawer>
       <Drawer
@@ -349,9 +362,9 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         width='50vw'
       >
         <InverterTableViewOnly
-          data={inverterData.data}
-          activeData={inverterData.activeData}
-          setactiveData={(activeData) => dispatch(setInverterActiveData(activeData))}
+          data={inverterData.data.concat(inverterData.officialData)}
+          activeData={invActiveData}
+          setactiveData={setinvActiveData}
         />
       </Drawer>
     </Spin>

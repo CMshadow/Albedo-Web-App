@@ -1,27 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Button, Space, Slider, InputNumber, Row } from 'antd';
+import { Input, Button, Space, Slider, InputNumber, Row, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined, FilterFilled, FilterOutlined } from '@ant-design/icons';
 import * as styles from './TabelColSearch.module.scss';
 import { getMin, getMax } from '../../utils/getObjectsMinMax';
 
-export const SearchString = ({colKey, onClick}) => {
+export const SearchString = ({colKey, data, onClick, setactiveData}) => {
   let searchInputRef;
   const { t } = useTranslation()
   const [searchedCol, setsearchedCol] = useState('')
   const [searchedText, setsearchedText] = useState('')
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    setactiveData(data.filter(record =>
+      record[colKey].toString().toLowerCase().includes(selectedKeys[0].toLowerCase())
+    ))
     confirm();
     setsearchedCol(dataIndex);
     setsearchedText(selectedKeys[0]);
   };
 
   const handleReset = clearFilters => {
+    setactiveData(data)
     clearFilters();
     setsearchedText('');
   };
+
+  const nameOrCompany = (record, children) => (
+    colKey !== 'companyName' ?
+    <Button type='link' onClick={() => {onClick(record.pvID || record.inverterID)}}>
+      {children}
+    </Button> :
+    <Tag color={record.theme}>{children}</Tag>
+  )
 
   return {
     filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) =>
@@ -63,31 +75,30 @@ export const SearchString = ({colKey, onClick}) => {
     },
     render: (text, record) =>
       searchedCol === colKey ?
-      <Button type='link' onClick={() => {onClick(record.pvID || record.inverterID)}}>
+      nameOrCompany(
+        record,
         <Highlighter
           highlightClassName={styles.highlight}
           searchWords={[searchedText]}
           autoEscape={true}
           textToHighlight={text.toString()}
         />
-      </Button> :
-      <Button type='link' onClick={() => {onClick(record.pvID || record.inverterID)}}>
-        {text}
-      </Button>
+      ) :
+      nameOrCompany(record, text)
   }
 };
 
 
 export const SearchRange = ({colKey, data, setactiveData}) => {
   const { t } = useTranslation()
-  const colMin = getMin(data, colKey);
-  const colMax = getMax(data, colKey);
+  const colMin = Math.floor(getMin(data, colKey));
+  const colMax = Math.ceil(getMax(data, colKey));
   const [selectedVal, setselectedVal] = useState([colMin, colMax]);
   const [filtered, setfiltered] = useState(false);
 
   useEffect(() => {
-    const colMin = getMin(data, colKey);
-    const colMax = getMax(data, colKey);
+    const colMin = Math.floor(getMin(data, colKey));
+    const colMax = Math.ceil(getMax(data, colKey));
     setselectedVal([colMin, colMax])
   }, [colKey, data])
 
