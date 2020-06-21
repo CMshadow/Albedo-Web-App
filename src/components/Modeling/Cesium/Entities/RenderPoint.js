@@ -9,15 +9,14 @@ export const RenderPoint = ({point}) => {
   const dispatch = useDispatch()
   const viewer = useSelector(state => state.cesium.viewer)
   const [color, setcolor] = useState(point.color)
+  const [cor, setcor] = useState(point.getCoordinate(true))
   const [mouseDown, setmouseDown] = useState(false)
 
   return (
     <Entity
       id={point.entityId}
 
-      position={new CallbackProperty(() => {
-        return new Cartesian3.fromDegrees(...point.getCoordinate(true));
-      }, false)}
+      position={new CallbackProperty(() => new Cartesian3.fromDegrees(...cor), false)}
 
       point={{
         pixelSize: point.pixelSize,
@@ -52,7 +51,10 @@ export const RenderPoint = ({point}) => {
           const mousePos = new Cartesian3(move.endPosition.x, move.endPosition.y)
           const ellipsoid = viewer.scene.globe.ellipsoid;
           const cartesian3 = viewer.camera.pickEllipsoid(mousePos, ellipsoid)
-          console.log(Coordinate.fromCartesian(cartesian3))
+          const newCor = Coordinate.fromCartesian(cartesian3)
+          newCor.setCoordinate(null, null, 5)
+          point.setCoordinate(newCor.lon, newCor.lat, newCor.height)
+          setcor(newCor.getCoordinate(true))
         }
       }}
     />
