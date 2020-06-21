@@ -20,7 +20,7 @@ module.exports = {
         },
       },
     }, {
-      plugin: CrocoCesiumPlugin
+      plugin: CrocoCesiumPlugin()
     }
   ],
 };

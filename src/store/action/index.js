@@ -39,3 +39,11 @@ export {
   releaseReportData,
   deleteReportData
 } from './reportAction'
+
+export {
+  setMapKey,
+  setViewer,
+  enableRotate,
+  disableRotate,
+  selectMap
+} from './cesiumAction'
