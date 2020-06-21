@@ -101,7 +101,7 @@ const ProjectLayout = (props) => {
     .then(res => {
       dispatch(setProjectData(res))
       setloading(false)
-      if (!res.optTilt || !res.optAzimuth || !res.optPOA || !res.tiltAzimuthPOA) {
+      if (!res.optTilt || !res.optAzimuth || !res.optPOA || !res.tiltAzimuthPOA || res.tiltAzimuthPOA.length === 0) {
         dispatch(globalOptTiltAzimuth({projectID: projectID}))
         .then(optSpec => {
           dispatch(setProjectData(optSpec))
@@ -157,7 +157,7 @@ const ProjectLayout = (props) => {
                   <Space>
                     {t('sider.menu.report')}
                     <Button
-                      
+
                       shape="circle"
                       ghost
                       type='link'
