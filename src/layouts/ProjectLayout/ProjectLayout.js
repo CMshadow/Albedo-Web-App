@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
+import DefaultFooter from '../Footer/DefaultFooter'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
 import { getProject, saveProject, globalOptTiltAzimuth, allTiltAzimuthPOA } from '../../pages/Project/service'
 import { getPV, getOfficialPV } from '../../pages/PVTable/service'
@@ -18,6 +19,7 @@ import * as styles from './ProjectLayout.module.scss';
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
+const {Footer} = Layout;
 
 const ProjectLayout = (props) => {
   const history = useHistory();
@@ -199,6 +201,9 @@ const ProjectLayout = (props) => {
           <GlobalAlert />
           {Object.keys(projectData).length !== 0 ? props.children : null}
         </Content>
+        <Footer className={styles.footer}>
+          <DefaultFooter/>
+        </Footer>
       </Layout>
     </Layout>
   );

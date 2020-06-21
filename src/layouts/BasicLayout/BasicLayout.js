@@ -7,10 +7,12 @@ import { releaseProjectData } from '../../store/action/index'
 import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
+import DefaultFooter from '../Footer/DefaultFooter'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
 import * as styles from './BasicLayout.module.scss';
 
 const { Sider, Content } = Layout;
+const { Footer } = Layout
 
 const BasicLayout = (props) => {
   const history = useHistory();
@@ -50,6 +52,9 @@ const BasicLayout = (props) => {
           <GlobalAlert />
           {props.children}
         </Content>
+        <Footer className={styles.footer}>
+          <DefaultFooter/>
+        </Footer>
       </Layout>
     </Layout>
   );
