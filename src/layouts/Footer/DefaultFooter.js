@@ -13,7 +13,7 @@ const DefaultFooter = (props) => {
         {t('footer.about')}
       </a>
       <Divider type="vertical" />
-      <a href="https://albedopowered.com/terms" target="_blank" rel="noopener noreferrer">
+      <a href="https://albedowebdesign.com/terms" target="_blank" rel="noopener noreferrer">
         {t('footer.term-of-use')}
       </a>
       <br/>
