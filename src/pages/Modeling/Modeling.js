@@ -5,6 +5,7 @@ import { CesiumNavigator } from '../../components/Modeling/Cesium/CesiumNavigato
 import { CesiumScreenSpaceCameraController } from '../../components/Modeling/Cesium/CesiumScreenSpaceCameraController/CesiumScreenSpaceCameraController'
 import { FlyTo } from '../../components/Modeling/Cesium/FlyTo/FlyTo'
 import { CesiumEventHandlers } from '../../components/Modeling/Cesium/CesiumEventHandler/CesiumEventHandler'
+import { TestRender } from '../../components/Modeling/Cesium/CesiumRenders/TestRender'
 
 const ModelingPage = (props) => {
   return (
@@ -14,6 +15,7 @@ const ModelingPage = (props) => {
         <CesiumScreenSpaceCameraController />
         <FlyTo flyTo={[-117.842453, 33.645769, 500]} />
         <CesiumEventHandlers/>
+        <TestRender />
       </CustomViewer>
     </ContextMenuTrigger>
   );
