@@ -82,5 +82,7 @@
   "autoInverter.use": "使用自动配置",
   "autoInverter.notuse": "不使用自动配置",
   "autoInverter.confirm": "确定自动配置",
-  "autoInverter.cancel": "清除自动配置"
+  "autoInverter.cancel": "清除自动配置",
+
+  "project.loading.analyze": "正在分析Meteonorm天气数据..."
 }

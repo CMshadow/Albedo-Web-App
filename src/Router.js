@@ -9,6 +9,8 @@ import Login from './pages/user/Login/index';
 import UserLayout from './layouts/UserLayout/UserLayout';
 import BasicLayout from './layouts/BasicLayout/BasicLayout';
 import ProjectLayout from './layouts/ProjectLayout/ProjectLayout'
+import ModelingLayout from './layouts/ModelingLayout/ModelingLayout'
+import ModelingPage from './pages/Modeling/Modeling'
 import ProjectTable from './pages/ProjectTable/ProjectTable';
 import PVTable from './pages/PVTable/index';
 import Report from './pages/Report/Report'
