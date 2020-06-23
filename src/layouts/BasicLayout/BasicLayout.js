@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Layout, Menu, Row } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Layout, Menu, Row, Upload, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,11 +10,14 @@ import PublicHeader from '../PublicHeader/PublicHeader'
 import DefaultFooter from '../Footer/DefaultFooter'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
 import * as styles from './BasicLayout.module.scss';
+import axios from 'axios'
 
 const { Sider, Content } = Layout;
 const { Footer } = Layout
+const { Dragger } = Upload;
 
 const BasicLayout = (props) => {
+  const [loading, setloading] = useState(false)
   const history = useHistory();
   const dispatch = useDispatch()
   const { t } = useTranslation();
@@ -49,9 +52,44 @@ const BasicLayout = (props) => {
       <Layout className={styles.main}>
         {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
         <Content className={styles.content}>
-          <GlobalAlert />
+          <Spin spinning={loading}>
+            <GlobalAlert />
+          </Spin>
           {props.children}
         </Content>
+        <Dragger
+          onProgress={({ percent }, file) => {
+            console.log('onProgress', `${percent}%`, file.name);
+          }}
+          customRequest={option => {
+            setloading(true)
+          console.log(option)
+          const reader = new FileReader()
+          reader.readAsDataURL(option.file)
+          reader.onload = event => {
+            axios.post(
+              ' https://hmtn4lq275.execute-api.us-west-2.amazonaws.com/dev/upload-image-test',
+              {image: event.target.result},
+              {
+                onUploadProgress: ({ total, loaded }) => {
+                  option.onProgress({ percent: Math.round(loaded / total * 100).toFixed(2) }, option.file);
+                }
+              }
+            )
+            .then(res => {
+              setloading(false)
+              option.onSuccess('success message')
+
+            })
+          }
+          reader.onerror = err => option.onError(err)
+        }}>
+          <p className="ant-upload-text">Click or drag file to this area to upload</p>
+          <p className="ant-upload-hint">
+            Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+            band files
+          </p>
+        </Dragger>
         <Footer className={styles.footer}>
           <DefaultFooter/>
         </Footer>
