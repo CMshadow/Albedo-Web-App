@@ -9,7 +9,7 @@ import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
 import * as styles from './BasicLayout.module.scss';
-
+import EmailSupport from '../../components/TechSupport/EmailSupport';
 const { Sider, Content } = Layout;
 
 const BasicLayout = (props) => {
@@ -30,6 +30,7 @@ const BasicLayout = (props) => {
 
   return (
     <Layout>
+      <EmailSupport />
       <Sider width={250} className={styles.sider}>
         <Row className={styles.title} align='middle' justify='center'>
           <img alt="logo" className={styles.logo} src={logo} />
