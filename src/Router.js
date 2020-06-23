@@ -17,6 +17,7 @@ import Dashboard from './pages/Project/Dashboard';
 import InverterTable from './pages/InverterTable/index';
 import NotFound404 from './pages/404';
 import FakeParking from './components/FakeParking/FakeParking'
+import Term from './pages/static/Term'
 
 const Router = () => {
   return(
@@ -66,6 +67,9 @@ const Router = () => {
             </Switch>
           </ProjectLayout>
         </PrivateRoute>
+        <Route path="/terms">
+          <Term />
+        </Route>
         <PrivateRoute path="/">
           <BasicLayout>
             <Switch>
@@ -77,6 +81,7 @@ const Router = () => {
             </Switch>
           </BasicLayout>
         </PrivateRoute>
+
       </Switch>
     </BrowserRouter>
   )

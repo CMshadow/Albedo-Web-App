@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Row } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -7,10 +7,13 @@ import { releaseProjectData } from '../../store/action/index'
 import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
+import DefaultFooter from '../Footer/DefaultFooter'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
-import * as styles from './BasicLayout.module.scss';
 import EmailSupport from '../../components/TechSupport/EmailSupport';
+import * as styles from './BasicLayout.module.scss';
+
 const { Sider, Content } = Layout;
+const { Footer } = Layout
 
 const BasicLayout = (props) => {
   const history = useHistory();
@@ -48,9 +51,12 @@ const BasicLayout = (props) => {
       <Layout className={styles.main}>
         {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
         <Content className={styles.content}>
-          <GlobalAlert />
+           <GlobalAlert />
           {props.children}
         </Content>
+        <Footer className={styles.footer}>
+          <DefaultFooter/>
+        </Footer>
       </Layout>
     </Layout>
   );

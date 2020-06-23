@@ -9,9 +9,13 @@ const DefaultFooter = (props) => {
   const { t } = useTranslation();
   return (
     <Footer className={styles.footer}>
-      <a href="albedopowered.com">{t('footer.about')}</a>
+      <a href="https://albedopowered.com" target="_blank" rel="noopener noreferrer">
+        {t('footer.about')}
+      </a>
       <Divider type="vertical" />
-      <a href="albedopowered.com">{t('footer.term-of-use')}</a>
+      <a href="https://albedowebdesign.com/terms" target="_blank" rel="noopener noreferrer">
+        {t('footer.term-of-use')}
+      </a>
       <br/>
       Copyright &copy; 2020 Albedo Inc.
     </Footer>

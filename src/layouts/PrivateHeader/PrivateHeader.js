@@ -6,7 +6,7 @@ import SelectLang from '../../components/SelectLang/index';
 import * as styles from './PrivateHeader.module.scss';
 import { Auth } from 'aws-amplify';
 import { genInitial } from '../../utils/genInitial';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { setCognitoUser } from '../../store/action/index';
 
@@ -16,7 +16,7 @@ const PrivateHeader = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const history = useHistory();
-  const projectExist = Object.keys(useSelector(state => state.project)).length !== 0
+  const projectExist = useLocation().pathname.split('/')[1] === 'project'
 
   const signOut = () => {
     dispatch(setCognitoUser(null))
