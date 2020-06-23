@@ -25,7 +25,7 @@ const Dashboard = () => {
       </Row>
       <Row gutter={rowGutter}>
         <Col span={24}>
-          <Equipments loading={!projectData.optTilt || !projectData.tiltAzimuthPOA} {...projectData}/>
+          <Equipments loading={!projectData.projectTitle} {...projectData}/>
         </Col>
       </Row>
     </div>

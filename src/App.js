@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import './App.less';
+import './App.scss';
 import Amplify from 'aws-amplify';
 import cognitoConfig from './auth.config';
 import configureStore from './store.config';
