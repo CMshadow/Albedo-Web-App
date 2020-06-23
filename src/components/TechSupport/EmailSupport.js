@@ -3,16 +3,17 @@ import { useTranslation } from 'react-i18next'
 import { Form, Input, Button, message, Typography, Upload, Tooltip, Modal } from 'antd';
 import { InboxOutlined, MessageOutlined } from '@ant-design/icons';
 import Axios from 'axios';
+import * as classes from './EmailSupport.module.scss';
 const { TextArea } = Input;
 const { Text, Title } = Typography;
 const { Dragger } = Upload;
 
 const layout = {
   labelCol: {
-    span: 10
+    span: 0
   },
   wrapperCol: {
-    span: 22
+    span: 24
   }
 };
 
@@ -23,6 +24,9 @@ const tailLayout = {
   }
 };
 
+const maskstyle = {
+  background: "rgba(0,0,0,0)"
+}
 const EmailSupport = () => {
   const {t} = useTranslation()
   const [EmailFormTrigger, setEmailFormTriger] = useState(false);
@@ -106,32 +110,21 @@ const EmailSupport = () => {
     <>
       <Tooltip title={t('techsupport.contactus')} >
         <Button
-          style={{
-            position: "fixed",
-            bottom: 40,
-            right: 40,
-            zIndex: 1,
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.6)"
-          }}
+          className={classes.triggerButton}
           type="primary"
           shape="circle"
-          icon={<MessageOutlined style = {{fontSize: "20px"}}/>}
+          icon={<MessageOutlined className = {classes.MessageOutlined}/>}
           size={"large"}
           onClick={turnOnTriggerHandler}
         />
       </Tooltip>
       <Modal
-        style={{
-          position: "fixed",
-          top: '24%',
-          right: 20,
-          zIndex: 5
-        }}
+        className={classes.modal}
         visible={EmailFormTrigger}
         title={null}
         footer={null}
         closable={false}
-        maskStyle={{background: "rgba(0,0,0,0)"}}
+        maskStyle={{...maskstyle}}
         onCancel={turnOffTriggerHandler}
       >
         <Form {...layout}
@@ -139,33 +132,38 @@ const EmailSupport = () => {
           onFinish={sendEmail}
           validateMessages={validateMessages}
         >
-          <Title level={4} style={{marginBottom: 20, textAlign: "center"}}>
+          <Title level={4} className={classes.formTitle}>
             {t('techsupport.contactus')}
           </Title>
           <Form.Item {...layout}
+            className={classes.formItem}
             rules={[{required: true, type: 'email'}]}
             name='EmailAddress'
           >
               <Input
-                addonBefore={t('techsupport.email')}
-                style={{paddingLeft: "30px"}}
-              />
+                addonBefore={t('techsupport.email')} />
           </Form.Item>
 
-          <Form.Item rules={[{required: true}]} name='UserName'>
-            <Input
-              addonBefore={t('techsupport.name')}
-              style={{paddingLeft: "30px"}}
-            />
+          <Form.Item 
+            className={classes.formItem}
+            rules={[{required: true}]} 
+            name='UserName'
+          >
+            <Input addonBefore={t('techsupport.name')}/>
           </Form.Item>
 
-          <Text style={{marginLeft: "32px"}}>{t('techsupport.description')}</Text>
-
-          <Form.Item rules={[{required: true}]} name='Question'>
-            <TextArea style={{marginLeft: "30px", width: "93%"}} rows={6}/>
+          <Text className={classes.formItem}>
+            {t('techsupport.description')}
+          </Text>
+          <Form.Item 
+            className={classes.formItem} 
+            rules={[{required: true}]} 
+            name='Question'
+          >
+            <TextArea rows={6}/>
           </Form.Item>
 
-          <Form.Item style={{marginLeft: "30px"}}>
+          <Form.Item className={classes.formItem}>
             <Dragger
               showUploadList={true}
               fileList={custFileList}
