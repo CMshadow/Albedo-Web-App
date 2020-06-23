@@ -9,6 +9,7 @@ import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
 import DefaultFooter from '../Footer/DefaultFooter'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
+import EmailSupport from '../../components/TechSupport/EmailSupport';
 import { getProject, saveProject, globalOptTiltAzimuth, allTiltAzimuthPOA } from '../../pages/Project/service'
 import { getPV, getOfficialPV } from '../../pages/PVTable/service'
 import { getInverter, getOfficialInverter } from '../../pages/InverterTable/service'
@@ -136,6 +137,7 @@ const ProjectLayout = (props) => {
 
   return (
     <Layout>
+      <EmailSupport />
       <Sider width={250} className={styles.sider}>
         <Row className={styles.title} align='middle' justify='center'>
           <img alt="logo" className={styles.logo} src={logo} />

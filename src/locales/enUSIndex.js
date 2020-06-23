@@ -19,6 +19,7 @@ import lossTable from './en-US/lossTable.json'
 import irrTable from './en-US/irradianceTable.json'
 import emissionReduction from './en-US/emissionReduction.json'
 import chart from './en-US/chart.json'
+import techSupport from './en-US/techSupport.json'
 
 export default {
   ...country,
@@ -41,5 +42,6 @@ export default {
   ...lossTable,
   ...irrTable,
   ...emissionReduction,
-  ...chart
+  ...chart,
+  ...techSupport
 }
