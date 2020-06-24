@@ -46,7 +46,6 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
           <Row align='middle' className={styles.toolbar}>
             <Button
               disabled={editing}
-              ghost
               type='link'
               shape="circle"
               icon={<EditTwoTone />}
@@ -55,7 +54,6 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
             <Divider className={styles.divider}/>
             <Button
               disabled={editing}
-              ghost
               type='link'
               shape="circle"
               danger

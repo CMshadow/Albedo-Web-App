@@ -23,7 +23,6 @@ export const InverterSpecCard = ({buildingID, specIndex, invIndex, ...props}) =>
       actions={[
         <Button
           disabled={editing}
-          ghost
           type='link'
           shape="circle"
           icon={<EditTwoTone />}
@@ -31,7 +30,6 @@ export const InverterSpecCard = ({buildingID, specIndex, invIndex, ...props}) =>
         />,
         <Button
           disabled={editing}
-          ghost
           type='link'
           shape="circle"
           danger

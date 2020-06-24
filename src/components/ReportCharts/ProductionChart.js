@@ -12,6 +12,12 @@ import { getLanguage } from '../../utils/getLanguage'
 const Title = Typography.Title
 const Text = Typography.Text
 
+const meteonormYear = 2005
+
+const disabledDate = (date) => {
+  return date.year() < meteonormYear || date.year() > meteonormYear
+}
+
 export const ProductionChart = ({buildingID}) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -98,7 +104,11 @@ export const ProductionChart = ({buildingID}) => {
             <Radio value='day'>{t('productionChart.dayStatics')}</Radio>
           </Radio.Group>
           <DatePicker
-            defaultValue={moment()}
+            defaultValue={moment(
+              `${meteonormYear}-${moment().month() + 1}-${moment().date()}`,
+              'YYYY-MM-DD'
+            )}
+            disabledDate={disabledDate}
             format={mode === 'month' ? monthFormat : dateFormat}
             picker={mode === 'month' ? "month" : 'date'}
             onChange={date => date ? setdate(date) : null}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Spin, Tabs, Card, Row, Col } from 'antd'
+import { Spin, Tabs, Card, Row, Col, Menu } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
@@ -27,12 +27,53 @@ const Report = () => {
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
   const [loading, setloading] = useState(true)
+  const [menuKey, setmenuKey] = useState('1')
 
   const projectID = history.location.pathname.split('/')[2]
   const buildingID = history.location.pathname.split('/')[4]
   const curBuilding = projectData.buildings.find(building =>
     building.buildingID === buildingID
   )
+
+  let component
+  switch (menuKey) {
+    case '8':
+      component = (
+        <Card bordered={false}>
+          <EmissionReductionCard buildingID={buildingID}/>
+        </Card>
+      )
+      break
+    case '7':
+      component = (
+        <Card bordered={false}>
+          <MultiInverterDetailTable buildingID={buildingID}/>
+        </Card>
+      )
+      break
+    case '6':
+      component = (
+        <Card bordered={false}>
+          <MultiPVDetailTable buildingID={buildingID}/>
+        </Card>
+      )
+      break
+    case '5':
+      component = <GainTab buildingID={buildingID}/>
+      break
+    case '4':
+      component = <InvestTab buildingID={buildingID}/>
+      break
+    case '3':
+      component = <LossTab buildingID={buildingID}/>
+      break
+    case '2':
+      component = <ProdTab buildingID={buildingID}/>
+      break
+    case '1':
+    default:
+      component = <IrrTab buildingID={buildingID}/>
+  }
 
   useEffect(() => {
     if (!projectData.p_loss_soiling) {
@@ -83,46 +124,22 @@ const Report = () => {
           <Row gutter={[15, 15]}>
             <Col span={24}>
               <Card bodyStyle={{padding: 0}} loading={loading}>
-                <Tabs
-                  defaultActiveKey="1"
-                  type="card"
-                  className={styles.tabs}
-                  tabBarStyle={{
-                    display: 'flex',
-                    justifyContent: 'center'
-                  }}
+                <Menu
+                  className={styles.menu}
+                  onClick={e => setmenuKey(e.key)}
+                  selectedKeys={[menuKey]}
+                  mode="horizontal"
                 >
-                  <TabPane tab={t('report.irrTable')} key="1">
-                    <IrrTab buildingID={buildingID}/>
-                  </TabPane>
-                  <TabPane tab={t('report.acPowerTable')} key="2">
-                    <ProdTab buildingID={buildingID}/>
-                  </TabPane>
-                  <TabPane tab={t('report.lossTable')} key="3">
-                    <LossTab buildingID={buildingID}/>
-                  </TabPane>
-                  <TabPane tab={t('report.investmentTable')} key="4">
-                    <InvestTab buildingID={buildingID}/>
-                  </TabPane>
-                  <TabPane tab={t('report.gainTable')} key="5">
-                    <GainTab buildingID={buildingID}/>
-                  </TabPane>
-                  <TabPane tab={t('report.pvDetail')} key="6">
-                    <Card bordered={false}>
-                      <MultiPVDetailTable buildingID={buildingID}/>
-                    </Card>
-                  </TabPane>
-                  <TabPane tab={t('report.inverterDetail')} key="7">
-                    <Card bordered={false}>
-                      <MultiInverterDetailTable buildingID={buildingID}/>
-                    </Card>
-                  </TabPane>
-                  <TabPane tab={t('report.emissionReduction')} key="8">
-                    <Card bordered={false}>
-                      <EmissionReductionCard buildingID={buildingID}/>
-                    </Card>
-                  </TabPane>
-                </Tabs>
+                  <Menu.Item key="1">{t('report.irrTable')}</Menu.Item>
+                  <Menu.Item key="2">{t('report.acPowerTable')}</Menu.Item>
+                  <Menu.Item key="3">{t('report.lossTable')}</Menu.Item>
+                  <Menu.Item key="4">{t('report.investmentTable')}</Menu.Item>
+                  <Menu.Item key="5">{t('report.gainTable')}</Menu.Item>
+                  <Menu.Item key="6">{t('report.pvDetail')}</Menu.Item>
+                  <Menu.Item key="7">{t('report.inverterDetail')}</Menu.Item>
+                  <Menu.Item key="8">{t('report.emissionReduction')}</Menu.Item>
+                </Menu>
+                {component}
               </Card>
             </Col>
           </Row>

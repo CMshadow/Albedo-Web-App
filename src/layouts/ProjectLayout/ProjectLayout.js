@@ -149,7 +149,7 @@ const ProjectLayout = (props) => {
         {
           Object.keys(projectData).length !== 0 ?
           <div>
-            <Menu theme="dark" mode="inline" selectedKeys={[selectMenu]} onSelect={onSelectMenu}>
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={[selectMenu]} onSelect={onSelectMenu}>
               <Menu.Item key='dashboard' className={styles.menuItem}>
                 {t('sider.menu.projectDetail')}
               </Menu.Item>
@@ -161,9 +161,7 @@ const ProjectLayout = (props) => {
                   <Space>
                     {t('sider.menu.report')}
                     <Button
-
                       shape="circle"
-                      ghost
                       type='link'
                       onClick={() => {history.push(`/project/${projectID}/report/params`)}}
                       icon={<SettingOutlined style={{margin: 0}}/>}

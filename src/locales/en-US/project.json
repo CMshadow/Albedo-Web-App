@@ -1,7 +1,7 @@
 {
   "project.create-project": "Create New Project",
   "project.map.googleMap": "Google Map",
-  "project.map.aMap": "Gaode Map",
+  "project.map.aMap": "AMap",
 
   "project.create.title": "Project Name",
   "project.create.title.placeholder": "My Project",
@@ -81,5 +81,7 @@
   "autoInverter.use": "Use Auto Settings",
   "autoInverter.notuse": "Discard Auto Settings",
   "autoInverter.confirm": "Confirm Auto Settings",
-  "autoInverter.cancel": "Clear Auto Settings"
+  "autoInverter.cancel": "Clear Auto Settings",
+
+  "project.loading.analyze": "Analyzing Meteonorm Weather Data..."
 }
