@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom'
-import { Form, Input, Row, Col, Select, Button, Drawer, Divider, notification, Spin, Space, Descriptions, Tooltip } from 'antd';
+import { Form, Input, Row, Col, Select, Button, Drawer, Divider, notification, Spin, Space, Descriptions, Tooltip, Table } from 'antd';
 import { TableOutlined } from '@ant-design/icons'
 import { editPVSpec } from '../../store/action/index'
 import { PVTableViewOnly } from '../PVTable/PVTableViewOnly'
@@ -144,18 +144,25 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
             {ttlPV - res.wasted}
           </Item>
           <Item label={t('project.autoInverter.detail')} span={1}>
-            <Row>
-              <Col span={24}>
-                {res.plan.map((obj, i) => (
-                  <Row key={i}>
-                    {`
-                      ${t('project.spec.string_per_inverter')}: ${obj.spi},
-                      ${t('project.spec.panels_per_string')}: ${obj.pps}
-                    `}
-                  </Row>
-                ))}
-              </Col>
-            </Row>
+            <Table
+              scroll={{y: '40vh'}}
+              dataSource={res.plan.map((obj, index) => ({...obj, key: index}))}
+              pagination={false}
+              columns={[
+                {
+                  key: 'spi',
+                  title: t('project.spec.string_per_inverter'),
+                  dataIndex: 'spi',
+                  align: 'center'
+                },
+                {
+                  key: 'pps',
+                  title: t('project.spec.panels_per_string'),
+                  dataIndex: 'pps',
+                  align: 'center'
+                }
+              ]}
+            />
           </Item>
         </Descriptions>
       )
@@ -193,6 +200,12 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
           marginLeft: 375 - 550
         }
       })
+    })
+    .catch(err => {
+      notification.error({
+        message: t('error.oversize'),
+      })
+      setautoInvLoading(false)
     })
   }
 
