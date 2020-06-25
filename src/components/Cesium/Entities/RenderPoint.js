@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import { Entity } from 'resium';
 import { useSelector, useDispatch } from 'react-redux'
 import Coordinate from '../../../infrastructure/point/coordinate'
-import { CallbackProperty, Cartesian3, HeightReference, Color } from 'cesium';
-import { disableRotate, enableRotate, setPickedObj } from '../../../store/action/index'
+import { CallbackProperty, Cartesian3, HeightReference, Color, Cartesian2 } from 'cesium';
+import * as actions from '../../../store/action/index'
 import { POINT } from '../../../store/action/drawing/pickedObjTypes'
 
 export const RenderPoint = ({point}) => {
@@ -27,7 +27,10 @@ export const RenderPoint = ({point}) => {
 
       label={{
         text: `${point.height} m`,
-        showBackground: true
+        showBackground: true,
+        font: "20px sans-serif",
+        pixelOffset: new Cartesian2(40, -20),
+        show: pickedId === point.entityId
       }}
 
       show={point.show}
@@ -35,19 +38,21 @@ export const RenderPoint = ({point}) => {
       onMouseDown={() => {
         if (!pickedId) {
           console.log('mousedown')
-          dispatch(disableRotate())
-          dispatch(setPickedObj(POINT, point.entityId))
+          dispatch(actions.disableRotate())
+          dispatch(actions.setPickedObj(POINT, point.entityId))
         }
       }}
 
       onMouseEnter={(move, tar) => {
         setcolor(Color.ORANGE)
         point.setColor(Color.ORANGE)
+        dispatch(actions.setHoverObj(POINT, point.entityId))
       }}
 
       onMouseLeave={(move, tar) => {
         setcolor(Color.WHITE)
         point.setColor(Color.WHITE)
+        dispatch(actions.releaseHoverObj())
       }}
     />
   )

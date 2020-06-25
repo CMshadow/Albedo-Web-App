@@ -56,7 +56,9 @@ export {
 
 export {
   setPickedObj,
-  releasePickedObj
+  releasePickedObj,
+  setHoverObj,
+  releaseHoverObj
 } from './drawing/pickedAction'
 
 export {

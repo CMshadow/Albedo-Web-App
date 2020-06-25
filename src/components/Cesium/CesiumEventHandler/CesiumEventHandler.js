@@ -15,8 +15,8 @@ export const CesiumEventHandlers = () => {
   return (
     <ScreenSpaceEventHandler useDefault>
        <LeftClickHandler />
-       {/* <LeftClickShiftHandler />
-       <LeftDownHandler /> */}
+       {/* <LeftClickShiftHandler /> */}
+       {/* <LeftDownHandler /> */}
        <LeftUpHandler />
        <LeftUpShiftHandler />
        {/* <RightClickHandler /> */}
