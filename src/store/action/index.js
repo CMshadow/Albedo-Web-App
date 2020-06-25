@@ -39,3 +39,28 @@ export {
   releaseReportData,
   deleteReportData
 } from './reportAction'
+
+export {
+  setMapKey,
+  setViewer,
+  enableRotate,
+  disableRotate,
+  selectMap
+} from './cesiumAction'
+
+export {
+  setDrwStatIdle,
+  setDrwStatPoint,
+  setDrwStatFoundline
+} from './drawing/statusAction'
+
+export {
+  setPickedObj,
+  releasePickedObj
+} from './drawing/pickedAction'
+
+export {
+  addPoint,
+  moveHoriPoint,
+  moveVertiPoint
+} from './drawing/pointAction'
