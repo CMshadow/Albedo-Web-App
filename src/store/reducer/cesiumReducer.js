@@ -1,4 +1,4 @@
-import { ScreenSpaceEventType, Cartesian3, Matrix4 } from 'cesium';
+import { ScreenSpaceEventType, Cartesian3, Matrix4, KeyboardEventModifier } from 'cesium';
 import * as actionTypes from '../action/actionTypes';
 
 const initialState = {
@@ -24,6 +24,25 @@ const setViewer = (state, action) => {
   action.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
     ScreenSpaceEventType.LEFT_DOUBLE_CLICK
   );
+  action.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
+    ScreenSpaceEventType.LEFT_UP
+  );
+  action.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
+    ScreenSpaceEventType.LEFT_DOWN
+  );
+  action.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
+    ScreenSpaceEventType.MOUSE_MOVE
+  );
+  action.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
+    ScreenSpaceEventType.PINCH_START
+  );
+  action.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
+    ScreenSpaceEventType.PINCH_END
+  );
+  action.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
+    ScreenSpaceEventType.PINCH_MOVE
+  );
+
   // action.viewer.scene.screenSpaceCameraController.maximumZoomDistance = 500;
   action.viewer.camera.lookAt(
     Cartesian3.fromDegrees(-117.842453, 33.645769, 500),

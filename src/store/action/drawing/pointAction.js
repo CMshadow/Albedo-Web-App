@@ -19,10 +19,10 @@ export const moveHoriPoint = (pointId, mouseCor) => (dispatch, getState) => {
   })
 }
 
-export const moveVertiPoint = (pointId, mouseCor) => (dispatch, getState) => {
+export const moveVertiPoint = (pointId, heightChange) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId]
-  const height = Point.linearDistance(point, mouseCor)
-  point.setCoordinate(null, null, height)
+  const newHeight = point.height + heightChange
+  if (newHeight >= 0.1) point.setCoordinate(null, null, newHeight)
 
   return dispatch({
     type: actionTypes.POINT_MOVE_VERTI,

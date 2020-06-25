@@ -5,6 +5,7 @@ import LeftClickHandler from './IndividualEventHandler/LeftClick';
 // import LeftClickShiftHandler from './IndividualEventHandler/LeftClickShift';
 // import LeftDownHandler from './IndividualEventHandler/LeftDown';
 import LeftUpHandler from './IndividualEventHandler/LeftUp';
+import LeftUpShiftHandler from './IndividualEventHandler/LeftUpShift'
 // import RightClickHandler from './IndividualEventHandler/RightClick';
 import MouseMoveHandler from './IndividualEventHandler/MouseMove';
 import MouseMoveShiftHandler from './IndividualEventHandler/MouseMoveShift';
@@ -17,6 +18,7 @@ export const CesiumEventHandlers = () => {
        {/* <LeftClickShiftHandler />
        <LeftDownHandler /> */}
        <LeftUpHandler />
+       <LeftUpShiftHandler />
        {/* <RightClickHandler /> */}
        <MouseMoveHandler />
        <MouseMoveShiftHandler />

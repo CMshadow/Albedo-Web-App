@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ScreenSpaceEvent } from 'resium';
-import { ScreenSpaceEventType } from 'cesium';
+import { ScreenSpaceEventType, KeyboardEventModifier } from 'cesium';
 import * as drawingTypes from '../../../../store/action/drawing/drawingTypes'
 import * as actions from '../../../../store/action/index'
 
 
-const LeftUpHandler = (props) => {
+const LeftUpShiftHandler = (props) => {
   const dispatch = useDispatch()
   const drwStat = useSelector(state => state.undoable.present.drwStat.status)
   const pickedId = useSelector(state => state.undoable.present.picked.pickedId)
@@ -17,7 +17,6 @@ const LeftUpHandler = (props) => {
         if (pickedId) {
           console.log('mouseupshift')
           dispatch(actions.releasePickedObj())
-          dispatch(actions.enableRotate())
         }
         break;
 
@@ -30,8 +29,9 @@ const LeftUpHandler = (props) => {
     <ScreenSpaceEvent
       action={(event) => leftUpActions(event)}
       type={ScreenSpaceEventType.LEFT_UP}
+      modifier={KeyboardEventModifier.SHIFT}
     />
   );
 };
 
-export default LeftUpHandler
+export default LeftUpShiftHandler

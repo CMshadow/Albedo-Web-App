@@ -25,6 +25,11 @@ export const RenderPoint = ({point}) => {
         heightReference: HeightReference.RELATIVE_TO_GROUND
       }}
 
+      label={{
+        text: `${point.height} m`,
+        showBackground: true
+      }}
+
       show={point.show}
 
       onMouseDown={() => {
