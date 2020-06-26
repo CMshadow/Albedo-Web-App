@@ -1,25 +1,25 @@
 import * as actionTypes from '../../action/actionTypes'
-import * as drawingTypes from '../../action/drawing/drawingTypes'
+import * as objTypes from '../../action/drawing/objTypes'
 
 const initialState = {
-  status: drawingTypes.IDLE,
+  status: objTypes.IDLE,
 };
 
 const setDrwStatIdle = (state, action) => {
   return {
-    status: drawingTypes.IDLE
+    status: objTypes.IDLE
   }
 }
 
 const setDrwStatPoint = (state, action) => {
   return {
-    status: drawingTypes.POINT
+    status: objTypes.POINT
   }
 }
 
-const setDrwStatFoundline = (state, action) => {
+const setDrwStatPolygon = (state, action) => {
   return {
-    status: drawingTypes.FOUNDLINE
+    status: objTypes.POLYGON
   }
 }
 
@@ -29,8 +29,8 @@ const reducer = (state=initialState, action) => {
       return setDrwStatIdle(state, action)
     case actionTypes.DRAWING_STATUS_POINT:
       return setDrwStatPoint(state, action)
-    case actionTypes.DRAWING_STATUS_FOUNDLINE:
-      return setDrwStatFoundline(state, action);
+    case actionTypes.DRAWING_STATUS_POLYGON:
+      return setDrwStatPolygon(state, action);
     default: return state;
   }
 };

@@ -8,8 +8,9 @@ import inverterTableReducer from './inverterTableReducer'
 import reportReducer from './reportReducer'
 import cesiumReducer from './cesiumReducer'
 import drawingStatusReducer from './drawing/statusReducer'
-import pickedReducer from './drawing/pickedReducer'
+import drawingObjReducer from './drawing/drawingObjReducer'
 import drawingPointReducer from './drawing/pointReducer'
+import drawingPolygonReducer from './drawing/polygonReducer'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -21,8 +22,9 @@ const rootReducer = combineReducers({
   cesium: cesiumReducer,
   undoable: undoable(combineReducers({
     drwStat: drawingStatusReducer,
+    drawing: drawingObjReducer,
     point: drawingPointReducer,
-    picked: pickedReducer
+    polygon: drawingPolygonReducer,
   }), {
     initTypes: ['@@redux/INIT'],
     filter: includeAction([

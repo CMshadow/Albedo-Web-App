@@ -2,20 +2,19 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ScreenSpaceEvent } from 'resium';
 import { ScreenSpaceEventType } from 'cesium';
-import * as drawingTypes from '../../../../store/action/drawing/drawingTypes'
+import * as objTypes from '../../../../store/action/drawing/objTypes'
 import * as actions from '../../../../store/action/index'
 
 
 const LeftUpHandler = (props) => {
   const dispatch = useDispatch()
   const drwStat = useSelector(state => state.undoable.present.drwStat.status)
-  const pickedId = useSelector(state => state.undoable.present.picked.pickedId)
+  const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
 
   const leftUpActions = (event) => {
     switch (drwStat) {
-      case drawingTypes.IDLE:
+      case objTypes.IDLE:
         if (pickedId) {
-          console.log('mouseupshift')
           dispatch(actions.releasePickedObj())
           dispatch(actions.enableRotate())
         }

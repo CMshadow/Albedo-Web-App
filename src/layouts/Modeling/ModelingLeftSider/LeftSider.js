@@ -13,8 +13,8 @@ import * as styles from './LeftSider.module.scss';
 // import SetUpWiringPanel from './individualPanels/setUpWiringPanel';
 // import SetUpBridgingPanel from './individualPanels/setUpBridgingPanel';
 // import * as uiStateJudge from '../../../infrastructure/ui/uiStateJudge';
-import { setDrwStatPoint, setDrwStatFoundline } from '../../../store/action/index'
-import * as drawingTypes from '../../../store/action/drawing/drawingTypes'
+import { setDrwStatPoint, setDrwStatPolygon } from '../../../store/action/index'
+import * as objTypes from '../../../store/action/drawing/objTypes'
 
 const { Sider } = Layout;
 
@@ -29,8 +29,8 @@ const LeftSider = (props) => {
   let content = null;
   content = (
     <>
-      <Button loading={drawStatus === drawingTypes.POINT} onClick={() => dispatch(setDrwStatPoint())}>Draw Point</Button>
-      <Button loading={drawStatus === drawingTypes.FOUNDLINE} onClick={() => dispatch(setDrwStatFoundline())}>Draw Foundline</Button>
+      <Button loading={drawStatus === objTypes.POINT} onClick={() => dispatch(setDrwStatPoint())}>Draw Point</Button>
+      <Button loading={drawStatus === objTypes.POLYGON} onClick={() => dispatch(setDrwStatPolygon())}>Draw Polygon</Button>
     </>
   )
   // if (this.state.siderCollapse === false) {

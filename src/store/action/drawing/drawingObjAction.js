@@ -1,5 +1,19 @@
 import * as actionTypes from '../actionTypes'
 
+export const setDrawingObj = (drawingType, entityId) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.SET_DRAWING_OBJECT,
+    entityId: entityId,
+    drawingType: drawingType
+  })
+}
+
+export const releaseDrawingObj = () => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.RELEASE_DRAWING_OBJECT
+  })
+}
+
 export const setPickedObj = (pickedType, entityId) => (dispatch, getState) => {
   return dispatch({
     type: actionTypes.SET_PICKED_OBJECT,

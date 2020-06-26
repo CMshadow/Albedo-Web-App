@@ -4,20 +4,24 @@ import { useSelector, useDispatch } from 'react-redux'
 import Coordinate from '../../../infrastructure/point/coordinate'
 import { CallbackProperty, Cartesian3, HeightReference, Color, Cartesian2 } from 'cesium';
 import * as actions from '../../../store/action/index'
-import { POINT } from '../../../store/action/drawing/pickedObjTypes'
+import { POINT } from '../../../store/action/drawing/objTypes'
 
 export const RenderPoint = ({point}) => {
   const dispatch = useDispatch()
-  const pickedId = useSelector(state => state.undoable.present.picked.pickedId)
+  const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
   const [color, setcolor] = useState(point.color)
 
   return (
     <Entity
       id={point.entityId}
 
-      position={new CallbackProperty(() =>
-        new Cartesian3.fromDegrees(...point.getCoordinate(true)), false
-      )}
+      position={
+        pickedId === point.entityId ?
+        new CallbackProperty(() =>
+          new Cartesian3.fromDegrees(...point.getCoordinate(true)), false
+        ) :
+        new Cartesian3.fromDegrees(...point.getCoordinate(true))
+      }
 
       point={{
         pixelSize: point.pixelSize,
@@ -37,7 +41,6 @@ export const RenderPoint = ({point}) => {
 
       onMouseDown={() => {
         if (!pickedId) {
-          console.log('mousedown')
           dispatch(actions.disableRotate())
           dispatch(actions.setPickedObj(POINT, point.entityId))
         }

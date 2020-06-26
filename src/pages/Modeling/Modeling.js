@@ -6,6 +6,7 @@ import { CesiumScreenSpaceCameraController } from '../../components/Cesium/Cesiu
 // import { FlyTo } from '../../components/Cesium/FlyTo/FlyTo'
 import { CesiumEventHandlers } from '../../components/Cesium/CesiumEventHandler/CesiumEventHandler'
 import { DrawingPointRender } from '../../components/Cesium/CesiumRenders/DrawingPointRender'
+import { DrawingPolygonRender } from '../../components/Cesium/CesiumRenders/DrawingPolygonRender'
 import { CustomContextMenu } from '../../components/Cesium/CustomContextMenu/CustomContextMenu'
 
 const ModelingPage = (props) => {
@@ -18,6 +19,7 @@ const ModelingPage = (props) => {
           {/* <FlyTo flyTo={[-117.842453, 33.645769, 500]} /> */}
           <CesiumEventHandlers/>
           <DrawingPointRender />
+          <DrawingPolygonRender />
         </CustomViewer>
       </ContextMenuTrigger>
       <CustomContextMenu />

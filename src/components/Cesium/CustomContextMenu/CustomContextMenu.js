@@ -1,15 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import * as pcikedObjTypes from '../../../store/action/drawing/pickedObjTypes';
+import * as objTypes from '../../../store/action/drawing/objTypes';
 import EditPointContextMenu from './IndividualContextMenu/EditPointContextMenu';
 
 export const CustomContextMenu = (props) => {
-  const hoverId = useSelector(state => state.undoable.present.picked.hoverId)
-  const hoverType = useSelector(state => state.undoable.present.picked.hoverType)
+  const hoverId = useSelector(state => state.undoable.present.drawing.hoverId)
+  const hoverType = useSelector(state => state.undoable.present.drawing.hoverType)
 
   let menu
   switch (hoverType) {
-    case pcikedObjTypes.POINT:
+    case objTypes.POINT:
       menu = <EditPointContextMenu hoverId={hoverId}/>
       break
     default:

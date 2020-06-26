@@ -1,10 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { ContextMenu, MenuItem } from "react-contextmenu";
-import { Card, Row, Col, Input } from 'antd'
+import { Card, Row, Col, Input, Button, Typography } from 'antd'
+import * as actions from '../../../../store/action/index'
+import * as styles from './ContextMenu.module.scss'
+const Text = Typography.Text
 
 const EditPointContextMenu = ({hoverId}) => {
+  const dispatch = useDispatch()
   const point = useSelector(state => state.undoable.present.point[hoverId])
+  const pointH = point ? point.height : null
 
   return (
     <ContextMenu
@@ -14,16 +19,41 @@ const EditPointContextMenu = ({hoverId}) => {
       preventHideOnResize
       preventHideOnScroll
     >
-      <MenuItem preventClose>
-        <Card bodyStyle={{padding: 10}}>
-          <Row align='middle' style={{width: '150px'}}>
-            <Col span={8}>Height</Col>
+      <Card bodyStyle={{padding: 10, width: '200px'}}>
+        <MenuItem preventClose>
+          <Row gutter={[8, 8]} align='middle'>
+            <Col span={8}><Text strong>Height</Text></Col>
             <Col span={16}>
-              <Input addonAfter='m' size='small' value={point.height}/>
+              <Input
+                type='number'
+                addonAfter='m'
+                size='middle'
+                defaultValue={pointH}
+                onChange={e =>
+                  dispatch(actions.setPointHeight(hoverId, Number(e.target.value)))
+                }
+              />
             </Col>
           </Row>
-        </Card>
-      </MenuItem>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            dispatch(actions.deletePoint(hoverId))
+            dispatch(actions.releaseHoverObj())
+          }}
+        >
+          <Row gutter={[8, 8]} align='middle'>
+            <Button
+              className={styles.button}
+              type='primary'
+              size='small'
+              danger
+            >
+              Delete Point
+            </Button>
+          </Row>
+        </MenuItem>
+      </Card>
     </ContextMenu>
   );
 }

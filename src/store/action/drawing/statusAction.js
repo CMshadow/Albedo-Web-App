@@ -12,8 +12,8 @@ export const setDrwStatPoint = () => (dispatch, getState) => {
   })
 }
 
-export const setDrwStatFoundline = () => (dispatch, getState) => {
+export const setDrwStatPolygon = () => (dispatch, getState) => {
   return dispatch({
-    type: actionTypes.DRAWING_STATUS_FOUNDLINE
+    type: actionTypes.DRAWING_STATUS_POLYGON
   })
 }

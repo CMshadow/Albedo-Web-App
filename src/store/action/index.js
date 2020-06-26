@@ -51,18 +51,29 @@ export {
 export {
   setDrwStatIdle,
   setDrwStatPoint,
-  setDrwStatFoundline
+  setDrwStatPolygon
 } from './drawing/statusAction'
 
 export {
+  setDrawingObj,
+  releaseDrawingObj,
   setPickedObj,
   releasePickedObj,
   setHoverObj,
   releaseHoverObj
-} from './drawing/pickedAction'
+} from './drawing/drawingObjAction'
 
 export {
   addPoint,
+  setPointHeight,
   moveHoriPoint,
-  moveVertiPoint
+  moveVertiPoint,
+  deletePoint
 } from './drawing/pointAction'
+
+export {
+  createPolygon,
+  polygonDynamic,
+  polygonAddVertex,
+  polygonTerminate
+} from './drawing/polygonAction'
