@@ -7,7 +7,7 @@ export const DrawingPolygonRender = () => {
 
   return (
     Object.keys(drawingPolygons).map(polygonId =>
-      <RenderPolygon key={polygonId} polygon={drawingPolygons[polygonId]} />
+      <RenderPolygon key={polygonId} polygon={drawingPolygons[polygonId].entity} />
     )
   )
 }

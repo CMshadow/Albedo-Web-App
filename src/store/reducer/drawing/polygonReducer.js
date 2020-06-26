@@ -6,7 +6,10 @@ const initialState = {
 const setPolygon = (state, action) => {
   return {
     ...state,
-    [action.entity.entityId]: action.entity
+    [action.entity.entityId]: {
+      entity: action.entity,
+      pointMap: action.pointMap
+    }
   }
 }
 

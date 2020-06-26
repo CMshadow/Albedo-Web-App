@@ -33,12 +33,14 @@ const LeftClickHandler = () => {
         break;
 
       case objTypes.POLYGON:
+        mouseCor.setCoordinate(null, null, POINT_OFFSET)
+        const pointId = dispatch(actions.addPoint(mouseCor))
         mouseCor.setCoordinate(null, null, POLYGON_OFFSET)
         if (!drawingId) {
-          dispatch(actions.createPolygon(mouseCor))
+          dispatch(actions.createPolygon(mouseCor, pointId))
           dispatch(actions.disableRotate())
         } else {
-          dispatch(actions.polygonAddVertex(mouseCor))
+          dispatch(actions.polygonAddVertex(mouseCor, pointId))
         }
         break
 

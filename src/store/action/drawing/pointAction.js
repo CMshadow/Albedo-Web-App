@@ -2,10 +2,12 @@ import * as actionTypes from '../actionTypes'
 import Point from '../../../infrastructure/point/point'
 
 export const addPoint = (mouseCor) => (dispatch, getState) => {
-  return dispatch({
+  const point = Point.fromCoordinate(mouseCor)
+  dispatch({
     type: actionTypes.POINT_ADD,
     entity: Point.fromCoordinate(mouseCor)
   })
+  return point.entityId
 }
 
 export const setPointHeight = (pointId, newHeight) => (dispatch, getState) => {

@@ -3,9 +3,9 @@ import * as objTypes from './objTypes'
 import Polygon from '../../../infrastructure/polygon/polygon'
 import { Color } from 'cesium'
 
-const polygonColor = Color.WHITE.withAlpha(0.4)
+const polygonColor = Color.WHITE.withAlpha(0.2)
 
-export const createPolygon = (mouseCor) => (dispatch, getState) => {
+export const createPolygon = (mouseCor, pointId) => (dispatch, getState) => {
   const polygonH = mouseCor.height
   const polygon = new Polygon(mouseCor.getCoordinate(true), polygonH)
 
@@ -17,13 +17,15 @@ export const createPolygon = (mouseCor) => (dispatch, getState) => {
 
   return dispatch({
     type: actionTypes.POLYGON_CREATE,
-    entity: polygon
+    entity: polygon,
+    pointMap: [pointId]
   })
 }
 
 export const polygonDynamic = (mouseCor) => (dispatch, getState) => {
   const drawingId = getState().undoable.present.drawing.drawingId
-  const drawingPolygon = getState().undoable.present.polygon[drawingId]
+  const drawingPolygon = getState().undoable.present.polygon[drawingId].entity
+  const pointMap = getState().undoable.present.polygon[drawingId].pointMap
   const fixedHier = drawingPolygon.hierarchy.length > 3 ?
     drawingPolygon.hierarchy.slice(0, -3) :
     drawingPolygon.hierarchy
@@ -33,26 +35,31 @@ export const polygonDynamic = (mouseCor) => (dispatch, getState) => {
     type: actionTypes.POLYGON_UPDATE,
     entity: new Polygon(
       newHier, mouseCor.height, drawingPolygon.entityId, null, polygonColor
-    )
+    ),
+    pointMap: pointMap
   })
 }
 
-export const polygonAddVertex = (mouseCor) => (dispatch, getState) => {
+export const polygonAddVertex = (mouseCor, pointId) => (dispatch, getState) => {
   const drawingId = getState().undoable.present.drawing.drawingId
-  const drawingPolygon = getState().undoable.present.polygon[drawingId]
+  const drawingPolygon = getState().undoable.present.polygon[drawingId].entity
+  const pointMap = getState().undoable.present.polygon[drawingId].pointMap
   const newHier = drawingPolygon.hierarchy.concat(mouseCor.getCoordinate(true))
 
   return dispatch({
     type: actionTypes.POLYGON_UPDATE,
     entity: new Polygon(
       newHier, mouseCor.height, drawingPolygon.entityId, null, polygonColor
-    )
+    ),
+    pointMap: [...pointMap, pointId]
   })
 }
 
 export const polygonTerminate = () => (dispatch, getState) => {
   const drawingId = getState().undoable.present.drawing.drawingId
-  const drawingPolygon = getState().undoable.present.polygon[drawingId]
+  const drawingPolygon = getState().undoable.present.polygon[drawingId].entity
+  const pointMap = getState().undoable.present.polygon[drawingId].pointMap
+  console.log(pointMap)
   const newHier = drawingPolygon.hierarchy.length > 3 ?
     drawingPolygon.hierarchy.slice(0, -3) :
     drawingPolygon.hierarchy
@@ -65,6 +72,7 @@ export const polygonTerminate = () => (dispatch, getState) => {
     type: actionTypes.POLYGON_UPDATE,
     entity: new Polygon(
       newHier, newHier.height, drawingPolygon.entityId, null, polygonColor
-    )
+    ),
+    pointMap: pointMap
   })
 }
