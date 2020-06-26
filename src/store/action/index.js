@@ -39,3 +39,14 @@ export {
   releaseReportData,
   deleteReportData
 } from './reportAction'
+
+export {
+  setPVDist,
+  setInverterWidth,
+  InverterDataExport,
+  setInterConnectData,
+  setResize,
+  setServerPanel,
+  setMeter,
+  setGrid
+} from './SLDAction'

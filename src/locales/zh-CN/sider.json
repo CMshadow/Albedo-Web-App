@@ -12,6 +12,12 @@
   "sider.menu.pv": "管理光伏组件",
   "sider.menu.inverter": "管理逆变器",
 
+  "sider.menu.singleLineDiagram": "系统电气主接线图",
+  "sider.menu.singleLineDiagram.prefix": "",
+  "sider.menu.singleLineDiagram.suffix": "-电气主接线图",
+  "sider.menu.singleLineDiagram.disabled": "该房屋配置尚未完成，无法查看单线图",
+
+
   "sider.save": "保存项目",
   "sider.report.disabled": "该房屋配置尚未完成，无法查看报告",
 

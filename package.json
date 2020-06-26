@@ -19,6 +19,7 @@
     "global": "^4.4.0",
     "google-maps-react": "^2.0.6",
     "i18next": "^19.4.4",
+    "konva": "^7.0.0",
     "less": "^3.11.1",
     "less-loader": "^6.0.0",
     "moment": "^2.26.0",
@@ -30,6 +31,7 @@
     "react-dom": "^16.13.1",
     "react-highlight-words": "^0.16.0",
     "react-i18next": "^11.4.0",
+    "react-konva": "^16.13.0-3",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
@@ -38,7 +40,7 @@
     "redux-thunk": "^2.3.0",
     "redux-undo": "^1.0.1",
     "serve": "^11.3.2",
-    "uuid": "^8.1.0"
+    "uuid": "^8.2.0"
   },
   "scripts": {
     "start": "react-app-rewired start",

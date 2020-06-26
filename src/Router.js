@@ -18,6 +18,7 @@ import InverterTable from './pages/InverterTable/index';
 import NotFound404 from './pages/404';
 import FakeParking from './components/FakeParking/FakeParking'
 import Term from './pages/static/Term'
+import SingleLineDiagramUS from './pages/SingleLineDiagram/SingleLineDiagram_us';
 
 const Router = () => {
   return(
@@ -60,6 +61,9 @@ const Router = () => {
               </PrivateRoute>
               <PrivateRoute path="/project/:projectID/inverter">
                 <InverterTable/>
+              </PrivateRoute>
+              <PrivateRoute path="/project/:projectID/singleLineDiagram/:buildingID">
+                <SingleLineDiagramUS />
               </PrivateRoute>
               <PrivateRoute path='*'>
                 <NotFound404/>

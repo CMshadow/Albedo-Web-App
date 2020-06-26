@@ -64,6 +64,35 @@ const ProjectLayout = (props) => {
     })
   }
 
+  const genSLDSubMen = () => {
+    return projectData.buildings && 
+    projectData.buildings.filter( building => 
+      building.data.length > 0 && building.data[0].inverter_wiring.length > 0
+    ).map(building => {
+      let disabled = false;
+      if (
+        building.data.some(obj => !obj.pv_panel_parameters.tilt_angle) ||
+        building.data.some(obj => obj.inverter_wiring.some(inverterSpec =>
+          !inverterSpec.panels_per_string
+        )) ||
+        !projectData.tiltAzimuthPOA
+      ) {disabled = true;}
+    return (
+      <Menu.Item key={`singleLineDiagram/${building.buildingID}`} disabled={disabled}>
+          <Tooltip title={disabled ? t('sider.singleLineDiagram.disabled.disabled') : null}>
+            {
+              t('sider.menu.singleLineDiagram.prefix') +
+              `${building.buildingName}` +
+              t('sider.menu.singleLineDiagram.suffix')
+            }
+          </Tooltip>
+        </Menu.Item>
+      )
+    })
+  }
+
+
+
   const saveProjectClick = () => {
     setloading(true)
     dispatch(saveProject(projectID))
@@ -163,7 +192,7 @@ const ProjectLayout = (props) => {
                     <Button
 
                       shape="circle"
-                      ghost
+                      // ghost
                       type='link'
                       onClick={() => {history.push(`/project/${projectID}/report/params`)}}
                       icon={<SettingOutlined style={{margin: 0}}/>}
@@ -172,6 +201,14 @@ const ProjectLayout = (props) => {
                 }
               >
                 {genReportSubMenu()}
+              </SubMenu>
+              <SubMenu
+                disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
+                key='singleLineDiag'
+                className={styles.menuItem}
+                title={t('sider.menu.singleLineDiagram')}
+              >
+                {genSLDSubMen()}
               </SubMenu>
               <Menu.Item key="pv" className={styles.menuItem}>
                 {t('sider.menu.pv')}
