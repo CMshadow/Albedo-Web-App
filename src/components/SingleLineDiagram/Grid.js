@@ -162,6 +162,7 @@ const Grid = () => {
     ></Line>)
 
     groupOfGrid.push(<Text
+      key= {"Grid-Text-" + uuidv4()}
       x={startX}
       y={startY + minSize[1] * 1.05}
       text={'Grid'}

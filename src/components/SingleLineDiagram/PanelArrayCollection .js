@@ -1,4 +1,5 @@
 import React from 'react';
+import {v4 as uuidv4} from 'uuid';
 import { Rect, Line, Group, Text, Circle } from 'react-konva';
 import { useDispatch } from 'react-redux'
 import { setPVDist, setInverterWidth } from '../../store/action/index'
@@ -14,9 +15,11 @@ const PanelArrayCollection = (props) => {
   const stringOfPanels = props.stringOfPanels;
   const panelsOfInverter = props.panelsOfInverter;
   const moduleCount = stringOfPanels * panelsOfInverter;
+  const pvTable = props.pvTable;
+  
   let startX = startPosition[0];
   let startY = startPosition[1];
-  let font_size = Math.floor(minSize[1] / 7);
+  let font_size = 16;
   let numOfArray = props.numOfArray > 3 ? 3 : props.numOfArray;
   let overSized = props.numOfArray > 3 ? true : false;
   let pancelOfinverter = 3;
@@ -26,8 +29,8 @@ const PanelArrayCollection = (props) => {
       minSize[0] = props.width * 0.1;
     if (props.height * 0.1 > minSize[1]) 
       minSize[1] = props.height * 0.1;
-    if (startX < props.width * 0.07 ) 
-      startX = props.width * 0.07;
+    if (startX > props.width * 0.03 ) 
+      startX = props.width * 0.03;
      
   }
 
@@ -75,6 +78,7 @@ const PanelArrayCollection = (props) => {
 
 
     groupOfPancelsArray.push(<Rect
+      key= {"PanelArray-Rect-" + uuidv4()}
       x={startX}
       y={startY}
       width={minSize[0]}
@@ -85,6 +89,7 @@ const PanelArrayCollection = (props) => {
     ></Rect>);
 
     groupOfPancelsArray.push(<Rect
+      key= {"PanelArray-Rect-" + uuidv4()}
       x={startPanelPointX}
       y={startPanelPointY}
       width={firstPanelWidth}
@@ -95,6 +100,7 @@ const PanelArrayCollection = (props) => {
     ></Rect>)
     
     groupOfPancelsArray.push(<Line
+      key= {"PanelArray-Line-" + uuidv4()}
       points={[startPanelPointX, startPanelPointY,
         startPanelPointX + firstPanelWidth * 0.3,
         startPanelPointY + firstPanelHeight* 0.5,
@@ -106,6 +112,7 @@ const PanelArrayCollection = (props) => {
     ></Line>)
     
     groupOfPancelsArray.push(<Text
+      key= {"PanelArray-Text-" + uuidv4()}
       x={startPanelPointX + firstPanelWidth * 0.5}
       y={startPanelPointY + firstPanelHeight * 0.1}
       text='1'
@@ -115,6 +122,7 @@ const PanelArrayCollection = (props) => {
     ></Text>)
 
     groupOfPancelsArray.push(<Line
+      key= {"PanelArray-Line-" + uuidv4()}
       points={[startPanelPointX + firstPanelWidth,
         startPanelPointY + firstPanelHeight* 0.5,
         startPanelPointX + firstPanelWidth * 1.3,
@@ -126,6 +134,7 @@ const PanelArrayCollection = (props) => {
     ></Line>)
 
     groupOfPancelsArray.push(<Rect
+      key= {"PanelArray-Rect-" + uuidv4()}
       x={secondPanelStartPointX}
       y={secondPanelStartPointY}
       width={secondPanelWidth}
@@ -135,6 +144,7 @@ const PanelArrayCollection = (props) => {
     ></Rect>)
 
     groupOfPancelsArray.push(<Line
+      key= {"PanelArray-Line-" + uuidv4()}
       points={[secondPanelStartPointX, 
         secondPanelStartPointY,
         secondPanelStartPointX + secondPanelWidth * 0.3, 
@@ -149,6 +159,7 @@ const PanelArrayCollection = (props) => {
 
 
     groupOfPancelsArray.push(<Text
+      key= {"PanelArray-Text-" + uuidv4()}
       x={secondPanelStartPointX + secondPanelWidth * 0.5}
       y={secondPanelStartPointY + secondPanelHeight * 0.1}
       text='2'
@@ -158,6 +169,7 @@ const PanelArrayCollection = (props) => {
     ></Text>)
 
     groupOfPancelsArray.push(<Line
+      key= {"PanelArray-Line-" + uuidv4()}
       points={[secondPanelStartPointX + secondPanelWidth,
         secondPanelStartPointY + secondPanelHeight* 0.5,
         secondPanelStartPointX + secondPanelWidth * 1.8,
@@ -167,37 +179,9 @@ const PanelArrayCollection = (props) => {
       lineCap= 'round'
       lineJoin='round'
     ></Line>)
-
-
-    groupOfPancelsArray.push(<Circle
-      x={secondPanelStartPointX + secondPanelWidth * 1.4}
-      y={secondPanelStartPointY + secondPanelHeight* 0.5}
-      radius={secondPanelHeight * 0.25}
-      fill='white'
-    ></Circle>)
-    
-    groupOfPancelsArray.push(<Line
-      points={[secondPanelStartPointX + secondPanelWidth * 1.4,       secondPanelStartPointY + secondPanelHeight* 0.5,
-      secondPanelStartPointX + secondPanelWidth * 1.4,
-      secondPanelStartPointY - secondPanelHeight* 0.25,
-      secondPanelStartPointX + secondPanelWidth * 0.7,
-      secondPanelStartPointY - secondPanelHeight]}
-      stroke='white'
-      strokeWidth={stroke_Width}
-      lineCap= 'round'
-      lineJoin='round'
-    ></Line>)
-      
-    groupOfPancelsArray.push(<Text
-      x={secondPanelStartPointX}
-      y={secondPanelStartPointY - secondPanelHeight * 2}
-      text='props.线ID 10 AWG Copper'
-      fontSize={font_size}
-      fontFamily='Arial'
-      fill='white'
-    ></Text>)
     
     groupOfPancelsArray.push(<Rect
+      key= {"PanelArray-Rect-" + uuidv4()}
       x={lastPanelStartPointX}
       y={lastPanelStartPointY}
       width={lastPanelWidth}
@@ -207,6 +191,7 @@ const PanelArrayCollection = (props) => {
     ></Rect>)
 
     groupOfPancelsArray.push(<Line
+      key= {"PanelArray-Line-" + uuidv4()}
       points={[lastPanelStartPointX, 
         lastPanelStartPointY,
         lastPanelStartPointX + lastPanelWidth * 0.3, 
@@ -220,7 +205,8 @@ const PanelArrayCollection = (props) => {
     ></Line>)
 
     groupOfPancelsArray.push(<Text
-      x={lastPanelStartPointX + lastPanelWidth * 0.5}
+      key= {"PanelArray-Text-" + uuidv4()}
+      x={lastPanelStartPointX + lastPanelWidth * 0.4}
       y={lastPanelStartPointY + lastPanelHeight * 0.1}
       text={stringOfPanels[index]}
       fontSize={font_size}
@@ -229,6 +215,7 @@ const PanelArrayCollection = (props) => {
     ></Text>)
 
     groupOfPancelsArray.push(<Text
+      key= {"PanelArray-Text-" + uuidv4()}
       x={startPanelPointX + font_size}
       y={startPanelPointY + firstPanelHeight * 1.5}
       text={'String Count: ' + panelsOfInverter[index]}
@@ -238,6 +225,7 @@ const PanelArrayCollection = (props) => {
     ></Text>)
 
     groupOfPancelsArray.push(<Text
+      key= {"PanelArray-Text-" + uuidv4()}
       x={startPanelPointX + font_size}
       y={startPanelPointY + firstPanelHeight * 1.5 + font_size }
       text={'Module Count: ' + stringOfPanels[index] * panelsOfInverter[index]}
@@ -248,16 +236,17 @@ const PanelArrayCollection = (props) => {
     
     if (panelsOfInverter[index] > 2) 
       groupOfPancelsArray.push(<Line
-      points={[startPanelPointX + 3, 
-        startPanelPointY + firstPanelHeight * 1.5 + 6, 
-        startPanelPointX + 3, 
-        startPanelPointY + firstPanelHeight * 1.5 + font_size + 18]}
-      stroke='white'
-      strokeWidth={stroke_Width * 2}
-      lineCap= 'round'
-      lineJoin='round'
-      dash={[1,10]}
-    ></Line>)
+        key= {"PanelArray-Line-" + uuidv4()}
+        points={[startPanelPointX + 3, 
+          startPanelPointY + firstPanelHeight * 1.5 + 6, 
+          startPanelPointX + 3, 
+          startPanelPointY + firstPanelHeight * 1.5 + font_size + 18]}
+        stroke='white'
+        strokeWidth={stroke_Width * 2}
+        lineCap= 'round'
+        lineJoin='round'
+        dash={[1,10]}
+      ></Line>)
 
     accessPorts.push([lastPanelStartPointX + lastPanelWidth, lastPanelStartPointY + lastPanelHeight* 0.5]);
   }
@@ -281,6 +270,7 @@ const PanelArrayCollection = (props) => {
 
 
     groupOfPancelsArray.push(<Rect
+      key= {"PanelArray-Rect-" + uuidv4()}
       x={startX}
       y={startY}
       width={minSize[0]}
@@ -291,6 +281,7 @@ const PanelArrayCollection = (props) => {
     ></Rect>);
 
     groupOfPancelsArray.push(<Rect
+      key= {"PanelArray-Rect-" + uuidv4()}
       x={startPanelPointX}
       y={startPanelPointY}
       width={firstPanelWidth}
@@ -301,6 +292,7 @@ const PanelArrayCollection = (props) => {
     ></Rect>)
     
     groupOfPancelsArray.push(<Line
+      key= {"PanelArray-Line-" + uuidv4()}
       points={[startPanelPointX, startPanelPointY,
         startPanelPointX + firstPanelWidth * 0.3,
         startPanelPointY + firstPanelHeight* 0.5,
@@ -312,6 +304,7 @@ const PanelArrayCollection = (props) => {
     ></Line>)
     
     groupOfPancelsArray.push(<Text
+      key= {"PanelArray-Text-" + uuidv4()}
       x={startPanelPointX + firstPanelWidth * 0.5}
       y={startPanelPointY + firstPanelHeight * 0.1}
       text='1'
@@ -321,6 +314,7 @@ const PanelArrayCollection = (props) => {
     ></Text>)
 
     groupOfPancelsArray.push(<Line
+      key= {"PanelArray-Line-" + uuidv4()}
       points={[startPanelPointX + firstPanelWidth,
         startPanelPointY + firstPanelHeight* 0.5,
         startPanelPointX + firstPanelWidth * 1.3,
@@ -332,6 +326,7 @@ const PanelArrayCollection = (props) => {
     ></Line>)
 
     groupOfPancelsArray.push(<Rect
+      key= {"PanelArray-Rect-" + uuidv4()}
       x={secondPanelStartPointX}
       y={secondPanelStartPointY}
       width={secondPanelWidth}
@@ -341,6 +336,7 @@ const PanelArrayCollection = (props) => {
     ></Rect>)
 
     groupOfPancelsArray.push(<Line
+      key= {"PanelArray-Line-" + uuidv4()}
       points={[secondPanelStartPointX, 
         secondPanelStartPointY,
         secondPanelStartPointX + secondPanelWidth * 0.3, 
@@ -355,6 +351,7 @@ const PanelArrayCollection = (props) => {
 
 
     groupOfPancelsArray.push(<Text
+      key= {"PanelArray-Text-" + uuidv4()}
       x={secondPanelStartPointX + secondPanelWidth * 0.5}
       y={secondPanelStartPointY + secondPanelHeight * 0.1}
       text='2'
@@ -364,6 +361,7 @@ const PanelArrayCollection = (props) => {
     ></Text>)
 
     groupOfPancelsArray.push(<Line
+      key= {"PanelArray-Line-" + uuidv4()}
       points={[secondPanelStartPointX + secondPanelWidth,
         secondPanelStartPointY + secondPanelHeight* 0.5,
         secondPanelStartPointX + secondPanelWidth * 1.8,
@@ -375,6 +373,7 @@ const PanelArrayCollection = (props) => {
     ></Line>)
     
     groupOfPancelsArray.push(<Rect
+      key= {"PanelArray-Rect-" + uuidv4()}
       x={lastPanelStartPointX}
       y={lastPanelStartPointY}
       width={lastPanelWidth}
@@ -384,6 +383,7 @@ const PanelArrayCollection = (props) => {
     ></Rect>)
     
     groupOfPancelsArray.push(<Line
+      key= {"PanelArray-Line-" + uuidv4()}
       points={[lastPanelStartPointX, 
         lastPanelStartPointY,
         lastPanelStartPointX + lastPanelWidth * 0.3, 
@@ -396,7 +396,8 @@ const PanelArrayCollection = (props) => {
       lineJoin='round'
     ></Line>)
     groupOfPancelsArray.push(<Text
-      x={lastPanelStartPointX + lastPanelWidth * 0.5}
+      key= {"PanelArray-Text-" + uuidv4()}
+      x={lastPanelStartPointX + lastPanelWidth * 0.4}
       y={lastPanelStartPointY + lastPanelHeight * 0.1}
       text={stringOfPanels[index]}
       fontSize={font_size}
@@ -409,19 +410,20 @@ const PanelArrayCollection = (props) => {
 
   const drawDashLine = (startPanelPointX, startPanelPointY) => {
     groupOfPancelsArray.push(<Line
-    points={[startPanelPointX, 
-      startPanelPointY, 
-      startPanelPointX, 
-      startPanelPointY + minSize[1] * 0.3]}
-    stroke='white'
-    strokeWidth={stroke_Width * 2}
-    lineCap= 'round'
-    lineJoin='round'
-    dash={[1,10]}
+      key= {"PanelArray-Line-" + uuidv4()}
+      points={[startPanelPointX, 
+        startPanelPointY, 
+        startPanelPointX, 
+        startPanelPointY + minSize[1] * 0.3]}
+      stroke='white'
+      strokeWidth={stroke_Width * 2}
+      lineCap= 'round'
+      lineJoin='round'
+      dash={[1,10]}
     ></Line>)
   }
 
-  return (<Group key={"panelArrays"}>
+  return (<Group key={"panelArrays-Group"}>
     {[...drawPanelArray()]}
   </Group>);
 }

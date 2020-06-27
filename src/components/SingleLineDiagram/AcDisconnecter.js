@@ -14,7 +14,7 @@ const ACDisconnecter = (props) => {
   const width = useSelector(state => state.SLD.disconnectSize[1]);
   let minSize = [width * 0.487, width * 0.3]
   let stroke_Width = 2;
-  let font_size = Math.floor(minSize[1] / 3);
+  let font_size = Math.floor(minSize[1] / 4);
   let nextDistance = 0;
 
   const zoomAuto = () => {
@@ -97,10 +97,11 @@ const ACDisconnecter = (props) => {
     ></Line>)
 
     groupOfDisconnecter.push(<Text
+      key = {"Disconnect-Text-" + uuidv4()}
       x={startX}
       y={startY + minSize[1] * 1.05}
       text={'Disconnect'}
-      fontSize={font_size}
+      fontSize={16}
       fontFamily='Arial'
       fill='white'
     ></Text>)

@@ -15,7 +15,8 @@ const InterConnecter = (props) => {
   const prevDistance = inverterAccessPorts[0];
   const stroke_Width = 2;
   const font_size = Math.floor(minSize[0] / 9);
-
+  const interConnectName = props.combineBoxName;
+  const combiTable = props.combiTable;
   let unitLineGap = numOfInverter > 5 ? 15 : 45;
   let groupOfInterConnect = [];
   let startX = prevDistance[0] +  numOfInverter * unitLineGap;
@@ -123,6 +124,19 @@ const InterConnecter = (props) => {
         tension={0.5}
       ></Line>)
 
+      groupOfInterConnect.push( props.numOfInverter > 3 && i === 2 ? <Line
+        key= {"InterConnect-Line-" + uuidv4()}
+        points={[startX + minSize[0] * 0.275,
+          startY + (minSize[1] / (numOfInverter + 1)) * i + 10,
+          startX + minSize[0] * 0.275, 
+          startY + (minSize[1] / (numOfInverter + 1)) * i + 30]}
+        stroke='white'
+        strokeWidth={stroke_Width}
+        lineCap= 'round'
+        lineJoin='round'
+        dash={[1, 5]}
+      ></Line>: null);
+
       groupOfInterConnect.push(<Line
         key={"InterConnect-InnerConnectLine-" + uuidv4()}
         points={[startX + minSize[0] * 0.35, 
@@ -192,17 +206,50 @@ const InterConnecter = (props) => {
         lineCap= 'round'
         lineJoin='round'
       ></Line>)
-
-      groupOfInterConnect.push(<Text
-        x={startX}
-        y={startY + minSize[1] * 1.05}
-        text={'20 Circut Interconnect'}
-        fontSize={font_size}
-        fontFamily='Arial'
-        fill='white'
-      ></Text>)
-      
     }
+    groupOfInterConnect.push(<Text
+      key={"InterConnect-Text-" + uuidv4()}
+      x={startX}
+      y={startY + minSize[1] * 1.05}
+      text={interConnectName}
+      fontSize={font_size}
+      fontFamily='Arial'
+      fill='white' 
+    ></Text>)
+
+    groupOfInterConnect.push(<Text
+      key={"InterConnect-Text-" + uuidv4()}
+      x={startX + minSize[0] * 1.25}
+      y={startY + minSize[1] * 0.55}
+      text={props.combiTable}
+      fontSize={font_size}
+      fontFamily='Arial'
+      fill='white' 
+    ></Text>)
+
+    groupOfInterConnect.push(<Circle
+      key= {"InterConnect-Circle-" + uuidv4()}
+      x={startX + minSize[0] * 1.2}
+      y={startY + minSize[1] * 0.15}
+      radius={5}
+      fill='white'
+    ></Circle>)
+    
+    groupOfInterConnect.push(<Line
+      key= {"InterConnect-Line-" + uuidv4()}
+      points={[startX + minSize[0] * 1.2,
+        startY + minSize[1] * 0.15,
+        startX + minSize[0] * 1.2,
+        startY + minSize[1] * 0.45,
+        startX + minSize[0] * 1.35,
+        startY + minSize[1] * 0.55,
+      ]}
+      stroke='white'
+      strokeWidth={stroke_Width}
+      lineCap= 'round'
+      lineJoin='round'
+    ></Line>)
+
 
     dispatch(setInterConnectData(
         [startX + minSize[0] * 1.2, 

@@ -15,21 +15,21 @@ const ServerPanel = (props) => {
   const minSize = [width,width];
   const stroke_Width = 2;
   
-  let font_size = Math.floor(minSize[1] / 7);
+  let font_size = 16;
   let groupOfServerPanel = [];
 
   const DrawServerPanel = () => {
     let startX = startPosition[0] + width;
     let startY = startPosition[1];
-    groupOfServerPanel.push(
-      <Rect
-        x={startX}
-        y={startY}
-        width={minSize[0]}
-        height={minSize[1]}
-        stroke= 'white'
-        strokeWidth={3}
-      ></Rect>)
+    groupOfServerPanel.push(<Rect
+      key= {"ServerPanel-Rect-" + uuidv4()}
+      x={startX}
+      y={startY}
+      width={minSize[0]}
+      height={minSize[1]}
+      stroke= 'white'
+      strokeWidth={3}
+    ></Rect>)
 
     groupOfServerPanel.push(<Circle
       key= {"ServerPanel-Circle-" + uuidv4()}
@@ -155,6 +155,7 @@ const ServerPanel = (props) => {
     ></Line>)
       
     groupOfServerPanel.push(<Text
+      key= {"ServerPanel-Text-" + uuidv4()}
       x={startX}
       y={startY + minSize[1] * 1.05}
       text={'Server Panel'}

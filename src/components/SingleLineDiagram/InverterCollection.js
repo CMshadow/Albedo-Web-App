@@ -1,6 +1,6 @@
 import React from 'react';
 import {v4 as uuidv4} from 'uuid';
-import {Rect, Line, Group, Text, Circle} from 'react-konva';
+import {Rect, Line, Group, Text, Circle, Label, Tag} from 'react-konva';
 import {useDispatch, useSelector } from 'react-redux'
 import { InverterDataExport } from '../../store/action/index'
 
@@ -16,10 +16,13 @@ const InverterCollection = (props) => {
   const accessNum = 2;
   const stroke_Width = 2;
   const groupOfInverter =[];
+  const pvTable = props.pvTable;
+  const inverterTable = props.invertersData;
   let numOfInverter = props.numOfInverter > 3 ? 3 : props.numOfInverter; 
   let overSized = props.numOfInverter > 3 ? true : false;
   let unitLineGap = numOfInverter > 5 ? 15 : 45;
-  let font_size = Math.floor(minSize[1] / 8);
+  let font_size = 16;
+  let toolKitTriggr = true;
   const unitAccessPortDist = (numOfInverter * unitLineGap)/(numOfInverter + 1);
   
   const DrawSingleInverter = (i, accessPort) => {
@@ -35,6 +38,7 @@ const InverterCollection = (props) => {
         height={minSize[1]}
         stroke= 'white'
         strokeWidth={3}
+        onMouseOver={() => {toolKitTriggr= !toolKitTriggr; }}
       ></Rect>
     )
     for (let j = 1; j <= accessNum; ++j) {
@@ -45,7 +49,7 @@ const InverterCollection = (props) => {
         radius={5}
         fill='white'
       ></Circle>)
-        
+
       groupOfInverter.push(<Line
         key= {"Inverter-Line-" + uuidv4()}
         points={[startX, 
@@ -57,8 +61,20 @@ const InverterCollection = (props) => {
         lineCap= 'round'
         lineJoin='round'
       ></Line>)
-    }
+      
+      groupOfInverter.push(<Text
+        key= {"Inverter-Text-" + uuidv4()}
+        x={0.45 * (startX + accessPorts[i][j-1][0])}
+        y={accessPorts[i][j-1][1] + 5}
+        text={ props.numOfArray > 3 
+           && i === 2 ? pvTable[props.numOfArray - 1].dc_cable_choice 
+           : pvTable[i].dc_cable_choice}
+        fontSize={font_size}
+        fontFamily='Arial'
+        fill='white'
+     ></Text>)
     
+    }
     groupOfInverter.push(<Line
       key= {"Inverter-Line-" + uuidv4()}
       points={[startX + minSize[0], 
@@ -101,7 +117,6 @@ const InverterCollection = (props) => {
       strokeWidth={stroke_Width}
       lineCap= 'round'
       lineJoin='round'
-      // dash={[1, 5]}
     ></Line>)
 
     groupOfInverter.push(<Line
@@ -131,8 +146,8 @@ const InverterCollection = (props) => {
       strokeWidth={stroke_Width}
       lineCap= 'round'
       lineJoin='round'
-      
     ></Line>)
+
     accessPort.push([startX + minSize[0] + (i + 1) * unitAccessPortDist, 
     startY + minSize[1] * 0.5]);
 
@@ -140,12 +155,24 @@ const InverterCollection = (props) => {
       key= {"Inverter-Type" + uuidv4()}
       x={startX}
       y={startY + minSize[1] * 1.05}
-      text={'Survey Triplepower \n 20000 TL-US'}
+      text= {inverterTable[i].inverter_model}
       fontSize={font_size}
       fontFamily='Arial'
       fill='white'
     ></Text>)
 
+    groupOfInverter.push(<Text
+      key= {"Inverter-Type" + uuidv4()}
+      x={startX + minSize[0] + 10}
+      y={startY + minSize[1] * 0.5 + 5}
+      text= {props.numOfArray > 3 
+        && i === 2 ? pvTable[props.numOfArray - 1].ac_cable_choice 
+        : pvTable[i].ac_cable_choice}
+      fontSize={font_size}
+      fontFamily='Arial'
+      fill='white'
+    ></Text>)
+    
     if (i === 1 && overSized) {
       drawDashLine(startX + minSize[0] * 0.5,
         startY + minSize[1] * 1.35);
@@ -177,6 +204,7 @@ const InverterCollection = (props) => {
     ></Line>)
   }
 
+ 
   return (<Group>
     {[...DrawInverterCollection()]}
   </Group>);

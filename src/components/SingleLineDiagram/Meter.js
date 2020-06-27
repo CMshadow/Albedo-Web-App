@@ -13,7 +13,7 @@ const Meter = () => {
   const groupOfMeter = [];
   const minSize = [width, width];
   const stroke_Width = 3;
-  let font_size = Math.floor(minSize[1] * 0.5);
+  let font_size = 16;//Math.floor(minSize[1] * 0.5);
 
   const DrawMeter = () => {
     let startX = startPosition[0] + width * 3;
@@ -48,7 +48,8 @@ const Meter = () => {
     ></Line>)
 
     groupOfMeter.push(<Text
-      x={startX}
+      key={"Meter-Text-" + uuidv4()}
+      x={startX - 2}
       y={startY + minSize[1] * 1.05}
       text={'Meter'}
       fontSize={font_size}
