@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Entity } from 'resium';
-import { CallbackProperty, Cartesian3, Color, NearFarScalar, Math as CesiumMath, VerticalOrigin } from 'cesium';
+import { CallbackProperty, Cartesian3, Color, NearFarScalar, Math as CesiumMath, VerticalOrigin, Cartesian2 } from 'cesium';
 import Coordinate from '../../../infrastructure/point/coordinate'
 import { angleBetweenBrngs } from '../../../infrastructure/math/math'
+import { POLYLINE } from '../../../store/action/drawing/objTypes'
+import * as actions from '../../../store/action/index'
+
+const polylineColor = Color.STEELBLUE
 
 export const RenderPolyline = ({polyline}) => {
   const dispatch = useDispatch()
@@ -33,6 +37,22 @@ export const RenderPolyline = ({polyline}) => {
         material: color
       }}
       show={polyline.show}
+
+      onMouseEnter={(move, tar) => {
+        if (!drawingId) {
+          setcolor(Color.ORANGE)
+          polyline.setColor(Color.ORANGE)
+          dispatch(actions.setHoverObj(POLYLINE, polyline.entityId))
+        }
+      }}
+
+      onMouseLeave={(move, tar) => {
+        if (!drawingId) {
+          setcolor(polylineColor)
+          polyline.setColor(polylineColor)
+          dispatch(actions.releaseHoverObj())
+        }
+      }}
     >
       {
         segmentPolylines.map(subline =>
@@ -48,8 +68,8 @@ export const RenderPolyline = ({polyline}) => {
               text: `${subline.polylineLength()} m`,
               showBackground: true,
               font: "16px sans-serif",
-              eyeOffset: new Cartesian3(0.0, 1, -10),
-              show: drawingId === polyline.entityId,
+              eyeOffset: new Cartesian3(0.0, 1, -2),
+              show: true, //drawingId === polyline.entityId,
               translucencyByDistance: new NearFarScalar(100, 1.0, 500, 0.0),
               rotation : CesiumMath.toRadians(180),
               alignedAxis : Cartesian3.UNIT_Z,
@@ -73,10 +93,13 @@ export const RenderPolyline = ({polyline}) => {
             label={{
               text: `${angle.toFixed(2)} °`,
               showBackground: true,
+              backgroundColor: Color.STEELBLUE,
               font: "12px sans-serif",
-              eyeOffset: new Cartesian3(2, 1, -2),
-              show: drawingId === polyline.entityId,
+              eyeOffset: new Cartesian3(1, 1, -1),
+              show: true, //drawingId === polyline.entityId,
               translucencyByDistance: new NearFarScalar(100, 1.0, 1000, 0.0),
+              pixelOffset: new Cartesian2(0, 0),
+              pixelOffsetScaleByDistance: new NearFarScalar(1, 0.0, 1000, 100.0),
               rotation : CesiumMath.toRadians(180),
               alignedAxis : Cartesian3.UNIT_Z,
               verticalOrigin : VerticalOrigin.TOP

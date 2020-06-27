@@ -8,7 +8,7 @@ const setPolygon = (state, action) => {
     ...state,
     [action.entity.entityId]: {
       entity: action.entity,
-      pointMap: action.pointMap
+      pointMap: action.pointMap || state[action.entity.entityId].pointMap
     }
   }
 }
@@ -21,9 +21,7 @@ const deletePolygon = (state, action) => {
 
 const reducer = (state=initialState, action) => {
   switch (action.type) {
-    case actionTypes.POLYGON_CREATE:
-      return setPolygon(state, action)
-    case actionTypes.POLYGON_UPDATE:
+    case actionTypes.POLYGON_SET:
       return setPolygon(state, action)
     case actionTypes.POLYGON_DELETE:
       return deletePolygon(state, action)

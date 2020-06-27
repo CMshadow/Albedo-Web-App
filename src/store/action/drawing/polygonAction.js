@@ -20,23 +20,22 @@ export const createPolygon = ({mouseCor, polygonId, pointMap}) => (dispatch, get
   })
 
   return dispatch({
-    type: actionTypes.POLYGON_CREATE,
+    type: actionTypes.POLYGON_SET,
     entity: polygon,
     pointMap: pointMap
   })
 }
 
-export const polygonDynamic = (mouseCor) => (dispatch, getState) => {
-  const drawingId = getState().undoable.present.drawing.drawingId
-  const drawingPolygon = getState().undoable.present.polygon[drawingId].entity
-  const pointMap = getState().undoable.present.polygon[drawingId].pointMap
+export const polygonDynamic = (polygonId, mouseCor) => (dispatch, getState) => {
+  const drawingPolygon = getState().undoable.present.polygon[polygonId].entity
+  const pointMap = getState().undoable.present.polygon[polygonId].pointMap
   const fixedHier = drawingPolygon.hierarchy.length > 3 ?
     drawingPolygon.hierarchy.slice(0, -3) :
     drawingPolygon.hierarchy
   const newHier = fixedHier.concat(mouseCor.getCoordinate(true))
 
   return dispatch({
-    type: actionTypes.POLYGON_UPDATE,
+    type: actionTypes.POLYGON_SET,
     entity: new Polygon(
       newHier, mouseCor.height, drawingPolygon.entityId, null, polygonColor
     ),
@@ -44,14 +43,13 @@ export const polygonDynamic = (mouseCor) => (dispatch, getState) => {
   })
 }
 
-export const polygonAddVertex = (mouseCor, pointId) => (dispatch, getState) => {
-  const drawingId = getState().undoable.present.drawing.drawingId
-  const drawingPolygon = getState().undoable.present.polygon[drawingId].entity
-  const pointMap = getState().undoable.present.polygon[drawingId].pointMap
+export const polygonAddVertex = ({polygonId, mouseCor, pointId}) => (dispatch, getState) => {
+  const drawingPolygon = getState().undoable.present.polygon[polygonId].entity
+  const pointMap = getState().undoable.present.polygon[polygonId].pointMap
   const newHier = drawingPolygon.hierarchy.concat(mouseCor.getCoordinate(true))
 
   return dispatch({
-    type: actionTypes.POLYGON_UPDATE,
+    type: actionTypes.POLYGON_SET,
     entity: new Polygon(
       newHier, mouseCor.height, drawingPolygon.entityId, null, polygonColor
     ),
@@ -59,7 +57,7 @@ export const polygonAddVertex = (mouseCor, pointId) => (dispatch, getState) => {
   })
 }
 
-export const polygonUpdateVertex = (polygonId, mouseCor, pointId) => (dispatch, getState) => {
+export const polygonUpdateVertex = ({polygonId, mouseCor, pointId}) => (dispatch, getState) => {
   const drawingPolygon = getState().undoable.present.polygon[polygonId].entity
   const pointMap = getState().undoable.present.polygon[polygonId].pointMap
   const pointIndex = pointMap.indexOf(pointId)
@@ -67,18 +65,17 @@ export const polygonUpdateVertex = (polygonId, mouseCor, pointId) => (dispatch, 
   newHier.splice(pointIndex * 3, 3, ...mouseCor.getCoordinate(true))
 
   return dispatch({
-    type: actionTypes.POLYGON_UPDATE,
+    type: actionTypes.POLYGON_SET,
     entity: new Polygon(
-      newHier, null, drawingPolygon.entityId, null, polygonColor
+      newHier, drawingPolygon.height, drawingPolygon.entityId, null, polygonColor
     ),
     pointMap: pointMap
   })
 }
 
-export const polygonTerminate = () => (dispatch, getState) => {
-  const drawingId = getState().undoable.present.drawing.drawingId
-  const drawingPolygon = getState().undoable.present.polygon[drawingId].entity
-  const pointMap = getState().undoable.present.polygon[drawingId].pointMap
+export const polygonTerminate = (polygonId) => (dispatch, getState) => {
+  const drawingPolygon = getState().undoable.present.polygon[polygonId].entity
+  const pointMap = getState().undoable.present.polygon[polygonId].pointMap
   console.log(pointMap)
   const newHier = drawingPolygon.hierarchy.length > 3 ?
     drawingPolygon.hierarchy.slice(0, -3) :
@@ -89,9 +86,9 @@ export const polygonTerminate = () => (dispatch, getState) => {
   })
 
   return dispatch({
-    type: actionTypes.POLYGON_UPDATE,
+    type: actionTypes.POLYGON_SET,
     entity: new Polygon(
-      newHier, newHier.height, drawingPolygon.entityId, null, polygonColor
+      newHier, drawingPolygon.height, drawingPolygon.entityId, null, polygonColor
     ),
     pointMap: pointMap
   })
@@ -109,11 +106,26 @@ export const polygonMoveHori = (polygonId, brng, dist) => (dispatch, getState) =
 }
 
 export const polygonMoveVerti = (polygonId, heightChange) => (dispatch, getState) => {
-  const polygon = getState().undoable.present.polygon[polygonId].entity
   const pointMap = getState().undoable.present.polygon[polygonId].pointMap
-  const coordinates = polygon.convertHierarchyToCoordinate()
 
   pointMap.forEach((pointId, index) => {
     dispatch(moveVertiPoint(pointId, heightChange))
+  })
+}
+
+export const polygonDeleteVertex = (polygonId, pointId) => (dispatch, getState) => {
+  const polygon = getState().undoable.present.polygon[polygonId].entity
+  const pointMap = getState().undoable.present.polygon[polygonId].pointMap
+  const pointIndex = pointMap.indexOf(pointId)
+  const newPointMap = [...pointMap]
+  newPointMap.splice(pointIndex, 1)
+  const newHier = [...polygon.hierarchy]
+  newHier.splice(pointIndex * 3, 3)
+  return dispatch({
+    type: actionTypes.POLYGON_SET,
+    entity: new Polygon(
+      newHier, polygon.height, polygon.entityId, null, polygonColor
+    ),
+    pointMap: newPointMap
   })
 }

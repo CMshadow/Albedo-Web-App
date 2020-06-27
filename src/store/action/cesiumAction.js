@@ -32,3 +32,10 @@ export const selectMap = (map) => {
     selectedMap: map
   };
 }
+
+export const setRightClickCor = (rightClickCor) => {
+  return {
+    type: actionTypes.SET_RIGHT_CLICK_COR,
+    rightClickCor: rightClickCor
+  }
+}

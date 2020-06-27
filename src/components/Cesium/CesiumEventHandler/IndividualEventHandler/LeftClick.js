@@ -34,7 +34,7 @@ const LeftClickHandler = () => {
       dispatch(actions.createPolyline({mouseCor, polylineId, pointMap: [pointId]}))
       dispatch(actions.disableRotate())
     } else {
-      dispatch(actions.polylineAddVertex(mouseCor, pointId))
+      dispatch(actions.polylineAddVertex({polylineId: drawingId, mouseCor, pointId}))
     }
   }
 
@@ -48,7 +48,7 @@ const LeftClickHandler = () => {
       dispatch(actions.createPolygon({mouseCor, polygonId, pointMap: [pointId]}))
       dispatch(actions.disableRotate())
     } else {
-      dispatch(actions.polygonAddVertex(mouseCor, pointId))
+      dispatch(actions.polygonAddVertex({polygonId: drawingId, mouseCor, pointId}))
     }
   }
 

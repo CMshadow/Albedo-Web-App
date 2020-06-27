@@ -4,6 +4,7 @@ import * as turf from '@turf/turf';
 import { notification } from 'antd'
 import Point from '../point/point';
 import Coordinate from '../point/coordinate';
+import { angleBetweenBrngs } from '../math/math'
 
 class Polyline {
 
@@ -69,16 +70,31 @@ class Polyline {
   }
 
   determineAddPointPosition = (cor) => {
-    const polylineBrngArray = this.getSegmentBearing();
-    const corBrngArray = this.points.map(elem => {
-      return Coordinate.bearing(elem, cor);
-    })
-    const brngDiff = polylineBrngArray.map((elem,index) => {
-      return Math.abs(elem-corBrngArray[index]);
-    })
-    const minIndex = brngDiff.reduce((minIndex, elem, index, array) => {
-      return elem < array[minIndex] ? index : minIndex}, 0);
-    return minIndex + 1;
+    const polylineLengthArray = this.getSegmentDistance();
+    const corDistArray = this.points.map((elem, index) => ({
+      index: index,
+      dist: Coordinate.surfaceDistance(elem, cor)
+    }))
+    const candidateIndex = corDistArray.filter((obj, index) =>
+      obj.dist < polylineLengthArray[index]
+    ).map(obj => obj.index)
+
+    const polylineBrngArray = this.getSegmentBearing()
+      .filter((brng, index) => candidateIndex.includes(index));
+    const corBrngArray = this.points.map((elem, index) => ({
+      src: elem,
+      index: index,
+      brng: Coordinate.bearing(elem, cor)
+    })).filter((obj, index) => candidateIndex.includes(obj.index))
+
+    const brngDiff = polylineBrngArray.map((elem,index) => ({
+      src: corBrngArray[index].src,
+      brngDiff: angleBetweenBrngs(elem, corBrngArray[index].brng)
+    }))
+    const bestRecord = brngDiff.reduce((bestRecord, elem, index, array) =>
+      elem.brngDiff < bestRecord.brngDiff ? elem : bestRecord
+    , brngDiff[0])
+    return this.points.indexOf(bestRecord.src) + 1
   }
 
   preciseAddPointPosition = (index, mouseCoordinate) => {

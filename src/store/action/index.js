@@ -45,7 +45,8 @@ export {
   setViewer,
   enableRotate,
   disableRotate,
-  selectMap
+  selectMap,
+  setRightClickCor
 } from './cesiumAction'
 
 export {

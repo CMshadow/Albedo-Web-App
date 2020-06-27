@@ -42,7 +42,7 @@ export const RenderPolygon = ({polygon}) => {
       }}
 
 			onMouseEnter={(move, tar) => {
-				if (drawingId !== polygon.entityId) {
+				if (!drawingId && !pickedId) {
 					setcolor(Color.ORANGE.withAlpha(0.2))
 	        polygon.setColor(Color.ORANGE.withAlpha(0.2))
 	        dispatch(actions.setHoverObj(POLYGON, polygon.entityId))
@@ -50,7 +50,7 @@ export const RenderPolygon = ({polygon}) => {
       }}
 
       onMouseLeave={(move, tar) => {
-				if (drawingId !== polygon.entityId) {
+				if (!drawingId && !pickedId) {
 					setcolor(Color.WHITE.withAlpha(0.2))
 	        polygon.setColor(Color.WHITE.withAlpha(0.2))
 	        dispatch(actions.releaseHoverObj())

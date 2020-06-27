@@ -7,57 +7,52 @@ import { Color } from 'cesium'
 
 const polylineColor = Color.STEELBLUE
 
-export const createPolyline = ({mouseCor, polylineId, pointMap}) => (dispatch, getState) => {
-  const polyline = new Polyline(
-    [mouseCor], polylineId, polylineColor
-  )
+export const createPolyline = ({mouseCor, polylineId, pointMap}) =>
+(dispatch, getState) => {
+  const polyline = new Polyline([mouseCor], polylineId, polylineColor)
 
   dispatch({
     type: actionTypes.SET_DRAWING_OBJECT,
-    entityId: polyline.entityId,
+    entityId: polylineId,
     drawingType: objTypes.POLYLINE
   })
 
   return dispatch({
-    type: actionTypes.POLYLINE_CREATE,
+    type: actionTypes.POLYLINE_SET,
     entity: polyline,
     pointMap: pointMap
   })
 }
 
-export const polylineDynamic = (mouseCor) => (dispatch, getState) => {
-  const drawingId = getState().undoable.present.drawing.drawingId
-  const drawingPolyline = getState().undoable.present.polyline[drawingId].entity
-  const pointMap = getState().undoable.present.polyline[drawingId].pointMap
+export const polylineDynamic = (polylineId, mouseCor) => (dispatch, getState) => {
+  const drawingPolyline = getState().undoable.present.polyline[polylineId].entity
   const fixedPoints = drawingPolyline.points.length > 1 ?
     drawingPolyline.points.slice(0, -1) :
     drawingPolyline.points
   const newPoints = fixedPoints.concat(mouseCor)
 
   return dispatch({
-    type: actionTypes.POLYLINE_UPDATE,
-    entity: new Polyline(
-      newPoints, drawingPolyline.entityId, polylineColor
-    ),
-    pointMap: pointMap
+    type: actionTypes.POLYLINE_SET,
+    entity: new Polyline(newPoints, drawingPolyline.entityId, polylineColor),
   })
 }
 
-export const polylineAddVertex = (mouseCor, pointId) => (dispatch, getState) => {
-  const drawingId = getState().undoable.present.drawing.drawingId
-  const drawingPolyline = getState().undoable.present.polyline[drawingId].entity
-  const pointMap = getState().undoable.present.polyline[drawingId].pointMap
-  const polylinePoints = drawingPolyline.points
+export const polylineAddVertex = ({polylineId, mouseCor, pointId, position=null}) =>
+(dispatch, getState) => {
+  const drawingPolyline = getState().undoable.present.polyline[polylineId].entity
+  const pointMap = getState().undoable.present.polyline[polylineId].pointMap
+  const newPointMap = [...pointMap]
+  const newPoints = [...drawingPolyline.points]
+  newPointMap.splice(position || newPointMap.length, 0, pointId)
+  newPoints.splice(position || newPoints.length, 0, mouseCor)
   return dispatch({
-    type: actionTypes.POLYLINE_UPDATE,
-    entity: new Polyline(
-      [...polylinePoints, mouseCor], drawingPolyline.entityId, polylineColor
-    ),
-    pointMap: [...pointMap, pointId]
+    type: actionTypes.POLYLINE_SET,
+    entity: new Polyline(newPoints, drawingPolyline.entityId, polylineColor),
+    pointMap: newPointMap
   })
 }
 
-export const polylineUpdateVertex = (polylineId, mouseCor, pointId) => (dispatch, getState) => {
+export const polylineUpdateVertex = ({polylineId, mouseCor, pointId}) => (dispatch, getState) => {
   const drawingPolyline = getState().undoable.present.polyline[polylineId].entity
   const pointMap = getState().undoable.present.polyline[polylineId].pointMap
   const pointIndex = pointMap.indexOf(pointId)
@@ -65,18 +60,13 @@ export const polylineUpdateVertex = (polylineId, mouseCor, pointId) => (dispatch
   newPoints.splice(pointIndex, 1, mouseCor)
 
   return dispatch({
-    type: actionTypes.POLYLINE_UPDATE,
-    entity: new Polyline(
-      newPoints, drawingPolyline.entityId, polylineColor
-    ),
-    pointMap: pointMap
+    type: actionTypes.POLYLINE_SET,
+    entity: new Polyline(newPoints, drawingPolyline.entityId, polylineColor),
   })
 }
 
-export const polylineTerminate = () => (dispatch, getState) => {
-  const drawingId = getState().undoable.present.drawing.drawingId
-  const drawingPolyline = getState().undoable.present.polyline[drawingId].entity
-  const pointMap = getState().undoable.present.polyline[drawingId].pointMap
+export const polylineTerminate = (polylineId) => (dispatch, getState) => {
+  const drawingPolyline = getState().undoable.present.polyline[polylineId].entity
   const fixedPoints = drawingPolyline.points.length > 1 ?
     drawingPolyline.points.slice(0, -1) :
     drawingPolyline.points
@@ -86,10 +76,24 @@ export const polylineTerminate = () => (dispatch, getState) => {
   })
 
   return dispatch({
-    type: actionTypes.POLYLINE_UPDATE,
+    type: actionTypes.POLYLINE_SET,
+    entity: new Polyline(fixedPoints, drawingPolyline.entityId, polylineColor),
+  })
+}
+
+export const polylineDeleteVertex = (polylineId, pointId) => (dispatch, getState) => {
+  const polyline = getState().undoable.present.polyline[polylineId].entity
+  const pointMap = getState().undoable.present.polyline[polylineId].pointMap
+  const pointIndex = pointMap.indexOf(pointId)
+  const newPointMap = [...pointMap]
+  newPointMap.splice(pointIndex, 1)
+  const newPoints = [...polyline.points]
+  newPoints.splice(pointIndex, 1)
+  return dispatch({
+    type: actionTypes.POLYLINE_SET,
     entity: new Polyline(
-      fixedPoints, drawingPolyline.entityId, polylineColor
+      newPoints, polyline.entityId, polylineColor
     ),
-    pointMap: pointMap
+    pointMap: newPointMap
   })
 }

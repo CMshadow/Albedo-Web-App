@@ -47,14 +47,14 @@ const MouseMoveHandler = () => {
       case objTypes.POLYLINE:
         mouseEndCor.setCoordinate(null, null, POLYLINE_OFFSET)
         if (drawingId) {
-          dispatch(actions.polylineDynamic(mouseEndCor))
+          dispatch(actions.polylineDynamic(drawingId, mouseEndCor))
         }
         break
 
       case objTypes.POLYGON:
         mouseEndCor.setCoordinate(null, null, POLYGON_OFFSET)
         if (drawingId) {
-          dispatch(actions.polygonDynamic(mouseEndCor))
+          dispatch(actions.polygonDynamic(drawingId, mouseEndCor))
         }
         break
 
