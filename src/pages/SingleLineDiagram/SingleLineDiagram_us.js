@@ -75,7 +75,7 @@ const SingleLineDiagUS = () => {
 
   return (
     <div>
-      <Tooltip title="Equipment TabLe">
+      <Tooltip title="Equipment Table">
         <Button 
           className={classes.triggerButton} 
           shape="circle" 

@@ -1,15 +1,13 @@
 .stage {
-  // position: fixed;
-  // margin-left: -15px;
-  // margin-top: -117px;
-  margin: -117px 0px -15px -15px; 
+
+  margin: -140px 0px -15px -15px; 
 }
 
 .tab {
   z-index: 20;
-  position: fixed;
+  position: absolute;
   right: 10px;
-  bottom: 10px; 
+  bottom: 0px; 
   width: 550px;
   background-color: rgba(255,255,255, 0.6);
   border-radius: 6px;
@@ -17,7 +15,7 @@
 }
 
 .triggerButton {
-  position: fixed;
+  position: absolute;
   top: 180px;
   right: 40px;
   z-index: 100;
@@ -26,5 +24,5 @@
 }
 
 .table {
-  
+  position: absolute;
 }
