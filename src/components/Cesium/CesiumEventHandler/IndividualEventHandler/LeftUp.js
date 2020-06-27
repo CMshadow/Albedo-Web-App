@@ -15,6 +15,7 @@ const LeftUpHandler = (props) => {
     switch (drwStat) {
       case objTypes.IDLE:
         if (pickedId) {
+          console.log('releasepicked')
           dispatch(actions.releasePickedObj())
           dispatch(actions.enableRotate())
         }

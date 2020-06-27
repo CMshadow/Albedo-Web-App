@@ -17,3 +17,9 @@ export const setDrwStatPolygon = () => (dispatch, getState) => {
     type: actionTypes.DRAWING_STATUS_POLYGON
   })
 }
+
+export const setDrwStatPolyline = () => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.DRAWING_STATUS_POLYLINE
+  })
+}

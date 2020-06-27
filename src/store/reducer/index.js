@@ -11,6 +11,7 @@ import drawingStatusReducer from './drawing/statusReducer'
 import drawingObjReducer from './drawing/drawingObjReducer'
 import drawingPointReducer from './drawing/pointReducer'
 import drawingPolygonReducer from './drawing/polygonReducer'
+import drawingPolylineReducer from './drawing/polylineReducer'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     drawing: drawingObjReducer,
     point: drawingPointReducer,
     polygon: drawingPolygonReducer,
+    polyline: drawingPolylineReducer
   }), {
     initTypes: ['@@redux/INIT'],
     filter: includeAction([

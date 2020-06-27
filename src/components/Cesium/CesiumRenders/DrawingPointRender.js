@@ -7,7 +7,7 @@ export const DrawingPointRender = () => {
 
   return (
     Object.keys(drawingPoints).map(pointId =>
-      <RenderPoint key={pointId} point={drawingPoints[pointId]} />
+      <RenderPoint key={pointId} point={drawingPoints[pointId].entity} />
     )
   )
 }

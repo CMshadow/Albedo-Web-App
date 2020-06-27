@@ -51,7 +51,8 @@ export {
 export {
   setDrwStatIdle,
   setDrwStatPoint,
-  setDrwStatPolygon
+  setDrwStatPolygon,
+  setDrwStatPolyline
 } from './drawing/statusAction'
 
 export {
@@ -75,5 +76,16 @@ export {
   createPolygon,
   polygonDynamic,
   polygonAddVertex,
-  polygonTerminate
+  polygonTerminate,
+  polygonUpdateVertex,
+  polygonMoveHori,
+  polygonMoveVerti
 } from './drawing/polygonAction'
+
+export {
+  createPolyline,
+  polylineDynamic,
+  polylineAddVertex,
+  polylineTerminate,
+  polylineUpdateVertex
+} from './drawing/polylineAction'

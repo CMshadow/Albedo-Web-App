@@ -106,8 +106,8 @@ class Point extends Coordinate {
    * @param {bool}    [render=true] whether to render the point, default true
    * @return {Point}                      a Point object
    */
-  static fromCoordinate(coordinate) {
-    return new Point(coordinate.lon, coordinate.lat, coordinate.height);
+  static fromCoordinate(coordinate, id=null) {
+    return new Point(coordinate.lon, coordinate.lat, coordinate.height, id);
   };
 
   static fromCartesian(cartesian) {

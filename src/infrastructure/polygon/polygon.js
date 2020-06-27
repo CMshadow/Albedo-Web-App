@@ -1,7 +1,7 @@
 import { v1 as uuid } from 'uuid';
 import  * as Cesium from 'cesium';
 
-import Point from '../point/point';
+import Coordinate from '../point/coordinate';
 
 
 class Polygon {
@@ -99,6 +99,16 @@ class Polygon {
   //   }
   //   return polylineHierarchy;
   // }
+  //
+  static makeHierarchyFromCoordinates = (coordinates) => {
+    let polylineHierarchy = [];
+    coordinates.forEach(cor => {
+      polylineHierarchy = polylineHierarchy.concat(
+        [cor.lon, cor.lat, cor.height]
+      );
+    });
+    return polylineHierarchy;
+  }
 
   static makeHierarchyFromGeoJSON = (GeoJSON, height, heightOffset = 0) => {
     let polylineHierarchy = [];
@@ -126,15 +136,15 @@ class Polygon {
   //   return this.convertHierarchyToFoundLine();
   // }
 
-  // convertHierarchyToPoints = () => {
-  //   const points = [];
-  //   for (let i = 0; i < this.hierarchy.length; i+=3) {
-  //     points.push(
-  //       new Point(this.hierarchy[i], this.hierarchy[i+1], this.hierarchy[i+2])
-  //     );
-  //   }
-  //   return points
-  // }
+  convertHierarchyToCoordinate = () => {
+    const coordinates = [];
+    for (let i = 0; i < this.hierarchy.length; i+=3) {
+      coordinates.push(
+        new Coordinate(this.hierarchy[i], this.hierarchy[i+1], this.hierarchy[i+2])
+      );
+    }
+    return coordinates
+  }
 
   // convertHierarchyToFoundLine = () => {
   //   const points = this.convertHierarchyToPoints();

@@ -8,7 +8,7 @@ const Text = Typography.Text
 
 const EditPointContextMenu = ({hoverId}) => {
   const dispatch = useDispatch()
-  const point = useSelector(state => state.undoable.present.point[hoverId])
+  const point = useSelector(state => state.undoable.present.point[hoverId]).entity
   const pointH = point ? point.height : null
 
   return (

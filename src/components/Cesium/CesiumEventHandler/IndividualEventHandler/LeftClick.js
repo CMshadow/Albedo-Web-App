@@ -2,11 +2,13 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ScreenSpaceEvent } from 'resium';
 import { ScreenSpaceEventType, defined } from 'cesium'
+import { v4 as uuid } from 'uuid';
 import Coordinate from '../../../../infrastructure/point/coordinate'
 import * as actions from '../../../../store/action/index'
 import * as objTypes from '../../../../store/action/drawing/objTypes'
 
 const POINT_OFFSET = 0.15
+const POLYLINE_OFFSET = 0.125
 const POLYGON_OFFSET = 0.1
 
 const LeftClickHandler = () => {
@@ -14,6 +16,41 @@ const LeftClickHandler = () => {
   const viewer = useSelector(state => state.cesium.viewer)
   const drwStat = useSelector(state => state.undoable.present.drwStat.status)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
+
+  const addPoint = (mouseCor) => {
+    const pointId = uuid()
+    mouseCor.setCoordinate(null, null, POINT_OFFSET)
+    dispatch(actions.addPoint({mouseCor, pointId}))
+    dispatch(actions.setDrwStatIdle())
+  }
+
+  const drawPolyline = (mouseCor) => {
+    const pointId = uuid()
+    const polylineId = drawingId || uuid()
+    mouseCor.setCoordinate(null, null, POINT_OFFSET)
+    dispatch(actions.addPoint({mouseCor, pointId, polylineMap: [polylineId]}))
+    mouseCor.setCoordinate(null, null, POLYLINE_OFFSET)
+    if (!drawingId) {
+      dispatch(actions.createPolyline({mouseCor, polylineId, pointMap: [pointId]}))
+      dispatch(actions.disableRotate())
+    } else {
+      dispatch(actions.polylineAddVertex(mouseCor, pointId))
+    }
+  }
+
+  const drawPolygon = (mouseCor) => {
+    const pointId = uuid()
+    const polygonId = drawingId || uuid()
+    mouseCor.setCoordinate(null, null, POINT_OFFSET)
+    dispatch(actions.addPoint({mouseCor, pointId, polygonMap: [polygonId]}))
+    mouseCor.setCoordinate(null, null, POLYGON_OFFSET)
+    if (!drawingId) {
+      dispatch(actions.createPolygon({mouseCor, polygonId, pointMap: [pointId]}))
+      dispatch(actions.disableRotate())
+    } else {
+      dispatch(actions.polygonAddVertex(mouseCor, pointId))
+    }
+  }
 
   const leftClickActions = (event) => {
     const PickedObjectsArray = viewer.scene.drillPick(event.position);
@@ -27,21 +64,15 @@ const LeftClickHandler = () => {
 
     switch (drwStat) {
       case objTypes.POINT:
-        mouseCor.setCoordinate(null, null, POINT_OFFSET)
-        dispatch(actions.addPoint(mouseCor))
-        dispatch(actions.setDrwStatIdle())
+        addPoint(mouseCor)
         break;
 
+      case objTypes.POLYLINE:
+        drawPolyline(mouseCor)
+        break
+
       case objTypes.POLYGON:
-        mouseCor.setCoordinate(null, null, POINT_OFFSET)
-        const pointId = dispatch(actions.addPoint(mouseCor))
-        mouseCor.setCoordinate(null, null, POLYGON_OFFSET)
-        if (!drawingId) {
-          dispatch(actions.createPolygon(mouseCor, pointId))
-          dispatch(actions.disableRotate())
-        } else {
-          dispatch(actions.polygonAddVertex(mouseCor, pointId))
-        }
+        drawPolygon(mouseCor)
         break
 
       default:

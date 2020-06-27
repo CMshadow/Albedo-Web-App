@@ -16,7 +16,15 @@ const RightClickHandler = () => {
       case objTypes.POINT:
         break;
 
+      case objTypes.POLYLINE:
+        dispatch(actions.releasePickedObj())
+        dispatch(actions.polylineTerminate())
+        dispatch(actions.setDrwStatIdle())
+        dispatch(actions.enableRotate())
+        break
+
       case objTypes.POLYGON:
+        dispatch(actions.releasePickedObj())
         dispatch(actions.polygonTerminate())
         dispatch(actions.setDrwStatIdle())
         dispatch(actions.enableRotate())

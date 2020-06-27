@@ -23,6 +23,12 @@ const setDrwStatPolygon = (state, action) => {
   }
 }
 
+const setDrwStatePolyline = (state, action) => {
+  return {
+    status: objTypes.POLYLINE
+  }
+}
+
 const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.DRAWING_STATUS_IDLE:
@@ -31,6 +37,8 @@ const reducer = (state=initialState, action) => {
       return setDrwStatPoint(state, action)
     case actionTypes.DRAWING_STATUS_POLYGON:
       return setDrwStatPolygon(state, action);
+    case actionTypes.DRAWING_STATUS_POLYLINE:
+      return setDrwStatePolyline(state, action)
     default: return state;
   }
 };

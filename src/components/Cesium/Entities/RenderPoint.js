@@ -9,6 +9,7 @@ import { POINT } from '../../../store/action/drawing/objTypes'
 export const RenderPoint = ({point}) => {
   const dispatch = useDispatch()
   const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
+  const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
   const [color, setcolor] = useState(point.color)
 
   return (
@@ -16,11 +17,9 @@ export const RenderPoint = ({point}) => {
       id={point.entityId}
 
       position={
-        pickedId === point.entityId ?
         new CallbackProperty(() =>
           new Cartesian3.fromDegrees(...point.getCoordinate(true)), false
-        ) :
-        new Cartesian3.fromDegrees(...point.getCoordinate(true))
+        )
       }
 
       point={{
@@ -47,15 +46,19 @@ export const RenderPoint = ({point}) => {
       }}
 
       onMouseEnter={(move, tar) => {
-        setcolor(Color.ORANGE)
-        point.setColor(Color.ORANGE)
-        dispatch(actions.setHoverObj(POINT, point.entityId))
+        if (!drawingId) {
+          setcolor(Color.ORANGE)
+          point.setColor(Color.ORANGE)
+          dispatch(actions.setHoverObj(POINT, point.entityId))
+        }
       }}
 
       onMouseLeave={(move, tar) => {
-        setcolor(Color.WHITE)
-        point.setColor(Color.WHITE)
-        dispatch(actions.releaseHoverObj())
+        if (!drawingId) {
+          setcolor(Color.WHITE)
+          point.setColor(Color.WHITE)
+          dispatch(actions.releaseHoverObj())
+        }
       }}
     />
   )

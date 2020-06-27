@@ -6,14 +6,22 @@ const initialState = {
 const addPoint = (state, action) => {
   return {
     ...state,
-    [action.entity.entityId]: action.entity
+    [action.entity.entityId]: {
+      entity: action.entity,
+      polygonMap: action.polygonMap,
+      polylineMap: action.polylineMap
+    }
   }
 }
 
 const updatePoint = (state, action) => {
   return {
     ...state,
-    [action.entity.entityId]: action.entity
+    [action.entity.entityId]: {
+      entity: action.entity,
+      polygonMap: state[action.entity.entityId].polygonMap,
+      polylineMap: state[action.entity.entityId].polylineMap
+    }
   }
 }
 
