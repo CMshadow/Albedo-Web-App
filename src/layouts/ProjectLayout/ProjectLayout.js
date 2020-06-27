@@ -28,6 +28,7 @@ const ProjectLayout = (props) => {
   const { t } = useTranslation();
   const [loading, setloading] = useState(false)
   const projectData = useSelector(state => state.project)
+  const reportData = useSelector(state => state.report)
   const cognitoUser = useSelector(state => state.auth.cognitoUser)
   const projectID = history.location.pathname.split('/')[2]
   const selectMenu = history.location.pathname.split('/')[3]

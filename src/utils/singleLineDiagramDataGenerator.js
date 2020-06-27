@@ -8,7 +8,10 @@ export const getInverterWring = (buildingData) => {
 }
 
 export const getCombiBoxData = (buildingReport) => {
-  return buildingReport.investment.find(row => row.key === 4).description
+  console.log(buildingReport)
+  return buildingReport.investment.length > 0 ?
+    buildingReport.investment.find(row => row.key === 4).description :
+    ''
 }
 
 export const getCombiBoxCableChoice = (buildingReport) => {

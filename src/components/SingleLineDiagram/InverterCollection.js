@@ -20,7 +20,7 @@ const InverterCollection = (props) => {
   const inverterTable = props.invertersData;
   let numOfInverter = props.numOfInverter > 3 ? 3 : props.numOfInverter; 
   let overSized = props.numOfInverter > 3 ? true : false;
-  let unitLineGap = numOfInverter > 5 ? 15 : 45;
+  let unitLineGap = numOfInverter > 5 ? 15 : 65;
   let font_size = 16;
   let toolKitTriggr = true;
   const unitAccessPortDist = (numOfInverter * unitLineGap)/(numOfInverter + 1);

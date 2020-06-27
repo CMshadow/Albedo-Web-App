@@ -16,7 +16,7 @@ import { ReactReduxContext, Provider, useSelector } from "react-redux";
 import { getReport } from '../../pages/Report/service'
 import { setReportData } from '../../store/action/reportAction'
 import ServerPanel from '../../components/SingleLineDiagram/ServicePanel';
-import { Table, Button, Tabs, Tooltip } from 'antd';
+import { Table, Button, Tabs, Tooltip, notification } from 'antd';
 import { ProfileOutlined } from '@ant-design/icons';
 import * as DataGenerator from '../../utils/singleLineDiagramDataGenerator';
 const { TabPane } = Tabs;
@@ -48,7 +48,6 @@ const SingleLineDiagUS = () => {
   // 创建 module table数据
   const allPV = userPV.concat(officialPV)
   const pvTableData = DataGenerator.getPVsTableData(allPV, buildingData,buildingReport);
-  // console.log(pvTableData[0].ac_cable_choice)
   // 创建 inverter table数据
   const allInverter = userInverter.concat(officialInverter)
   const invTableData = DataGenerator.getInverterTableData(allInverter, buildingData);
@@ -60,6 +59,10 @@ const SingleLineDiagUS = () => {
           dispatch(setReportData({buildingID: buildingID, data: res}))
         })
         .catch(err => {
+          notification.warning({
+            message: 'Some contents are missing',
+            description: 'Generate the report to view the complete dragram'
+          })
         })
     }
   },[buildingID, dispatch, projectID, reportData])
@@ -197,7 +200,8 @@ const SingleLineDiagUS = () => {
                   <Disconnecter 
                     width={stageWidth} 
                     height={stageHeight} 
-                    combiTable={combiboxCableChoice}/>
+                    combiTable={combiboxCableChoice}
+                    numOfArray={numOfInverter}/>
                   <ServerPanel 
                     width={stageWidth} 
                     height={stageHeight}

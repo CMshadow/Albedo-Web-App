@@ -233,6 +233,18 @@ const PanelArrayCollection = (props) => {
       fontFamily='Arial'
       fill='white'
     ></Text>)
+
+    groupOfPancelsArray.push(<Text
+      key= {"PanelArray-Text-" + uuidv4()}
+      x={startX}
+      y={startY + minSize[1] * 1.1}
+      text={props.numOfArray > 3 
+        && index === 2 ? pvTable[props.numOfArray - 1].module_model 
+        : pvTable[index].module_model}
+      fontSize={font_size}
+      fontFamily='Arial'
+      fill='white'
+    ></Text>)
     
     if (panelsOfInverter[index] > 2) 
       groupOfPancelsArray.push(<Line
@@ -412,9 +424,9 @@ const PanelArrayCollection = (props) => {
     groupOfPancelsArray.push(<Line
       key= {"PanelArray-Line-" + uuidv4()}
       points={[startPanelPointX, 
-        startPanelPointY, 
+        startPanelPointY + minSize[1] * 0.2, 
         startPanelPointX, 
-        startPanelPointY + minSize[1] * 0.3]}
+        startPanelPointY + minSize[1] * 0.5]}
       stroke='white'
       strokeWidth={stroke_Width * 2}
       lineCap= 'round'

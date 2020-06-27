@@ -17,7 +17,8 @@ const InterConnecter = (props) => {
   const font_size = Math.floor(minSize[0] / 9);
   const interConnectName = props.combineBoxName;
   const combiTable = props.combiTable;
-  let unitLineGap = numOfInverter > 5 ? 15 : 45;
+  let unitLineGap = numOfInverter > 5 ? 15 : 65;
+  if (props.numOfInverter === 1) unitLineGap = 200; 
   let groupOfInterConnect = [];
   let startX = prevDistance[0] +  numOfInverter * unitLineGap;
   let startY = prevDistance[1] - width * 0.5;
@@ -32,6 +33,7 @@ const InterConnecter = (props) => {
 
 
   const DrawInverterCollection = () => {
+    
     groupOfInterConnect.push(
       <Rect
         key = {"InterConnect-Rect-" + uuidv4()}

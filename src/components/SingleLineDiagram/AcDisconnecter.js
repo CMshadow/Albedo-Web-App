@@ -27,9 +27,16 @@ const ACDisconnecter = (props) => {
   }
 
   const DrawDisconnecter = () => {
-
+    let offset = 0;
     let startX = startPosition[0];
     let startY = startPosition[1];
+    if (props.numOfArray === 1) {
+      minSize[0] = minSize[0] * 2;
+      minSize[1] = minSize[1] * 2;
+      offset = -(startY + minSize[1] * 0.5 - interConnectAccessPort[1])
+      startX += minSize[0];
+      startY += offset;
+    }
 
     groupOfDisconnecter.push(
       <Rect
