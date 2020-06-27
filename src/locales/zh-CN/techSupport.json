@@ -1,8 +1,8 @@
 {
   "techsupport.contactus": "联系我们",
-  "techsupport.email": "您的邮箱",
-  "techsupport.name": "您的名称",
-  "techsupport.description": "邮件内容",
+  "techsupport.email": "邮箱",
+  "techsupport.name": "姓名",
+  "techsupport.description": "请描述您的问题",
   "techsupport.attachment": "您可以添加一个图片文件",
-  "techsupport.sendemail": "给我们发送邮件"
+  "techsupport.sendemail": "发送邮件"
 }

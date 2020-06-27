@@ -12,6 +12,13 @@
   "sider.menu.pv": "Manage Module",
   "sider.menu.inverter": "Manage Inverter",
 
+
+  "sider.menu.singleLineDiagram": "Single Line Diagram",
+  "sider.menu.singleLineDiagram.prefix": "Building: ",
+  "sider.menu.singleLineDiagram.suffix": "",
+  "sider.menu.singleLineDiagram.disabled": "Report unfinished, Single Line Diagram not ready",
+
+
   "sider.save": "Save",
 
   "sider.tiltAzimuthPOA.success": "Tilt Azimuth POA data is ready"

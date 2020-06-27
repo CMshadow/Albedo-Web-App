@@ -19,11 +19,13 @@ const ParamsForm = lazy(() => import('./pages/ParamsForm/ParamsForm'))
 const Dashboard = lazy(() => import('./pages/Project/Dashboard'))
 const PVTable = lazy(() => import('./pages/PVTable/index'))
 const InverterTable = lazy(() => import('./pages/InverterTable/index'))
+const SingleLineDiagramUS = lazy(() => import('./pages/SingleLineDiagram/SingleLineDiagram_us'))
+
 
 const Router = () => {
   return(
     <BrowserRouter>
-      <Suspense fallback=<EmptyLayout/>>
+      <Suspense fallback={<EmptyLayout/>} >
         <ScrollToTop />
         <Switch>
           <Route path="/me" component={FakeParking} />
@@ -62,6 +64,9 @@ const Router = () => {
                 </PrivateRoute>
                 <PrivateRoute path="/project/:projectID/inverter">
                   <InverterTable/>
+                </PrivateRoute>
+                <PrivateRoute path="/project/:projectID/singleLineDiagram/:buildingID">
+                 <SingleLineDiagramUS />
                 </PrivateRoute>
                 <PrivateRoute path='*'>
                   <NotFound404/>
