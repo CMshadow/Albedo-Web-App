@@ -29,7 +29,6 @@ export const InverterSpecCard = ({buildingID, specIndex, invIndex, ...props}) =>
           onClick={() => setediting(true)}
         />,
         <Button
-          disabled={editing}
           type='link'
           shape="circle"
           danger

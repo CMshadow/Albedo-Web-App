@@ -51,6 +51,7 @@
   "project.spec.tilt_angle": "Array Tilt",
   "project.spec.azimuth": "Array Azimuth",
   "project.spec.optional": "Autogen Inverter Settings (Optional)",
+  "project.spec.optional.tooltip": "Warning: Autogen will overwrite the current inverter settings",
   "project.spec.capacity": "DC Capacity",
   "project.spec.pvNum": "Number of PV Modules",
   "project.spec.pv": "PV Module",
@@ -71,6 +72,8 @@
   "project.spec.dc_cable_len.error.spi-not-match": "Entered values does not match the number of parallel strings",
   "project.spec.total_panels": "Total PV module count",
 
+  "project.autoInverter.no-fit": "The inverter does not fit",
+  "project.autoInverter.no-fit.detail": "The DC capacity is too small for the selected inverter, consider increasing the DC capacity or selecting a smaller inverter",
   "project.autoInverter.title": "Optimal Inverter Settings",
   "project.autoInverter.invModel": "Inverter Model",
   "project.autoInverter.requiredInv": "Number of Inverters",
