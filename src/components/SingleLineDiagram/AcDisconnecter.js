@@ -14,17 +14,7 @@ const ACDisconnecter = (props) => {
   const width = useSelector(state => state.SLD.disconnectSize[1]);
   let minSize = [width * 0.487, width * 0.3]
   let stroke_Width = 2;
-  let font_size = Math.floor(minSize[1] / 4);
-  let nextDistance = 0;
 
-  const zoomAuto = () => {
-    if (props.width * 0.05 > minSize[0]) {
-      minSize[0] = props.width * 0.05;
-      minSize[1] = minSize[0] / 1.625;
-      font_size = Math.floor(minSize[1] / 7);
-    }
-
-  }
 
   const DrawDisconnecter = () => {
     let offset = 0;

@@ -1,6 +1,4 @@
 import * as actionTypes from '../action/actionTypes';
-import { setInverterData } from '../action';
-import { act } from 'react-dom/test-utils';
 
 const initialState = {
   pvDist: [],
@@ -56,7 +54,6 @@ const setInterConnectData = (state, action) => {
 const setSize = (state, action) => {
   return {
     ...state,
-    stageWidth: action.width,
     stageHeight: action.height
   }
 }
@@ -85,6 +82,12 @@ const setGrid = (state, action) => {
   }
 }
 
+const setWidth = (state, action) => {
+  return {
+    ...state,
+    stageWidth: action.width
+  }
+}
 
 const reducer = (state=initialState, action) => {
   switch (action.type) {
@@ -111,6 +114,9 @@ const reducer = (state=initialState, action) => {
     
     case actionTypes.SET_GRID:
       return setGrid(state, action);
+    
+    case actionTypes.SET_WIDTH:
+      return setWidth(state, action);
 
     default: return state;
   }

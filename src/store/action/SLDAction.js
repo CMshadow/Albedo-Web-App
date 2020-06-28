@@ -33,10 +33,9 @@ export const setInterConnectData = (newAccessPorts, newStartPosition, newSize) =
   })
 }
 
-export const setResize = (newWidth, newHeight) => (dispatch, getState) => {
+export const setResize = (newHeight) => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_SIZE,
-    width: newWidth,
     height: newHeight
   })
 }
@@ -62,5 +61,12 @@ export const setGrid = (newAccessPorts, newStartPosition) => (dispatch, getState
     type: ActionTypes.SET_GRID,
     startPosition: newStartPosition,
     accessPoints: newAccessPorts
+  })
+}
+
+export const setWidth = (newWidth) => (dispatch, getState) => {
+  return dispatch({
+    type: ActionTypes.SET_WIDTH,
+    width: newWidth,
   })
 }

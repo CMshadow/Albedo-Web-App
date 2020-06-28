@@ -48,5 +48,6 @@ export {
   setResize,
   setServerPanel,
   setMeter,
-  setGrid
+  setGrid,
+  setWidth
 } from './SLDAction'

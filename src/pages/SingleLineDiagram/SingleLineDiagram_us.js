@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import Konva from 'konva';
-import  {Stage, Layer, Text, Shape, Group}  from 'react-konva';
+import Dimensions from 'react-dimensions';
+import  {Stage, Layer}  from 'react-konva';
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import classes from './SingleLineDiagram_us.module.scss';
@@ -9,7 +9,6 @@ import PanelArrayCollection from '../../components/SingleLineDiagram/PanelArrayC
 import InverterCollection from '../../components/SingleLineDiagram/InverterCollection';
 import InterConnect from '../../components/SingleLineDiagram/Interconnecter';
 import Disconnecter from '../../components/SingleLineDiagram/AcDisconnecter';
-import ServerPanle from '../../components/SingleLineDiagram/ServicePanel';
 import Meter from '../../components/SingleLineDiagram/Meter';
 import Grid from '../../components/SingleLineDiagram/Grid';
 import { ReactReduxContext, Provider, useSelector } from "react-redux";
@@ -19,12 +18,14 @@ import ServerPanel from '../../components/SingleLineDiagram/ServicePanel';
 import { Table, Button, Tabs, Tooltip, notification } from 'antd';
 import { ProfileOutlined } from '@ant-design/icons';
 import * as DataGenerator from '../../utils/singleLineDiagramDataGenerator';
+
 const { TabPane } = Tabs;
 
-const SingleLineDiagUS = () => {
+const SingleLineDiagUS = (props) => {
   const dispatch = useDispatch()
-  const stageWidth = useSelector(state => state.SLD.stageWidth);
-  const stageHeight = useSelector(state => state.SLD.stageHeight);
+  const [stageWidth,setStageWidth] = useState(window.innerWidth);
+  const [stageHeight, setStageHeight] = useState(window.innerHeight);
+
   const userPV = useSelector(state => state.pv.data);
   const officialPV = useSelector(state => state.pv.officialData);
   const projectData = useSelector(state => state.project);
@@ -52,6 +53,7 @@ const SingleLineDiagUS = () => {
   const allInverter = userInverter.concat(officialInverter)
   const invTableData = DataGenerator.getInverterTableData(allInverter, buildingData);
 
+
   useEffect(() => {
     if (!Object.keys(reportData).includes(buildingID)) {
       dispatch(getReport({projectID, buildingID: buildingID}))
@@ -60,20 +62,32 @@ const SingleLineDiagUS = () => {
         })
         .catch(err => {
           notification.warning({
-            message: 'Some contents are missing',
-            description: 'Generate the report to view the complete dragram'
+            message: 'Some contents are missing.',
+            description: 'Please generate the report to view the complete dragram'
           })
         })
     }
   },[buildingID, dispatch, projectID, reportData])
 
+  let newWidth = useSelector(state => state.SLD.stageWidth);
+  let newHeight = useSelector(state => state.SLD.stageHeight);
+
+  useEffect( () => {
+    setStageWidth(newWidth);
+  }, [stageWidth])
+
+  useEffect( () => {
+    setStageHeight(newHeight);
+  }, [stageHeight])
+
+
   let [tableTrigger, setTable] = useState(true);
   const tableTriggerHandler = () => {
     setTable(!tableTrigger);
   }
-    
-
+  console.log(props.containerWidth)
   return (
+    
     <div>
       <Tooltip title="Equipment Table">
         <Button 
@@ -171,15 +185,15 @@ const SingleLineDiagUS = () => {
         {({ store }) => (
           <Stage 
             className={classes.stage} 
-            height={window.innerHeight} 
-            width={window.innerWidth}>
+            height={props.containerWidth * 0.5625} 
+            width={props.containerWidth + 30}>
             <Provider store={store}>
               <Layer draggable={true}>
                 <Background 
-                  width={window.innerWidth} 
-                  height={window.innerHeight}/>
+                  width={props.containerWidth} 
+                  height={props.containerWidth * 0.5625}/>
                   <PanelArrayCollection  
-                    width={stageWidth} 
+                    width={props.containerWidth} 
                     height={stageHeight} 
                     numOfArray={numOfInverter}
                     stringOfPanels={stringPanels}
@@ -218,10 +232,9 @@ const SingleLineDiagUS = () => {
           
         )}
       </ReactReduxContext.Consumer>
-
     </div>
   );
 }
 
 
-export default SingleLineDiagUS;
+export default Dimensions()(SingleLineDiagUS);

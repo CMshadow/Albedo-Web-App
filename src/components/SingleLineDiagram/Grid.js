@@ -2,10 +2,10 @@ import React from 'react';
 import {v4 as uuidv4} from 'uuid';
 import {Rect, Line, Group, Text, Circle} from 'react-konva';
 import {useDispatch, useSelector } from 'react-redux'
-import { setMeter } from '../../store/action/index'
+import { setWidth } from '../../store/action/index'
 
-const Grid = () => {
-
+const Grid = (props) => {
+  const dispatch = useDispatch();
   const meterAccessPort = useSelector(state => state.SLD.meterAccessPosition);
   const startPosition = useSelector(state => state.SLD.gridPosition);
   const width = (meterAccessPort[1] - startPosition[1]) * 2;
@@ -23,8 +23,11 @@ const Grid = () => {
 
   
   const DrawDraw = () => {
+    
     let startX = startPosition[0] + width * 2;
     let startY = startPosition[1];
+    let newWidth = props.width > startX + minSize[0] + 100 ? props.width : startX + minSize[0] + 100;
+    dispatch(setWidth(newWidth))
     groupOfGrid.push(<Rect
         key= {"Grid-Rect-" + uuidv4()}
         x={startX}
@@ -170,7 +173,6 @@ const Grid = () => {
       fontFamily='Arial'
       fill='white'
     ></Text>)
-
     return groupOfGrid;
   }
 

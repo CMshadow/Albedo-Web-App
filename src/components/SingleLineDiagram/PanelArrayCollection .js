@@ -2,7 +2,7 @@ import React from 'react';
 import {v4 as uuidv4} from 'uuid';
 import { Rect, Line, Group, Text, Circle } from 'react-konva';
 import { useDispatch } from 'react-redux'
-import { setPVDist, setInverterWidth } from '../../store/action/index'
+import { setPVDist, setInverterWidth, setResize } from '../../store/action/index';
 
 const PanelArrayCollection = (props) => {
 
@@ -47,6 +47,11 @@ const PanelArrayCollection = (props) => {
       connectAccess.push(accessPorts);
     }
     dispatch(setInverterWidth(minSize[1], connectAccess, minSize[1] * 1.8));
+    let updatedHeight = connectAccess[numOfArray - 1][1][1] + minSize[1] > props.height && connectAccess[numOfArray - 1][1][1] + minSize[1] > props.width
+    ? connectAccess[numOfArray - 1][1][1] + minSize[1] 
+    : props.height;
+    dispatch(setResize(updatedHeight));
+
     return groupOfPancelsArray;
   }
 
