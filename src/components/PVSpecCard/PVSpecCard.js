@@ -53,7 +53,6 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
             />
             <Divider className={styles.divider}/>
             <Button
-              disabled={editing}
               type='link'
               shape="circle"
               danger

@@ -119,7 +119,6 @@ const addPVSpec = (state, action) => {
 }
 
 const editPVSpec = (state, action) => {
-  console.log(action)
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]

@@ -127,6 +127,14 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     }))
     .then(res => {
       setautoInvLoading(false)
+      if (res.plan.length === 0) {
+        notification.warning({
+          message: t('project.autoInverter.no-fit'),
+          description: t('project.autoInverter.no-fit.detail'),
+          duration: 15,
+        })
+        return
+      }
       const notiKey = 'notification'
       const actCapacity = w2other((ttlPV - res.wasted) * pvPmax)
       const description = (

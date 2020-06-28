@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Helmet } from 'react-helmet'
 import { Layout, Menu, Row, Button, Spin, Space, Tooltip, notification } from 'antd';
 import { SettingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
@@ -65,8 +66,8 @@ const ProjectLayout = (props) => {
   }
 
   const genSLDSubMen = () => {
-    return projectData.buildings && 
-    projectData.buildings.filter( building => 
+    return projectData.buildings &&
+    projectData.buildings.filter( building =>
       building.data.length > 0 && building.data[0].inverter_wiring.length > 0
     ).map(building => {
       let disabled = false;
@@ -100,15 +101,17 @@ const ProjectLayout = (props) => {
       dispatch(saveReport({projectID}))
       dispatch(updateProjectAttributes({updatedAt: res.Attributes.updatedAt}))
       setloading(false)
+    }).catch(err => {
+      notification.error({
+        message: t('error.save')
+      })
+      setloading(false)
     })
   }
 
   const saveProjectOnExit = useCallback(() => {
     dispatch(saveProject(projectID))
-    .then(async res => {
-      dispatch(saveReport({projectID}))
-      dispatch(updateProjectAttributes({updatedAt: res.Attributes.updatedAt}))
-    })
+    dispatch(saveReport({projectID}))
   }, [dispatch, projectID])
 
   // 读pv 逆变器 项目数据 最佳倾角朝向
@@ -164,84 +167,103 @@ const ProjectLayout = (props) => {
     }
   }, [cognitoUser.attributes.locale, dispatch, history, projectID, saveProjectOnExit, t])
 
-  return (
-    <Layout>
-      <EmailSupport />
-      <Sider width={250} className={styles.sider}>
-        <Row className={styles.title} align='middle' justify='center'>
-          <img alt="logo" className={styles.logo} src={logo} />
-          <div>
-            <h1>{t('sider.company')}</h1>
-            <h4>{t('sider.edition')}</h4>
-          </div>
-        </Row>
-        {
-          Object.keys(projectData).length !== 0 ?
-          <div>
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={[selectMenu]} onSelect={onSelectMenu}>
-              <Menu.Item key='dashboard' className={styles.menuItem}>
-                {t('sider.menu.projectDetail')}
-              </Menu.Item>
-              <SubMenu
-                disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
-                key='report'
-                className={styles.menuItem}
-                title={
-                  <Space>
-                    {t('sider.menu.report')}
-                    <Button
-                      shape="circle"
-                      type='link'
-                      onClick={() => {history.push(`/project/${projectID}/report/params`)}}
-                      icon={<SettingOutlined style={{margin: 0}}/>}
-                    />
-                  </Space>
-                }
-              >
-                {genReportSubMenu()}
-              </SubMenu>
-              <SubMenu
-                disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
-                key='singleLineDiag'
-                className={styles.menuItem}
-                title={t('sider.menu.singleLineDiagram')}
-              >
-                {genSLDSubMen()}
-              </SubMenu>
-              <Menu.Item key="pv" className={styles.menuItem}>
-                {t('sider.menu.pv')}
-              </Menu.Item>
-              <Menu.Item key="inverter" className={styles.menuItem}>
-                {t('sider.menu.inverter')}
-              </Menu.Item>
-            </Menu>
-            <Button
-              block
-              type='link'
-              size='large'
-              className={styles.saveBut}
-              onClick={saveProjectClick}
-              loading={loading}
-            >
-              {t('sider.save')}
-            </Button>
-          </div> :
-          <div className={styles.spin}>
-            <Spin size='large' />
-          </div>
-        }
+  useEffect(() => {
+    window.addEventListener("beforeunload", (ev) => {
+      saveProjectOnExit()
+    });
+  })
 
-      </Sider>
-      <Layout className={styles.main}>
-        {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
-        <Content className={styles.content}>
-          {Object.keys(projectData).length !== 0 ? props.children : null}
-        </Content>
-        <Footer className={styles.footer}>
-          <DefaultFooter/>
-        </Footer>
+  return (
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta name="description" content={t('user.logo.welcome')}/>
+        <title>{`${projectData.projectTitle || ''} - ${t('sider.company')}`}</title>
+      </Helmet>
+      <Layout>
+        <EmailSupport />
+        <Sider width={250} className={styles.sider}>
+          <Row className={styles.title} align='middle' justify='center'>
+            <img alt="logo" className={styles.logo} src={logo} />
+            <div>
+              <h1>{t('sider.company')}</h1>
+              <h4>{t('sider.edition')}</h4>
+            </div>
+          </Row>
+          {
+            Object.keys(projectData).length !== 0 ?
+            <div>
+              <Menu
+                theme="dark"
+                mode="inline"
+                defaultSelectedKeys={[selectMenu]}
+                onSelect={onSelectMenu}
+              >
+                <Menu.Item key='dashboard' className={styles.menuItem}>
+                  {t('sider.menu.projectDetail')}
+                </Menu.Item>
+                <SubMenu
+                  disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
+                  key='report'
+                  className={styles.menuItem}
+                  title={
+                    <Space>
+                      {t('sider.menu.report')}
+                      <Button
+                        shape="circle"
+                        type='link'
+                        onClick={() => {history.push(`/project/${projectID}/report/params`)}}
+                        icon={<SettingOutlined style={{margin: 0}}/>}
+                      />
+                    </Space>
+                  }
+                >
+                  {genReportSubMenu()}
+                </SubMenu>
+                <SubMenu
+                  disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
+                  key='singleLineDiag'
+                  className={styles.menuItem}
+                  title={t('sider.menu.singleLineDiagram')}
+                >
+                  {genSLDSubMen()}
+                </SubMenu>
+                <Menu.Item key="pv" className={styles.menuItem}>
+                  {t('sider.menu.pv')}
+                </Menu.Item>
+                <Menu.Item key="inverter" className={styles.menuItem}>
+                  {t('sider.menu.inverter')}
+                </Menu.Item>
+              </Menu>
+              <Button
+                block
+                type='link'
+                size='large'
+                className={styles.saveBut}
+                onClick={saveProjectClick}
+                loading={loading}
+              >
+                {t('sider.save')}
+              </Button>
+            </div> :
+            <div className={styles.spin}>
+              <Spin size='large' />
+            </div>
+          }
+
+        </Sider>
+        <Layout className={styles.main}>
+          {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
+          <Content className={styles.content}>
+           
+            {Object.keys(projectData).length !== 0 ? props.children : null}
+          </Content>
+          <Footer className={styles.footer}>
+            <DefaultFooter/>
+          </Footer>
+        </Layout>
       </Layout>
-    </Layout>
+    </>
   );
 }
 
