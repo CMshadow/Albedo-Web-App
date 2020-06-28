@@ -121,6 +121,7 @@ const EmailSupport = () => {
       <Modal
         className={classes.modal}
         visible={EmailFormTrigger}
+        centered={true}
         title={null}
         footer={null}
         closable={false}
