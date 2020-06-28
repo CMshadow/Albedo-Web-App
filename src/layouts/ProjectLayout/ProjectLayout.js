@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet'
+import { useBeforeunload } from 'react-beforeunload'
 import { Layout, Menu, Row, Button, Spin, Space, Tooltip, notification } from 'antd';
 import { SettingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
@@ -167,10 +168,10 @@ const ProjectLayout = (props) => {
     }
   }, [cognitoUser.attributes.locale, dispatch, history, projectID, saveProjectOnExit, t])
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", (ev) => {
-      saveProjectOnExit()
-    });
+  useBeforeunload(event => {
+    event.preventDefault()
+    dispatch(saveProject(projectID))
+    dispatch(saveReport({projectID}))
   })
 
   return (

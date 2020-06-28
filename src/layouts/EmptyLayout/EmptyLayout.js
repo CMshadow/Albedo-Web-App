@@ -6,7 +6,6 @@ import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
 import DefaultFooter from '../Footer/DefaultFooter'
-import GlobalAlert from '../../components/GlobalAlert/GlobalAlert';
 import EmailSupport from '../../components/TechSupport/EmailSupport';
 
 import * as styles from './EmptyLayout.module.scss';
@@ -36,7 +35,6 @@ const ProjectLayout = (props) => {
       <Layout className={styles.main}>
         {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
         <Content className={styles.content}>
-          <GlobalAlert />
         </Content>
         <Footer className={styles.footer}>
           <DefaultFooter/>

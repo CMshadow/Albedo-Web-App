@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import GlobalAlert from '../../components/GlobalAlert/GlobalAlert'
 import { Spin, Tabs, Card, Row, Col, Menu } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
@@ -116,6 +117,7 @@ const Report = () => {
         loading ?
         <Card loading /> :
         <>
+          <GlobalAlert/>
           <Row gutter={[15, 15]}>
             <Col span={24}>
               <ReportHeadDescription buildingID={buildingID}/>
