@@ -15,7 +15,7 @@
   "sider.menu.singleLineDiagram": "系统电气主接线图",
   "sider.menu.singleLineDiagram.prefix": "",
   "sider.menu.singleLineDiagram.suffix": "-电气主接线图",
-  "sider.menu.singleLineDiagram.disabled": "该房屋配置尚未完成，无法查看单线图",
+  "sider.menu.singleLineDiagram.disabled": "生成报告后查看系统电气主接线图",
 
 
   "sider.save": "保存项目",

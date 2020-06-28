@@ -1,8 +1,4 @@
 
-export const getBuildingData = (projectData, buildingID) => {
-  return projectData.buildings.find(building => building.buildingID === buildingID);
-}
-
 export const getInverterWring = (buildingData) => {
   return buildingData.data.flatMap(setup => setup.inverter_wiring)
 }
@@ -40,7 +36,7 @@ export const getPVsTableData = (allPV, buildingData, buildingReport) => {
 }
 
 export const getInverterTableData = (allInverter, buildingData) => {
-  return buildingData.data.flatMap((spec, index) => 
+  return buildingData.data.flatMap((spec, index) =>
     spec.inverter_wiring.map(inverterSpec => {
       const inverterName = allInverter.find(
         obj => obj.inverterID === inverterSpec.inverter_model.inverterID

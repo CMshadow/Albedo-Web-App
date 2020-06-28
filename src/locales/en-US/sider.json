@@ -16,7 +16,7 @@
   "sider.menu.singleLineDiagram": "Single Line Diagram",
   "sider.menu.singleLineDiagram.prefix": "Building: ",
   "sider.menu.singleLineDiagram.suffix": "",
-  "sider.menu.singleLineDiagram.disabled": "Report unfinished, Single Line Diagram not ready",
+  "sider.menu.singleLineDiagram.disabled": "Generate Report first to view SLD",
 
 
   "sider.save": "Save",

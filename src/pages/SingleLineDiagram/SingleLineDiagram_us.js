@@ -12,73 +12,64 @@ import Disconnecter from '../../components/SingleLineDiagram/AcDisconnecter';
 import Meter from '../../components/SingleLineDiagram/Meter';
 import Grid from '../../components/SingleLineDiagram/Grid';
 import { ReactReduxContext, Provider, useSelector } from "react-redux";
-import { getReport } from '../../pages/Report/service'
+import { genReport, getReport } from '../../pages/Report/service'
 import { setReportData } from '../../store/action/reportAction'
 import ServerPanel from '../../components/SingleLineDiagram/ServicePanel';
 import { Table, Button, Tabs, Tooltip, notification } from 'antd';
 import { ProfileOutlined } from '@ant-design/icons';
+import { saveProject } from '../../pages/Project/service'
+import { setBuildingReGenReport } from '../../store/action/index'
 import * as DataGenerator from '../../utils/singleLineDiagramDataGenerator';
 
 const { TabPane } = Tabs;
 
 const SingleLineDiagUS = (props) => {
   const dispatch = useDispatch()
+  const { projectID, buildingID } = useParams();
+
   const [stageWidth,setStageWidth] = useState(window.innerWidth);
   const [stageHeight, setStageHeight] = useState(window.innerHeight);
 
   const userPV = useSelector(state => state.pv.data);
   const officialPV = useSelector(state => state.pv.officialData);
-  const projectData = useSelector(state => state.project);
-  const reportData = useSelector(state => state.report);
   const userInverter = useSelector(state => state.inverter.data);
   const officialInverter = useSelector(state => state.inverter.officialData)
-  const { projectID, buildingID } = useParams();
-  const buildingReport = reportData[buildingID];
-  const buildingData = DataGenerator.getBuildingData(projectData, buildingID);
-  const spec = DataGenerator.getInverterWring(buildingData);
-  const stringPanels = spec.map( i => i.panels_per_string);
-  const panelsInverter = spec.map( i => i.string_per_inverter);
-  const numOfInverter = spec.length;
-  const combiboxName = buildingReport && buildingReport.investment ? 
-    DataGenerator.getCombiBoxData(buildingReport) 
+
+  const projectData = useSelector(state => state.project);
+  const buildingData = projectData.buildings.find(building =>
+    building.buildingID === buildingID
+  )
+
+  const reportData = useSelector(state => state.report);
+  const buildingReport = reportData[buildingID]
+  const spec = DataGenerator.getInverterWring(buildingData)
+  const stringPanels = spec.map( i => i.panels_per_string)
+  const panelsInverter = spec.map( i => i.string_per_inverter)
+  const numOfInverter = spec.length
+  const combiboxName = buildingReport && buildingReport.investment ?
+    DataGenerator.getCombiBoxData(buildingReport)
     : '';
-  const combiboxCableChoice = buildingReport ? 
-    DataGenerator.getCombiBoxCableChoice(buildingReport) 
+  const combiboxCableChoice = buildingReport ?
+    DataGenerator.getCombiBoxCableChoice(buildingReport)
     : ''
 
   // 创建 module table数据
   const allPV = userPV.concat(officialPV)
-  const pvTableData = DataGenerator.getPVsTableData(allPV, buildingData,buildingReport);
+  const pvTableData = DataGenerator.getPVsTableData(allPV, buildingData, buildingReport);
   // 创建 inverter table数据
   const allInverter = userInverter.concat(officialInverter)
   const invTableData = DataGenerator.getInverterTableData(allInverter, buildingData);
-
-
-  useEffect(() => {
-    if (!Object.keys(reportData).includes(buildingID)) {
-      dispatch(getReport({projectID, buildingID: buildingID}))
-        .then(res => {
-          dispatch(setReportData({buildingID: buildingID, data: res}))
-        })
-        .catch(err => {
-          notification.warning({
-            message: 'Some contents are missing.',
-            description: 'Please generate the report to view the complete dragram'
-          })
-        })
-    }
-  },[buildingID, dispatch, projectID, reportData])
 
   let newWidth = useSelector(state => state.SLD.stageWidth);
   let newHeight = useSelector(state => state.SLD.stageHeight);
 
   useEffect( () => {
     setStageWidth(newWidth);
-  }, [stageWidth])
+  }, [newWidth])
 
   useEffect( () => {
     setStageHeight(newHeight);
-  }, [stageHeight])
+  }, [newHeight])
 
 
   let [tableTrigger, setTable] = useState(true);
@@ -86,13 +77,14 @@ const SingleLineDiagUS = (props) => {
     setTable(!tableTrigger);
   }
   console.log(props.containerWidth)
+  console.log(props)
   return (
-    
+
     <div>
       <Tooltip title="Equipment Table">
-        <Button 
-          className={classes.triggerButton} 
-          shape="circle" 
+        <Button
+          className={classes.triggerButton}
+          shape="circle"
           size="large"
           icon={<ProfileOutlined />}
           onClick={tableTriggerHandler} />
@@ -108,7 +100,7 @@ const SingleLineDiagUS = (props) => {
           }}
         >
           <TabPane tab="Module" key="1">
-            <Table 
+            <Table
               columns={[{
                 title: <div style={{fontSize: 10}} >Array</div>,
                 width: 60,
@@ -144,7 +136,7 @@ const SingleLineDiagUS = (props) => {
                 key: "parallel_string",
                 align: 'center',
                 ellipsis: true
-              } ]} 
+              } ]}
               dataSource={pvTableData}
               pagination={false}
               scroll={{ x: 100, y: 200 }}
@@ -172,9 +164,9 @@ const SingleLineDiagUS = (props) => {
               key: "ac_cable_length",
               align: 'center',
               ellipsis: true
-            }]} 
-            dataSource={invTableData} 
-            scroll={{ x: 100, y: 200 }} 
+            }]}
+            dataSource={invTableData}
+            scroll={{ x: 100, y: 200 }}
             pagination={false}
           />
           </TabPane>
@@ -183,53 +175,53 @@ const SingleLineDiagUS = (props) => {
 
       <ReactReduxContext.Consumer>
         {({ store }) => (
-          <Stage 
-            className={classes.stage} 
-            height={props.containerWidth * 0.5625} 
+          <Stage
+            className={classes.stage}
+            height={props.containerWidth * 0.5625}
             width={props.containerWidth + 30}>
             <Provider store={store}>
               <Layer draggable={true}>
-                <Background 
-                  width={props.containerWidth} 
+                <Background
+                  width={props.containerWidth}
                   height={props.containerWidth * 0.5625}/>
-                  <PanelArrayCollection  
-                    width={props.containerWidth} 
-                    height={stageHeight} 
+                  <PanelArrayCollection
+                    width={props.containerWidth}
+                    height={stageHeight}
                     numOfArray={numOfInverter}
                     stringOfPanels={stringPanels}
                     panelsOfInverter={panelsInverter}
                     pvTable={pvTableData}/>
-                  <InverterCollection 
-                    width={stageWidth} 
-                    height={stageHeight} 
+                  <InverterCollection
+                    width={stageWidth}
+                    height={stageHeight}
                     numOfInverter={numOfInverter}
                     invertersData={invTableData}
                     pvTable={pvTableData}/>
-                  <InterConnect 
-                    width={stageWidth} 
-                    height={stageHeight} 
+                  <InterConnect
+                    width={stageWidth}
+                    height={stageHeight}
                     numOfInverter={numOfInverter}
                     combineBoxName={combiboxName}
                     combiTable={combiboxCableChoice}/>
-                  <Disconnecter 
-                    width={stageWidth} 
-                    height={stageHeight} 
+                  <Disconnecter
+                    width={stageWidth}
+                    height={stageHeight}
                     combiTable={combiboxCableChoice}
                     numOfArray={numOfInverter}/>
-                  <ServerPanel 
-                    width={stageWidth} 
+                  <ServerPanel
+                    width={stageWidth}
                     height={stageHeight}
                     combiTable={combiboxCableChoice}/>
-                  <Meter 
-                    width={stageWidth} 
+                  <Meter
+                    width={stageWidth}
                     height={stageHeight}/>
-                  <Grid 
-                    width={stageWidth} 
-                    height={stageHeight}/> 
+                  <Grid
+                    width={stageWidth}
+                    height={stageHeight}/>
               </Layer>
             </Provider>
           </Stage>
-          
+
         )}
       </ReactReduxContext.Consumer>
     </div>

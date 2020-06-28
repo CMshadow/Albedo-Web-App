@@ -48,8 +48,7 @@ const ProjectLayout = (props) => {
         building.data.some(obj => !obj.pv_panel_parameters.tilt_angle) ||
         building.data.some(obj => obj.inverter_wiring.some(inverterSpec =>
           !inverterSpec.panels_per_string
-        )) ||
-        !projectData.tiltAzimuthPOA
+        )) || !projectData.tiltAzimuthPOA
       ) disabled = true
       return (
         <Menu.Item key={`report/${building.buildingID}`} disabled={disabled}>
@@ -75,12 +74,13 @@ const ProjectLayout = (props) => {
         building.data.some(obj => !obj.pv_panel_parameters.tilt_angle) ||
         building.data.some(obj => obj.inverter_wiring.some(inverterSpec =>
           !inverterSpec.panels_per_string
-        )) ||
-        !projectData.tiltAzimuthPOA
-      ) {disabled = true;}
-    return (
-      <Menu.Item key={`singleLineDiagram/${building.buildingID}`} disabled={disabled}>
-          <Tooltip title={disabled ? t('sider.singleLineDiagram.disabled.disabled') : null}>
+        )) || building.reGenReport
+      ) {
+        disabled = true
+      }
+      return (
+        <Menu.Item key={`singleLineDiagram/${building.buildingID}`} disabled={disabled}>
+          <Tooltip title={disabled ? t('sider.menu.singleLineDiagram.disabled') : null}>
             {
               t('sider.menu.singleLineDiagram.prefix') +
               `${building.buildingName}` +
@@ -255,7 +255,7 @@ const ProjectLayout = (props) => {
         <Layout className={styles.main}>
           {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
           <Content className={styles.content}>
-           
+
             {Object.keys(projectData).length !== 0 ? props.children : null}
           </Content>
           <Footer className={styles.footer}>

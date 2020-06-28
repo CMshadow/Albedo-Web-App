@@ -21,12 +21,13 @@ const Grid = (props) => {
 
   const groupOfGrid = [];
 
-  
+
   const DrawDraw = () => {
-    
+
     let startX = startPosition[0] + width * 2;
     let startY = startPosition[1];
-    let newWidth = props.width > startX + minSize[0] + 100 ? props.width : startX + minSize[0] + 100;
+    let newWidth = props.width > startX + minSize[0] + props.width * 0.03 ?
+     props.width : startX + minSize[0] + props.width * 0.03;
     dispatch(setWidth(newWidth))
     groupOfGrid.push(<Rect
         key= {"Grid-Rect-" + uuidv4()}
@@ -40,10 +41,10 @@ const Grid = (props) => {
 
     groupOfGrid.push(<Line
       key={"Grid-ConnectLine-" + uuidv4()}
-      points={[startX, 
-        startY + (minSize[1] / 2), 
-        meterAccessPort[0], 
-        meterAccessPort[1] ]} 
+      points={[startX,
+        startY + (minSize[1] / 2),
+        meterAccessPort[0],
+        meterAccessPort[1] ]}
       stroke='white'
       strokeWidth={2}
       lineCap= 'round'
@@ -52,14 +53,14 @@ const Grid = (props) => {
 
     groupOfGrid.push(<Line
       key={"Grid-ConnectLine-" + uuidv4()}
-      points={[startX + 0.4 * minSize[0], 
+      points={[startX + 0.4 * minSize[0],
         startY + 0.1 * minSize[1],
-        startX + 0.6 * minSize[0], 
+        startX + 0.6 * minSize[0],
         startY + 0.1 * minSize[1],
-        startX + 0.7 * minSize[0], 
+        startX + 0.7 * minSize[0],
         startY + 0.9 * minSize[1],
-        startX + 0.35 * minSize[0], 
-        startY + 0.55 * minSize[1] ]} 
+        startX + 0.35 * minSize[0],
+        startY + 0.55 * minSize[1] ]}
       stroke='white'
       strokeWidth={2}
       lineCap= 'round'
@@ -68,14 +69,14 @@ const Grid = (props) => {
 
     groupOfGrid.push(<Line
       key={"Grid-ConnectLine-" + uuidv4()}
-      points={[startX + 0.6 * minSize[0], 
+      points={[startX + 0.6 * minSize[0],
         startY + 0.1 * minSize[1],
-        startX + 0.4 * minSize[0], 
+        startX + 0.4 * minSize[0],
         startY + 0.1 * minSize[1],
-        startX + 0.3 * minSize[0], 
+        startX + 0.3 * minSize[0],
         startY + 0.9 * minSize[1],
-        startX + 0.65 * minSize[0], 
-        startY + 0.55 * minSize[1] ]} 
+        startX + 0.65 * minSize[0],
+        startY + 0.55 * minSize[1] ]}
       stroke='white'
       strokeWidth={2}
       lineCap= 'round'
@@ -84,14 +85,14 @@ const Grid = (props) => {
 
     groupOfGrid.push(<Line
       key={"Grid-ConnectLine-" + uuidv4()}
-      points={[startX + 0.4 * minSize[0], 
+      points={[startX + 0.4 * minSize[0],
         startY + 0.1 * minSize[1],
-        startX + 0.6 * minSize[0], 
+        startX + 0.6 * minSize[0],
         startY + 0.1 * minSize[1],
-        startX + 0.8 * minSize[0], 
+        startX + 0.8 * minSize[0],
         startY + 0.2 * minSize[1],
-        startX + 0.2 * minSize[0], 
-        startY + 0.2 * minSize[1] ]} 
+        startX + 0.2 * minSize[0],
+        startY + 0.2 * minSize[1] ]}
       stroke='white'
       strokeWidth={2}
       lineCap= 'round'
@@ -101,10 +102,10 @@ const Grid = (props) => {
 
     groupOfGrid.push(<Line
       key={"Grid-ConnectLine-" + uuidv4()}
-      points={[startX + 0.2 * minSize[0], 
+      points={[startX + 0.2 * minSize[0],
         startY + 0.2 * minSize[1],
-        startX + 0.2 * minSize[0], 
-        startY + 0.3 * minSize[1]]} 
+        startX + 0.2 * minSize[0],
+        startY + 0.3 * minSize[1]]}
       stroke='white'
       strokeWidth={2}
       lineCap= 'round'
@@ -113,10 +114,10 @@ const Grid = (props) => {
 
     groupOfGrid.push(<Line
       key={"Grid-ConnectLine-" + uuidv4()}
-      points={[startX + 0.8 * minSize[0], 
+      points={[startX + 0.8 * minSize[0],
         startY + 0.2 * minSize[1],
-        startX + 0.8 * minSize[0], 
-        startY + 0.3 * minSize[1]]} 
+        startX + 0.8 * minSize[0],
+        startY + 0.3 * minSize[1]]}
       stroke='white'
       strokeWidth={2}
       lineCap= 'round'
@@ -125,14 +126,14 @@ const Grid = (props) => {
 
     groupOfGrid.push(<Line
       key={"Grid-ConnectLine-" + uuidv4()}
-      points={[startX + 0.4 * minSize[0], 
+      points={[startX + 0.4 * minSize[0],
         startY + 0.35 * minSize[1],
-        startX + 0.6 * minSize[0], 
+        startX + 0.6 * minSize[0],
         startY + 0.35 * minSize[1],
-        startX + 0.8 * minSize[0], 
+        startX + 0.8 * minSize[0],
         startY + 0.45 * minSize[1],
-        startX + 0.2 * minSize[0], 
-        startY + 0.45 * minSize[1] ]} 
+        startX + 0.2 * minSize[0],
+        startY + 0.45 * minSize[1] ]}
       stroke='white'
       strokeWidth={2}
       lineCap= 'round'
@@ -142,10 +143,10 @@ const Grid = (props) => {
 
     groupOfGrid.push(<Line
       key={"Grid-ConnectLine-" + uuidv4()}
-      points={[startX + 0.2 * minSize[0], 
+      points={[startX + 0.2 * minSize[0],
         startY + 0.45 * minSize[1],
-        startX + 0.2 * minSize[0], 
-        startY + 0.55 * minSize[1]]} 
+        startX + 0.2 * minSize[0],
+        startY + 0.55 * minSize[1]]}
       stroke='white'
       strokeWidth={2}
       lineCap= 'round'
@@ -154,10 +155,10 @@ const Grid = (props) => {
 
     groupOfGrid.push(<Line
       key={"Grid-ConnectLine-" + uuidv4()}
-      points={[startX + 0.8 * minSize[0], 
+      points={[startX + 0.8 * minSize[0],
         startY + 0.45 * minSize[1],
-        startX + 0.8 * minSize[0], 
-        startY + 0.55 * minSize[1]]} 
+        startX + 0.8 * minSize[0],
+        startY + 0.55 * minSize[1]]}
       stroke='white'
       strokeWidth={2}
       lineCap= 'round'
