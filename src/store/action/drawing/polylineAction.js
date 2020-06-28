@@ -1,26 +1,20 @@
 import * as actionTypes from '../actionTypes'
-import * as objTypes from './objTypes'
 import Polyline from '../../../infrastructure/line/polyline'
-import Coordinate from '../../../infrastructure/point/coordinate'
-import { moveHoriPoint, moveVertiPoint } from './pointAction'
 import { Color } from 'cesium'
+import { polygonAddVertex } from './polygonAction'
 
 const polylineColor = Color.STEELBLUE
+const POLYGON_OFFSET = -0.025
 
-export const createPolyline = ({mouseCor, polylineId, pointMap}) =>
+export const createPolyline = ({mouseCor, polylineId, pointId, insidePolygonId}) =>
 (dispatch, getState) => {
   const polyline = new Polyline([mouseCor], polylineId, polylineColor)
-
-  dispatch({
-    type: actionTypes.SET_DRAWING_OBJECT,
-    entityId: polylineId,
-    drawingType: objTypes.POLYLINE
-  })
 
   return dispatch({
     type: actionTypes.POLYLINE_SET,
     entity: polyline,
-    pointMap: pointMap
+    pointMap: pointId ? [pointId] : [],
+    insidePolygonId: insidePolygonId || 'EMPTY'
   })
 }
 
@@ -45,6 +39,7 @@ export const polylineAddVertex = ({polylineId, mouseCor, pointId, position=null}
   const newPoints = [...drawingPolyline.points]
   newPointMap.splice(position || newPointMap.length, 0, pointId)
   newPoints.splice(position || newPoints.length, 0, mouseCor)
+  mouseCor.setCoordinate(null, null, mouseCor.height + POLYGON_OFFSET)
   return dispatch({
     type: actionTypes.POLYLINE_SET,
     entity: new Polyline(newPoints, drawingPolyline.entityId, polylineColor),
@@ -58,6 +53,9 @@ export const polylineUpdateVertex = ({polylineId, mouseCor, pointId}) => (dispat
   const pointIndex = pointMap.indexOf(pointId)
   const newPoints = [...drawingPolyline.points]
   newPoints.splice(pointIndex, 1, mouseCor)
+  if (pointIndex === 0 && pointMap.slice(-1)[0] === pointId) {
+    newPoints.splice(-1, 1, mouseCor)
+  }
 
   return dispatch({
     type: actionTypes.POLYLINE_SET,
@@ -89,6 +87,11 @@ export const polylineDeleteVertex = (polylineId, pointId) => (dispatch, getState
   newPointMap.splice(pointIndex, 1)
   const newPoints = [...polyline.points]
   newPoints.splice(pointIndex, 1)
+  if (pointIndex === 0 && pointMap.slice(-1)[0] === pointId) {
+    newPointMap.splice(-1, 1, newPointMap[0])
+    newPoints.splice(-1, 1, newPoints[0])
+  }
+
   return dispatch({
     type: actionTypes.POLYLINE_SET,
     entity: new Polyline(

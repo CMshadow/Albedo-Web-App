@@ -18,6 +18,8 @@ const MouseMoveHandler = () => {
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
   const pickedType = useSelector(state => state.undoable.present.drawing.pickedType)
 
+  const allPolygon = useSelector(state => state.undoable.present.polygon)
+
   const mouseMoveActions = (event) => {
     const ellipsoid = viewer.scene.globe.ellipsoid;
     const mouseEndPos = new Cartesian3(event.endPosition.x, event.endPosition.y)
@@ -55,6 +57,9 @@ const MouseMoveHandler = () => {
         mouseEndCor.setCoordinate(null, null, POLYGON_OFFSET)
         if (drawingId) {
           dispatch(actions.polygonDynamic(drawingId, mouseEndCor))
+          const outPolylineId = allPolygon[drawingId].outPolylineId
+          mouseEndCor.setCoordinate(null, null, POLYLINE_OFFSET)
+          dispatch(actions.polylineDynamic(outPolylineId, mouseEndCor))
         }
         break
 

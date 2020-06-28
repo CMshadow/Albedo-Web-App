@@ -23,6 +23,18 @@ export const RenderPolyline = ({polyline}) => {
     return Coordinate.toCartesian(midDest)
   }
 
+  let enclosedAngle
+  if (
+    polyline.points.length > 2 &&
+    Coordinate.isEqual(polyline.points[0], polyline.points.slice(-1)[0])
+  ) {
+    const brngStart = Coordinate.bearing(polyline.points[0], polyline.points[1])
+    const brngEnd = Coordinate.bearing(
+      polyline.points[0], polyline.points.slice(-2)[0]
+    )
+    enclosedAngle = angleBetweenBrngs(brngStart, brngEnd)
+  }
+
   return (
     <Entity
       key={polyline.entityId}
@@ -39,7 +51,7 @@ export const RenderPolyline = ({polyline}) => {
       show={polyline.show}
 
       onMouseEnter={(move, tar) => {
-        if (!drawingId) {
+        if (!drawingId && !pickedId) {
           setcolor(Color.ORANGE)
           polyline.setColor(Color.ORANGE)
           dispatch(actions.setHoverObj(POLYLINE, polyline.entityId))
@@ -47,7 +59,7 @@ export const RenderPolyline = ({polyline}) => {
       }}
 
       onMouseLeave={(move, tar) => {
-        if (!drawingId) {
+        if (!drawingId && !pickedId) {
           setcolor(polylineColor)
           polyline.setColor(polylineColor)
           dispatch(actions.releaseHoverObj())
@@ -95,11 +107,11 @@ export const RenderPolyline = ({polyline}) => {
               showBackground: true,
               backgroundColor: Color.STEELBLUE,
               font: "12px sans-serif",
-              eyeOffset: new Cartesian3(1, 1, -1),
+              eyeOffset: new Cartesian3(0, 1, -2),
               show: true, //drawingId === polyline.entityId,
               translucencyByDistance: new NearFarScalar(100, 1.0, 1000, 0.0),
-              pixelOffset: new Cartesian2(0, 0),
-              pixelOffsetScaleByDistance: new NearFarScalar(1, 0.0, 1000, 100.0),
+              pixelOffset: new Cartesian2(10, 10),
+              // pixelOffsetScaleByDistance: new NearFarScalar(1, 0.0, 500, 10.0),
               rotation : CesiumMath.toRadians(180),
               alignedAxis : Cartesian3.UNIT_Z,
               verticalOrigin : VerticalOrigin.TOP
@@ -107,6 +119,28 @@ export const RenderPolyline = ({polyline}) => {
             show={subline.show}
           />
         })
+      }{
+        enclosedAngle ?
+        <Entity
+          key={`${polyline.entityId}.lastangle`}
+          id={`${polyline.entityId}.lastangle`}
+          position={Coordinate.toCartesian(polyline.points[0])}
+          label={{
+            text: `${enclosedAngle.toFixed(2)} °`,
+            showBackground: true,
+            backgroundColor: Color.STEELBLUE,
+            font: "12px sans-serif",
+            eyeOffset: new Cartesian3(0, 1, -2),
+            show: true, //drawingId === polyline.entityId,
+            translucencyByDistance: new NearFarScalar(100, 1.0, 1000, 0.0),
+            pixelOffset: new Cartesian2(10, 10),
+            // pixelOffsetScaleByDistance: new NearFarScalar(1, 0.0, 500, 10.0),
+            rotation : CesiumMath.toRadians(180),
+            alignedAxis : Cartesian3.UNIT_Z,
+            verticalOrigin : VerticalOrigin.TOP
+          }}
+          show={polyline.show}
+        /> : null
       }
     </Entity>
   )

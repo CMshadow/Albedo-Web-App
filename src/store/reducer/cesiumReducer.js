@@ -6,6 +6,8 @@ const initialState = {
   selectedMap: 'google',
   viewer: null,
   enableRotate: true,
+  showLength: true,
+  showAngle: true,
   rightClickCor: null,
 };
 
@@ -84,6 +86,21 @@ const setRightClickCor = (state, action) => {
   }
 }
 
+const setShowLength = (state, action) => {
+  return {
+    ...state,
+    showLength: action.showLength
+  }
+}
+
+const setShowAngle = (state, action) => {
+  return {
+    ...state,
+    showAngle: action.showAngle
+  }
+}
+
+
 const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_MAP_KEY:
@@ -96,6 +113,10 @@ const reducer = (state=initialState, action) => {
       return disableRotate(state, action);
     case actionTypes.SELECT_MAP:
       return selectMap(state, action);
+    case actionTypes.SET_SHOWLENGTH:
+      return setShowLength(state, action)
+    case actionTypes.SET_SHOWANGLE:
+      return setShowAngle(state, action)
     case actionTypes.SET_RIGHT_CLICK_COR:
       return setRightClickCor(state, action)
     default: return state;

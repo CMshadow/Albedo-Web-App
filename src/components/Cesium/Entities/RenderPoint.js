@@ -46,7 +46,7 @@ export const RenderPoint = ({point}) => {
       }}
 
       onMouseEnter={(move, tar) => {
-        if (!drawingId) {
+        if (!drawingId && !pickedId) {
           setcolor(Color.ORANGE)
           point.setColor(Color.ORANGE)
           dispatch(actions.setHoverObj(POINT, point.entityId))
@@ -54,7 +54,7 @@ export const RenderPoint = ({point}) => {
       }}
 
       onMouseLeave={(move, tar) => {
-        if (!drawingId) {
+        if (!drawingId && !pickedId) {
           setcolor(Color.WHITE)
           point.setColor(Color.WHITE)
           dispatch(actions.releaseHoverObj())

@@ -24,7 +24,7 @@ export const RenderPolygon = ({polygon}) => {
 	        }, false),
 				perPositionHeight: polygon.perPositionHeight,
 				extrudedHeight: polygon.extrudedHeight,
-				outline: true,
+				outline: false,
 				outlineColor: polygon.outlineColor,
 				outlineWidth: polygon.outlineWidth,
 				material: color,
@@ -34,8 +34,7 @@ export const RenderPolygon = ({polygon}) => {
 			show={polygon.show}
 
 			onMouseDown={() => {
-        if (!pickedId) {
-					console.log('setpicked')
+        if (!pickedId && !drawingId) {
           dispatch(actions.disableRotate())
           dispatch(actions.setPickedObj(POLYGON, polygon.entityId))
         }

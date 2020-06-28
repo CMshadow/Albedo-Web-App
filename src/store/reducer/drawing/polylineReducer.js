@@ -4,11 +4,18 @@ const initialState = {
 };
 
 const setPolyline = (state, action) => {
+  let insidePolygonId = null
+  if (action.insidePolygonId && action.insidePolygonId !== 'Empty') {
+    insidePolygonId = action.insidePolygonId
+  } else if (state[action.entity.entityId]) {
+    insidePolygonId = state[action.entity.entityId].insidePolygonId
+  }
   return {
     ...state,
     [action.entity.entityId]: {
       entity: action.entity,
-      pointMap: action.pointMap || state[action.entity.entityId].pointMap
+      pointMap: action.pointMap || state[action.entity.entityId].pointMap,
+      insidePolygonId: insidePolygonId
     }
   }
 }

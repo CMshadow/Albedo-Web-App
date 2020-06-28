@@ -9,11 +9,13 @@ import Coordinate from '../../../../infrastructure/point/coordinate'
 const Text = Typography.Text
 
 const POINT_OFFSET = 0.025
+const POLYGON_OFFSET = -0.025
 
 const EditPolylineContextMenu = ({hoverId}) => {
   const dispatch = useDispatch()
   const polyline = useSelector(state => state.undoable.present.polyline[hoverId]).entity
   const rightClickCor = useSelector(state => state.cesium.rightClickCor)
+  const insidePolygonId = useSelector(state => state.undoable.present.polyline[hoverId]).insidePolygonId
 
   return (
     <ContextMenu
@@ -32,13 +34,21 @@ const EditPolylineContextMenu = ({hoverId}) => {
             dispatch(actions.polylineAddVertex({
               polylineId: hoverId, mouseCor: preciseCor, pointId, position: addPos
             }))
-            console.log(preciseCor.height)
             const pointCor = new Coordinate(
               preciseCor.lon, preciseCor.lat, preciseCor.height + POINT_OFFSET
             )
             dispatch(actions.addPoint({
-              mouseCor: pointCor, pointId, polylineMap: [hoverId]
+              mouseCor: pointCor, pointId, polylineId: hoverId,
+              polygonId: insidePolygonId === 'EMPTY' ? null : insidePolygonId
             }))
+            if (insidePolygonId !== 'EMPTY') {
+              const polygonCor = new Coordinate(
+                preciseCor.lon, preciseCor.lat, preciseCor.height + POLYGON_OFFSET
+              )
+              dispatch(actions.polygonAddVertex({
+                polygonId: insidePolygonId, mouseCor: polygonCor, pointId, position: addPos
+              }))
+            }
             dispatch(actions.releaseHoverObj())
           }}
         >

@@ -3,6 +3,8 @@ import { Layout } from 'antd';
 import * as styles from './RightSider.module.scss';
 import LockMap from './Buttons/lockMap';
 import SelectMap from './Buttons/selectMap';
+import ShowLength from './Buttons/showLength'
+import ShowAngle from './Buttons/showAngle'
 
 const { Sider } = Layout;
 
@@ -14,6 +16,8 @@ const RightSider = () => {
       >
         <SelectMap style={{top: '5px'}}/>
         <LockMap />
+        <ShowLength />
+        <ShowAngle />
       </Sider>
   );
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Tooltip, Row, Button } from 'antd';
-import { UnlockOutlined, LockOutlined } from '@ant-design/icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCompass, faCompassSlash } from '@fortawesome/pro-regular-svg-icons'
 import { disableRotate, enableRotate } from '../../../../store/action/index'
 
 
@@ -36,8 +37,8 @@ const LockMap = () => {
           shape='circle'
           icon={
             enableRotateStatus ?
-            <UnlockOutlined/> :
-            <LockOutlined/>
+            <FontAwesomeIcon icon={faCompass} /> :
+            <FontAwesomeIcon icon={faCompassSlash} />
           }
           size='large'
           onClick={toggleRotate}

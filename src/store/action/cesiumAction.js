@@ -39,3 +39,17 @@ export const setRightClickCor = (rightClickCor) => {
     rightClickCor: rightClickCor
   }
 }
+
+export const setShowLength = (showLength) => {
+  return {
+    type: actionTypes.SET_SHOWLENGTH,
+    showLength: showLength
+  }
+}
+
+export const setShowAngle = (showAngle) => {
+  return {
+    type: actionTypes.SET_SHOWANGLE,
+    showAngle: showAngle
+  }
+}

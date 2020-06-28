@@ -46,7 +46,9 @@ export {
   enableRotate,
   disableRotate,
   selectMap,
-  setRightClickCor
+  setRightClickCor,
+  setShowLength,
+  setShowAngle
 } from './cesiumAction'
 
 export {
@@ -68,6 +70,7 @@ export {
 export {
   addPoint,
   setPointHeight,
+  pointAddMapping,
   moveHoriPoint,
   moveVertiPoint,
   deletePoint

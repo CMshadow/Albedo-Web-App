@@ -8,7 +8,8 @@ const setPolygon = (state, action) => {
     ...state,
     [action.entity.entityId]: {
       entity: action.entity,
-      pointMap: action.pointMap || state[action.entity.entityId].pointMap
+      pointMap: action.pointMap || state[action.entity.entityId].pointMap,
+      outPolylineId: action.outPolylineId || state[action.entity.entityId].outPolylineId
     }
   }
 }

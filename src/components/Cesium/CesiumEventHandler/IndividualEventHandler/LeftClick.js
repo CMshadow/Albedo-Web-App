@@ -17,6 +17,8 @@ const LeftClickHandler = () => {
   const drwStat = useSelector(state => state.undoable.present.drwStat.status)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
 
+  const allPolygon = useSelector(state => state.undoable.present.polygon)
+
   const addPoint = (mouseCor) => {
     const pointId = uuid()
     mouseCor.setCoordinate(null, null, POINT_OFFSET)
@@ -28,10 +30,11 @@ const LeftClickHandler = () => {
     const pointId = uuid()
     const polylineId = drawingId || uuid()
     mouseCor.setCoordinate(null, null, POINT_OFFSET)
-    dispatch(actions.addPoint({mouseCor, pointId, polylineMap: [polylineId]}))
+    dispatch(actions.addPoint({mouseCor, pointId, polylineId}))
     mouseCor.setCoordinate(null, null, POLYLINE_OFFSET)
     if (!drawingId) {
-      dispatch(actions.createPolyline({mouseCor, polylineId, pointMap: [pointId]}))
+      dispatch(actions.createPolyline({mouseCor, polylineId, pointId}))
+      dispatch(actions.setDrawingObj(objTypes.POLYLINE, polylineId))
       dispatch(actions.disableRotate())
     } else {
       dispatch(actions.polylineAddVertex({polylineId: drawingId, mouseCor, pointId}))
@@ -41,14 +44,23 @@ const LeftClickHandler = () => {
   const drawPolygon = (mouseCor) => {
     const pointId = uuid()
     const polygonId = drawingId || uuid()
+    const polylineId = drawingId ? allPolygon[polygonId].outPolylineId : uuid()
+
     mouseCor.setCoordinate(null, null, POINT_OFFSET)
-    dispatch(actions.addPoint({mouseCor, pointId, polygonMap: [polygonId]}))
+    dispatch(actions.addPoint({mouseCor, pointId, polylineId, polygonId}))
     mouseCor.setCoordinate(null, null, POLYGON_OFFSET)
     if (!drawingId) {
-      dispatch(actions.createPolygon({mouseCor, polygonId, pointMap: [pointId]}))
+      dispatch(actions.setDrawingObj(objTypes.POLYGON, polygonId))
+      dispatch(actions.createPolygon({
+        mouseCor, polygonId, pointId, outPolylineId: polylineId
+      }))
+      mouseCor.setCoordinate(null, null, POLYLINE_OFFSET)
+      dispatch(actions.createPolyline({mouseCor, polylineId, pointId, insidePolygonId: polygonId}))
       dispatch(actions.disableRotate())
     } else {
       dispatch(actions.polygonAddVertex({polygonId: drawingId, mouseCor, pointId}))
+      mouseCor.setCoordinate(null, null, POLYLINE_OFFSET)
+      dispatch(actions.polylineAddVertex({polylineId, mouseCor, pointId}))
     }
   }
 

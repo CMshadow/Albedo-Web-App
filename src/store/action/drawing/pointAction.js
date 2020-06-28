@@ -8,14 +8,27 @@ import { notification } from 'antd'
 const POLYLINE_OFFSET = -0.025
 const POLYGON_OFFSET = -0.05
 
-export const addPoint = ({mouseCor, pointId, polygonMap, polylineMap}) =>
+export const addPoint = ({mouseCor, pointId, polygonId, polylineId}) =>
 (dispatch, getState) => {
   const point = Point.fromCoordinate(mouseCor, pointId)
   return dispatch({
     type: actionTypes.POINT_SET,
     entity: point,
-    polygonMap: polygonMap || [],
-    polylineMap: polylineMap || []
+    polygonMap: polygonId ? [polygonId] : [],
+    polylineMap: polylineId ? [polylineId] : []
+  })
+}
+
+export const pointAddMapping = ({pointId, polygonId, polylineId}) => (dispatch, getState) => {
+  const point = getState().undoable.present.point[pointId].entity
+  const polygonMap = getState().undoable.present.point[pointId].polygonMap
+  const polylineMap = getState().undoable.present.point[pointId].polylineMap
+
+  return dispatch({
+    type: actionTypes.POINT_SET,
+    entity: point,
+    polygonMap: polygonId ? [...polygonMap, polygonId] : polygonMap,
+    polylineMap: polylineId ? [...polylineMap, polylineId] : polylineMap
   })
 }
 
@@ -107,7 +120,8 @@ export const deletePoint = (pointId) => (dispatch, getState) => {
     getState().undoable.present.polyline[polylineId].entity.length > 2
   )
   if (polylineOK && polygonOK) {
-    polylineMap.map(polylineId => dispatch(polylineDeleteVertex(polylineId, pointId)))
+    polylineMap.map(polylineId => {
+      return dispatch(polylineDeleteVertex(polylineId, pointId))})
     polygonMap.map(polygonId => dispatch(polygonDeleteVertex(polygonId, pointId)))
     return dispatch({
       type: actionTypes.POINT_DELETE,

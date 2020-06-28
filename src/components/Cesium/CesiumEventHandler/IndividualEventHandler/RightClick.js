@@ -13,6 +13,9 @@ const RightClickHandler = () => {
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
   const viewer = useSelector(state => state.cesium.viewer)
 
+  const allPolygon = useSelector(state => state.undoable.present.polygon)
+  const allPolyline = useSelector(state => state.undoable.present.polyline)
+
   const rightClickActions = (event) => {
 
     switch (drwStat) {
@@ -29,6 +32,11 @@ const RightClickHandler = () => {
       case objTypes.POLYGON:
         dispatch(actions.releasePickedObj())
         dispatch(actions.polygonTerminate(drawingId))
+        const polylineId = allPolygon[drawingId].outPolylineId
+        const mouseCor = allPolyline[polylineId].entity.points[0]
+        const pointId = allPolygon[drawingId].pointMap[0]
+        dispatch(actions.polylineTerminate(polylineId))
+        dispatch(actions.polylineAddVertex({polylineId, mouseCor, pointId}))
         dispatch(actions.setDrwStatIdle())
         dispatch(actions.enableRotate())
         break
