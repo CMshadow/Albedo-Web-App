@@ -102,15 +102,17 @@ const ProjectLayout = (props) => {
       dispatch(saveReport({projectID}))
       dispatch(updateProjectAttributes({updatedAt: res.Attributes.updatedAt}))
       setloading(false)
+    }).catch(err => {
+      notification.error({
+        message: t('error.save')
+      })
+      setloading(false)
     })
   }
 
   const saveProjectOnExit = useCallback(() => {
     dispatch(saveProject(projectID))
-    .then(async res => {
-      dispatch(saveReport({projectID}))
-      dispatch(updateProjectAttributes({updatedAt: res.Attributes.updatedAt}))
-    })
+    dispatch(saveReport({projectID}))
   }, [dispatch, projectID])
 
   // 读pv 逆变器 项目数据 最佳倾角朝向
@@ -165,6 +167,12 @@ const ProjectLayout = (props) => {
       saveProjectOnExit()
     }
   }, [cognitoUser.attributes.locale, dispatch, history, projectID, saveProjectOnExit, t])
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", (ev) => {
+      saveProjectOnExit()
+    });
+  })
 
   return (
     <>
