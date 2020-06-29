@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import Dimensions from 'react-dimensions';
 import  {Stage, Layer}  from 'react-konva';
 import { useParams } from 'react-router-dom'
 import classes from './SingleLineDiagram_us.module.scss';
