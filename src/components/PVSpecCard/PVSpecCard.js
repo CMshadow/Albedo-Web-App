@@ -48,7 +48,7 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
               disabled={editing}
               type='link'
               shape="circle"
-              icon={<EditTwoTone />}
+              icon={<EditTwoTone twoToneColor={editing ? '#bfbfbf' : '#1890ff'}/>}
               onClick={() => setediting(true)}
             />
             <Divider className={styles.divider}/>
@@ -78,12 +78,14 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
                     buildingID={buildingID}
                     specIndex={specIndex}
                     invIndex={invIndex}
+                    disabled={editing}
                     {...invSpec}
                   />
                 )
               }
               <Button
                 className={styles.addSpec}
+                disabled={editing}
                 block
                 type="dashed"
                 onClick={addSpec}

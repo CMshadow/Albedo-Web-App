@@ -10,25 +10,30 @@ const FormItem = Form.Item;
 
 const rowGutter = { md: 8, lg: 15, xl: 32 };
 
-export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
+export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [form] = Form.useForm()
   const [showDrawer, setshowDrawer] = useState(false)
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
   const [invActiveData, setinvActiveData] = useState(inverterData)
 
-
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
   const specData = buildings[buildingIndex].data[specIndex]
+  const selPV = pvData.find(pv => pv.pvID === specData.pv_panel_parameters.pv_model.pvID)
   const invSpec = specData.inverter_wiring[invIndex]
   const [dc_cable_len, setdc_cable_len] = useState({
     value: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
   })
+  const [spi, setspi] = useState({value: invSpec.spi || null})
+  const [pps, setpps] = useState({value: invSpec.pps || null})
 
   // 通用required项提示文本
   const validateMessages = {
@@ -58,6 +63,44 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
       errorMsg: null,
     }
   }
+  // 自定义校验并联组串数是否符合逆变器规范
+  const validateSpi = value => {
+    // 数量与该逆变器规格不符
+    const selInvID = form.getFieldValue('inverterID')
+    if (selInvID) {
+      const selInv = inverterData.find(inv => inv.inverterID === selInvID)
+      if (value > selInv.strNum) {
+        return {
+          validateStatus: 'warning',
+          errorMsg: t('project.spec.spi.error.over-max'),
+        }
+      }
+    }
+    // 校验通过
+    return {
+      validateStatus: 'success',
+      errorMsg: null,
+    }
+  }
+  // 自定义校验每串板数是否符合逆变器规范
+  const validatePps = value => {
+    // 数量与该逆变器规格不符
+    const selInvID = form.getFieldValue('inverterID')
+    if (selInvID) {
+      const selInv = inverterData.find(inv => inv.inverterID === selInvID)
+      if (value > Math.floor(selInv.vdcMax / selPV.voco)) {
+        return {
+          validateStatus: 'warning',
+          errorMsg: t('project.spec.spi.error.over-max'),
+        }
+      }
+    }
+    // 校验通过
+    return {
+      validateStatus: 'success',
+      errorMsg: null,
+    }
+  }
 
   //组串线缆长度输入框改变回调
   const onDCCableLenChange = value => {
@@ -66,16 +109,37 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
       value: value.target.value
     });
   }
+  //并联组串数输入框改变回调
+  const onSpiChange = value => {
+    setspi({
+      ...validateSpi(value),
+      value: value
+    })
+  }
+  //并联组串数输入框改变回调
+  const onPpsChange = value => {
+    setpps({
+      ...validatePps(value),
+      value: value
+    })
+  }
+  //选择逆变器改变回调
+  const onInverterIDChange = invID => {
+    const spi = form.getFieldValue('string_per_inverter')
+    const pps = form.getFieldValue('panels_per_string')
+    if (spi) onSpiChange(spi)
+    if (pps) onPpsChange(pps)
+  }
 
   const handleOk = () => {
     // 验证表单，如果通过提交表单
     form.validateFields()
     .then(success => {
       // 验证组串线缆长度输入是否规范
-      const vali = validateDCCableLen(form.getFieldValue('dc_cable_len'))
-      if (vali.validateStatus === 'error') {
+      const dcLenVali = validateDCCableLen(form.getFieldValue('dc_cable_len'))
+      if (dcLenVali.validateStatus === 'error') {
         setdc_cable_len({
-          ...vali,
+          ...dcLenVali,
           value: dc_cable_len.value
         })
         return
@@ -130,6 +194,8 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
                     value: record.inverterID
                   }))
                 }
+                disabled={disabled}
+                onChange={onInverterIDChange}
               />
             </FormItem>
           </Col>
@@ -147,8 +213,17 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
               name='string_per_inverter'
               label={t('project.spec.string_per_inverter')}
               rules={[{required: true}]}
+              validateStatus={spi.validateStatus}
+              help={spi.errorMsg}
             >
-              <InputNumber precision={0} min={1} className={styles.inputNumber}/>
+              <InputNumber
+                precision={0}
+                min={1}
+                className={styles.inputNumber}
+                value={spi.value}
+                onChange={onSpiChange}
+                disabled={disabled}
+              />
             </FormItem>
           </Col>
           <Col span={7}>
@@ -156,8 +231,17 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
               name='panels_per_string'
               label={t('project.spec.panels_per_string')}
               rules={[{required: true}]}
+              validateStatus={pps.validateStatus}
+              help={pps.errorMsg}
             >
-              <InputNumber precision={0} min={1} className={styles.inputNumber}/>
+              <InputNumber
+                precision={0}
+                min={1}
+                className={styles.inputNumber}
+                value={pps.value}
+                onChange={onPpsChange}
+                disabled={disabled}
+              />
             </FormItem>
           </Col>
           <Col span={10}>
@@ -172,6 +256,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
                 precision={2}
                 min={0}
                 className={styles.inputNumber}
+                disabled={disabled}
               />
             </FormItem>
           </Col>
@@ -195,13 +280,16 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting}) => {
                 addonAfter='m'
                 value={dc_cable_len.value}
                 onChange={onDCCableLenChange}
+                disabled={disabled}
               />
             </FormItem>
           </Col>
         </Row>
         <Row align='middle' justify='center'>
           <FormItem className={styles.submitBut}>
-            <Button type='primary' onClick={handleOk}>{t('form.confirm')}</Button>
+            <Button disabled={disabled} type='primary' onClick={handleOk}>
+              {t('form.confirm')}
+            </Button>
           </FormItem>
         </Row>
       </Form>

@@ -70,6 +70,8 @@
   "project.spec.dc_cable_len.hint": "Cable length of each string should be seprated by a comma (i.e. 20,25,30)",
   "project.spec.dc_cable_len.error.only-number": "Cannot enter element other than number",
   "project.spec.dc_cable_len.error.spi-not-match": "Entered values does not match the number of parallel strings",
+  "project.spec.spi.error.over-max": "Number of parallel strings exceeds the inverter limits",
+  "project.spec.pps.error.over-max": "Number of PV modules in series exceeds the inverter limits",
   "project.spec.total_panels": "Total PV module count",
 
   "project.autoInverter.no-fit": "The inverter does not fit",

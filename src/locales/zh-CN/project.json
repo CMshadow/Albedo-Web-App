@@ -70,6 +70,8 @@
   "project.spec.dc_cable_len.hint": "每条组串线缆长度以逗号隔开，如:20,25,30",
   "project.spec.dc_cable_len.error.only-number": "输入不能包含非数字元素",
   "project.spec.dc_cable_len.error.spi-not-match": "与并联组串数不符",
+  "project.spec.spi.error.over-max": "并联组串数大于逆变器限制",
+  "project.spec.pps.error.over-max": "光伏组件数/组串大于逆变器限制",
   "project.spec.total_panels": "光伏组件总数",
 
   "project.autoInverter.no-fit": "逆变器规格与装机量不匹配",
