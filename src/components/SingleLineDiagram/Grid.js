@@ -23,11 +23,10 @@ const Grid = (props) => {
 
 
   const DrawDraw = () => {
-
     let startX = startPosition[0] + width * 2;
     let startY = startPosition[1];
-    let newWidth = props.width > startX + minSize[0] + props.width * 0.03 ?
-     props.width : startX + minSize[0] + props.width * 0.03;
+    let newWidth = props.width - 250 > startX + minSize[0] + props.width * 0.03 ?
+     props.width - 250 : startX + minSize[0] + props.width * 0.03;
     dispatch(setWidth(newWidth))
     groupOfGrid.push(<Rect
         key= {"Grid-Rect-" + uuidv4()}

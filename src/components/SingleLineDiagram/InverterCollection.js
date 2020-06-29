@@ -12,7 +12,7 @@ const InverterCollection = (props) => {
   const accessPorts = useSelector(state => state.SLD.pvAccessPorts);
   const inverterGap = useSelector(state => state.SLD.pvGap);
   const minSize = [width, width];//w,h
-  const startPosition = [props.width * 0.5, props.height * 0.1 + 83];
+  const startPosition = [props.width * 0.5, props.height * 0.1];
   const accessNum = 2;
   const stroke_Width = 2;
   const groupOfInverter =[];

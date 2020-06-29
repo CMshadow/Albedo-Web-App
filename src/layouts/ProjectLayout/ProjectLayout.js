@@ -75,7 +75,7 @@ const ProjectLayout = (props) => {
         building.data.some(obj => !obj.pv_panel_parameters.tilt_angle) ||
         building.data.some(obj => obj.inverter_wiring.some(inverterSpec =>
           !inverterSpec.panels_per_string
-        )) || building.reGenReport
+        )) || building.reGenReport || !reportData[building.buildingID]
       ) {
         disabled = true
       }
