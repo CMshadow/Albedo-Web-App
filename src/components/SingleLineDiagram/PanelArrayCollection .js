@@ -35,7 +35,6 @@ const PanelArrayCollection = (props) => {
   }
 
   const drawPanelArray = () => {
-
     zoomAuto();
     dispatch(setPVDist([startX + minSize[0] * 1.5, startPosition[1]]));
     for(let i = 0; i < numOfArray; ++i){
