@@ -9,7 +9,7 @@ import LeftUpShiftHandler from './IndividualEventHandler/LeftUpShift'
 import RightClickHandler from './IndividualEventHandler/RightClick';
 import MouseMoveHandler from './IndividualEventHandler/MouseMove';
 import MouseMoveShiftHandler from './IndividualEventHandler/MouseMoveShift';
-// import KeyPressHandler from './IndividualEventHandler/KeyPress';
+import KeyPressHandler from './IndividualEventHandler/KeyPress';
 
 export const CesiumEventHandlers = () => {
   return (
@@ -22,7 +22,7 @@ export const CesiumEventHandlers = () => {
        <RightClickHandler />
        <MouseMoveHandler />
        <MouseMoveShiftHandler />
-       {/* <KeyPressHandler /> */}
+       <KeyPressHandler />
     </ScreenSpaceEventHandler>
   );
 };
