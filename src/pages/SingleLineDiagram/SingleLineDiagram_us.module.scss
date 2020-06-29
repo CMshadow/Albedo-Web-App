@@ -1,13 +1,15 @@
-.stage {
-
-  margin: -15px -15px -15px -15px; 
+.SLD {
+  height: calc(100vh-180px);
+  margin: -15px;
+  width: calc(100vw-250px);
+  overflow: auto;
 }
 
 .tab {
   z-index: 20;
   position: absolute;
   right: 33px;
-  bottom: 95px; 
+  bottom: 95px;
   width: 550px;
   background-color: rgba(255,255,255, 0.6);
   border-radius: 6px;
@@ -15,7 +17,7 @@
 }
 
 .triggerButton {
-  position: absolute;
+  position: fixed;
   top: 100px;
   right: 40px;
   z-index: 100;
