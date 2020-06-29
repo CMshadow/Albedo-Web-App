@@ -1,85 +1,98 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-const KeyPressHandler = () => {
-  const [moveForward, setmoveForward] = useState(false)
-  const [moveBackward, setmoveBackward] = useState(false)
-  const [moveUp, setmoveUp] = useState(false)
-  const [moveDown, setmoveDown] = useState(false)
-  const [moveLeft, setmoveLeft] = useState(false)
-  const [moveRight, setmoveRight] = useState(false)
-  const viewer = useSelector(state => state.cesium.viewer)
+class KeyPressHandler extends Component {
 
-  const moveCamera = () => {
-    const ellipsoid = viewer.scene.globe.ellipsoid;
-    const camera = viewer.camera;
-    const cameraHeight = ellipsoid.cartesianToCartographic(camera.position).height
-    const moveRate = cameraHeight / 10000.0;
-    if (moveUp) camera.moveUp(moveRate);
-    if (moveDown) camera.moveDown(moveRate);
-    if (moveLeft) camera.moveLeft(moveRate);
-    if (moveRight) camera.moveRight(moveRate);
-    if (moveForward) camera.moveForward(moveRate);
-    if (moveBackward) camera.moveBackward(moveRate);
+  state = {
+    moveForward : false,
+    moveBackward : false,
+    moveUp : false,
+    moveDown : false,
+    moveLeft : false,
+    moveRight : false
   }
 
-  const recordKeyDownEvent = (event) => {
+  moveCamera = () => {
+    const ellipsoid = this.props.viewer.scene.globe.ellipsoid;
+    const camera = this.props.viewer.camera;
+    const cameraHeight =
+      ellipsoid.cartesianToCartographic(camera.position).height;
+    const moveRate = cameraHeight / 10000.0;
+    if (this.state.moveUp) camera.moveUp(moveRate);
+    if (this.state.moveDown) camera.moveDown(moveRate);
+    if (this.state.moveLeft) camera.moveLeft(moveRate);
+    if (this.state.moveRight) camera.moveRight(moveRate);
+    if (this.state.moveForward) camera.moveForward(moveRate);
+    if (this.state.moveBackward) camera.moveBackward(moveRate);
+  }
+
+  recordKeyDownEvent = (event) => {
     switch (event.keyCode) {
       // esc
       case 27:
         return;
 
       case 'W'.charCodeAt(0):
-        return setmoveUp(true)
+        return this.setState({moveUp: true});
       case 'S'.charCodeAt(0):
-        return setmoveDown(true)
+        return this.setState({moveDown: true});
       case 'A'.charCodeAt(0):
-        return setmoveLeft(true)
+        return this.setState({moveLeft: true});
       case 'D'.charCodeAt(0):
-        return setmoveRight(true)
+        return this.setState({moveRight: true});
       case 'Q'.charCodeAt(0):
-        return setmoveForward(true)
+        return this.setState({moveForward: true});
       case 'E'.charCodeAt(0):
-        return setmoveBackward(true)
+        return this.setState({moveBackward: true});
       default:
         return;
     }
   }
 
-  const recordKeyUpFunction = (event) => {
+  recordKeyUpFunction = (event) => {
     switch (event.keyCode) {
       case 'W'.charCodeAt(0):
-        return setmoveUp(false)
+        return this.setState({moveUp: false});
       case 'S'.charCodeAt(0):
-        return setmoveDown(false)
+        return this.setState({moveDown: false});
       case 'A'.charCodeAt(0):
-        return setmoveLeft(false)
+        return this.setState({moveLeft: false});
       case 'D'.charCodeAt(0):
-        return setmoveRight(false)
+        return this.setState({moveRight: false});
       case 'Q'.charCodeAt(0):
-        return setmoveForward(false)
+        return this.setState({moveForward: false});
       case 'E'.charCodeAt(0):
-        return setmoveBackward(false)
+        return this.setState({moveBackward: false});
       default:
         return;
     }
   }
 
-  useEffect(() => {
-    document.addEventListener("keydown", recordKeyDownEvent);
-    document.addEventListener("keyup", recordKeyUpFunction);
+  componentDidMount = () => {
+    document.addEventListener("keydown", this.recordKeyDownEvent);
+    document.addEventListener("keyup", this.recordKeyUpFunction);
+  };
 
-    return () => {
-      document.removeEventListener("keydown", recordKeyDownEvent);
-      document.removeEventListener("keyup", recordKeyUpFunction);
-    }
-  }, [])
+  componentWillUnmount = () => {
+    document.removeEventListener("keydown", this.recordKeyDownEvent);
+    document.removeEventListener("keyup", this.recordKeyUpFunction);
+  };
 
-  viewer.clock.onTick.addEventListener(clock => moveCamera());
-
-  return (
-    <div/>
-  );
+  render () {
+    this.props.viewer.clock.onTick.addEventListener(clock => this.moveCamera());
+    return (
+      <div>
+      </div>
+    );
+  }
 };
 
-export default KeyPressHandler
+const mapStateToProps = state => {
+  return {
+    viewer:
+      state.cesium.viewer,
+  };
+};
+
+
+export default connect(mapStateToProps)(KeyPressHandler);

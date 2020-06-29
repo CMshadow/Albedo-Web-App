@@ -3,32 +3,36 @@ import Point from '../../../infrastructure/point/point'
 import Coordinate from '../../../infrastructure/point/coordinate'
 import { polygonUpdateVertex, polygonDeleteVertex } from './polygonAction'
 import { polylineUpdateVertex, polylineDeleteVertex } from './polylineAction'
+import { circleUpdate } from './circleAction'
 import { notification } from 'antd'
 
 const POLYLINE_OFFSET = -0.025
 const POLYGON_OFFSET = -0.05
 
-export const addPoint = ({mouseCor, pointId, polygonId, polylineId}) =>
+export const addPoint = ({mouseCor, pointId, polygonId, polylineId, circleId}) =>
 (dispatch, getState) => {
   const point = Point.fromCoordinate(mouseCor, pointId)
   return dispatch({
     type: actionTypes.POINT_SET,
     entity: point,
     polygonMap: polygonId ? [polygonId] : [],
-    polylineMap: polylineId ? [polylineId] : []
+    polylineMap: polylineId ? [polylineId] : [],
+    circleMap: circleId || 'EMPTY',
   })
 }
 
-export const pointAddMapping = ({pointId, polygonId, polylineId}) => (dispatch, getState) => {
+export const pointAddMapping = ({pointId, polygonId, polylineId, circleId}) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId].entity
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
+  const circleMap = getState().undoable.present.point[pointId].circleMap
 
   return dispatch({
     type: actionTypes.POINT_SET,
     entity: point,
     polygonMap: polygonId ? [...polygonMap, polygonId] : polygonMap,
-    polylineMap: polylineId ? [...polylineMap, polylineId] : polylineMap
+    polylineMap: polylineId ? [...polylineMap, polylineId] : polylineMap,
+    circleMap: circleId || circleMap
   })
 }
 
@@ -67,10 +71,12 @@ export const moveHoriPoint = (pointId, mouseCor) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId].entity
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
+  const circleMap = getState().undoable.present.point[pointId].circleMap
   point.setCoordinate(mouseCor.lon, mouseCor.lat, point.height)
   mouseCor.setCoordinate(null, null, point.height - 0.05)
   polygonMap.map(polygonId => dispatch(polygonUpdateVertex({polygonId, mouseCor, pointId})))
   polylineMap.map(polylineId => dispatch(polylineUpdateVertex({polylineId, mouseCor, pointId})))
+  if (circleMap !== 'EMPTY') dispatch(circleUpdate({circleId: circleMap, pointId, mouseCor}))
 
   return dispatch({
     type: actionTypes.POINT_SET,

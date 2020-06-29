@@ -55,7 +55,8 @@ export {
   setDrwStatIdle,
   setDrwStatPoint,
   setDrwStatPolygon,
-  setDrwStatPolyline
+  setDrwStatPolyline,
+  setDrwStatCircle
 } from './drawing/statusAction'
 
 export {
@@ -93,3 +94,7 @@ export {
   polylineTerminate,
   polylineUpdateVertex
 } from './drawing/polylineAction'
+
+export {
+  addCircle
+} from './drawing/circleAction'

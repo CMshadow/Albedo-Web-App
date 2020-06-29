@@ -13,7 +13,7 @@ import * as styles from './LeftSider.module.scss';
 // import SetUpWiringPanel from './individualPanels/setUpWiringPanel';
 // import SetUpBridgingPanel from './individualPanels/setUpBridgingPanel';
 // import * as uiStateJudge from '../../../infrastructure/ui/uiStateJudge';
-import { setDrwStatPoint, setDrwStatPolygon, setDrwStatPolyline } from '../../../store/action/index'
+import * as actions from '../../../store/action/index'
 import * as objTypes from '../../../store/action/drawing/objTypes'
 
 const { Sider } = Layout;
@@ -29,9 +29,10 @@ const LeftSider = (props) => {
   let content = null;
   content = (
     <>
-      <Button loading={drawStatus === objTypes.POINT} onClick={() => dispatch(setDrwStatPoint())}>Draw Point</Button>
-      <Button loading={drawStatus === objTypes.POLYLINE} onClick={() => dispatch(setDrwStatPolyline())}>Draw Polyline</Button>
-      <Button loading={drawStatus === objTypes.POLYGON} onClick={() => dispatch(setDrwStatPolygon())}>Draw Polygon</Button>
+      <Button loading={drawStatus === objTypes.POINT} onClick={() => dispatch(actions.setDrwStatPoint())}>Draw Point</Button>
+      <Button loading={drawStatus === objTypes.POLYLINE} onClick={() => dispatch(actions.setDrwStatPolyline())}>Draw Polyline</Button>
+      <Button loading={drawStatus === objTypes.POLYGON} onClick={() => dispatch(actions.setDrwStatPolygon())}>Draw Polygon</Button>
+      <Button loading={drawStatus === objTypes.CIRCLE} onClick={() => dispatch(actions.setDrwStatCircle())}>Draw Circle</Button>
     </>
   )
   // if (this.state.siderCollapse === false) {

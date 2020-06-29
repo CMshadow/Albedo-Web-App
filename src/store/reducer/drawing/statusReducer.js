@@ -29,6 +29,12 @@ const setDrwStatePolyline = (state, action) => {
   }
 }
 
+const setDrwStateCircle = (state, action) => {
+  return {
+    status: objTypes.CIRCLE
+  }
+}
+
 const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.DRAWING_STATUS_IDLE:
@@ -39,6 +45,8 @@ const reducer = (state=initialState, action) => {
       return setDrwStatPolygon(state, action);
     case actionTypes.DRAWING_STATUS_POLYLINE:
       return setDrwStatePolyline(state, action)
+    case actionTypes.DRAWING_STATUS_CIRCLE:
+      return setDrwStateCircle(state, action)
     default: return state;
   }
 };

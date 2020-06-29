@@ -23,3 +23,9 @@ export const setDrwStatPolyline = () => (dispatch, getState) => {
     type: actionTypes.DRAWING_STATUS_POLYLINE
   })
 }
+
+export const setDrwStatCircle = () => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.DRAWING_STATUS_CIRCLE
+  })
+}

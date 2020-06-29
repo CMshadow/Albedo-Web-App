@@ -10,6 +10,7 @@ import * as objTypes from '../../../../store/action/drawing/objTypes'
 const POINT_OFFSET = 0.15
 const POLYLINE_OFFSET = 0.125
 const POLYGON_OFFSET = 0.1
+const CIRCLE_OFFSET = POLYLINE_OFFSET
 
 const LeftClickHandler = () => {
   const dispatch = useDispatch()
@@ -64,6 +65,20 @@ const LeftClickHandler = () => {
     }
   }
 
+  const drawCircle = (mouseCor) => {
+    const centerPointId = uuid()
+    const edgePointId = uuid()
+    const circleId = uuid()
+    const radius = 10
+    mouseCor.setCoordinate(null, null, POINT_OFFSET)
+    dispatch(actions.addPoint({mouseCor, pointId: centerPointId, circleId}))
+    const edgeCor = Coordinate.destination(mouseCor, 0, radius)
+    dispatch(actions.addPoint({mouseCor: edgeCor, pointId: edgePointId, circleId}))
+    mouseCor.setCoordinate(null, null, CIRCLE_OFFSET)
+    dispatch(actions.addCircle({mouseCor, radius, circleId, centerPointId, edgePointId}))
+    dispatch(actions.setDrwStatIdle())
+  }
+
   const leftClickActions = (event) => {
     const PickedObjectsArray = viewer.scene.drillPick(event.position);
     const mouseCart3 = viewer.scene.pickPosition(event.position);
@@ -85,6 +100,10 @@ const LeftClickHandler = () => {
 
       case objTypes.POLYGON:
         drawPolygon(mouseCor)
+        break
+
+      case objTypes.CIRCLE:
+        drawCircle(mouseCor)
         break
 
       default:
