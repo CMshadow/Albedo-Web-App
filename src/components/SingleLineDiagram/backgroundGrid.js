@@ -1,15 +1,16 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {v4 as uuidv4} from 'uuid';
 import { Rect, Line, Group } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux'
 
 
 const BackgroundGrids = (props) => {
-  const size_times = 1;
+  const size_times = 2;
   const averageHori = 50;
   const averageVeri = 10;
   const windowHeight = useSelector(state => state.SLD.stageHeight);
   const windowWidth = useSelector(state => state.SLD.stageWidth);
+
   const grids = () => {
     let grid = [];
     for (let i = 0; i < windowHeight * size_times / averageHori; ++i) {
@@ -73,7 +74,7 @@ const BackgroundGrids = (props) => {
         x={0}
         y={0}
         width={windowWidth}
-        height={windowHeight}
+        height={windowHeight }
         fill={'#0a0a0a'}>
       </Rect>
       {[...grids()]}
