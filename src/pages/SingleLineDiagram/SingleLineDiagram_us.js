@@ -56,23 +56,12 @@ const SingleLineDiagUS = () => {
   let newWidth = useSelector(state => state.SLD.stageWidth);
   let newHeight = useSelector(state => state.SLD.stageHeight);
 
-  useEffect( () => {
-    console.log('w')
-    setStageWidth(newWidth);
-    
-  }, [stageWidth])
-
-  useEffect( () => {
-    console.log('h')
-    setStageHeight(newHeight);
-  }, [stageHeight])
-
-
   let [tableTrigger, setTable] = useState(true);
   const tableTriggerHandler = () => {
     setTable(!tableTrigger);
   }
-  console.log(111)
+
+  
   return (
     <div className={classes.SLD}>
       <Tooltip title="Equipment Table">
@@ -169,16 +158,17 @@ const SingleLineDiagUS = () => {
         {({ store }) => (
           <Stage
             className={classes.stage}
-            height={stageHeight}
-            width={stageWidth}
+            height={newHeight}
+            width={newWidth}
+            draw={true}
           >
             <Provider store={store}>
               <Layer
                 preventDefault={false}
               >
                 <Background
-                  width={stageWidth}
-                  height={stageHeight}
+                  width={newWidth}
+                  height={newHeight}
                 />
                 <PanelArrayCollection
                   width={stageWidth}

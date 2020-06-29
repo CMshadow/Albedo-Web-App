@@ -8,7 +8,7 @@ const PanelArrayCollection = (props) => {
 
   const dispatch = useDispatch();
   const minSize = [150, 100];//w,h
-  const startPosition = [props.width * 0.05, props.height * 0.1 + 83];
+  const startPosition = [props.width * 0.05, props.height * 0.1];
   const stroke_Width = 2;
   const connectAccess = [];
   const groupOfPancelsArray =[];
@@ -46,9 +46,10 @@ const PanelArrayCollection = (props) => {
       connectAccess.push(accessPorts);
     }
     dispatch(setInverterWidth(minSize[1], connectAccess, minSize[1] * 1.8));
-    let updatedHeight = connectAccess[numOfArray - 1][1][1] + minSize[1] > props.height && connectAccess[numOfArray - 1][1][1] + minSize[1] > props.width
+
+    let updatedHeight = connectAccess[numOfArray - 1][1][1] + minSize[1] > props.height + 64
     ? connectAccess[numOfArray - 1][1][1] + minSize[1] 
-    : props.height;
+    : props.height + 64;
     dispatch(setResize(updatedHeight));
 
     return groupOfPancelsArray;
