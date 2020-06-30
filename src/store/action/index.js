@@ -41,6 +41,18 @@ export {
 } from './reportAction'
 
 export {
+  setPVDist,
+  setInverterWidth,
+  InverterDataExport,
+  setInterConnectData,
+  setResize,
+  setServerPanel,
+  setMeter,
+  setGrid,
+  setWidth
+} from './SLDAction'
+
+export {
   setMapKey,
   setViewer,
   enableRotate,

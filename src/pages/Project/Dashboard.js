@@ -1,4 +1,5 @@
 import React from 'react'
+import GlobalAlert from '../../components/GlobalAlert/GlobalAlert'
 import { Row, Col } from 'antd';
 import { useSelector } from 'react-redux';
 import { Description } from './elements/Description';
@@ -13,6 +14,7 @@ const Dashboard = () => {
 
   return (
     <div>
+      <GlobalAlert/>
       <Row gutter={rowGutter}>
         <Col span={24}>
           <Description loading={!projectData.projectTitle}/>

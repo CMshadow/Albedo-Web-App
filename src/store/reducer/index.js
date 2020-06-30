@@ -6,6 +6,7 @@ import projectReducer from './projectReducer';
 import pvTableReducer from './pvTableReducer'
 import inverterTableReducer from './inverterTableReducer'
 import reportReducer from './reportReducer'
+import SLDReducer from './SLDReducer'
 import cesiumReducer from './cesiumReducer'
 import drawingStatusReducer from './drawing/statusReducer'
 import drawingObjReducer from './drawing/drawingObjReducer'
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   pv: pvTableReducer,
   inverter: inverterTableReducer,
   report: reportReducer,
+  SLD: SLDReducer,
   cesium: cesiumReducer,
   undoable: undoable(combineReducers({
     drwStat: drawingStatusReducer,

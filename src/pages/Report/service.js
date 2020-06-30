@@ -35,7 +35,7 @@ export const getReport = ({projectID, buildingID}) => async dispatch => {
   )
   .then(res => res.data)
   .catch(err => {
-    notification.error({message: err.response.data.message})
+    // notification.error({message: err.response.data.message})
     throw err
   })
 }

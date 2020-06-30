@@ -5,9 +5,12 @@
   "error.http": "Operation failed",
 
   "error.getproject": "Cannot read project information",
+  "error.save": "Saving Project Failed",
 
   "warning.dev.message": "Version-Alpha",
   "warning.dev.description": "Note: The content of this version of the software is subject to change. If any issue is spotted during the usage of this software, please contact us immediately! Feedback and suggestions are highly valued and appreciated. --Albedo Dev Team",
 
-  "warning.delete": "Deletion is permanent, do you wish to continue?"
+  "warning.delete": "Deletion is permanent, do you wish to continue?",
+
+  "error.oversize": "Oversized capacity"
 }

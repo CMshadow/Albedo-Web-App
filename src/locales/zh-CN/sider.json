@@ -4,13 +4,19 @@
   "sider.menu.project": "管理项目",
 
 
-  "sider.menu.back-project": "返回管理项目",
+  "sider.menu.back-project": "退出该项目",
   "sider.menu.projectDetail": "项目信息",
   "sider.menu.report": "查看报告",
   "sider.menu.report.prefix": "房屋",
   "sider.menu.report.suffix": "的报告",
   "sider.menu.pv": "管理光伏组件",
   "sider.menu.inverter": "管理逆变器",
+
+  "sider.menu.singleLineDiagram": "系统电气主接线图",
+  "sider.menu.singleLineDiagram.prefix": "",
+  "sider.menu.singleLineDiagram.suffix": "-电气主接线图",
+  "sider.menu.singleLineDiagram.disabled": "生成报告后查看系统电气主接线图",
+
 
   "sider.save": "保存项目",
   "sider.report.disabled": "该房屋配置尚未完成，无法查看报告",
