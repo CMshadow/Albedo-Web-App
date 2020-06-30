@@ -12,17 +12,9 @@ const LeftUpHandler = (props) => {
   const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
 
   const leftUpActions = (event) => {
-    switch (drwStat) {
-      case objTypes.IDLE:
-        if (pickedId) {
-          console.log('releasepicked')
-          dispatch(actions.releasePickedObj())
-          dispatch(actions.enableRotate())
-        }
-        break;
-
-      default:
-        break;
+    if (pickedId) {
+      dispatch(actions.releasePickedObj())
+      dispatch(actions.enableRotate())
     }
   };
 

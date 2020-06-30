@@ -38,7 +38,7 @@ class Polygon {
     this.edgesCollection = edgesCollection? [...edgesCollection] : null;
   }
 
-  static copyPolygon (
+  static fromPolygon (
     polygon,
     id = null,
     height= null,
@@ -54,21 +54,18 @@ class Polygon {
     lowestNode = null,
     edgesCollection = null
   ){
-    const newID = id ? id : polygon.entityId;
-    const newHeight = height ? height: polygon.height;
+    const newID = id || polygon.entityId;
+    const newHeight = height || polygon.height;
     const newHierarchy = hierarchy ? [...hierarchy]: polygon.hierarchy;
-    const newExtrudedHeight =
-      extrudedHeight ?
-      extrudedHeight:
-      polygon.extrudedHeight;
-    const newMaterial = material ? material: polygon.material;
-    const newOutLineColor = outlineColor ? outlineColor : polygon.outlineColor;
-    const newShadow = shadow? shadow: true;
-    const newShow = show? show: true;
-    const newBrng = brng? brng: polygon.brng;
-    const newObliquily = obliquity? obliquity: polygon.obliquity;
-    const newHighestNode = highestNode? highestNode: polygon.highestNode;
-    const newLowestNode = lowestNode? lowestNode: polygon.lowestNode;
+    const newExtrudedHeight = extrudedHeight || polygon.extrudedHeight;
+    const newMaterial = material || polygon.material;
+    const newOutLineColor = outlineColor || polygon.outlineColor;
+    const newShadow = shadow || true;
+    const newShow = show || true;
+    const newBrng = brng || polygon.brng;
+    const newObliquily = obliquity || polygon.obliquity;
+    const newHighestNode = highestNode || polygon.highestNode;
+    const newLowestNode = lowestNode || polygon.lowestNode;
     const newEdgesCollection = edgesCollection? [...edgesCollection]: polygon.edgesCollection;
     return new Polygon(
       newHierarchy, newHeight, newID, newExtrudedHeight, newMaterial,

@@ -1,16 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Entity } from 'resium';
 import { useSelector, useDispatch } from 'react-redux'
 import Coordinate from '../../../infrastructure/point/coordinate'
 import { CallbackProperty, Cartesian3, HeightReference, Color, Cartesian2 } from 'cesium';
 import * as actions from '../../../store/action/index'
+import * as objTypes from '../../../store/action/drawing/objTypes'
 import { POINT } from '../../../store/action/drawing/objTypes'
 
 export const RenderPoint = ({point}) => {
   const dispatch = useDispatch()
   const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
-  const [color, setcolor] = useState(point.color)
+  const drawingType = useSelector(state => state.undoable.present.drawing.drawingType)
 
   return (
     <Entity
@@ -24,7 +25,7 @@ export const RenderPoint = ({point}) => {
 
       point={{
         pixelSize: point.pixelSize,
-        color: color,
+        color: point.color,
         heightReference: HeightReference.RELATIVE_TO_GROUND
       }}
 
@@ -46,18 +47,9 @@ export const RenderPoint = ({point}) => {
       }}
 
       onMouseEnter={(move, tar) => {
-        if (!drawingId && !pickedId) {
-          setcolor(Color.ORANGE)
-          point.setColor(Color.ORANGE)
+        if ((!drawingId && !pickedId) || drawingType === objTypes.POLYLINE) {
+          dispatch(actions.pointSetColor(point.entityId, Color.ORANGE))
           dispatch(actions.setHoverObj(POINT, point.entityId))
-        }
-      }}
-
-      onMouseLeave={(move, tar) => {
-        if (!drawingId && !pickedId) {
-          setcolor(Color.WHITE)
-          point.setColor(Color.WHITE)
-          dispatch(actions.releaseHoverObj())
         }
       }}
     />

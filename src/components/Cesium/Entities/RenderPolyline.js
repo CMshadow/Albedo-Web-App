@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Entity } from 'resium';
 import { CallbackProperty, Cartesian3, Color, NearFarScalar, Math as CesiumMath, VerticalOrigin, Cartesian2 } from 'cesium';
@@ -7,13 +7,10 @@ import { angleBetweenBrngs } from '../../../infrastructure/math/math'
 import { POLYLINE } from '../../../store/action/drawing/objTypes'
 import * as actions from '../../../store/action/index'
 
-const polylineColor = Color.STEELBLUE
-
 export const RenderPolyline = ({polyline}) => {
   const dispatch = useDispatch()
   const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
-  const [color, setcolor] = useState(polyline.color)
   const segmentPolylines = polyline.getSegmentPolyline()
 
   const getMidpoint = (startCor, endCor) => {
@@ -46,23 +43,14 @@ export const RenderPolyline = ({polyline}) => {
           );
         }, false),
         width: polyline.width,
-        material: color
+        material: polyline.color
       }}
       show={polyline.show}
 
       onMouseEnter={(move, tar) => {
         if (!drawingId && !pickedId) {
-          setcolor(Color.ORANGE)
-          polyline.setColor(Color.ORANGE)
+          dispatch(actions.polylineSetColor(polyline.entityId, Color.ORANGE))
           dispatch(actions.setHoverObj(POLYLINE, polyline.entityId))
-        }
-      }}
-
-      onMouseLeave={(move, tar) => {
-        if (!drawingId && !pickedId) {
-          setcolor(polylineColor)
-          polyline.setColor(polylineColor)
-          dispatch(actions.releaseHoverObj())
         }
       }}
     >

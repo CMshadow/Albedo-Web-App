@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Entity } from 'resium';
 import { useSelector, useDispatch } from 'react-redux'
 import { Cartesian3, CallbackProperty, PolygonHierarchy, Color } from 'cesium';
@@ -9,7 +9,6 @@ export const RenderPolygon = ({polygon}) => {
 	const dispatch = useDispatch()
 	const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
 	const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
-	const [color, setcolor] = useState(polygon.material)
 
 	return (
 		<Entity
@@ -27,7 +26,7 @@ export const RenderPolygon = ({polygon}) => {
 				outline: false,
 				outlineColor: polygon.outlineColor,
 				outlineWidth: polygon.outlineWidth,
-				material: color,
+				material: polygon.material,
 				shadows: polygon.shadow
 			}}
 
@@ -42,17 +41,8 @@ export const RenderPolygon = ({polygon}) => {
 
 			onMouseEnter={(move, tar) => {
 				if (!drawingId && !pickedId) {
-					setcolor(Color.ORANGE.withAlpha(0.2))
-	        polygon.setColor(Color.ORANGE.withAlpha(0.2))
+					dispatch(actions.polygonSetColor(polygon.entityId, Color.ORANGE.withAlpha(0.2)))
 	        dispatch(actions.setHoverObj(POLYGON, polygon.entityId))
-				}
-      }}
-
-      onMouseLeave={(move, tar) => {
-				if (!drawingId && !pickedId) {
-					setcolor(Color.WHITE.withAlpha(0.2))
-	        polygon.setColor(Color.WHITE.withAlpha(0.2))
-	        dispatch(actions.releaseHoverObj())
 				}
       }}
 		/>

@@ -21,6 +21,17 @@ export const createPolygon = ({mouseCor, polygonId, pointId, outPolylineId}) =>
   })
 }
 
+export const polygonSetColor = (polygonId, color) => (dispatch, getState) => {
+  const polygon = getState().undoable.present.polygon[polygonId].entity
+  const newPolygon = Polygon.fromPolygon(polygon)
+  newPolygon.setColor(color)
+
+  return dispatch({
+    type: actionTypes.POLYGON_SET,
+    entity: newPolygon,
+  })
+}
+
 export const polygonDynamic = (polygonId, mouseCor) => (dispatch, getState) => {
   const drawingPolygon = getState().undoable.present.polygon[polygonId].entity
   const pointMap = getState().undoable.present.polygon[polygonId].pointMap

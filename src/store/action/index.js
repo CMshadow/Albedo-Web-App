@@ -72,6 +72,7 @@ export {
 
 export {
   addPoint,
+  pointSetColor,
   setPointHeight,
   pointAddMapping,
   moveHoriPoint,
@@ -82,6 +83,7 @@ export {
 
 export {
   createPolygon,
+  polygonSetColor,
   polygonDynamic,
   polygonAddVertex,
   polygonTerminate,
@@ -92,6 +94,7 @@ export {
 
 export {
   createPolyline,
+  polylineSetColor,
   polylineDynamic,
   polylineAddVertex,
   polylineTerminate,

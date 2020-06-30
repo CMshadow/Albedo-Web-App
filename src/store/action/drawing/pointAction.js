@@ -23,6 +23,17 @@ export const addPoint = ({mouseCor, pointId, polygonId, polylineId, circleId, se
   })
 }
 
+export const pointSetColor = (pointId, color) => (dispatch, getState) => {
+  const point = getState().undoable.present.point[pointId].entity
+  const newPoint = Point.fromPoint(point)
+  newPoint.setColor(color)
+
+  return dispatch({
+    type: actionTypes.POINT_SET,
+    entity: newPoint,
+  })
+}
+
 export const pointAddMapping = ({pointId, polygonId, polylineId, circleId, sectorId}) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId].entity
   const polygonMap = getState().undoable.present.point[pointId].polygonMap

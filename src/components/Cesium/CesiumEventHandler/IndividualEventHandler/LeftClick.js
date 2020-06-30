@@ -18,8 +18,9 @@ const LeftClickHandler = () => {
   const viewer = useSelector(state => state.cesium.viewer)
   const drwStat = useSelector(state => state.undoable.present.drwStat.status)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
-  // const hoverId = useSelector(state => state.undoable.present.drawing.hoverId)
-  // const hoverType = useSelector(state => state.undoable.present.drawing.hoverType)
+  const hoverId = useSelector(state => state.undoable.present.drawing.hoverId)
+  const hoverType = useSelector(state => state.undoable.present.drawing.hoverType)
+
   const allPoint = useSelector(state => state.undoable.present.point)
   const allPolygon = useSelector(state => state.undoable.present.polygon)
 
@@ -30,22 +31,49 @@ const LeftClickHandler = () => {
     dispatch(actions.setDrwStatIdle())
   }
 
-  const drawPolyline = (mouseCor, pickedObjectIdArray) => {
+  const drawLine = (mouseCor) => {
     const polylineId = drawingId || uuid()
-    const pickedPointId = pickedObjectIdArray.find(id => Object.keys(allPoint).includes(id))
-    console.log(pickedPointId)
     let pointId
-    if (pickedPointId) {
-      pointId = pickedPointId
+    let cor
+    if (hoverId && hoverType === objTypes.POINT) {
+      pointId = hoverId
       dispatch(actions.pointAddMapping({pointId, polylineId}))
+      cor = allPoint[hoverId].entity
     } else {
       pointId = uuid()
       mouseCor.setCoordinate(null, null, POINT_OFFSET)
       dispatch(actions.addPoint({mouseCor, pointId, polylineId}))
+      cor = new Coordinate(mouseCor.lon, mouseCor.lat, mouseCor.height)
     }
-    mouseCor.setCoordinate(null, null, POLYLINE_OFFSET)
     if (!drawingId) {
-      dispatch(actions.createPolyline({mouseCor, polylineId, pointId}))
+      dispatch(actions.createPolyline({mouseCor: cor, polylineId, pointId}))
+      dispatch(actions.setDrawingObj(objTypes.POLYLINE, polylineId))
+      dispatch(actions.disableRotate())
+    } else {
+      dispatch(actions.polylineAddVertex({polylineId: drawingId, mouseCor, pointId}))
+      dispatch(actions.releasePickedObj())
+      dispatch(actions.polylineTerminate(drawingId))
+      dispatch(actions.setDrwStatIdle())
+      dispatch(actions.enableRotate())
+    }
+  }
+
+  const drawPolyline = (mouseCor) => {
+    const polylineId = drawingId || uuid()
+    let pointId
+    let cor
+    if (hoverId && hoverType === objTypes.POINT) {
+      pointId = hoverId
+      dispatch(actions.pointAddMapping({pointId, polylineId}))
+      cor = allPoint[hoverId].entity
+    } else {
+      pointId = uuid()
+      mouseCor.setCoordinate(null, null, POINT_OFFSET)
+      dispatch(actions.addPoint({mouseCor, pointId, polylineId}))
+      cor = new Coordinate(mouseCor.lon, mouseCor.lat, mouseCor.height)
+    }
+    if (!drawingId) {
+      dispatch(actions.createPolyline({mouseCor: cor, polylineId, pointId}))
       dispatch(actions.setDrawingObj(objTypes.POLYLINE, polylineId))
       dispatch(actions.disableRotate())
     } else {
@@ -116,22 +144,24 @@ const LeftClickHandler = () => {
 
 
   const leftClickActions = (event) => {
-    const PickedObjectsArray = viewer.scene.drillPick(event.position);
     const mouseCart3 = viewer.scene.pickPosition(event.position);
     if (!defined(mouseCart3)) return
     const mouseCor = Coordinate.fromCartesian(mouseCart3)
     // const mousePos = new Cartesian3(event.position.x, event.position.y)
     // const ellipsoid = viewer.scene.globe.ellipsoid;
     // const cartesian3 = viewer.camera.pickEllipsoid(mousePos, ellipsoid)
-    const pickedObjectIdArray = PickedObjectsArray.map(elem => elem.id.id)
 
     switch (drwStat) {
       case objTypes.POINT:
         addPoint(mouseCor)
         break;
 
+      case objTypes.LINE:
+        drawLine(mouseCor)
+        break
+
       case objTypes.POLYLINE:
-        drawPolyline(mouseCor, pickedObjectIdArray)
+        drawPolyline(mouseCor)
         break
 
       case objTypes.POLYGON:

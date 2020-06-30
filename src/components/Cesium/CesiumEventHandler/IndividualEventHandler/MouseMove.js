@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ScreenSpaceEvent } from 'resium';
-import { ScreenSpaceEventType, defined, Cartesian3 } from 'cesium';
+import { ScreenSpaceEventType, defined, Cartesian3, Color } from 'cesium';
 import Coordinate from '../../../../infrastructure/point/coordinate'
 import * as objTypes from '../../../../store/action/drawing/objTypes'
 import * as actions from '../../../../store/action/index';
@@ -9,6 +9,9 @@ import * as actions from '../../../../store/action/index';
 const POINT_OFFSET = 0.15
 const POLYLINE_OFFSET = 0.125
 const POLYGON_OFFSET = 0.1
+const POINT_COLOR = Color.WHITE
+const POLYLINE_COLOR = Color.STEELBLUE
+const POLYGON_COLOR = Color.WHITE.withAlpha(0.2)
 
 const MouseMoveHandler = () => {
   const dispatch = useDispatch()
@@ -17,7 +20,11 @@ const MouseMoveHandler = () => {
   const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
   const pickedType = useSelector(state => state.undoable.present.drawing.pickedType)
+  const hoverId = useSelector(state => state.undoable.present.drawing.hoverId)
+  const hoverType = useSelector(state => state.undoable.present.drawing.hoverType)
+  console.log(hoverType)
 
+  const allPoint = useSelector(state => state.undoable.present.point)
   const allPolygon = useSelector(state => state.undoable.present.polygon)
 
   const mouseMoveActions = (event) => {
@@ -31,6 +38,29 @@ const MouseMoveHandler = () => {
     if (!defined(mouseEndCart3) || !defined(mouseStartCart3)) return
     const mouseEndCor = Coordinate.fromCartesian(mouseEndCart3)
     const mouseStartCor = Coordinate.fromCartesian(mouseStartCart3)
+
+
+    if (!pickedId) {
+      const pickedObjIdArray = viewer.scene.drillPick(event.endPosition).map(elem => elem.id.id)
+      if (!pickedObjIdArray.includes(hoverId)) {
+        switch (hoverType) {
+          case objTypes.POINT:
+            dispatch(actions.pointSetColor(hoverId, POINT_COLOR))
+            dispatch(actions.releaseHoverObj())
+            break
+          case objTypes.POLYLINE:
+            dispatch(actions.polylineSetColor(hoverId, POLYLINE_COLOR))
+            dispatch(actions.releaseHoverObj())
+            break
+          case objTypes.POLYGON:
+            dispatch(actions.polygonSetColor(hoverId, POLYGON_COLOR))
+            dispatch(actions.releaseHoverObj())
+            break
+          default:
+            break
+        }
+      }
+    }
 
     switch(drwStat) {
       case objTypes.IDLE:
@@ -46,6 +76,7 @@ const MouseMoveHandler = () => {
         }
         break;
 
+      case objTypes.LINE:
       case objTypes.POLYLINE:
         mouseEndCor.setCoordinate(null, null, POLYLINE_OFFSET)
         if (drawingId) {

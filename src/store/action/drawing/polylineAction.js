@@ -1,7 +1,6 @@
 import * as actionTypes from '../actionTypes'
 import Polyline from '../../../infrastructure/line/polyline'
 import { Color } from 'cesium'
-import { polygonAddVertex } from './polygonAction'
 
 const polylineColor = Color.STEELBLUE
 const POLYGON_OFFSET = -0.025
@@ -15,6 +14,17 @@ export const createPolyline = ({mouseCor, polylineId, pointId, insidePolygonId})
     entity: polyline,
     pointMap: pointId ? [pointId] : [],
     insidePolygonId: insidePolygonId || 'EMPTY'
+  })
+}
+
+export const polylineSetColor = (polylineId, color) => (dispatch, getState) => {
+  const polyline = getState().undoable.present.polyline[polylineId].entity
+  const newPolyline = Polyline.fromPolyline(polyline)
+  newPolyline.setColor(color)
+
+  return dispatch({
+    type: actionTypes.POLYLINE_SET,
+    entity: newPolyline,
   })
 }
 
