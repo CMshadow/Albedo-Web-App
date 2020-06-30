@@ -14,13 +14,14 @@ import ProjectTable from './pages/ProjectTable/ProjectTable';
 import NotFound404 from './pages/404';
 import FakeParking from './components/FakeParking/FakeParking'
 import Term from './pages/static/Term'
+import ModelingLayout from './layouts/Modeling/ModelingLayout/ModelingLayout'
 const Report = lazy(() => import('./pages/Report/Report'))
 const ParamsForm = lazy(() => import('./pages/ParamsForm/ParamsForm'))
 const Dashboard = lazy(() => import('./pages/Project/Dashboard'))
 const PVTable = lazy(() => import('./pages/PVTable/index'))
 const InverterTable = lazy(() => import('./pages/InverterTable/index'))
+const ModelingPage = lazy(() => import('./pages/Modeling/Modeling')) 
 const SingleLineDiagramUS = lazy(() => import('./pages/SingleLineDiagram/SingleLineDiagram_us'))
-
 
 const Router = () => {
   return(
@@ -73,6 +74,15 @@ const Router = () => {
                 </PrivateRoute>
               </Switch>
             </ProjectLayout>
+          </PrivateRoute>
+          <PrivateRoute path='/modeling'>
+            <ModelingLayout>
+              <Switch>
+                <PrivateRoute path='/modeling/:projectID'>
+                  <ModelingPage/>
+                </PrivateRoute>
+              </Switch>
+            </ModelingLayout>
           </PrivateRoute>
           <Route path="/terms">
             <Term />
