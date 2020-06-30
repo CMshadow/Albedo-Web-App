@@ -10,7 +10,8 @@ const setPoint = (state, action) => {
       entity: action.entity,
       polygonMap: action.polygonMap || state[action.entity.entityId].polygonMap,
       polylineMap: action.polylineMap || state[action.entity.entityId].polylineMap,
-      circleMap: action.circleMap || state[action.entity.entityId].circleMap
+      circleMap: action.circleMap || state[action.entity.entityId].circleMap,
+      sectorMap: action.sectorMap || state[action.entity.entityId].sectorMap
     }
   }
 }

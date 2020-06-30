@@ -11,6 +11,7 @@ const POINT_OFFSET = 0.15
 const POLYLINE_OFFSET = 0.125
 const POLYGON_OFFSET = 0.1
 const CIRCLE_OFFSET = POLYLINE_OFFSET
+const SECTOR_OFFSET = POLYLINE_OFFSET
 
 const LeftClickHandler = () => {
   const dispatch = useDispatch()
@@ -79,6 +80,31 @@ const LeftClickHandler = () => {
     dispatch(actions.setDrwStatIdle())
   }
 
+  const drawSector = (mouseCor) => {
+    const centerPointId = uuid()
+    const edgePointId = uuid()
+    const anglePointId = uuid()
+    const brngPointId = uuid()
+    const sectorId = uuid()
+    const radius = 10
+    const brng = 0
+    const angle = 60
+    mouseCor.setCoordinate(null, null, POINT_OFFSET)
+    dispatch(actions.addPoint({mouseCor, pointId: centerPointId, sectorId}))
+    const edgeCor = Coordinate.destination(mouseCor, brng, radius)
+    dispatch(actions.addPoint({mouseCor: edgeCor, pointId: edgePointId, sectorId}))
+    const angleCor = Coordinate.destination(mouseCor, brng - (angle / 2), radius)
+    dispatch(actions.addPoint({mouseCor: angleCor, pointId: anglePointId, sectorId}))
+    const brngCor = Coordinate.destination(mouseCor, brng + (angle / 2), radius)
+    dispatch(actions.addPoint({mouseCor: brngCor, pointId: brngPointId, sectorId}))
+    mouseCor.setCoordinate(null, null, SECTOR_OFFSET)
+    dispatch(actions.addSector({
+      mouseCor, brng, radius, angle, sectorId, centerPointId, edgePointId, anglePointId, brngPointId
+    }))
+    dispatch(actions.setDrwStatIdle())
+  }
+
+
   const leftClickActions = (event) => {
     const PickedObjectsArray = viewer.scene.drillPick(event.position);
     const mouseCart3 = viewer.scene.pickPosition(event.position);
@@ -104,6 +130,10 @@ const LeftClickHandler = () => {
 
       case objTypes.CIRCLE:
         drawCircle(mouseCor)
+        break
+
+      case objTypes.SECTOR:
+        drawSector(mouseCor)
         break
 
       default:

@@ -9,6 +9,7 @@ import { DrawingPointRender } from '../../components/Cesium/CesiumRenders/Drawin
 import { DrawingPolygonRender } from '../../components/Cesium/CesiumRenders/DrawingPolygonRender'
 import { DrawingPolylineRender } from '../../components/Cesium/CesiumRenders/DrawingPolylineRender'
 import { DrawingCircleRender } from '../../components/Cesium/CesiumRenders/DrawingCircleRender'
+import { DrawingSectorRender } from '../../components/Cesium/CesiumRenders/DrawingSectorRender'
 import { CustomContextMenu } from '../../components/Cesium/CustomContextMenu/CustomContextMenu'
 
 const ModelingPage = (props) => {
@@ -24,6 +25,7 @@ const ModelingPage = (props) => {
           <DrawingPolygonRender />
           <DrawingPolylineRender />
           <DrawingCircleRender />
+          <DrawingSectorRender />
         </CustomViewer>
       </ContextMenuTrigger>
       <CustomContextMenu />

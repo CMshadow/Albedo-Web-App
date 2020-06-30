@@ -56,7 +56,8 @@ export {
   setDrwStatPoint,
   setDrwStatPolygon,
   setDrwStatPolyline,
-  setDrwStatCircle
+  setDrwStatCircle,
+  setDrwStatSector
 } from './drawing/statusAction'
 
 export {
@@ -73,6 +74,7 @@ export {
   setPointHeight,
   pointAddMapping,
   moveHoriPoint,
+  moveHoriPointNoSideEff,
   moveVertiPoint,
   deletePoint
 } from './drawing/pointAction'
@@ -98,3 +100,7 @@ export {
 export {
   addCircle
 } from './drawing/circleAction'
+
+export {
+  addSector
+} from './drawing/sectorAction'

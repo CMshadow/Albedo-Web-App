@@ -29,3 +29,9 @@ export const setDrwStatCircle = () => (dispatch, getState) => {
     type: actionTypes.DRAWING_STATUS_CIRCLE
   })
 }
+
+export const setDrwStatSector = () => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.DRAWING_STATUS_SECTOR
+  })
+}

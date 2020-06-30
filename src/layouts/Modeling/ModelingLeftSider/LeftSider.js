@@ -33,6 +33,7 @@ const LeftSider = (props) => {
       <Button loading={drawStatus === objTypes.POLYLINE} onClick={() => dispatch(actions.setDrwStatPolyline())}>Draw Polyline</Button>
       <Button loading={drawStatus === objTypes.POLYGON} onClick={() => dispatch(actions.setDrwStatPolygon())}>Draw Polygon</Button>
       <Button loading={drawStatus === objTypes.CIRCLE} onClick={() => dispatch(actions.setDrwStatCircle())}>Draw Circle</Button>
+      <Button loading={drawStatus === objTypes.SECTOR} onClick={() => dispatch(actions.setDrwStatSector())}>Draw Sector</Button>
     </>
   )
   // if (this.state.siderCollapse === false) {

@@ -35,6 +35,12 @@ const setDrwStateCircle = (state, action) => {
   }
 }
 
+const setDrwStateSector = (state, action) => {
+  return {
+    status: objTypes.SECTOR
+  }
+}
+
 const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.DRAWING_STATUS_IDLE:
@@ -47,6 +53,8 @@ const reducer = (state=initialState, action) => {
       return setDrwStatePolyline(state, action)
     case actionTypes.DRAWING_STATUS_CIRCLE:
       return setDrwStateCircle(state, action)
+    case actionTypes.DRAWING_STATUS_SECTOR:
+      return setDrwStateSector(state, action)
     default: return state;
   }
 };

@@ -7,49 +7,49 @@ import { angleBetweenBrngs } from '../../../infrastructure/math/math'
 import { POLYLINE } from '../../../store/action/drawing/objTypes'
 import * as actions from '../../../store/action/index'
 
-const polylineColor = Color.LIMEGREEN
+const sectorColor = Color.DARKCYAN
 
-export const RenderCircle = ({circle}) => {
+export const RenderSector = ({sector}) => {
   const dispatch = useDispatch()
   const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
-  const [color, setcolor] = useState(circle.color)
+  const [color, setcolor] = useState(sector.color)
 
   return (
     <Entity
-      key={circle.entityId}
-      id={circle.entityId}
+      key={sector.entityId}
+      id={sector.entityId}
       polyline={{
         positions: new CallbackProperty(() => {
           return new Cartesian3.fromDegreesArrayHeights(
-            circle.getPointsCoordinatesArray()
+            sector.getPointsCoordinatesArray()
           );
         }, false),
-        width: circle.width,
+        width: sector.width,
         material: color
       }}
-      show={circle.show}
+      show={sector.show}
     >
       <Entity
-        key={`${circle.entityId}.label`}
-        id={`${circle.entityId}.label`}
+        key={`${sector.entityId}.label`}
+        id={`${sector.entityId}.label`}
         position={
           new CallbackProperty(() => {
-            return Coordinate.toCartesian(circle.centerPoint)
+            return Coordinate.toCartesian(sector.originCor)
           }, false)
         }
         label={{
-          text: `Radius: ${circle.radius.toFixed(2)} m`,
+          text: `Radius: ${sector.radius.toFixed(2)} m`,
           showBackground: true,
           font: "16px sans-serif",
-          eyeOffset: new Cartesian3(-4, 1, -2),
+          eyeOffset: new Cartesian3(-3, 1, -2),
           show: true, //drawingId === polyline.entityId,
           translucencyByDistance: new NearFarScalar(100, 1.0, 500, 0.0),
           rotation : CesiumMath.toRadians(180),
           alignedAxis : Cartesian3.UNIT_Z,
           verticalOrigin : VerticalOrigin.TOP
         }}
-        show={circle.show}
+        show={sector.show}
       />
     </Entity>
   )
