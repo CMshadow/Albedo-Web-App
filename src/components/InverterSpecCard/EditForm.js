@@ -72,7 +72,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
       if (value > selInv.strNum) {
         return {
           validateStatus: 'warning',
-          errorMsg: t('project.spec.spi.error.over-max'),
+          errorMsg: t('project.spec.error.over-max'),
         }
       }
     }
@@ -91,7 +91,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
       if (value > Math.floor(selInv.vdcMax / selPV.voco)) {
         return {
           validateStatus: 'warning',
-          errorMsg: t('project.spec.spi.error.over-max'),
+          errorMsg: t('project.spec.error.over-max'),
         }
       }
     }
@@ -208,7 +208,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
           </Col>
         </Row>
         <Row gutter={rowGutter}>
-          <Col span={7}>
+          <Col span={8}>
             <FormItem
               name='string_per_inverter'
               label={t('project.spec.string_per_inverter')}
@@ -226,7 +226,25 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
               />
             </FormItem>
           </Col>
-          <Col span={7}>
+          <Col span={16}>
+            <FormItem
+              name='ac_cable_len'
+              label={t('project.spec.ac_cable_len')}
+              rules={[{required: true}]}
+            >
+              <InputNumber
+                formatter={value => `${value}m`}
+                parser={value => value.replace('m', '')}
+                precision={2}
+                min={0}
+                className={styles.inputNumber}
+                disabled={disabled}
+              />
+            </FormItem>
+          </Col>
+        </Row>
+        <Row gutter={rowGutter}>
+          <Col span={8}>
             <FormItem
               name='panels_per_string'
               label={t('project.spec.panels_per_string')}
@@ -244,25 +262,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
               />
             </FormItem>
           </Col>
-          <Col span={10}>
-            <FormItem
-              name='ac_cable_len'
-              label={t('project.spec.ac_cable_len')}
-              rules={[{required: true}]}
-            >
-              <InputNumber
-                formatter={value => `${value}m`}
-                parser={value => value.replace('m', '')}
-                precision={2}
-                min={0}
-                className={styles.inputNumber}
-                disabled={disabled}
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
+          <Col span={16}>
             <FormItem
               name='dc_cable_len'
               label={

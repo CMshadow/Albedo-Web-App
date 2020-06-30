@@ -28,30 +28,31 @@ export const SpecView = ({buildingID, specIndex, invIndex}) => {
 
   const checkSpiWarning = () => {
     if (spec.string_per_inverter > selInv.strNum) {
-      return <Text type='warning'>{t('project.spec.spi.error.over-max')}</Text>
+      return <Text type='warning'>{t('project.spec.error.over-max')}</Text>
     }
     return null
   }
   const checkPpsWarning = () => {
     if (spec.panels_per_string > Math.floor(selInv.vdcMax / selPV.voco)) {
-      return <Text type='warning'>{t('project.spec.spi.error.over-max')}</Text>
+      return <Text type='warning'>{t('project.spec.error.over-max')}</Text>
     }
     return null
   }
 
   return (
-    <Descriptions column={3}>
-      <Item label={t('project.spec.serial')} span={1}>{spec.inverter_serial_number}</Item>
-      <Item label={t('project.spec.inverter')} span={2}>{selInv.name}</Item>
-      <Item label={t('project.spec.string_per_inverter')}>
+    <Descriptions column={{ xl: 8, xxl: 12}}>
+      <Item label={t('project.spec.serial')} span={4}>{spec.inverter_serial_number}</Item>
+      <Item label={t('project.spec.inverter')} span={4}>{selInv.name}</Item>
+      <Item label={t('project.spec.total_panels')} span={4}>{spec.string_per_inverter * spec.panels_per_string}</Item>
+      <Item label={t('project.spec.string_per_inverter')} span={4}>
         <Space>{spec.string_per_inverter}{checkSpiWarning()}</Space>
       </Item>
-      <Item label={t('project.spec.panels_per_string')}>
+      <Item label={t('project.spec.panels_per_string')} span={4}>
         <Space>{spec.panels_per_string} {checkPpsWarning()}</Space>
       </Item>
-      <Item label={t('project.spec.total_panels')}>{spec.string_per_inverter * spec.panels_per_string}</Item>
-      <Item label={t('project.spec.ac_cable_len')}>{spec.ac_cable_len}m</Item>
-      <Item label={t('project.spec.dc_cable_len')} span={2}>{spec.dc_cable_len.map(v => `${v}m`).join(', ')}</Item>
+
+      <Item label={t('project.spec.ac_cable_len')} span={4}>{spec.ac_cable_len}m</Item>
+      <Item label={t('project.spec.dc_cable_len')} span={4}>{spec.dc_cable_len.map(v => `${v}m`).join(', ')}</Item>
     </Descriptions>
   )
 }
