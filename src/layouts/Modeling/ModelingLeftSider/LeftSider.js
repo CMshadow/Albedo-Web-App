@@ -30,6 +30,7 @@ const LeftSider = (props) => {
   content = (
     <>
       <Button loading={drawStatus === objTypes.POINT} onClick={() => dispatch(actions.setDrwStatPoint())}>Draw Point</Button>
+      <Button loading={drawStatus === objTypes.LINE} onClick={() => dispatch(actions.setDrwStatLine())}>Draw line</Button>
       <Button loading={drawStatus === objTypes.POLYLINE} onClick={() => dispatch(actions.setDrwStatPolyline())}>Draw Polyline</Button>
       <Button loading={drawStatus === objTypes.POLYGON} onClick={() => dispatch(actions.setDrwStatPolygon())}>Draw Polygon</Button>
       <Button loading={drawStatus === objTypes.CIRCLE} onClick={() => dispatch(actions.setDrwStatCircle())}>Draw Circle</Button>

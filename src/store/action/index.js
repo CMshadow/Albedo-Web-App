@@ -56,6 +56,7 @@ export {
   setDrwStatPoint,
   setDrwStatPolygon,
   setDrwStatPolyline,
+  setDrwStatLine,
   setDrwStatCircle,
   setDrwStatSector
 } from './drawing/statusAction'

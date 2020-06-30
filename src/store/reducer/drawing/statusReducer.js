@@ -29,6 +29,12 @@ const setDrwStatePolyline = (state, action) => {
   }
 }
 
+const setDrwStateLine = (state, action) => {
+  return {
+    status: objTypes.LINE
+  }
+}
+
 const setDrwStateCircle = (state, action) => {
   return {
     status: objTypes.CIRCLE
@@ -51,6 +57,8 @@ const reducer = (state=initialState, action) => {
       return setDrwStatPolygon(state, action);
     case actionTypes.DRAWING_STATUS_POLYLINE:
       return setDrwStatePolyline(state, action)
+    case actionTypes.DRAWING_STATUS_LINE:
+      return setDrwStateLine(state, action)
     case actionTypes.DRAWING_STATUS_CIRCLE:
       return setDrwStateCircle(state, action)
     case actionTypes.DRAWING_STATUS_SECTOR:

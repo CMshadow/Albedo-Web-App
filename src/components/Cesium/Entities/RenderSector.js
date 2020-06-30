@@ -42,7 +42,7 @@ export const RenderSector = ({sector}) => {
           text: `Radius: ${sector.radius.toFixed(2)} m`,
           showBackground: true,
           font: "16px sans-serif",
-          eyeOffset: new Cartesian3(-3, 1, -2),
+          eyeOffset: new Cartesian3(sector.brng > 0 && sector.brng < 180 ? 3 : -3, 1, -2),
           show: true, //drawingId === polyline.entityId,
           translucencyByDistance: new NearFarScalar(100, 1.0, 500, 0.0),
           rotation : CesiumMath.toRadians(180),
