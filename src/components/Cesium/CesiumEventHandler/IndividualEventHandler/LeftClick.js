@@ -18,7 +18,9 @@ const LeftClickHandler = () => {
   const viewer = useSelector(state => state.cesium.viewer)
   const drwStat = useSelector(state => state.undoable.present.drwStat.status)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
-
+  // const hoverId = useSelector(state => state.undoable.present.drawing.hoverId)
+  // const hoverType = useSelector(state => state.undoable.present.drawing.hoverType)
+  const allPoint = useSelector(state => state.undoable.present.point)
   const allPolygon = useSelector(state => state.undoable.present.polygon)
 
   const addPoint = (mouseCor) => {
@@ -28,11 +30,19 @@ const LeftClickHandler = () => {
     dispatch(actions.setDrwStatIdle())
   }
 
-  const drawPolyline = (mouseCor) => {
-    const pointId = uuid()
+  const drawPolyline = (mouseCor, pickedObjectIdArray) => {
     const polylineId = drawingId || uuid()
-    mouseCor.setCoordinate(null, null, POINT_OFFSET)
-    dispatch(actions.addPoint({mouseCor, pointId, polylineId}))
+    const pickedPointId = pickedObjectIdArray.find(id => Object.keys(allPoint).includes(id))
+    console.log(pickedPointId)
+    let pointId
+    if (pickedPointId) {
+      pointId = pickedPointId
+      dispatch(actions.pointAddMapping({pointId, polylineId}))
+    } else {
+      pointId = uuid()
+      mouseCor.setCoordinate(null, null, POINT_OFFSET)
+      dispatch(actions.addPoint({mouseCor, pointId, polylineId}))
+    }
     mouseCor.setCoordinate(null, null, POLYLINE_OFFSET)
     if (!drawingId) {
       dispatch(actions.createPolyline({mouseCor, polylineId, pointId}))
@@ -121,7 +131,7 @@ const LeftClickHandler = () => {
         break;
 
       case objTypes.POLYLINE:
-        drawPolyline(mouseCor)
+        drawPolyline(mouseCor, pickedObjectIdArray)
         break
 
       case objTypes.POLYGON:
