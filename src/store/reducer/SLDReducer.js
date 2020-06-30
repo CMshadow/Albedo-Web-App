@@ -16,7 +16,12 @@ const initialState = {
   serverPanelAccess: [],
   meterPosition:[],
   gridPosition:[],
-  meterAccessPosition: []
+  meterAccessPosition: [],
+  //CN
+  diagramWidth: 600,
+  diagramHeight: 400,
+  diagramBoundaryPosition: [0 , 0]
+
 };
 
 const setPVDist = (state, action) => {
@@ -89,6 +94,21 @@ const setWidth = (state, action) => {
   }
 }
 
+const setStartPosition = (state, action) => {
+  return{
+    ...state,
+    diagramBoundaryPosition: action.position
+  }
+}
+
+const setDiagramWidth = (state, action) => {
+  return{
+    ...state,
+    diagramWidth: action.width
+  }  
+}
+
+
 const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_PV_DIST:
@@ -118,6 +138,8 @@ const reducer = (state=initialState, action) => {
     case actionTypes.SET_WIDTH:
       return setWidth(state, action);
 
+    case actionTypes.SET_DIAGRAM_WIDTH:
+      return setDiagramWidth(state, action);
     default: return state;
   }
 };

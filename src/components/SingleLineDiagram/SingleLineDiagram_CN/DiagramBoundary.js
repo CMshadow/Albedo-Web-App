@@ -1,11 +1,12 @@
 import React from "react";
 import {v4 as uuidv4} from 'uuid'
 import {Rect, Line, Group, Text, Image} from "react-konva"
-import {useSelector } from 'react-redux'
+import {useSelector, useDispatch } from 'react-redux'
 import logo from '../../../assets/logo.png'
 // import useImage from 'use-image';
-
+import {setDiagramWidth, setStartPosition } from '../../../store/action/index'
 const DiagramBoundary = (params) => {
+  const dispatch = useDispatch()
   const groupOfBoundary = []
   const width = useSelector(state => state.SLD.stageWidth)
   const height = useSelector(state => state.SLD.stageHeight)
@@ -17,7 +18,6 @@ const DiagramBoundary = (params) => {
   const unitWidth = boundaryWidth / 6
   const heightMark = ['A', 'B', 'C', 'D']
   const boundWidth = boundaryWidth * 17/18 - boundaryWidth * 0.01 //inner
-  // const [diagramLogo] = useImage(logo) 
 
   const DrawBoundary = () => {
     groupOfBoundary.push(<Rect
@@ -35,6 +35,9 @@ const DiagramBoundary = (params) => {
 
     drawInnerBound()
     drawIcon()
+    drawDiagramShelf()
+    dispatch(setStartPosition(startPosition))
+    dispatch(setDiagramWidth(boundaryWidth))
     return groupOfBoundary;
   }
   
@@ -174,12 +177,274 @@ const DiagramBoundary = (params) => {
       lineJoin='round'
       ></Line>)
 
-    
-    // groupOfBoundary.push(<Image
-    //   image={diagramLogo}
-    // ></Image>)
+    const font = iconHeight * 0.1 > 18 ? 18 : iconHeight * 0.1
+    groupOfBoundary.push(<Text
+      key = {"Boundary-Text-" + uuidv4()}
+      x={startX + iconWidth * 0.6}
+      y={startY + iconHeight * 0.7 + font}
+      text={"项目:"}
+      fontSize={font}
+      fontFamily='Arial'
+      fill='Black'
+    ></Text>)
+
+    groupOfBoundary.push(<Text
+      key = {"Boundary-Text-" + uuidv4()}
+      x={startX + iconWidth * 0.6}
+      y={startY + iconHeight * 0.4}
+      text={"屋顶光伏发电系统电气主接线图"}
+      fontSize={font}
+      fontFamily='Arial'
+      fill='Black'
+    ></Text>)
   }
+
   
+  const drawDiagramShelf = () => {
+    let lastPosition = []
+    const unitHeight = boundWidth * 0.7 / 8
+    const font = unitHeight * 0.2 > 14 ? 14 : unitHeight * 0.2
+    const heightOffSet = 10
+    for (let index = 1; index < 7; index++) {
+      groupOfBoundary.push(<Line 
+        key= {"Boundary-Line-" + uuidv4()}
+        points={[startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth,
+         startPosition[1] + index * unitHeight, 
+         startPosition[0] + boundaryWidth * 1 / 18 + 1.5 * unitWidth,
+         startPosition[1] + index * unitHeight]}
+        stroke='#7b7b85'
+        strokeWidth={2}
+        lineCap='round'
+        lineJoin='round'
+        ></Line>)
+
+        if (index === 1) {
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + heightOffSet}
+            text={' 低压电缆: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            text={' 型号: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + 2 * font + heightOffSet}
+            text={' 芯数x截面: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+        } else if (index === 2) {
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + heightOffSet}
+            text={' 交流汇流箱: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            text={' In: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + 2 * font + heightOffSet}
+            text={' 台: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+        } 
+        else if (index === 3) {
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + heightOffSet}
+            text={' 低压电缆: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            text={' 型号: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + 2 * font + heightOffSet}
+            text={' 芯数x截面: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+        } else if (index === 4) {
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + heightOffSet}
+            text={' 组串式逆变器: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            text={' 台: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          
+        } else if (index === 5) {
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + heightOffSet}
+            text={' 光伏专用电缆: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            text={' 型号: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + 2 * font + heightOffSet}
+            text={' 芯数x截面: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+        } else {
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + heightOffSet}
+            text={' 电池组件: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            text={' Voc: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + 2 * font + heightOffSet}
+            text={' Vpm: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + 3 * font + heightOffSet}
+            text={' Isc: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + 4 * font + heightOffSet}
+            text={' Ipm: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + 5 * font + heightOffSet}
+            text={' 光伏组件数量: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+          groupOfBoundary.push(<Text
+            key = {"Boundary-Text-" + uuidv4()}
+            x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
+            y={startPosition[1] + index * unitHeight + 6 * font + heightOffSet}
+            text={' 组串数量: '}
+            fontSize={font}
+            fontFamily='Arial'
+            fill='Black'
+          ></Text>)
+        }
+      
+      const connectHeight = index === 6 ? unitHeight * 0.7 : 0
+      groupOfBoundary.push(<Line 
+        key= {"Boundary-Line-" + uuidv4()}
+        points={[startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth,
+          startPosition[1] + index * unitHeight, 
+          startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth,
+          startPosition[1] + (index + 1) * unitHeight + connectHeight]}
+        stroke='#7b7b85'
+        strokeWidth={2}
+        lineCap='round'
+        lineJoin='round'
+        ></Line>)
+        lastPosition = [startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth, startPosition[1] + (index + 1) * unitHeight + connectHeight]
+    }
+    groupOfBoundary.push(<Line 
+      key= {"Boundary-Line-" + uuidv4()}
+      points={[lastPosition[0],
+        lastPosition[1], 
+        lastPosition[0] + unitWidth,
+        lastPosition[1]]}
+      stroke='black'
+      strokeWidth={2}
+      lineCap='round'
+      lineJoin='round'
+      ></Line>)
+  }
+
+
 
   return(
     <Group>
@@ -189,4 +454,4 @@ const DiagramBoundary = (params) => {
 }
 
 
-export default DiagramBoundary;
+export default DiagramBoundary

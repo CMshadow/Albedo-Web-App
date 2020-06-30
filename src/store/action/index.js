@@ -49,5 +49,7 @@ export {
   setServerPanel,
   setMeter,
   setGrid,
-  setWidth
+  setWidth,
+  setStartPosition,
+  setDiagramWidth
 } from './SLDAction'

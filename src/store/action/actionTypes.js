@@ -37,3 +37,6 @@ export const SET_SERVER_PANEL = 'SET_SERVER_PANEL'
 export const SET_METER = 'SET_METER'
 export const SET_GRID = 'SET_GRID'
 export const SET_WIDTH = 'SET_WIDTH'
+
+export const SET_START_POSTION = 'SET_START_POSTION'
+export const SET_DIAGRAM_WIDTH = 'SET_DIAGRAM_WIDTH'

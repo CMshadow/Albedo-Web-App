@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import classes from './SingleLineDiagram_us.module.scss';
 import Background from '../../components/SingleLineDiagram/SingleLineDiagram_CN/Background';
 import Boundary from '../../components/SingleLineDiagram/SingleLineDiagram_CN/DiagramBoundary';
-// import PanelArrayCollection from '../../components/SingleLineDiagram/PanelArrayCollection ';
+import PanelArrayCollection from '../../components/SingleLineDiagram/SingleLineDiagram_CN/panelArrayCollection';
 // import InverterCollection from '../../components/SingleLineDiagram/InverterCollection';
 // import InterConnect from '../../components/SingleLineDiagram/Interconnecter';
 // import Disconnecter from '../../components/SingleLineDiagram/AcDisconnecter';
@@ -166,6 +166,7 @@ const SingleLineDiagUS = () => {
               <Layer>
                 <Background />
                 <Boundary />
+                <PanelArrayCollection />
               </Layer>
             </Provider>
           </Stage>

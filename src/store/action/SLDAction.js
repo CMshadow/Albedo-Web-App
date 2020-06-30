@@ -70,3 +70,17 @@ export const setWidth = (newWidth) => (dispatch, getState) => {
     width: newWidth,
   })
 }
+
+export const setStartPosition = (newPosition) => (dispatch, getState) => {
+  return dispatch({
+    type: ActionTypes.SET_START_POSTION,
+    position: newPosition
+  })
+}
+
+export const setDiagramWidth = (newWidth) => (dispatch, getState) => {
+  return dispatch({
+    type: ActionTypes.SET_DIAGRAM_WIDTH,
+    width: newWidth
+  })
+}
