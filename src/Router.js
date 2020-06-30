@@ -20,7 +20,7 @@ const Dashboard = lazy(() => import('./pages/Project/Dashboard'))
 const PVTable = lazy(() => import('./pages/PVTable/index'))
 const InverterTable = lazy(() => import('./pages/InverterTable/index'))
 const SingleLineDiagramUS = lazy(() => import('./pages/SingleLineDiagram/SingleLineDiagram_us'))
-
+const SingleLineDiagramCN = lazy(() => import('./pages/SingleLineDiagram/SingleLineDiagram_cn'))
 
 const Router = () => {
   return(
@@ -66,7 +66,8 @@ const Router = () => {
                   <InverterTable/>
                 </PrivateRoute>
                 <PrivateRoute path="/project/:projectID/singleLineDiagram/:buildingID">
-                 <SingleLineDiagramUS />
+                 {/* <SingleLineDiagramUS /> */}
+                  <SingleLineDiagramCN />
                 </PrivateRoute>
                 <PrivateRoute path='*'>
                   <NotFound404/>
@@ -84,7 +85,7 @@ const Router = () => {
                   <ProjectTable/>
                 </PrivateRoute>
                 <Redirect path='*' to="/user/login"/>
-                {/* <Route path='*' component={NotFound404} /> */}
+                <Route path='*' component={NotFound404} />
               </Switch>
             </BasicLayout>
           </PrivateRoute>

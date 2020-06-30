@@ -2,56 +2,56 @@ import React, {useState} from 'react';
 import  {Stage, Layer}  from 'react-konva';
 import { useParams } from 'react-router-dom'
 import classes from './SingleLineDiagram_us.module.scss';
-import Background from '../../components/SingleLineDiagram/backgroundGrid';
-import PanelArrayCollection from '../../components/SingleLineDiagram/PanelArrayCollection ';
-import InverterCollection from '../../components/SingleLineDiagram/InverterCollection';
-import InterConnect from '../../components/SingleLineDiagram/Interconnecter';
-import Disconnecter from '../../components/SingleLineDiagram/AcDisconnecter';
-import Meter from '../../components/SingleLineDiagram/Meter';
-import Grid from '../../components/SingleLineDiagram/Grid';
+import Background from '../../components/SingleLineDiagram/SingleLineDiagram_CN/Background';
+import Boundary from '../../components/SingleLineDiagram/SingleLineDiagram_CN/DiagramBoundary';
+// import PanelArrayCollection from '../../components/SingleLineDiagram/PanelArrayCollection ';
+// import InverterCollection from '../../components/SingleLineDiagram/InverterCollection';
+// import InterConnect from '../../components/SingleLineDiagram/Interconnecter';
+// import Disconnecter from '../../components/SingleLineDiagram/AcDisconnecter';
+// import Meter from '../../components/SingleLineDiagram/Meter';
+// import Grid from '../../components/SingleLineDiagram/Grid';
 import { ReactReduxContext, Provider, useSelector } from "react-redux";
-import ServerPanel from '../../components/SingleLineDiagram/ServicePanel';
+// import ServerPanel from '../../components/SingleLineDiagram/ServicePanel';
 import { Table, Button, Tabs, Tooltip } from 'antd';
 import { ProfileOutlined } from '@ant-design/icons';
-import * as DataGenerator from '../../utils/singleLineDiagramDataGenerator';
 
 const { TabPane } = Tabs;
 
 const SingleLineDiagUS = () => {
   const { buildingID } = useParams();
 
-  const [stageWidth,setStageWidth] = useState(window.innerWidth);
-  const [stageHeight, setStageHeight] = useState(window.innerHeight);
+  const stageWidth = window.innerWidth - 250
+  const stageHeight = window.innerHeight - 64
 
-  const userPV = useSelector(state => state.pv.data);
-  const officialPV = useSelector(state => state.pv.officialData);
-  const userInverter = useSelector(state => state.inverter.data);
-  const officialInverter = useSelector(state => state.inverter.officialData)
+  // const userPV = useSelector(state => state.pv.data);
+  // const officialPV = useSelector(state => state.pv.officialData);
+  // const userInverter = useSelector(state => state.inverter.data);
+  // const officialInverter = useSelector(state => state.inverter.officialData)
 
-  const projectData = useSelector(state => state.project);
-  const buildingData = projectData.buildings.find(building =>
-    building.buildingID === buildingID
-  )
+  // const projectData = useSelector(state => state.project);
+  // const buildingData = projectData.buildings.find(building =>
+  //   building.buildingID === buildingID
+  // )
 
-  const reportData = useSelector(state => state.report);
-  const buildingReport = reportData[buildingID]
-  const spec = DataGenerator.getInverterWring(buildingData)
-  const stringPanels = spec.map( i => i.panels_per_string)
-  const panelsInverter = spec.map( i => i.string_per_inverter)
-  const numOfInverter = spec.length
-  const combiboxName = buildingReport && buildingReport.investment ?
-    DataGenerator.getCombiBoxData(buildingReport)
-    : '';
-  const combiboxCableChoice = buildingReport ?
-    DataGenerator.getCombiBoxCableChoice(buildingReport)
-    : ''
+  // const reportData = useSelector(state => state.report);
+  // const buildingReport = reportData[buildingID]
+  // const spec = DataGenerator.getInverterWring(buildingData)
+  // const stringPanels = spec.map( i => i.panels_per_string)
+  // const panelsInverter = spec.map( i => i.string_per_inverter)
+  // const numOfInverter = spec.length
+  // const combiboxName = buildingReport && buildingReport.investment ?
+  //   DataGenerator.getCombiBoxData(buildingReport)
+  //   : '';
+  // const combiboxCableChoice = buildingReport ?
+  //   DataGenerator.getCombiBoxCableChoice(buildingReport)
+  //   : ''
 
   // 创建 module table数据
-  const allPV = userPV.concat(officialPV)
-  const pvTableData = DataGenerator.getPVsTableData(allPV, buildingData, buildingReport);
+  // const allPV = userPV.concat(officialPV)
+  // const pvTableData = DataGenerator.getPVsTableData(allPV, buildingData, buildingReport);
   // 创建 inverter table数据
-  const allInverter = userInverter.concat(officialInverter)
-  const invTableData = DataGenerator.getInverterTableData(allInverter, buildingData);
+  // const allInverter = userInverter.concat(officialInverter)
+  // const invTableData = DataGenerator.getInverterTableData(allInverter, buildingData);
 
   let newWidth = useSelector(state => state.SLD.stageWidth);
   let newHeight = useSelector(state => state.SLD.stageHeight);
@@ -82,7 +82,7 @@ const SingleLineDiagUS = () => {
         }}
       >
         <TabPane tab="Module" key="1">
-          <Table
+          {/* <Table
             columns={[{
               title: <div style={{fontSize: 10}} >Array</div>,
               width: 60,
@@ -122,10 +122,10 @@ const SingleLineDiagUS = () => {
             dataSource={pvTableData}
             pagination={false}
             scroll={{ x: 100, y: 200 }}
-          />
+          /> */}
         </TabPane>
         <TabPane tab="Inverter" key="2">
-        <Table columns={[{
+        {/* <Table columns={[{
           title: <div style={{fontSize: 10}} >Array</div>,
           width: 150,
           dataIndex: "array",
@@ -150,7 +150,7 @@ const SingleLineDiagUS = () => {
           dataSource={invTableData}
           scroll={{ x: 100, y: 200 }}
           pagination={false}
-        />
+        /> */}
         </TabPane>
       </Tabs>
 
@@ -163,54 +163,9 @@ const SingleLineDiagUS = () => {
             draw={true}
           >
             <Provider store={store}>
-              <Layer
-                preventDefault={false}
-              >
-                <Background
-                  width={newWidth}
-                  height={newHeight}
-                />
-                <PanelArrayCollection
-                  width={stageWidth}
-                  height={stageHeight}
-                  numOfArray={numOfInverter}
-                  stringOfPanels={stringPanels}
-                  panelsOfInverter={panelsInverter}
-                  pvTable={pvTableData}
-                />
-                <InverterCollection
-                  width={stageWidth}
-                  height={stageHeight}
-                  numOfInverter={numOfInverter}
-                  invertersData={invTableData}
-                  pvTable={pvTableData}
-                />
-                <InterConnect
-                  width={stageWidth}
-                  height={stageHeight}
-                  numOfInverter={numOfInverter}
-                  combineBoxName={combiboxName}
-                  combiTable={combiboxCableChoice}
-                />
-                <Disconnecter
-                  width={stageWidth}
-                  height={stageHeight}
-                  combiTable={combiboxCableChoice}
-                  numOfArray={numOfInverter}
-                />
-                <ServerPanel
-                  width={stageWidth}
-                  height={stageHeight}
-                  combiTable={combiboxCableChoice}
-                />
-                <Meter
-                  width={stageWidth}
-                  height={stageHeight}
-                />
-                <Grid
-                  width={stageWidth}
-                  height={stageHeight}
-                />
+              <Layer>
+                <Background />
+                <Boundary />
               </Layer>
             </Provider>
           </Stage>
