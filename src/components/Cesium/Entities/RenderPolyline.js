@@ -13,6 +13,9 @@ export const RenderPolyline = ({polyline}) => {
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
   const segmentPolylines = polyline.getSegmentPolyline()
 
+  const showLength = useSelector(state => state.cesium.showLength)
+  const showAngle = useSelector(state => state.cesium.showAngle)
+
   const getMidpoint = (startCor, endCor) => {
     const brng = Coordinate.bearing(startCor, endCor)
     const dist = Coordinate.surfaceDistance(startCor, endCor)
@@ -69,7 +72,7 @@ export const RenderPolyline = ({polyline}) => {
               showBackground: true,
               font: "16px sans-serif",
               eyeOffset: new Cartesian3(0.0, 1, -2),
-              show: true, //drawingId === polyline.entityId,
+              show: showLength,
               translucencyByDistance: new NearFarScalar(100, 1.0, 500, 0.0),
               rotation : CesiumMath.toRadians(180),
               alignedAxis : Cartesian3.UNIT_Z,
@@ -96,7 +99,7 @@ export const RenderPolyline = ({polyline}) => {
               backgroundColor: Color.STEELBLUE,
               font: "12px sans-serif",
               eyeOffset: new Cartesian3(0, 1, -2),
-              show: true, //drawingId === polyline.entityId,
+              show: showAngle,
               translucencyByDistance: new NearFarScalar(100, 1.0, 1000, 0.0),
               pixelOffset: new Cartesian2(10, 10),
               // pixelOffsetScaleByDistance: new NearFarScalar(1, 0.0, 500, 10.0),
@@ -119,7 +122,7 @@ export const RenderPolyline = ({polyline}) => {
             backgroundColor: Color.STEELBLUE,
             font: "12px sans-serif",
             eyeOffset: new Cartesian3(0, 1, -2),
-            show: true, //drawingId === polyline.entityId,
+            show: showAngle,
             translucencyByDistance: new NearFarScalar(100, 1.0, 1000, 0.0),
             pixelOffset: new Cartesian2(10, 10),
             // pixelOffsetScaleByDistance: new NearFarScalar(1, 0.0, 500, 10.0),

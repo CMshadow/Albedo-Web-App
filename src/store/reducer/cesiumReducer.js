@@ -1,4 +1,4 @@
-import { ScreenSpaceEventType, Cartesian3, Matrix4, KeyboardEventModifier } from 'cesium';
+import { ScreenSpaceEventType, Cartesian3, Matrix4, Math as CesiumMath } from 'cesium';
 import * as actionTypes from '../action/actionTypes';
 
 const initialState = {
@@ -9,12 +9,27 @@ const initialState = {
   showLength: true,
   showAngle: true,
   rightClickCor: null,
+  showVertex: true,
 };
 
 const setMapKey = (state, action) => {
   return {
     ...state,
     key: action.key
+  }
+}
+
+const resetCamera = (state, action) => {
+  state.viewer.camera.setView({
+    destination: state.viewer.camera.position,
+    orientation: {
+      heading : 0,
+      pitch : CesiumMath.toRadians(-90),
+      roll : 0
+    }
+  })
+  return {
+    ...state
   }
 }
 
@@ -100,6 +115,13 @@ const setShowAngle = (state, action) => {
   }
 }
 
+const setShowVertex = (state, action) => {
+  return {
+    ...state,
+    showVertex: action.showVertex
+  }
+}
+
 
 const reducer = (state=initialState, action) => {
   switch (action.type) {
@@ -107,6 +129,8 @@ const reducer = (state=initialState, action) => {
       return setMapKey(state, action);
     case actionTypes.SET_VIEWER:
       return setViewer(state, action);
+    case actionTypes.RESET_CAMERA:
+      return resetCamera(state, action)
     case actionTypes.ENABLE_ROTATION:
       return enableRotate(state, action);
     case actionTypes.DISABLE_ROTATION:
@@ -117,6 +141,8 @@ const reducer = (state=initialState, action) => {
       return setShowLength(state, action)
     case actionTypes.SET_SHOWANGLE:
       return setShowAngle(state, action)
+    case actionTypes.SET_SHOWVERTEX:
+      return setShowVertex(state, action)
     case actionTypes.SET_RIGHT_CLICK_COR:
       return setRightClickCor(state, action)
     default: return state;

@@ -21,7 +21,7 @@ const LockMap = () => {
   return (
     <Row style={{top:'20px'}}>
       <Tooltip
-        placement='bottomRight'
+        placement='left'
         title={
           enableRotateStatus ?
           'Lock Map' :

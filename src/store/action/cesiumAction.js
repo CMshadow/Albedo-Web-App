@@ -14,6 +14,12 @@ export const setViewer = (viewer) => {
   };
 };
 
+export const resetCamera = () => {
+  return {
+    type: actionTypes.RESET_CAMERA
+  }
+}
+
 export const enableRotate = () => {
   return {
     type: actionTypes.ENABLE_ROTATION
@@ -51,5 +57,12 @@ export const setShowAngle = (showAngle) => {
   return {
     type: actionTypes.SET_SHOWANGLE,
     showAngle: showAngle
+  }
+}
+
+export const setShowVertex = (showVertex) => {
+  return {
+    type: actionTypes.SET_SHOWVERTEX,
+    showVertex: showVertex
   }
 }

@@ -48,7 +48,9 @@ export {
   selectMap,
   setRightClickCor,
   setShowLength,
-  setShowAngle
+  setShowAngle,
+  setShowVertex,
+  resetCamera
 } from './cesiumAction'
 
 export {

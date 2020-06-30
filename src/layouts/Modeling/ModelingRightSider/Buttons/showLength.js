@@ -22,7 +22,7 @@ const ShowLength = () => {
   return (
     <Row style={{top:'20px'}}>
       <Tooltip
-        placement='bottomRight'
+        placement='left'
         title={
           showLengthStatus ?
           'Hide Shape Length' :

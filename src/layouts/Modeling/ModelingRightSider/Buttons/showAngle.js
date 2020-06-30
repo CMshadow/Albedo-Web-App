@@ -22,7 +22,7 @@ const ShowAngle = () => {
   return (
     <Row style={{top:'20px'}}>
       <Tooltip
-        placement='bottomRight'
+        placement='left'
         title={
           showAngleStatus ?
           'Hide Shape Angle' :

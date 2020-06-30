@@ -1,7 +1,6 @@
 import React from 'react';
 import { Entity } from 'resium';
 import { useSelector, useDispatch } from 'react-redux'
-import Coordinate from '../../../infrastructure/point/coordinate'
 import { CallbackProperty, Cartesian3, HeightReference, Color, Cartesian2 } from 'cesium';
 import * as actions from '../../../store/action/index'
 import * as objTypes from '../../../store/action/drawing/objTypes'
@@ -9,6 +8,7 @@ import { POINT } from '../../../store/action/drawing/objTypes'
 
 export const RenderPoint = ({point}) => {
   const dispatch = useDispatch()
+  const showVertex = useSelector(state => state.cesium.showVertex)
   const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
   const drawingType = useSelector(state => state.undoable.present.drawing.drawingType)
@@ -37,7 +37,7 @@ export const RenderPoint = ({point}) => {
         show: pickedId === point.entityId
       }}
 
-      show={point.show}
+      show={showVertex}
 
       onMouseDown={() => {
         if (!pickedId) {

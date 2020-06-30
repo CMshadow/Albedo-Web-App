@@ -3,7 +3,6 @@ import Polyline from '../../../infrastructure/line/polyline'
 import { Color } from 'cesium'
 
 const polylineColor = Color.STEELBLUE
-const POLYGON_OFFSET = -0.025
 
 export const createPolyline = ({mouseCor, polylineId, pointId, insidePolygonId}) =>
 (dispatch, getState) => {
@@ -47,9 +46,12 @@ export const polylineAddVertex = ({polylineId, mouseCor, pointId, position=null}
   const pointMap = getState().undoable.present.polyline[polylineId].pointMap
   const newPointMap = [...pointMap]
   const newPoints = [...drawingPolyline.points]
-  newPointMap.splice(position || newPointMap.length, 0, pointId)
-  newPoints.splice(position || newPoints.length, 0, mouseCor)
-  mouseCor.setCoordinate(null, null, mouseCor.height + POLYGON_OFFSET)
+  newPointMap.splice(
+    position || newPointMap.length, 0, pointId
+  )
+  newPoints.splice(
+    position || newPointMap.length - 1, 0, mouseCor
+  )
   return dispatch({
     type: actionTypes.POLYLINE_SET,
     entity: new Polyline(newPoints, drawingPolyline.entityId, polylineColor),

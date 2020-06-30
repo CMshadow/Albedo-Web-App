@@ -50,7 +50,7 @@ const LeftClickHandler = () => {
       dispatch(actions.setDrawingObj(objTypes.POLYLINE, polylineId))
       dispatch(actions.disableRotate())
     } else {
-      dispatch(actions.polylineAddVertex({polylineId: drawingId, mouseCor, pointId}))
+      dispatch(actions.polylineAddVertex({polylineId: drawingId, mouseCor: cor, pointId}))
       dispatch(actions.releasePickedObj())
       dispatch(actions.polylineTerminate(drawingId))
       dispatch(actions.setDrwStatIdle())
@@ -65,19 +65,24 @@ const LeftClickHandler = () => {
     if (hoverId && hoverType === objTypes.POINT) {
       pointId = hoverId
       dispatch(actions.pointAddMapping({pointId, polylineId}))
-      cor = allPoint[hoverId].entity
+      cor = new Coordinate(
+        allPoint[hoverId].entity.lon, allPoint[hoverId].entity.lat,
+        allPoint[hoverId].entity.height
+      )
+      cor.setCoordinate(null, null, cor.height - 0.025)
     } else {
       pointId = uuid()
       mouseCor.setCoordinate(null, null, POINT_OFFSET)
       dispatch(actions.addPoint({mouseCor, pointId, polylineId}))
       cor = new Coordinate(mouseCor.lon, mouseCor.lat, mouseCor.height)
+      cor.setCoordinate(null, null, cor.height - 0.025)
     }
     if (!drawingId) {
       dispatch(actions.createPolyline({mouseCor: cor, polylineId, pointId}))
       dispatch(actions.setDrawingObj(objTypes.POLYLINE, polylineId))
       dispatch(actions.disableRotate())
     } else {
-      dispatch(actions.polylineAddVertex({polylineId: drawingId, mouseCor, pointId}))
+      dispatch(actions.polylineAddVertex({polylineId: drawingId, mouseCor: cor, pointId}))
     }
   }
 

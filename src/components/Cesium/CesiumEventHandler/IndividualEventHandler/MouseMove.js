@@ -22,9 +22,7 @@ const MouseMoveHandler = () => {
   const pickedType = useSelector(state => state.undoable.present.drawing.pickedType)
   const hoverId = useSelector(state => state.undoable.present.drawing.hoverId)
   const hoverType = useSelector(state => state.undoable.present.drawing.hoverType)
-  console.log(hoverType)
 
-  const allPoint = useSelector(state => state.undoable.present.point)
   const allPolygon = useSelector(state => state.undoable.present.polygon)
 
   const mouseMoveActions = (event) => {

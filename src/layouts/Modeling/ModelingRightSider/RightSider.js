@@ -1,10 +1,12 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, Row } from 'antd';
 import * as styles from './RightSider.module.scss';
 import LockMap from './Buttons/lockMap';
 import SelectMap from './Buttons/selectMap';
 import ShowLength from './Buttons/showLength'
 import ShowAngle from './Buttons/showAngle'
+import ResetCamera from './Buttons/resetCamera'
+import ShowVertex from './Buttons/showVertex'
 
 const { Sider } = Layout;
 
@@ -14,10 +16,12 @@ const RightSider = () => {
         className={styles.rightSider}
         width={50}
       >
-        <SelectMap style={{top: '5px'}}/>
-        <LockMap />
-        <ShowLength />
-        <ShowAngle />
+        <Row className={styles.button}><SelectMap/></Row>
+        <Row className={styles.button}><ResetCamera/></Row>
+        <Row className={styles.button}><LockMap/></Row>
+        <Row className={styles.button}><ShowVertex/></Row>
+        <Row className={styles.button}><ShowLength/></Row>
+        <Row className={styles.button}><ShowAngle/></Row>
       </Sider>
   );
 }
