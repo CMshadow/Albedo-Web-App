@@ -259,7 +259,13 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
           <Col span={12}>
             <FormItem
               name='tilt_angle'
-              label={t('project.spec.tilt_angle')}
+              label={
+                <Tooltip title={t(`project.spec.tilt_angle.hint`)}>
+                  <Space>
+                    <QuestionCircleOutlined/>{t('project.spec.tilt_angle')}
+                  </Space>
+                </Tooltip>
+              }
               rules={[{required: true}]}
               validateStatus={tilt.validateStatus}
               help={tilt.errorMsg || null}
@@ -275,7 +281,13 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
           <Col span={12}>
             <FormItem
               name='azimuth'
-              label={t('project.spec.azimuth')}
+              label={
+                <Tooltip title={t(`project.spec.azimuth.hint`)}>
+                  <Space>
+                    <QuestionCircleOutlined/>{t('project.spec.azimuth')}
+                  </Space>
+                </Tooltip>
+              }
               rules={[{required: true}]}
               validateStatus={azimuth.validateStatus}
               help={azimuth.errorMsg || null}
@@ -291,8 +303,9 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         </Row>
         <Divider>
           <Tooltip title={t('project.spec.optional.tooltip')}>
-            <QuestionCircleOutlined />
-            {t('project.spec.optional')}
+            <Space>
+              <QuestionCircleOutlined />{t('project.spec.optional')}
+            </Space>
           </Tooltip>
         </Divider>
         <Row gutter={8}>

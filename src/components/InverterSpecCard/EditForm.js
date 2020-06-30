@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Form, Input, InputNumber, Row, Col, Select, Button, Drawer, Tooltip } from 'antd';
+import { Form, Input, InputNumber, Row, Col, Select, Button, Drawer, Tooltip, Space } from 'antd';
 import { TableOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { editInverterSpec } from '../../store/action/index'
 import { InverterTableViewOnly } from '../InverterTable/InverterTableViewOnly'
@@ -208,7 +208,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
           </Col>
         </Row>
         <Row gutter={rowGutter}>
-          <Col span={8}>
+          <Col span={12}>
             <FormItem
               name='string_per_inverter'
               label={t('project.spec.string_per_inverter')}
@@ -226,25 +226,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
               />
             </FormItem>
           </Col>
-          <Col span={16}>
-            <FormItem
-              name='ac_cable_len'
-              label={t('project.spec.ac_cable_len')}
-              rules={[{required: true}]}
-            >
-              <InputNumber
-                formatter={value => `${value}m`}
-                parser={value => value.replace('m', '')}
-                precision={2}
-                min={0}
-                className={styles.inputNumber}
-                disabled={disabled}
-              />
-            </FormItem>
-          </Col>
-        </Row>
-        <Row gutter={rowGutter}>
-          <Col span={8}>
+          <Col span={12}>
             <FormItem
               name='panels_per_string'
               label={t('project.spec.panels_per_string')}
@@ -262,13 +244,38 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
               />
             </FormItem>
           </Col>
-          <Col span={16}>
+        </Row>
+        <Row gutter={rowGutter}>
+          <Col span={12}>
+            <FormItem
+              name='ac_cable_len'
+              label={
+                <Tooltip title={t(`project.spec.ac_cable_len.hint`)}>
+                  <Space>
+                    <QuestionCircleOutlined/>{t('project.spec.ac_cable_len')}
+                  </Space>
+                </Tooltip>
+              }
+              rules={[{required: true}]}
+            >
+              <InputNumber
+                formatter={value => `${value}m`}
+                parser={value => value.replace('m', '')}
+                precision={2}
+                min={0}
+                className={styles.inputNumber}
+                disabled={disabled}
+              />
+            </FormItem>
+          </Col>
+          <Col span={12}>
             <FormItem
               name='dc_cable_len'
               label={
                 <Tooltip title={t(`project.spec.dc_cable_len.hint`)}>
-                  <QuestionCircleOutlined className={styles.icon}/>
-                  {t('project.spec.dc_cable_len')}
+                  <Space>
+                    <QuestionCircleOutlined/>{t('project.spec.dc_cable_len')}
+                  </Space>
                 </Tooltip>
               }
               validateStatus={dc_cable_len.validateStatus}
