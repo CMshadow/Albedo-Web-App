@@ -117,22 +117,32 @@ const ProjectLayout = (props) => {
 
   // 读pv 逆变器 项目数据 最佳倾角朝向
   useEffect(() => {
-    dispatch(getPV())
-    .then(res => dispatch(setPVData(res)))
-    .catch(err => history.push('/dashboard'))
+    const fetchBasicData = async () => {
+      const fetchPromises = []
+      fetchPromises.push(
+        dispatch(getPV())
+        .then(res => dispatch(setPVData(res)))
+        .catch(err => history.push('/dashboard'))
+      )
+      fetchPromises.push(
+        dispatch(getOfficialPV(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US'))
+        .then(res => dispatch(setOfficialPVData(res)))
+        .catch(err => history.push('/dashboard'))
+      )
+      fetchPromises.push(
+        dispatch(getInverter())
+        .then(res => dispatch(setInverterData(res)))
+        .catch(err => history.push('/dashboard'))
+      )
+      fetchPromises.push(
+        dispatch(getOfficialInverter(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US'))
+        .then(res => dispatch(setOfficialInverterData(res)))
+        .catch(err => history.push('/dashboard'))
+      )
+      return await Promise.all(fetchPromises)
+    }
 
-    dispatch(getOfficialPV(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US'))
-    .then(res => dispatch(setOfficialPVData(res)))
-    .catch(err => history.push('/dashboard'))
-
-    dispatch(getInverter())
-    .then(res => dispatch(setInverterData(res)))
-    .catch(err => history.push('/dashboard'))
-
-    dispatch(getOfficialInverter(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US'))
-    .then(res => dispatch(setOfficialInverterData(res)))
-    .catch(err => history.push('/dashboard'))
-
+    fetchBasicData()
     dispatch(getProject({projectID: projectID}))
     .then(res => {
       dispatch(setProjectData(res))
