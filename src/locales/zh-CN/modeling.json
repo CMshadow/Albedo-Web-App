@@ -1,0 +1,16 @@
+{
+  "modeling.IDLE": "管理房屋",
+  "modeling.CREATE_BUILDING": "创建新房屋",
+  "modeling.DRAWING": "房屋建模",
+
+  "modeling.createBuilding.buildingInfo": "房屋信息",
+  "modeling.createBuilding.buildingName": "房屋名称",
+  "modeling.createBuilding.buildingType": "房屋类型",
+  "modeling.createBuilding.buildingType.flat": "平面屋顶",
+  "modeling.createBuilding.buildingType.pitched": "斜面屋顶",
+
+  "modeling.createBuilding.buildingParams": "房屋参数",
+  "modeling.createBuilding.buildingHeight": "房屋高度",
+  "modeling.createBuilding.parapetHeight": "女儿墙高度",
+  "modeling.createBuilding.eaveSetback": "屋檐留边距离"
+}

@@ -122,3 +122,9 @@ export {
 export {
   addSector
 } from './drawing/sectorAction'
+
+
+export {
+  setUICreateBuilding,
+  setUIDrawing
+} from './modeling/modelingUIAction'

@@ -16,6 +16,8 @@ import drawingPolylineReducer from './drawing/polylineReducer'
 import drawingCircleReducer from './drawing/circleReducer'
 import drawingSectorReducer from './drawing/sectorReducer'
 
+import modelingUIReducer from './modeling/modelingUIReducer'
+
 const rootReducer = combineReducers({
   auth: authReducer,
   locale: localReducer,
@@ -32,7 +34,9 @@ const rootReducer = combineReducers({
     polygon: drawingPolygonReducer,
     polyline: drawingPolylineReducer,
     circle: drawingCircleReducer,
-    sector: drawingSectorReducer
+    sector: drawingSectorReducer,
+
+    ui: modelingUIReducer
   }), {
     initTypes: ['@@redux/INIT'],
     filter: includeAction([

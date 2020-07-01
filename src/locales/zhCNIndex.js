@@ -20,6 +20,7 @@ import irrTable from './zh-CN/irradianceTable.json'
 import emissionReduction from './zh-CN/emissionReduction.json'
 import chart from './zh-CN/chart.json'
 import techSupport from './zh-CN/techSupport.json'
+import modeling from './zh-CN/modeling.json'
 
 export default {
   ...country,
@@ -43,5 +44,6 @@ export default {
   ...irrTable,
   ...emissionReduction,
   ...chart,
-  ...techSupport
+  ...techSupport,
+  ...modeling
 }
