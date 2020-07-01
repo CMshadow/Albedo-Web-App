@@ -18,9 +18,11 @@ const initialState = {
   gridPosition:[],
   meterAccessPosition: [],
   //CN
-  diagramWidth: 600,
-  diagramHeight: 400,
-  diagramBoundaryPosition: [0 , 0]
+  diagramWidth: window.innerWidth - 250,
+  diagramHeight: window.innerHeight - 64,
+  diagramBoundaryPosition: [0 , 0],
+  diagramInverterPorts: [],
+  diagramMeterAccessPort: []
 
 };
 
@@ -108,6 +110,23 @@ const setDiagramWidth = (state, action) => {
   }  
 }
 
+export const setInverterAccessPorts = (state, action) => {
+  return{
+    ...state,
+    diagramInverterPorts: action.accessPoints
+  }
+}
+
+export const setMeterAccessPort = (state, action) => {
+  console.log(action.meterAccess)
+  return{
+    ...state,
+    diagramMeterAccessPort: action.meterAccess
+  }
+}
+
+
+
 
 const reducer = (state=initialState, action) => {
   switch (action.type) {
@@ -140,6 +159,15 @@ const reducer = (state=initialState, action) => {
 
     case actionTypes.SET_DIAGRAM_WIDTH:
       return setDiagramWidth(state, action);
+
+    case actionTypes.SET_START_POSTION:
+      return setStartPosition(state, action);
+
+    case actionTypes.SET_INVERTER_ACCESSPORTS:
+      return setInverterAccessPorts(state, action);
+
+    case actionTypes.SET_METER_ACCESS:
+      return setMeterAccessPort(state, action);
     default: return state;
   }
 };

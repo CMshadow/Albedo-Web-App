@@ -3,17 +3,16 @@ import {v4 as uuidv4} from 'uuid'
 import {Rect, Line, Group, Text, Image} from "react-konva"
 import {useSelector, useDispatch } from 'react-redux'
 import logo from '../../../assets/logo.png'
-// import useImage from 'use-image';
 import {setDiagramWidth, setStartPosition } from '../../../store/action/index'
-const DiagramBoundary = (params) => {
+
+const DiagramBoundary = (props) => {
   const dispatch = useDispatch()
   const groupOfBoundary = []
-  const width = useSelector(state => state.SLD.stageWidth)
-  const height = useSelector(state => state.SLD.stageHeight)
-  const startPosition = [width * 0.2, height * 0.1]
-  const boundaryWidth = width * 0.6 > 600 ? width * 0.6
-  : 600
-  const boundaryHeight = boundaryWidth * (4/6);
+  const width = useSelector(state => state.SLD.diagramWidth)
+  const height = useSelector(state => state.SLD.diagramHeight)
+  const startPosition = [width * 0.1, height * 0.1]
+  const boundaryWidth = width * 0.8 > 800 ? width * 0.8: 800
+  const boundaryHeight = boundaryWidth * (4/6)
   const unitHeight = boundaryHeight / 4 
   const unitWidth = boundaryWidth / 6
   const heightMark = ['A', 'B', 'C', 'D']
@@ -36,11 +35,12 @@ const DiagramBoundary = (params) => {
     drawInnerBound()
     drawIcon()
     drawDiagramShelf()
-    dispatch(setStartPosition(startPosition))
-    dispatch(setDiagramWidth(boundaryWidth))
+    dispatch(setStartPosition([startPosition[0] + boundaryWidth * 1 / 18,startPosition[1] + boundaryWidth * 0.01]))
+    if (width * 0.8 < 800) {
+      dispatch(setDiagramWidth(width * 0.4 + boundaryWidth))
+    }
     return groupOfBoundary;
-  }
-  
+  }  
   const drawInnerBound = () => {
     for (let i = 0; i < 4; ++i) {
       groupOfBoundary.push(<Line 
@@ -93,7 +93,7 @@ const DiagramBoundary = (params) => {
       groupOfBoundary.push(<Text
         key = {"Boundary-Text-" + uuidv4()}
         x={startPosition[0] + unitWidth * ( index + 0.5)}
-        y={startPosition[1]}
+        y={startPosition[1] + 1}
         text={index + 1}
         fontSize={boundaryWidth * 0.01 > 12 ? 12 : boundaryWidth * 0.01}
         fontFamily='Arial'
@@ -103,9 +103,9 @@ const DiagramBoundary = (params) => {
       groupOfBoundary.push(<Text
         key = {"Boundary-Text-" + uuidv4()}
         x={startPosition[0] + unitWidth * ( index + 0.5)}
-        y={startPosition[1] + boundaryHeight - boundaryWidth * 0.01}
+        y={startPosition[1] + boundaryHeight - boundaryWidth * 0.01 + 1}
         text={index + 1}
-        fontSize={boundaryWidth * 0.01 > 12 ? 12 : boundaryWidth * 0.01}
+        fontSize={boundaryWidth * 0.01 > 10 ? 10 : boundaryWidth * 0.01}
         fontFamily='Arial'
         fill='Black'
       ></Text>)
@@ -113,11 +113,11 @@ const DiagramBoundary = (params) => {
     groupOfBoundary.push(<Rect
       key= {"Boundary-Rect-" + uuidv4()}
       x={startPosition[0] + boundaryWidth * 1 / 18}
-      y={startPosition[1] + boundaryWidth * 0.01 }
+      y={startPosition[1] + boundaryWidth * 0.01}
       width={boundWidth}
       height={boundaryHeight - boundaryWidth * 0.02}
       stroke='black'
-      strokeWidth={3}
+      strokeWidth={2}
       lineCap='round'
       lineJoin='round'
       fill="white"
@@ -135,7 +135,7 @@ const DiagramBoundary = (params) => {
       width={iconWidth}
       height={iconHeight}
       stroke='black'
-      strokeWidth={3}
+      strokeWidth={2}
       lineCap='round'
       lineJoin='round'
       fill="white"
@@ -182,7 +182,7 @@ const DiagramBoundary = (params) => {
       key = {"Boundary-Text-" + uuidv4()}
       x={startX + iconWidth * 0.6}
       y={startY + iconHeight * 0.7 + font}
-      text={"项目:"}
+      text={"   项目:"}
       fontSize={font}
       fontFamily='Arial'
       fill='Black'
@@ -192,14 +192,12 @@ const DiagramBoundary = (params) => {
       key = {"Boundary-Text-" + uuidv4()}
       x={startX + iconWidth * 0.6}
       y={startY + iconHeight * 0.4}
-      text={"屋顶光伏发电系统电气主接线图"}
+      text={"   屋顶光伏发电系统电气主接线图"}
       fontSize={font}
       fontFamily='Arial'
       fill='Black'
     ></Text>)
   }
-
-  
   const drawDiagramShelf = () => {
     let lastPosition = []
     const unitHeight = boundWidth * 0.7 / 8
@@ -231,7 +229,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            y={startPosition[1] + index * unitHeight + font * 1.5 + heightOffSet}
             text={' 型号: '}
             fontSize={font}
             fontFamily='Arial'
@@ -240,7 +238,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + 2 * font + heightOffSet}
+            y={startPosition[1] + index * unitHeight + 3 * font + heightOffSet}
             text={' 芯数x截面: '}
             fontSize={font}
             fontFamily='Arial'
@@ -259,7 +257,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            y={startPosition[1] + index * unitHeight+ 1.5 * font + heightOffSet}
             text={' In: '}
             fontSize={font}
             fontFamily='Arial'
@@ -268,7 +266,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + 2 * font + heightOffSet}
+            y={startPosition[1] + index * unitHeight + 3 * font + heightOffSet}
             text={' 台: '}
             fontSize={font}
             fontFamily='Arial'
@@ -288,7 +286,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            y={startPosition[1] + index * unitHeight + font * 1.5 + heightOffSet}
             text={' 型号: '}
             fontSize={font}
             fontFamily='Arial'
@@ -297,7 +295,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + 2 * font + heightOffSet}
+            y={startPosition[1] + index * unitHeight + 3 * font + heightOffSet}
             text={' 芯数x截面: '}
             fontSize={font}
             fontFamily='Arial'
@@ -316,7 +314,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            y={startPosition[1] + index * unitHeight + 1.5 * font + heightOffSet}
             text={' 台: '}
             fontSize={font}
             fontFamily='Arial'
@@ -336,7 +334,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + font + heightOffSet}
+            y={startPosition[1] + index * unitHeight + 1.5 * font + heightOffSet}
             text={' 型号: '}
             fontSize={font}
             fontFamily='Arial'
@@ -345,7 +343,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + 2 * font + heightOffSet}
+            y={startPosition[1] + index * unitHeight + 3 * font + heightOffSet}
             text={' 芯数x截面: '}
             fontSize={font}
             fontFamily='Arial'
@@ -400,7 +398,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + 5 * font + heightOffSet}
+            y={startPosition[1] + index * unitHeight + 5.3 * font + heightOffSet}
             text={' 光伏组件数量: '}
             fontSize={font}
             fontFamily='Arial'
@@ -409,7 +407,7 @@ const DiagramBoundary = (params) => {
           groupOfBoundary.push(<Text
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
-            y={startPosition[1] + index * unitHeight + 6 * font + heightOffSet}
+            y={startPosition[1] + index * unitHeight + 6.5 * font + heightOffSet}
             text={' 组串数量: '}
             fontSize={font}
             fontFamily='Arial'

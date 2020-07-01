@@ -5,10 +5,7 @@ import classes from './SingleLineDiagram_us.module.scss';
 import Background from '../../components/SingleLineDiagram/SingleLineDiagram_CN/Background';
 import Boundary from '../../components/SingleLineDiagram/SingleLineDiagram_CN/DiagramBoundary';
 import PanelArrayCollection from '../../components/SingleLineDiagram/SingleLineDiagram_CN/panelArrayCollection';
-// import InverterCollection from '../../components/SingleLineDiagram/InverterCollection';
-// import InterConnect from '../../components/SingleLineDiagram/Interconnecter';
-// import Disconnecter from '../../components/SingleLineDiagram/AcDisconnecter';
-// import Meter from '../../components/SingleLineDiagram/Meter';
+import MeterSelfUse from '../../components/SingleLineDiagram/SingleLineDiagram_CN/SelfUseMeter';
 // import Grid from '../../components/SingleLineDiagram/Grid';
 import { ReactReduxContext, Provider, useSelector } from "react-redux";
 // import ServerPanel from '../../components/SingleLineDiagram/ServicePanel';
@@ -20,8 +17,7 @@ const { TabPane } = Tabs;
 const SingleLineDiagUS = () => {
   const { buildingID } = useParams();
 
-  const stageWidth = window.innerWidth - 250
-  const stageHeight = window.innerHeight - 64
+
 
   // const userPV = useSelector(state => state.pv.data);
   // const officialPV = useSelector(state => state.pv.officialData);
@@ -53,9 +49,9 @@ const SingleLineDiagUS = () => {
   // const allInverter = userInverter.concat(officialInverter)
   // const invTableData = DataGenerator.getInverterTableData(allInverter, buildingData);
 
-  let newWidth = useSelector(state => state.SLD.stageWidth);
-  let newHeight = useSelector(state => state.SLD.stageHeight);
-
+  let newWidth = useSelector(state => state.SLD.diagramWidth);
+  let newHeight = newWidth * (4 / 6) + 120//useSelector(state => state.SLD.diagramHeight);
+  console.log("new " + newWidth)
   let [tableTrigger, setTable] = useState(true);
   const tableTriggerHandler = () => {
     setTable(!tableTrigger);
@@ -165,8 +161,12 @@ const SingleLineDiagUS = () => {
             <Provider store={store}>
               <Layer>
                 <Background />
-                <Boundary />
+                <Boundary 
+                  width = {newWidth}
+                  height = {newHeight}
+                  />
                 <PanelArrayCollection />
+                <MeterSelfUse />
               </Layer>
             </Provider>
           </Stage>
