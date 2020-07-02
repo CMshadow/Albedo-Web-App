@@ -33,10 +33,12 @@ export const LossChart = ({buildingID}) => {
   keys.forEach(([key, cat]) => {
     systemStatus = systemStatus - buildingReport[key] * 100 ||
       systemStatus - (100 - projectData[key]) || systemStatus
-
+    console.log(key)
+    console.log(buildingReport[key] * 100)
+    console.log(projectData[key])
     dataSource.push({
       cat: t(`lossChart.${cat}`),
-      value: buildingReport[key] * 100 || (100 - projectData[key]) || 0,
+      value: buildingReport[key] >= 0 ? buildingReport[key] * 100 : (100 - projectData[key]) || 0,
       stage: 'loss',
       type: t(`lossChart.${key}`),
       color: colorMap.loss
@@ -49,6 +51,8 @@ export const LossChart = ({buildingID}) => {
       color: colorMap[cat]
     })
   })
+  console.log(dataSource)
+
 
   const scale = {
     value: {

@@ -19,7 +19,6 @@ import { saveProject } from '../Project/service'
 import { setReportData, setBuildingReGenReport } from '../../store/action/index'
 import * as styles from './Report.module.scss'
 
-const { TabPane } = Tabs;
 
 const Report = () => {
   const { t } = useTranslation()
@@ -77,7 +76,11 @@ const Report = () => {
   }
 
   useEffect(() => {
-    if (!projectData.p_loss_soiling) {
+    console.log(projectData.p_loss_soiling)
+    if (
+      projectData.p_loss_soiling === undefined ||
+      projectData.p_loss_soiling === null
+    ) {
       history.push({
         pathname: `/project/${projectID}/report/params`,
         state: { buildingID: buildingID }
@@ -92,9 +95,10 @@ const Report = () => {
             dispatch(setReportData({buildingID: buildingID, data: res}))
             setloading(false)
           })
-          .catch(err => {
-            setloading(false)
-          })
+        })
+        .catch(err => {
+          setloading(false)
+          history.push(`/project/${projectID}/dashboard`)
         })
       } else if (!curBuilding.reGenReport && !reportData[buildingID]) {
         dispatch(getReport({projectID, buildingID: buildingID}))
