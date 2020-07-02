@@ -1,8 +1,9 @@
 import * as actionTypes from '../actionTypes'
 
-export const setDrwStatIdle = () => (dispatch, getState) => {
+export const setDrwStatIdle = (props) => (dispatch, getState) => {
   return dispatch({
-    type: actionTypes.DRAWING_STATUS_IDLE
+    type: actionTypes.DRAWING_STATUS_IDLE,
+    props: props
   })
 }
 
@@ -12,32 +13,37 @@ export const setDrwStatPoint = () => (dispatch, getState) => {
   })
 }
 
-export const setDrwStatPolygon = () => (dispatch, getState) => {
+export const setDrwStatPolygon = (props) => (dispatch, getState) => {
   return dispatch({
-    type: actionTypes.DRAWING_STATUS_POLYGON
+    type: actionTypes.DRAWING_STATUS_POLYGON,
+    props: props
   })
 }
 
-export const setDrwStatPolyline = () => (dispatch, getState) => {
+export const setDrwStatPolyline = (props) => (dispatch, getState) => {
   return dispatch({
-    type: actionTypes.DRAWING_STATUS_POLYLINE
+    type: actionTypes.DRAWING_STATUS_POLYLINE,
+    props: props
   })
 }
 
-export const setDrwStatLine = () => (dispatch, getState) => {
+export const setDrwStatLine = (props) => (dispatch, getState) => {
   return dispatch({
-    type: actionTypes.DRAWING_STATUS_LINE
+    type: actionTypes.DRAWING_STATUS_LINE,
+    props: props
   })
 }
 
-export const setDrwStatCircle = () => (dispatch, getState) => {
+export const setDrwStatCircle = (props) => (dispatch, getState) => {
   return dispatch({
-    type: actionTypes.DRAWING_STATUS_CIRCLE
+    type: actionTypes.DRAWING_STATUS_CIRCLE,
+    props: props
   })
 }
 
-export const setDrwStatSector = () => (dispatch, getState) => {
+export const setDrwStatSector = (props) => (dispatch, getState) => {
   return dispatch({
-    type: actionTypes.DRAWING_STATUS_SECTOR
+    type: actionTypes.DRAWING_STATUS_SECTOR,
+    props: props
   })
 }

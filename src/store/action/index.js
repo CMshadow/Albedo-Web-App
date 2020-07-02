@@ -98,6 +98,7 @@ export {
 export {
   createPolygon,
   polygonSetColor,
+  polygonSetShow,
   polygonDynamic,
   polygonAddVertex,
   polygonTerminate,
@@ -109,6 +110,7 @@ export {
 export {
   createPolyline,
   polylineSetColor,
+  polylineSetShow,
   polylineDynamic,
   polylineAddVertex,
   polylineTerminate,

@@ -35,7 +35,7 @@ export const RenderPolyline = ({polyline}) => {
     enclosedAngle = angleBetweenBrngs(brngStart, brngEnd)
   }
 
-  return (
+  return ([
     <Entity
       key={polyline.entityId}
       id={polyline.entityId}
@@ -56,83 +56,78 @@ export const RenderPolyline = ({polyline}) => {
           dispatch(actions.setHoverObj(POLYLINE, polyline.entityId))
         }
       }}
-    >
-      {
-        segmentPolylines.map(subline =>
-          <Entity
-            key={`${subline.entityId}.length`}
-            id={`${subline.entityId}.length`}
-            position={
-              new CallbackProperty(() => {
-                return getMidpoint(subline.points[0], subline.points[1])
-              }, false)
-            }
-            label={{
-              text: `${subline.polylineLength()} m`,
-              showBackground: true,
-              font: "16px sans-serif",
-              eyeOffset: new Cartesian3(0.0, 1, -2),
-              show: showLength,
-              translucencyByDistance: new NearFarScalar(100, 1.0, 500, 0.0),
-              rotation : CesiumMath.toRadians(180),
-              alignedAxis : Cartesian3.UNIT_Z,
-              verticalOrigin : VerticalOrigin.TOP
-            }}
-            show={subline.show}
-          />
-        )
-      }
-      {
-        segmentPolylines.slice(1, ).map((subline, index) => {
-          const brngThisLine = Coordinate.bearing(subline.points[0], subline.points[1])
-          const brngPrevLine = Coordinate.bearing(
-            segmentPolylines[index].points[1], segmentPolylines[index].points[0]
-          )
-          const angle = angleBetweenBrngs(brngThisLine, brngPrevLine)
-          return <Entity
-            key={`${subline.entityId}.angle`}
-            id={`${subline.entityId}.angle`}
-            position={Coordinate.toCartesian(subline.points[0])}
-            label={{
-              text: `${angle.toFixed(2)} °`,
-              showBackground: true,
-              backgroundColor: Color.STEELBLUE,
-              font: "12px sans-serif",
-              eyeOffset: new Cartesian3(0, 1, -2),
-              show: showAngle,
-              translucencyByDistance: new NearFarScalar(100, 1.0, 1000, 0.0),
-              pixelOffset: new Cartesian2(10, 10),
-              // pixelOffsetScaleByDistance: new NearFarScalar(1, 0.0, 500, 10.0),
-              rotation : CesiumMath.toRadians(180),
-              alignedAxis : Cartesian3.UNIT_Z,
-              verticalOrigin : VerticalOrigin.TOP
-            }}
-            show={subline.show}
-          />
-        })
-      }{
-        enclosedAngle ?
-        <Entity
-          key={`${polyline.entityId}.lastangle`}
-          id={`${polyline.entityId}.lastangle`}
-          position={Coordinate.toCartesian(polyline.points[0])}
-          label={{
-            text: `${enclosedAngle.toFixed(2)} °`,
-            showBackground: true,
-            backgroundColor: Color.STEELBLUE,
-            font: "12px sans-serif",
-            eyeOffset: new Cartesian3(0, 1, -2),
-            show: showAngle,
-            translucencyByDistance: new NearFarScalar(100, 1.0, 1000, 0.0),
-            pixelOffset: new Cartesian2(10, 10),
-            // pixelOffsetScaleByDistance: new NearFarScalar(1, 0.0, 500, 10.0),
-            rotation : CesiumMath.toRadians(180),
-            alignedAxis : Cartesian3.UNIT_Z,
-            verticalOrigin : VerticalOrigin.TOP
-          }}
-          show={polyline.show}
-        /> : null
-      }
-    </Entity>
-  )
+    />,
+    ...segmentPolylines.map(subline =>
+      <Entity
+        key={`${subline.entityId}.length`}
+        id={`${subline.entityId}.length`}
+        position={
+          new CallbackProperty(() => {
+            return getMidpoint(subline.points[0], subline.points[1])
+          }, false)
+        }
+        label={{
+          text: `${subline.polylineLength()} m`,
+          showBackground: true,
+          font: "16px sans-serif",
+          eyeOffset: new Cartesian3(0.0, 1, -2),
+          show: showLength && polyline.show,
+          translucencyByDistance: new NearFarScalar(100, 1.0, 500, 0.0),
+          rotation : CesiumMath.toRadians(180),
+          alignedAxis : Cartesian3.UNIT_Z,
+          verticalOrigin : VerticalOrigin.TOP
+        }}
+        show={polyline.show}
+      />
+    ),
+    ...segmentPolylines.slice(1, ).map((subline, index) => {
+      console.log(subline)
+      const brngThisLine = Coordinate.bearing(subline.points[0], subline.points[1])
+      const brngPrevLine = Coordinate.bearing(
+        segmentPolylines[index].points[1], segmentPolylines[index].points[0]
+      )
+      const angle = angleBetweenBrngs(brngThisLine, brngPrevLine)
+      return <Entity
+        key={`${subline.entityId}.angle`}
+        id={`${subline.entityId}.angle`}
+        position={Coordinate.toCartesian(subline.points[0])}
+        label={{
+          text: `${angle.toFixed(2)} °`,
+          showBackground: true,
+          backgroundColor: Color.STEELBLUE,
+          font: "12px sans-serif",
+          eyeOffset: new Cartesian3(0, 1, -2),
+          show: showAngle && polyline.show,
+          translucencyByDistance: new NearFarScalar(100, 1.0, 1000, 0.0),
+          pixelOffset: new Cartesian2(10, 10),
+          // pixelOffsetScaleByDistance: new NearFarScalar(1, 0.0, 500, 10.0),
+          rotation : CesiumMath.toRadians(180),
+          alignedAxis : Cartesian3.UNIT_Z,
+          verticalOrigin : VerticalOrigin.TOP
+        }}
+        show={polyline.show}
+      />
+    }),
+    enclosedAngle ?
+    <Entity
+      key={`${polyline.entityId}.lastangle`}
+      id={`${polyline.entityId}.lastangle`}
+      position={Coordinate.toCartesian(polyline.points[0])}
+      label={{
+        text: `${enclosedAngle.toFixed(2)} °`,
+        showBackground: true,
+        backgroundColor: Color.STEELBLUE,
+        font: "12px sans-serif",
+        eyeOffset: new Cartesian3(0, 1, -2),
+        show: showAngle && polyline.show,
+        translucencyByDistance: new NearFarScalar(100, 1.0, 1000, 0.0),
+        pixelOffset: new Cartesian2(10, 10),
+        // pixelOffsetScaleByDistance: new NearFarScalar(1, 0.0, 500, 10.0),
+        rotation : CesiumMath.toRadians(180),
+        alignedAxis : Cartesian3.UNIT_Z,
+        verticalOrigin : VerticalOrigin.TOP
+      }}
+      show={polyline.show}
+    /> : null
+  ])
 }

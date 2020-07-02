@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
 import ModelingHeader from '../ModelingHeader/ModelingHeader';
+import FixedSider from '../ModelingFixedSider/FixedSider'
 import LeftSider from '../ModelingLeftSider/LeftSider'
 import RightSider from '../ModelingRightSider/RightSider'
 
@@ -13,6 +14,7 @@ const ModelingLayout = (props) => {
     <Layout>
       <ModelingHeader/>
       <Layout>
+        <FixedSider/>
         <LeftSider/>
         <Content>
           {props.children}

@@ -1,0 +1,8 @@
+.fixedSider {
+  position: 'fixed';
+  z-index: 4;
+  background-color: #1f1f1f;
+  height: calc(100vh - 64px);
+  left: 0;
+  top: 64px;
+}

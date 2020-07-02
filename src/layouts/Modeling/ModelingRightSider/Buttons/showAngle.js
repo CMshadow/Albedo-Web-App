@@ -2,8 +2,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Tooltip, Row, Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRulerTriangle as rulerSolid } from '@fortawesome/pro-solid-svg-icons'
-import { faRulerTriangle as rulerLight } from '@fortawesome/pro-light-svg-icons'
+import { faDraftingCompass as compassSolid } from '@fortawesome/pro-solid-svg-icons'
+import { faDraftingCompass as compassLight } from '@fortawesome/pro-light-svg-icons'
 import { setShowAngle } from '../../../../store/action/index'
 
 
@@ -38,8 +38,8 @@ const ShowAngle = () => {
           shape='circle'
           icon={
             showAngleStatus ?
-            <FontAwesomeIcon icon={rulerSolid} /> :
-            <FontAwesomeIcon icon={rulerLight} />
+            <FontAwesomeIcon icon={compassSolid} /> :
+            <FontAwesomeIcon icon={compassLight} />
           }
           size='large'
           onClick={toggle}

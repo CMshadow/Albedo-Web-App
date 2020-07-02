@@ -17,6 +17,7 @@ import drawingCircleReducer from './drawing/circleReducer'
 import drawingSectorReducer from './drawing/sectorReducer'
 
 import modelingUIReducer from './modeling/modelingUIReducer'
+import modelingBuildingReducer from './modeling/modelingBuildingReducer'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -36,7 +37,8 @@ const rootReducer = combineReducers({
     circle: drawingCircleReducer,
     sector: drawingSectorReducer,
 
-    ui: modelingUIReducer
+    ui: modelingUIReducer,
+    modeling: modelingBuildingReducer,
   }), {
     initTypes: ['@@redux/INIT'],
     filter: includeAction([

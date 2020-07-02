@@ -17,6 +17,7 @@ const MouseMoveHandler = () => {
   const dispatch = useDispatch()
   const viewer = useSelector(state => state.cesium.viewer)
   const drwStat = useSelector(state => state.undoable.present.drwStat.status)
+  const drwProps = useSelector(state => state.undoable.present.drwStat.props)
   const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
   const pickedType = useSelector(state => state.undoable.present.drawing.pickedType)
@@ -65,7 +66,7 @@ const MouseMoveHandler = () => {
         if (pickedId && pickedType === objTypes.POINT) {
           mouseEndCor.setCoordinate(null, null, POINT_OFFSET)
           dispatch(actions.moveHoriPoint(pickedId, mouseEndCor))
-        } else if ( pickedId && pickedType === objTypes.POLYGON) {
+        } else if ( pickedId && pickedType === objTypes.POLYGON && drwProps.polygonPos) {
           mouseStartCor.setCoordinate(null, null, POLYGON_OFFSET)
           mouseEndCor.setCoordinate(null, null, POLYGON_OFFSET)
           const brng = Coordinate.bearing(mouseStartCor, mouseEndCor)

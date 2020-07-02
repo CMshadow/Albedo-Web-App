@@ -3,11 +3,16 @@ import * as objTypes from '../../action/drawing/objTypes'
 
 const initialState = {
   status: objTypes.IDLE,
+  props: null
 };
 
 const setDrwStatIdle = (state, action) => {
   return {
-    status: objTypes.IDLE
+    status: objTypes.IDLE,
+    props: {
+      ...state.props,
+      ...action.props
+    }
   }
 }
 
@@ -19,31 +24,51 @@ const setDrwStatPoint = (state, action) => {
 
 const setDrwStatPolygon = (state, action) => {
   return {
-    status: objTypes.POLYGON
+    status: objTypes.POLYGON,
+    props: {
+      ...state.props,
+      ...action.props
+    }
   }
 }
 
 const setDrwStatePolyline = (state, action) => {
   return {
-    status: objTypes.POLYLINE
+    status: objTypes.POLYLINE,
+    props: {
+      ...state.props,
+      ...action.props
+    }
   }
 }
 
 const setDrwStateLine = (state, action) => {
   return {
-    status: objTypes.LINE
+    status: objTypes.LINE,
+    props: {
+      ...state.props,
+      ...action.props
+    }
   }
 }
 
 const setDrwStateCircle = (state, action) => {
   return {
-    status: objTypes.CIRCLE
+    status: objTypes.CIRCLE,
+    props: {
+      ...state.props,
+      ...action.props
+    }
   }
 }
 
 const setDrwStateSector = (state, action) => {
   return {
-    status: objTypes.SECTOR
+    status: objTypes.SECTOR,
+    props: {
+      ...state.props,
+      ...action.props
+    }
   }
 }
 

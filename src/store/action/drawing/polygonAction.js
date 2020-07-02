@@ -1,6 +1,8 @@
 import * as actionTypes from '../actionTypes'
 import Polygon from '../../../infrastructure/polygon/polygon'
 import Coordinate from '../../../infrastructure/point/coordinate'
+import { bindDrawingObj } from '../modeling/modelingBuildingAction'
+import { polylineSetShow } from './polylineAction'
 import { moveHoriPoint, moveVertiPoint } from './pointAction'
 import { Color } from 'cesium'
 
@@ -8,11 +10,13 @@ const polygonColor = Color.WHITE.withAlpha(0.2)
 
 export const createPolygon = ({mouseCor, polygonId, pointId, outPolylineId}) =>
 (dispatch, getState) => {
+  const drwProps = getState().undoable.present.drwStat.props
+  const modelingObjType = drwProps.objType
   const polygonH = mouseCor.height
   const polygon = new Polygon(
     mouseCor.getCoordinate(true), polygonH, polygonId, null, polygonColor
   )
-
+  dispatch(bindDrawingObj({objType: modelingObjType, objId: polygonId}))
   return dispatch({
     type: actionTypes.POLYGON_SET,
     entity: polygon,
@@ -25,6 +29,19 @@ export const polygonSetColor = (polygonId, color) => (dispatch, getState) => {
   const polygon = getState().undoable.present.polygon[polygonId].entity
   const newPolygon = Polygon.fromPolygon(polygon)
   newPolygon.setColor(color)
+
+  return dispatch({
+    type: actionTypes.POLYGON_SET,
+    entity: newPolygon,
+  })
+}
+
+export const polygonSetShow = (polygonId, show) => (dispatch, getState) => {
+  const polygon = getState().undoable.present.polygon[polygonId].entity
+  const outPolylineId = getState().undoable.present.polygon[polygonId].outPolylineId
+  const newPolygon = Polygon.fromPolygon(polygon)
+  newPolygon.show = show
+  dispatch(polylineSetShow(outPolylineId, false))
 
   return dispatch({
     type: actionTypes.POLYGON_SET,
