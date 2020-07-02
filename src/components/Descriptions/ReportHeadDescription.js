@@ -12,7 +12,6 @@ export const ReportHeadDescription = ({buildingID}) => {
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
   const curBuildingReport = reportData[buildingID]
-  console.log(buildingID)
   const buildingName = projectData.buildings.find(building => building.buildingID === buildingID).buildingName
 
   let ttl_investment = null

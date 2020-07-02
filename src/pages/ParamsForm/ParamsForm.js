@@ -152,7 +152,6 @@ const ParamsForm = () => {
       {} :
       values[key]=Number(values[key])
     );
-    console.log(values)
     // 更新redux中项目数据后更新后端的项目数据
     await dispatch(updateProjectAttributes(values))
 

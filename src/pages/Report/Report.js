@@ -29,8 +29,6 @@ const Report = () => {
   const reportData = useSelector(state => state.report)
   const [loading, setloading] = useState(true)
   const [menuKey, setmenuKey] = useState('1')
-  console.log(buildingID)
-  console.log(projectData.buildings)
   const curBuilding = projectData.buildings.find(building =>
     building.buildingID === buildingID
   )
@@ -76,7 +74,6 @@ const Report = () => {
   }
 
   useEffect(() => {
-    console.log('update')
     setloading(true)
     if (
       projectData.p_loss_soiling === undefined ||
@@ -92,8 +89,8 @@ const Report = () => {
         .then(res => {
           dispatch(genReport({projectID, buildingID: buildingID}))
           .then(res => {
-            dispatch(setBuildingReGenReport({buildingID, reGenReport: false}))
             dispatch(setReportData({buildingID: buildingID, data: res}))
+            dispatch(setBuildingReGenReport({buildingID, reGenReport: false}))
             setloading(false)
           })
         })
@@ -101,20 +98,11 @@ const Report = () => {
           setloading(false)
           history.push(`/project/${projectID}/dashboard`)
         })
-      } else if (!curBuilding.reGenReport && !reportData[buildingID]) {
-        dispatch(getReport({projectID, buildingID: buildingID}))
-        .then(res => {
-          dispatch(setReportData({buildingID: buildingID, data: res}))
-          setloading(false)
-        })
-        .catch(err => {
-          setloading(false)
-        })
       } else {
         setloading(false)
       }
     }
-  },[buildingID, curBuilding, curBuilding.reGenReport, dispatch, history, projectData.buildings, projectData.p_loss_soiling, projectID, reportData])
+  },[buildingID, curBuilding.reGenReport, dispatch, history, projectData.p_loss_soiling, projectID])
 
   return (
     <Spin indicator={<LoadingOutlined spin />} size='large' spinning={loading}>

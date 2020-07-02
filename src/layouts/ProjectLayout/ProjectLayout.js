@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import { useBeforeunload } from 'react-beforeunload'
 import { Layout, Menu, Row, Button, Spin, Tooltip, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
@@ -32,10 +32,9 @@ const ProjectLayout = (props) => {
   const reportData = useSelector(state => state.report)
   const cognitoUser = useSelector(state => state.auth.cognitoUser)
   const selectMenu = history.location.pathname.split('/').slice(3,).join('/')
+  const basePath = useLocation().pathname.split('/').slice(0,3).join('/')
+  const fullPath = useLocation().pathname
 
-  const onSelectMenu = ({ item, key }) => {
-    history.push(`/project/${projectID}/${key}`)
-  }
 
   const genReportSubMenu = () => {
     return projectData.buildings &&
@@ -52,15 +51,15 @@ const ProjectLayout = (props) => {
       ) disabled = true
       return (
         <Menu.Item key={`report/${building.buildingID}`} disabled={disabled}>
-          <Tooltip title={disabled ? t('sider.report.disabled') : null}>
-            {/* <NavLink to={`/project/${projectID}/report/${building.buildingID}`}> */}
-            {
-              t('sider.menu.report.prefix') +
-              `${building.buildingName}` +
-              t('sider.menu.report.suffix')
-            }
-          {/* </NavLink> */}
-          </Tooltip>
+          <Link to={`${basePath}/report/${building.buildingID}`}>
+            <Tooltip title={disabled ? t('sider.report.disabled') : null}>
+              {
+                t('sider.menu.report.prefix') +
+                `${building.buildingName}` +
+                t('sider.menu.report.suffix')
+              }
+            </Tooltip>
+          </Link>
         </Menu.Item>
       )
     })
@@ -82,13 +81,15 @@ const ProjectLayout = (props) => {
       }
       return (
         <Menu.Item key={`singleLineDiagram/${building.buildingID}`} disabled={disabled}>
-          <Tooltip title={disabled ? t('sider.menu.singleLineDiagram.disabled') : null}>
-            {
-              t('sider.menu.singleLineDiagram.prefix') +
-              `${building.buildingName}` +
-              t('sider.menu.singleLineDiagram.suffix')
-            }
-          </Tooltip>
+          <Link to={`${basePath}/singleLineDiagram/${building.buildingID}`}>
+            <Tooltip title={disabled ? t('sider.menu.singleLineDiagram.disabled') : null}>
+              {
+                t('sider.menu.singleLineDiagram.prefix') +
+                `${building.buildingName}` +
+                t('sider.menu.singleLineDiagram.suffix')
+              }
+            </Tooltip>
+          </Link>
         </Menu.Item>
       )
     })
@@ -142,57 +143,55 @@ const ProjectLayout = (props) => {
       )
       await Promise.all(fetchPromises)
 
-      const projectData = await dispatch(getProject({projectID: projectID}))
-        // .then(res => {
-        //   console.log(res)
-        //   dispatch(setProjectData(res))
-        // })
-        // .catch(err => {
-        //   dispatch(setProjectData(null))
-        //   history.push('/dashboard')
-        // })
-      console.log(projectData)
-      const getReportPromises = projectData.buildings.map(building =>
-        dispatch(getReport({projectID, buildingID: building.buildingID}))
+      let projectData
+      await dispatch(getProject({projectID: projectID}))
+        .then(res => {
+          projectData = res
+          dispatch(setProjectData(res))
+        })
+        .catch(err => {
+          dispatch(setProjectData(null))
+          history.push('/dashboard')
+        })
+
+      const getReportPromises = projectData.buildings.map(building => {
+        return dispatch(getReport({projectID, buildingID: building.buildingID}))
         .then(res =>
           dispatch(setReportData({buildingID: building.buildingID, data: res}))
         )
         .catch(err => {
           history.push('/dashboard')
         })
-      )
+      })
       await Promise.all(getReportPromises)
-      return
-
-      // if (
-      //   !projectData.optTilt || !projectData.optAzimuth ||
-      //   !projectData.optPOA || !projectData.tiltAzimuthPOA ||
-      //   projectData.tiltAzimuthPOA.length === 0
-      // ) {
-      //   dispatch(globalOptTiltAzimuth({projectID: projectID}))
-      //   .then(optSpec => {
-      //     dispatch(setProjectData(optSpec))
-      //   })
-      //   const allTiltAziPOA = [
-      //     dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 0, endAzi: 90})),
-      //     dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 90, endAzi: 180})),
-      //     dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 180, endAzi: 270})),
-      //     dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 270, endAzi: 360}))
-      //   ]
-      //   Promise.all(allTiltAziPOA).then(allPOARes => {
-      //     notification.success({
-      //       message:t('sider.tiltAzimuthPOA.success')
-      //     })
-      //     dispatch(setProjectData({
-      //       tiltAzimuthPOA: allPOARes.flatMap(obj => obj.allTiltAziPOA)
-      //     }))
-      //   })
-      // }
+      if (
+        !projectData.optTilt || !projectData.optAzimuth ||
+        !projectData.optPOA || !projectData.tiltAzimuthPOA ||
+        projectData.tiltAzimuthPOA.length === 0
+      ) {
+        dispatch(globalOptTiltAzimuth({projectID: projectID}))
+        .then(optSpec => {
+          dispatch(setProjectData(optSpec))
+        })
+        const allTiltAziPOA = [
+          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 0, endAzi: 90})),
+          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 90, endAzi: 180})),
+          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 180, endAzi: 270})),
+          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 270, endAzi: 360}))
+        ]
+        Promise.all(allTiltAziPOA).then(allPOARes => {
+          notification.success({
+            message:t('sider.tiltAzimuthPOA.success')
+          })
+          dispatch(setProjectData({
+            tiltAzimuthPOA: allPOARes.flatMap(obj => obj.allTiltAziPOA)
+          }))
+        })
+      }
     }
 
     fetchData()
     setloading(false)
-    console.log('hello')
 
     return () => {
       saveProjectOnExit()
@@ -228,14 +227,20 @@ const ProjectLayout = (props) => {
               <Menu
                 theme="dark"
                 mode="inline"
-                defaultSelectedKeys={[selectMenu]}
-                onClick={onSelectMenu}
+                selectedKeys={[selectMenu]}
               >
                 <Menu.Item key='dashboard' className={styles.menuItem}>
-                  {t('sider.menu.projectDetail')}
+                  <Link to={`${basePath}/dashboard`}>
+                    {t('sider.menu.projectDetail')}
+                  </Link>
                 </Menu.Item>
-                <Menu.Item key='report/params' className={styles.menuItem}>
-                  {t('sider.menu.reportParams')}
+                <Menu.Item key='report/params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+                  <Link to={{
+                    pathname: `${basePath}/report/params`,
+                    state: {buildingID: fullPath.split('/').slice(4,)[0]}
+                  }}>
+                    {t('sider.menu.reportParams')}
+                  </Link>
                 </Menu.Item>
                 <SubMenu
                   disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
@@ -253,11 +258,15 @@ const ProjectLayout = (props) => {
                 >
                   {genSLDSubMen()}
                 </SubMenu>
-                <Menu.Item key="pv" className={styles.menuItem}>
-                  {t('sider.menu.pv')}
+                <Menu.Item key="pv" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+                  <Link to={`${basePath}/pv`}>
+                    {t('sider.menu.pv')}
+                  </Link>
                 </Menu.Item>
-                <Menu.Item key="inverter" className={styles.menuItem}>
-                  {t('sider.menu.inverter')}
+                <Menu.Item key="inverter" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+                  <Link to={`${basePath}/inverter`}>
+                    {t('sider.menu.inverter')}
+                  </Link>
                 </Menu.Item>
               </Menu>
               <Button
