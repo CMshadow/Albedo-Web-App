@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet'
 import { useBeforeunload } from 'react-beforeunload'
-import { Layout, Menu, Row, Button, Spin, Space, Tooltip, notification } from 'antd';
-import { SettingOutlined } from '@ant-design/icons'
+import { Layout, Menu, Row, Button, Spin, Tooltip, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
@@ -14,8 +13,8 @@ import EmailSupport from '../../components/TechSupport/EmailSupport';
 import { getProject, saveProject, globalOptTiltAzimuth, allTiltAzimuthPOA } from '../../pages/Project/service'
 import { getPV, getOfficialPV } from '../../pages/PVTable/service'
 import { getInverter, getOfficialInverter } from '../../pages/InverterTable/service'
-import { saveReport } from '../../pages/Report/service'
-import { setProjectData, setPVData, setOfficialPVData, setInverterData, setOfficialInverterData, updateProjectAttributes } from '../../store/action/index';
+import { saveReport, getReport } from '../../pages/Report/service'
+import { setProjectData, setReportData, setPVData, setOfficialPVData, setInverterData, setOfficialInverterData, updateProjectAttributes } from '../../store/action/index';
 
 import * as styles from './ProjectLayout.module.scss';
 
@@ -27,12 +26,12 @@ const ProjectLayout = (props) => {
   const history = useHistory();
   const dispatch = useDispatch()
   const { t } = useTranslation();
+  const { projectID } = useParams()
   const [loading, setloading] = useState(false)
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
   const cognitoUser = useSelector(state => state.auth.cognitoUser)
-  const projectID = history.location.pathname.split('/')[2]
-  const selectMenu = history.location.pathname.split('/')[3]
+  const selectMenu = history.location.pathname.split('/').slice(3,).join('/')
 
   const onSelectMenu = ({ item, key }) => {
     history.push(`/project/${projectID}/${key}`)
@@ -54,11 +53,13 @@ const ProjectLayout = (props) => {
       return (
         <Menu.Item key={`report/${building.buildingID}`} disabled={disabled}>
           <Tooltip title={disabled ? t('sider.report.disabled') : null}>
+            {/* <NavLink to={`/project/${projectID}/report/${building.buildingID}`}> */}
             {
               t('sider.menu.report.prefix') +
               `${building.buildingName}` +
               t('sider.menu.report.suffix')
             }
+          {/* </NavLink> */}
           </Tooltip>
         </Menu.Item>
       )
@@ -117,7 +118,7 @@ const ProjectLayout = (props) => {
 
   // 读pv 逆变器 项目数据 最佳倾角朝向
   useEffect(() => {
-    const fetchBasicData = async () => {
+    const fetchData = async () => {
       const fetchPromises = []
       fetchPromises.push(
         dispatch(getPV())
@@ -139,39 +140,59 @@ const ProjectLayout = (props) => {
         .then(res => dispatch(setOfficialInverterData(res)))
         .catch(err => history.push('/dashboard'))
       )
-      return await Promise.all(fetchPromises)
+      await Promise.all(fetchPromises)
+
+      const projectData = await dispatch(getProject({projectID: projectID}))
+        // .then(res => {
+        //   console.log(res)
+        //   dispatch(setProjectData(res))
+        // })
+        // .catch(err => {
+        //   dispatch(setProjectData(null))
+        //   history.push('/dashboard')
+        // })
+      console.log(projectData)
+      const getReportPromises = projectData.buildings.map(building =>
+        dispatch(getReport({projectID, buildingID: building.buildingID}))
+        .then(res =>
+          dispatch(setReportData({buildingID: building.buildingID, data: res}))
+        )
+        .catch(err => {
+          history.push('/dashboard')
+        })
+      )
+      await Promise.all(getReportPromises)
+      return
+
+      // if (
+      //   !projectData.optTilt || !projectData.optAzimuth ||
+      //   !projectData.optPOA || !projectData.tiltAzimuthPOA ||
+      //   projectData.tiltAzimuthPOA.length === 0
+      // ) {
+      //   dispatch(globalOptTiltAzimuth({projectID: projectID}))
+      //   .then(optSpec => {
+      //     dispatch(setProjectData(optSpec))
+      //   })
+      //   const allTiltAziPOA = [
+      //     dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 0, endAzi: 90})),
+      //     dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 90, endAzi: 180})),
+      //     dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 180, endAzi: 270})),
+      //     dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 270, endAzi: 360}))
+      //   ]
+      //   Promise.all(allTiltAziPOA).then(allPOARes => {
+      //     notification.success({
+      //       message:t('sider.tiltAzimuthPOA.success')
+      //     })
+      //     dispatch(setProjectData({
+      //       tiltAzimuthPOA: allPOARes.flatMap(obj => obj.allTiltAziPOA)
+      //     }))
+      //   })
+      // }
     }
 
-    fetchBasicData()
-    dispatch(getProject({projectID: projectID}))
-    .then(res => {
-      dispatch(setProjectData(res))
-      setloading(false)
-      if (!res.optTilt || !res.optAzimuth || !res.optPOA || !res.tiltAzimuthPOA || res.tiltAzimuthPOA.length === 0) {
-        dispatch(globalOptTiltAzimuth({projectID: projectID}))
-        .then(optSpec => {
-          dispatch(setProjectData(optSpec))
-        })
-        const allTiltAziPOA = [
-          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 0, endAzi: 90})),
-          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 90, endAzi: 180})),
-          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 180, endAzi: 270})),
-          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 270, endAzi: 360}))
-        ]
-        Promise.all(allTiltAziPOA).then(allPOARes => {
-          notification.success({
-            message:t('sider.tiltAzimuthPOA.success')
-          })
-          dispatch(setProjectData({
-            tiltAzimuthPOA: allPOARes.flatMap(obj => obj.allTiltAziPOA)
-          }))
-        })
-      }
-    })
-    .catch(err => {
-      dispatch(setProjectData(null))
-      history.push('/dashboard')
-    })
+    fetchData()
+    setloading(false)
+    console.log('hello')
 
     return () => {
       saveProjectOnExit()
@@ -208,26 +229,19 @@ const ProjectLayout = (props) => {
                 theme="dark"
                 mode="inline"
                 defaultSelectedKeys={[selectMenu]}
-                onSelect={onSelectMenu}
+                onClick={onSelectMenu}
               >
                 <Menu.Item key='dashboard' className={styles.menuItem}>
                   {t('sider.menu.projectDetail')}
+                </Menu.Item>
+                <Menu.Item key='report/params' className={styles.menuItem}>
+                  {t('sider.menu.reportParams')}
                 </Menu.Item>
                 <SubMenu
                   disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
                   key='report'
                   className={styles.menuItem}
-                  title={
-                    <Space>
-                      {t('sider.menu.report')}
-                      <Button
-                        shape="circle"
-                        type='link'
-                        onClick={() => {history.push(`/project/${projectID}/report/params`)}}
-                        icon={<SettingOutlined style={{margin: 0}}/>}
-                      />
-                    </Space>
-                  }
+                  title={t('sider.menu.report')}
                 >
                   {genReportSubMenu()}
                 </SubMenu>

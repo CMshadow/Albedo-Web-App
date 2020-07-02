@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber, Input } from 'antd';
+import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProjectAttributes } from '../../store/action/index'

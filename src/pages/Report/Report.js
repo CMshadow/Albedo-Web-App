@@ -3,7 +3,7 @@ import GlobalAlert from '../../components/GlobalAlert/GlobalAlert'
 import { Spin, Tabs, Card, Row, Col, Menu } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { InvestTab } from './tabs/InvestTab'
 import { GainTab } from './tabs/GainTab'
@@ -24,13 +24,13 @@ const Report = () => {
   const { t } = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
+  const { projectID, buildingID } = useParams()
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
   const [loading, setloading] = useState(true)
   const [menuKey, setmenuKey] = useState('1')
-
-  const projectID = history.location.pathname.split('/')[2]
-  const buildingID = history.location.pathname.split('/')[4]
+  console.log(buildingID)
+  console.log(projectData.buildings)
   const curBuilding = projectData.buildings.find(building =>
     building.buildingID === buildingID
   )
@@ -76,7 +76,8 @@ const Report = () => {
   }
 
   useEffect(() => {
-    console.log(projectData.p_loss_soiling)
+    console.log('update')
+    setloading(true)
     if (
       projectData.p_loss_soiling === undefined ||
       projectData.p_loss_soiling === null

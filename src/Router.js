@@ -20,7 +20,7 @@ const ParamsForm = lazy(() => import('./pages/ParamsForm/ParamsForm'))
 const Dashboard = lazy(() => import('./pages/Project/Dashboard'))
 const PVTable = lazy(() => import('./pages/PVTable/index'))
 const InverterTable = lazy(() => import('./pages/InverterTable/index'))
-const ModelingPage = lazy(() => import('./pages/Modeling/Modeling')) 
+const ModelingPage = lazy(() => import('./pages/Modeling/Modeling'))
 const SingleLineDiagramUS = lazy(() => import('./pages/SingleLineDiagram/SingleLineDiagram_us'))
 
 const Router = () => {
@@ -48,7 +48,7 @@ const Router = () => {
               </Switch>
             </UserLayout>
           </Route>
-          <PrivateRoute path="/project">
+          <PrivateRoute path="/project/:projectID">
             <ProjectLayout>
               <Switch>
                 <PrivateRoute path='/project/:projectID/dashboard'>
