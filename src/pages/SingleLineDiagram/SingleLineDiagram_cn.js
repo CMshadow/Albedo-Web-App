@@ -26,7 +26,6 @@ const SingleLineDiagUS = () => {
   const buildingData = projectData.buildings.find(building =>
     building.buildingID === buildingID
   )
-  console.log(projectData)
   const invSpec = DataGenerator.getInverterWring(buildingData)
   const aggrePaco = invSpec.map(spec => 
     allInverter.find(inv => inv.inverterID === spec.inverter_model.inverterID).paco
@@ -59,8 +58,6 @@ const SingleLineDiagUS = () => {
   const combiboxCableChoice = buildingReport ?
     DataGenerator.getCombiBoxCableChoice(buildingReport)
     : ''
-
-  console.log(combiboxCableChoice + ' 999999')
   const acCableChoice = buildingReport ? buildingReport.setup_ac_wir_choice.flatMap(ary => ary) : []
   const dcCableChoice = buildingReport ? buildingReport.setup_dc_wir_choice.flatMap(ary => ary.flatMap(ary2 => ary2)) : []
   const combiboxIe = buildingReport && buildingReport.combibox_Ie ? buildingReport.combibox_Ie.toFixed(0) : ''
