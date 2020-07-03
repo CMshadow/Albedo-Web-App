@@ -126,13 +126,19 @@ export const setMeterAccessPort = (state, action) => {
 }
 
 export const diagramMeterAccessAllIn = (state, action) => {
-  // console.log(action.meterAllInAccess)
   return{
     ...state,
     diagramMeterAccessAllIn: action.meterAllInAccess
   }
 }
 
+
+export const setDiagramHeight = (state, action) => {
+  return{
+    ...state,
+    diagramHeight: action.height
+  }  
+}
 
 
 const reducer = (state=initialState, action) => {
@@ -179,6 +185,8 @@ const reducer = (state=initialState, action) => {
 
     case actionTypes.SET_METER_ACCESS_ALL_IN:
       return diagramMeterAccessAllIn(state, action);
+    case actionTypes.SET_DIAGRAM_HEIGHT:
+      return setDiagramHeight(state, action);
   }
 };
 

@@ -31,7 +31,7 @@ const DiagramBoundary = (props) => {
   const dcDataSet = new Set(props.dcData)
   const allPVArray = props.allPVArray
   const pv_Cell = allPVArray[0].siliconMaterial === "c-Si" ? "单晶硅" : "多晶硅"
-  const diagramType = props.index === 1 ? "(自发自用,余电上网)" : "(全额上网)"
+  const diagramType = props.index === 1 ? "(余电上网)" : "(全额上网)"
   const pvNames = allPVArray.map( i => i.pvName)
   const pvNameSet = new Set(pvNames)
 
@@ -224,7 +224,7 @@ const DiagramBoundary = (props) => {
       key = {"Boundary-Text-" + uuidv4()}
       x={startX + iconWidth * 0.6}
       y={startY + iconHeight * 0.7 + font}
-      text={"   项目:"}
+      text={"   项目: " + props.projectData.projectTitle}
       fontSize={font}
       fontFamily='Arial'
       fill='Black'
@@ -360,7 +360,7 @@ const DiagramBoundary = (props) => {
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
             y={startPosition[1] + index * unitHeight + 1.5 * font + heightOffSet}
-            text={`  ${aggrePacpData[sortedPacoKeys[0]]} 台, ... `}
+            text={`  ${aggrePacpData[sortedPacoKeys[0]]} 台, ${Object.keys(aggrePacpData).length > 1 ? ', ...' : '' } `}
             fontSize={font}
             fontFamily='Arial'
             fill='Black'

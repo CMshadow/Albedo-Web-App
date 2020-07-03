@@ -49,7 +49,13 @@ export {
   setServerPanel,
   setMeter,
   setGrid,
-  setWidth
+  setWidth,
+  setStartPosition,
+  setDiagramWidth,
+  setInverterAccessPorts,
+  setMeterAccess,
+  setMeterAccessAllIn,
+  setDiagramHeight
 } from './SLDAction'
 
 export {
@@ -122,10 +128,4 @@ export {
 export {
   addSector
 } from './drawing/sectorAction'
-  setWidth,
-  setStartPosition,
-  setDiagramWidth,
-  setInverterAccessPorts,
-  setMeterAccess,
-  setMeterAccessAllIn
-} from './SLDAction'
+

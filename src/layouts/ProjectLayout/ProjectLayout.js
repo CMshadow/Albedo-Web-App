@@ -75,14 +75,14 @@ const ProjectLayout = (props) => {
         building.data.every(obj => obj.pv_panel_parameters.tilt_angle >= 0) &&
         building.data.every(obj => obj.inverter_wiring.every(inverterSpec =>
           inverterSpec.panels_per_string >= 0
-        )) && !building.reGenReport
+        )) && !building.reGenReport 
       ) {
         disabled = false
       }
       return (
         <Menu.Item key={`singleLineDiagram/${building.buildingID}`} disabled={disabled}>
           <Tooltip title={disabled ? t('sider.menu.singleLineDiagram.disabled') : null}>
-            <div onClick={() => history.push(`${basePath}/singleLineDiagram/${building.buildingID}`)}>
+            <div disabled={disabled} onClick={() => history.push(`${basePath}/singleLineDiagram/${building.buildingID}`)}>
               {
                 t('sider.menu.singleLineDiagram.prefix') +
                 `${building.buildingName}` +

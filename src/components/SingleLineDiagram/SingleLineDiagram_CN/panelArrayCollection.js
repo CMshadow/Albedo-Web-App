@@ -14,7 +14,6 @@ const PanelArrayCollection = (props) => {
   const offset = props.index === 1 ? 0 : height + 100
   let startPosition = useSelector(state => state.SLD.diagramBoundaryPosition)
   startPosition[1] += offset
-  console.log(props.numOfInv)
   const numOfArrays = props.numOfInv > 5 ? 5 : props.numOfInv
   const trigger = props.numOfInv > 5 ? true : false
   const inverterWidth = unitWidth * 3.3
@@ -152,7 +151,7 @@ const PanelArrayCollection = (props) => {
         index * unitPortWidth + offSet * 0.5 + 2.5,
         endPoint])
         drawSingleArray([startPosition[0] + unitWidth * 2.165 +
-          index * unitPortWidth + offSet * 0.5 + 2.5, endPoint], unitArrayWidth)
+          index * unitPortWidth + offSet * 0.5 + 2.5, endPoint], unitArrayWidth, index)
       
       if (trigger && index === 3) {
         groupOfPvArray.push(<Circle
@@ -345,7 +344,7 @@ const PanelArrayCollection = (props) => {
     
   }
     
-  const drawSingleArray = (startPoint, unitW) => {
+  const drawSingleArray = (startPoint, unitW, index) => {
     const unitArrayWidth = unitW / 5
     groupOfPvArray.push(<Line 
       key= {"PV-Array-Line-" + uuidv4()}
@@ -396,30 +395,42 @@ const PanelArrayCollection = (props) => {
       closed={true}
       ></Line>)
 
-    groupOfPvArray.push(<Rect
-      key= {"PV-Array-Rect-" + uuidv4()}
-      x={startPoint[0] - unitW * 0.4}
-      y={startPoint[1]+ 0.3 * unitHeight}
-      width={unitW * 0.8}
-      height={0.2 * unitHeight}
-      stroke='black'
-      strokeWidth={2}
-      lineCap='round'
-      lineJoin='round'
-    ></Rect>)
+      groupOfPvArray.push(<Text
+        key = {"PV-Array-Text-" + uuidv4()}
+        x={startPoint[0] - unitW * 0.4 + 2}
+        y={startPoint[1]+ 0.3 * unitHeight - 24}
+        text={`${ props.numOfInv > 5 && index === 4 ? 
+        props.allPVArray[props.numOfInv - 1].inverter_serial_number : 
+        props.allPVArray[index].inverter_serial_number }`}
+        fontSize={12}
+        fontFamily='Arial'
+        fill='Black'
+      ></Text>)
 
-    groupOfPvArray.push(<Line 
-      key= {"PV-Array-Line-" + uuidv4()}
-      points={[startPoint[0] + unitW * 0.4,
-        startPoint[1]+ 0.3 * unitHeight,
-        startPoint[0] - unitW * 0.4,
-        startPoint[1]+ 0.5 * unitHeight]}
-      stroke='black'
-      strokeWidth={0.5}
-      lineCap='round'
-      lineJoin='round'
-      closed={true}
-      ></Line>)
+      groupOfPvArray.push(<Rect
+        key= {"PV-Array-Rect-" + uuidv4()}
+        x={startPoint[0] - unitW * 0.4}
+        y={startPoint[1]+ 0.3 * unitHeight}
+        width={unitW * 0.8}
+        height={0.2 * unitHeight}
+        stroke='black'
+        strokeWidth={2}
+        lineCap='round'
+        lineJoin='round'
+      ></Rect>)
+
+      groupOfPvArray.push(<Line 
+        key= {"PV-Array-Line-" + uuidv4()}
+        points={[startPoint[0] + unitW * 0.4,
+          startPoint[1]+ 0.3 * unitHeight,
+          startPoint[0] - unitW * 0.4,
+          startPoint[1]+ 0.5 * unitHeight]}
+        stroke='black'
+        strokeWidth={0.5}
+        lineCap='round'
+        lineJoin='round'
+        closed={true}
+        ></Line>)
 
       groupOfPvArray.push(<Text
         key = {"PV-Array-Text-" + uuidv4()}

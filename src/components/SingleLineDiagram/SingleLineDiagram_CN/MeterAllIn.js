@@ -15,7 +15,6 @@ const MeterAllIn = (props) => {
   const unitWidth = width / 6
   const startX = accessPort[0]
   const startY = accessPort[1]
-  console.log(accessPort)
   const drawMeter = () => {
     drawSwictchPort([startX, startY - 15], groupOfMeterAllIn)
     groupOfMeterAllIn.push(<Line

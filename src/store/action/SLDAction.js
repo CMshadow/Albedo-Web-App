@@ -89,6 +89,14 @@ export const setDiagramWidth = (newWidth) =>
   })
 }
 
+export const setDiagramHeight = (newHeight) => 
+(dispatch, getState) => {
+  return dispatch({
+    type: ActionTypes.SET_DIAGRAM_HEIGHT,
+    height: newHeight
+  })
+}
+
 export const setInverterAccessPorts = (accessPortsList) => 
 (dispatch, getState) => {
   return dispatch({
