@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import  {Stage, Layer}  from 'react-konva';
 import { useParams } from 'react-router-dom'
 import classes from './SingleLineDiagram_us.module.scss';

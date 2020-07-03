@@ -56,7 +56,8 @@ export const setMeter = (newAccessPorts, newStartPosition) => (dispatch, getStat
   })
 }
 
-export const setGrid = (newAccessPorts, newStartPosition) => (dispatch, getState) => {
+export const setGrid = (newAccessPorts, newStartPosition) => 
+(dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_GRID,
     startPosition: newStartPosition,
@@ -64,9 +65,51 @@ export const setGrid = (newAccessPorts, newStartPosition) => (dispatch, getState
   })
 }
 
-export const setWidth = (newWidth) => (dispatch, getState) => {
+export const setWidth = (newWidth) => 
+(dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_WIDTH,
     width: newWidth,
+  })
+}
+
+export const setStartPosition = (newPosition) => 
+(dispatch, getState) => {
+  return dispatch({
+    type: ActionTypes.SET_START_POSTION,
+    position: newPosition
+  })
+}
+
+export const setDiagramWidth = (newWidth) => 
+(dispatch, getState) => {
+  return dispatch({
+    type: ActionTypes.SET_DIAGRAM_WIDTH,
+    width: newWidth
+  })
+}
+
+export const setInverterAccessPorts = (accessPortsList) => 
+(dispatch, getState) => {
+  return dispatch({
+    type: ActionTypes.SET_INVERTER_ACCESSPORTS,
+    accessPoints: accessPortsList
+  })
+}
+
+
+export const setMeterAccess = (newPosition) => 
+(dispatch, getState) => {
+  return dispatch({
+    type: ActionTypes.SET_METER_ACCESS,
+    meterAccess: newPosition
+  })
+}
+
+export const setMeterAccessAllIn = (newPosition) => 
+(dispatch, getState) => {
+  return dispatch({
+    type: ActionTypes.SET_METER_ACCESS_ALL_IN,
+    meterAllInAccess: newPosition
   })
 }

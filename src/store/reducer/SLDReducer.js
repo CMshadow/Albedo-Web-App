@@ -8,15 +8,23 @@ const initialState = {
   inverterAccessPorts: [],
   interConnectAccessPorts: [],
   disconnecterPosition: [],
-  stageWidth: window.innerWidth,
-  stageHeight: window.innerHeight,
+  stageWidth: window.innerWidth - 250,
+  stageHeight: window.innerHeight - 64,
   disconnecterAccess: [],
   serverPanelPosition: [],
   disconnectSize: [],
   serverPanelAccess: [],
   meterPosition:[],
   gridPosition:[],
-  meterAccessPosition: []
+  meterAccessPosition: [],
+  //CN
+  diagramWidth: window.innerWidth - 250,
+  diagramHeight: window.innerHeight - 64,
+  diagramBoundaryPosition: [0 , 0],
+  diagramInverterPorts: [],
+  diagramMeterAccessPort: [],
+  diagramMeterAccessAllIn: []
+
 };
 
 const setPVDist = (state, action) => {
@@ -89,6 +97,44 @@ const setWidth = (state, action) => {
   }
 }
 
+const setStartPosition = (state, action) => {
+  return{
+    ...state,
+    diagramBoundaryPosition: action.position
+  }
+}
+
+const setDiagramWidth = (state, action) => {
+  return{
+    ...state,
+    diagramWidth: action.width
+  }  
+}
+
+export const setInverterAccessPorts = (state, action) => {
+  return{
+    ...state,
+    diagramInverterPorts: action.accessPoints
+  }
+}
+
+export const setMeterAccessPort = (state, action) => {
+  return{
+    ...state,
+    diagramMeterAccessPort: action.meterAccess
+  }
+}
+
+export const diagramMeterAccessAllIn = (state, action) => {
+  // console.log(action.meterAllInAccess)
+  return{
+    ...state,
+    diagramMeterAccessAllIn: action.meterAllInAccess
+  }
+}
+
+
+
 const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_PV_DIST:
@@ -118,7 +164,21 @@ const reducer = (state=initialState, action) => {
     case actionTypes.SET_WIDTH:
       return setWidth(state, action);
 
+    case actionTypes.SET_DIAGRAM_WIDTH:
+      return setDiagramWidth(state, action);
+
+    case actionTypes.SET_START_POSTION:
+      return setStartPosition(state, action);
+
+    case actionTypes.SET_INVERTER_ACCESSPORTS:
+      return setInverterAccessPorts(state, action);
+
+    case actionTypes.SET_METER_ACCESS:
+      return setMeterAccessPort(state, action);
     default: return state;
+
+    case actionTypes.SET_METER_ACCESS_ALL_IN:
+      return diagramMeterAccessAllIn(state, action);
   }
 };
 

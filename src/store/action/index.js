@@ -122,3 +122,10 @@ export {
 export {
   addSector
 } from './drawing/sectorAction'
+  setWidth,
+  setStartPosition,
+  setDiagramWidth,
+  setInverterAccessPorts,
+  setMeterAccess,
+  setMeterAccessAllIn
+} from './SLDAction'
