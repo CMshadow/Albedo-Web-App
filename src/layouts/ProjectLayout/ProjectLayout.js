@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet'
 import { useBeforeunload } from 'react-beforeunload'
-import { Layout, Menu, Row, Button, Spin, Tooltip, notification, Typography } from 'antd';
+import { Layout, Menu, Row, Button, Spin, Tooltip, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams, Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,7 +21,6 @@ import * as styles from './ProjectLayout.module.scss';
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
 const { Footer } = Layout;
-const Text = Typography.Text
 
 const ProjectLayout = (props) => {
   const history = useHistory();
@@ -35,6 +34,13 @@ const ProjectLayout = (props) => {
   const basePath = useLocation().pathname.split('/').slice(0,3).join('/')
   const fullPath = useLocation().pathname
 
+
+  const menuOnSelect = (item) => {
+    history.push({
+      pathname: `${basePath}/${item.key}`,
+      state: {buildingID: fullPath.split('/').slice(4,)[0]}
+    })
+  }
 
   const genReportSubMenu = () => {
     return projectData.buildings &&
@@ -52,13 +58,11 @@ const ProjectLayout = (props) => {
       return (
         <Menu.Item key={`report/${building.buildingID}`} disabled={disabled}>
           <Tooltip title={disabled ? t('sider.report.disabled') : null}>
-            <div onClick={() => history.push(`${basePath}/report/${building.buildingID}`)}>
-              {
-                t('sider.menu.report.prefix') +
-                `${building.buildingName}` +
-                t('sider.menu.report.suffix')
-              }
-            </div>
+            {
+              t('sider.menu.report.prefix') +
+              `${building.buildingName}` +
+              t('sider.menu.report.suffix')
+            }
           </Tooltip>
         </Menu.Item>
       )
@@ -82,13 +86,11 @@ const ProjectLayout = (props) => {
       return (
         <Menu.Item key={`singleLineDiagram/${building.buildingID}`} disabled={disabled}>
           <Tooltip title={disabled ? t('sider.menu.singleLineDiagram.disabled') : null}>
-            <div disabled={disabled} onClick={() => history.push(`${basePath}/singleLineDiagram/${building.buildingID}`)}>
-              {
-                t('sider.menu.singleLineDiagram.prefix') +
-                `${building.buildingName}` +
-                t('sider.menu.singleLineDiagram.suffix')
-              }
-            </div>
+            {
+              t('sider.menu.singleLineDiagram.prefix') +
+              `${building.buildingName}` +
+              t('sider.menu.singleLineDiagram.suffix')
+            }
           </Tooltip>
         </Menu.Item>
       )
@@ -222,22 +224,17 @@ const ProjectLayout = (props) => {
             Object.keys(projectData).length !== 0 ?
             <div>
               <Menu
+                className={styles.menu}
                 theme="dark"
                 mode="inline"
                 selectedKeys={[selectMenu]}
+                onSelect={menuOnSelect}
               >
                 <Menu.Item key='dashboard' className={styles.menuItem}>
-                  <Link to={`${basePath}/dashboard`}>
-                    {t('sider.menu.projectDetail')}
-                  </Link>
+                  {t('sider.menu.projectDetail')}
                 </Menu.Item>
                 <Menu.Item key='report/params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
-                  <Link to={{
-                    pathname: `${basePath}/report/params`,
-                    state: {buildingID: fullPath.split('/').slice(4,)[0]}
-                  }}>
-                    {t('sider.menu.reportParams')}
-                  </Link>
+                  {t('sider.menu.reportParams')}
                 </Menu.Item>
                 <SubMenu
                   disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
@@ -256,14 +253,10 @@ const ProjectLayout = (props) => {
                   {genSLDSubMen()}
                 </SubMenu>
                 <Menu.Item key="pv" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
-                  <Link to={`${basePath}/pv`}>
-                    {t('sider.menu.pv')}
-                  </Link>
+                  {t('sider.menu.pv')}
                 </Menu.Item>
                 <Menu.Item key="inverter" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
-                  <Link to={`${basePath}/inverter`}>
-                    {t('sider.menu.inverter')}
-                  </Link>
+                  {t('sider.menu.inverter')}
                 </Menu.Item>
               </Menu>
               <Button

@@ -70,6 +70,7 @@ export const HeatMap = ({buildingID}) => {
 
   return (
     <Card
+      bodyStyle={{padding: '50px'}}
       title={
         <Title style={{textAlign: 'center'}} level={4}>
           {t('heatMap.title')}
