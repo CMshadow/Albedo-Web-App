@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet'
 import { useBeforeunload } from 'react-beforeunload'
-import { Layout, Menu, Row, Button, Spin, Tooltip, notification } from 'antd';
+import { Layout, Menu, Row, Button, Spin, Tooltip, notification, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams, Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,13 +14,14 @@ import { getProject, saveProject, globalOptTiltAzimuth, allTiltAzimuthPOA } from
 import { getPV, getOfficialPV } from '../../pages/PVTable/service'
 import { getInverter, getOfficialInverter } from '../../pages/InverterTable/service'
 import { saveReport, getReport } from '../../pages/Report/service'
-import { setProjectData, setReportData, setPVData, setOfficialPVData, setInverterData, setOfficialInverterData, updateProjectAttributes } from '../../store/action/index';
+import { setProjectData, setReportData, setPVData, setOfficialPVData, setInverterData, setOfficialInverterData, updateProjectAttributes, releaseProjectData } from '../../store/action/index';
 
 import * as styles from './ProjectLayout.module.scss';
 
 const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
-const {Footer} = Layout;
+const { Footer } = Layout;
+const Text = Typography.Text
 
 const ProjectLayout = (props) => {
   const history = useHistory();
@@ -29,7 +30,6 @@ const ProjectLayout = (props) => {
   const { projectID } = useParams()
   const [loading, setloading] = useState(false)
   const projectData = useSelector(state => state.project)
-  const reportData = useSelector(state => state.report)
   const cognitoUser = useSelector(state => state.auth.cognitoUser)
   const selectMenu = history.location.pathname.split('/').slice(3,).join('/')
   const basePath = useLocation().pathname.split('/').slice(0,3).join('/')
@@ -42,24 +42,24 @@ const ProjectLayout = (props) => {
       building.data.length > 0 &&
       building.data[0].inverter_wiring.length > 0
     ).map(building => {
-      let disabled = false
+      let disabled = true
       if (
-        building.data.some(obj => !obj.pv_panel_parameters.tilt_angle) ||
-        building.data.some(obj => obj.inverter_wiring.some(inverterSpec =>
-          !inverterSpec.panels_per_string
-        )) || !projectData.tiltAzimuthPOA
-      ) disabled = true
+        building.data.every(obj => obj.pv_panel_parameters.tilt_angle >= 0) &&
+        building.data.every(obj => obj.inverter_wiring.every(inverterSpec =>
+          inverterSpec.panels_per_string >= 0
+        )) && projectData.tiltAzimuthPOA
+      ) disabled = false
       return (
         <Menu.Item key={`report/${building.buildingID}`} disabled={disabled}>
-          <Link to={`${basePath}/report/${building.buildingID}`}>
-            <Tooltip title={disabled ? t('sider.report.disabled') : null}>
+          <Tooltip title={disabled ? t('sider.report.disabled') : null}>
+            <div onClick={() => history.push(`${basePath}/report/${building.buildingID}`)}>
               {
                 t('sider.menu.report.prefix') +
                 `${building.buildingName}` +
                 t('sider.menu.report.suffix')
               }
-            </Tooltip>
-          </Link>
+            </div>
+          </Tooltip>
         </Menu.Item>
       )
     })
@@ -70,32 +70,30 @@ const ProjectLayout = (props) => {
     projectData.buildings.filter( building =>
       building.data.length > 0 && building.data[0].inverter_wiring.length > 0
     ).map(building => {
-      let disabled = false;
+      let disabled = true;
       if (
-        building.data.some(obj => !obj.pv_panel_parameters.tilt_angle) ||
-        building.data.some(obj => obj.inverter_wiring.some(inverterSpec =>
-          !inverterSpec.panels_per_string
-        )) || building.reGenReport || !reportData[building.buildingID]
+        building.data.every(obj => obj.pv_panel_parameters.tilt_angle >= 0) &&
+        building.data.every(obj => obj.inverter_wiring.every(inverterSpec =>
+          inverterSpec.panels_per_string >= 0
+        )) && !building.reGenReport
       ) {
-        disabled = true
+        disabled = false
       }
       return (
         <Menu.Item key={`singleLineDiagram/${building.buildingID}`} disabled={disabled}>
-          <Link to={`${basePath}/singleLineDiagram/${building.buildingID}`}>
-            <Tooltip title={disabled ? t('sider.menu.singleLineDiagram.disabled') : null}>
+          <Tooltip title={disabled ? t('sider.menu.singleLineDiagram.disabled') : null}>
+            <div onClick={() => history.push(`${basePath}/singleLineDiagram/${building.buildingID}`)}>
               {
                 t('sider.menu.singleLineDiagram.prefix') +
                 `${building.buildingName}` +
                 t('sider.menu.singleLineDiagram.suffix')
               }
-            </Tooltip>
-          </Link>
+            </div>
+          </Tooltip>
         </Menu.Item>
       )
     })
   }
-
-
 
   const saveProjectClick = () => {
     setloading(true)
@@ -115,6 +113,8 @@ const ProjectLayout = (props) => {
   const saveProjectOnExit = useCallback(() => {
     dispatch(saveProject(projectID))
     dispatch(saveReport({projectID}))
+    dispatch(setProjectData(null))
+    dispatch(releaseProjectData())
   }, [dispatch, projectID])
 
   // 读pv 逆变器 项目数据 最佳倾角朝向
@@ -159,9 +159,6 @@ const ProjectLayout = (props) => {
         .then(res =>
           dispatch(setReportData({buildingID: building.buildingID, data: res}))
         )
-        .catch(err => {
-          history.push('/dashboard')
-        })
       })
       await Promise.all(getReportPromises)
       if (
