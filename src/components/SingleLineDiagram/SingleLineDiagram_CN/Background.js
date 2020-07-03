@@ -17,7 +17,7 @@ const BackgroundGrids = (props) => {
         y={0}
         width={windowWidth}
         height={windowHeight}
-        fill={'#f0f2f5'}>
+      >
       </Rect>
     </Group>
   );

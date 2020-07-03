@@ -53,5 +53,6 @@ export {
   setStartPosition,
   setDiagramWidth,
   setInverterAccessPorts,
-  setMeterAccess
+  setMeterAccess,
+  setMeterAccessAllIn
 } from './SLDAction'

@@ -2,25 +2,37 @@ import React from 'react'
 import {v4 as uuidv4} from 'uuid'
 import {Rect, Line, Group, Text, Circle} from "react-konva"
 import {useSelector, useDispatch } from 'react-redux'
-import {setMeterAccess} from '../../../store/action/index'
+import {setMeterAccess, setMeterAccessAllIn} from '../../../store/action/index'
 
-const PanelArrayCollection = () => {
+const PanelArrayCollection = (props) => {
   const dispatch = useDispatch()
   const groupOfPvArray = []
   const width = useSelector(state => state.SLD.diagramWidth) * 0.8
   const height = width * (4/6)
   const unitHeight = height / 4 
   const unitWidth = width / 6
-  const startPosition = useSelector(state => state.SLD.diagramBoundaryPosition)
-  const numOfArrays = 5
-  const trigger = numOfArrays >= 5 ? true : false
+  const offset = props.index === 1 ? 0 : height + 100
+  let startPosition = useSelector(state => state.SLD.diagramBoundaryPosition)
+  startPosition[1] += offset
+  console.log(props.numOfInv)
+  const numOfArrays = props.numOfInv > 5 ? 5 : props.numOfInv
+  const trigger = props.numOfInv > 5 ? true : false
   const inverterWidth = unitWidth * 3.3
   const inverterAccessPorts = []
+
+  
+  const combiSelect = (combiboxIe) => {
+    const standard = [32, 63, 80, 100, 125, 160, 225]
+    for (let element = 0; element < standard.length; element++) {
+      if (standard[element] > combiboxIe) return standard[element]
+    }
+  }  
+
+
   const DrawPanelArray = () => {
     drawInverter()
     return groupOfPvArray
   }
-  
   const drawInverter = () => {
     groupOfPvArray.push(<Rect
       key= {"Boundary-Rect-" + uuidv4()}
@@ -54,10 +66,11 @@ const PanelArrayCollection = () => {
     const offSet = numOfArray > 1 ? 
     (unitWidth / numOfArray - 1) * (6 - numOfArrays) : 0
 
+    const fixedOffset = (unitWidth / 4)
+    const unitArrayWidth = (unitWidth * 2.97 - fixedOffset) / 4
     const unitPortWidth = numOfArray > 1 ? 
     (unitWidth * 2.97 - offSet) / (numOfArray - 1) : 
     (unitWidth * 2.97 - offSet) / 2
-
     for (let index = 0; index < numOfArray; index++) {
       if (numOfArray === 1) index = 1 
       groupOfPvArray.push(<Line 
@@ -123,14 +136,27 @@ const PanelArrayCollection = () => {
         lineCap='round'
         lineJoin='round'
         ></Line>)
+
+      groupOfPvArray.push(<Text
+        key = {"Meter-Text-" + uuidv4()}
+        x={startPosition[0] + unitWidth * 2.165 +
+          index * unitPortWidth + offSet * 0.5 + 10}
+        y={startPosition[1] + 1.4 * unitHeight + 10}
+        text={combiSelect(props.acIe[index]) + 'A'}
+        fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
+        fontFamily='Arial'
+        fill='Black'
+      ></Text>)
+
       inverterAccessPorts.push([
         index * unitPortWidth + offSet * 0.5 + 2.5,
         endPoint])
         drawSingleArray([startPosition[0] + unitWidth * 2.165 +
-          index * unitPortWidth + offSet * 0.5 + 2.5, endPoint], unitPortWidth)
+          index * unitPortWidth + offSet * 0.5 + 2.5, endPoint], unitArrayWidth)
       
       if (trigger && index === 3) {
         groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()}
           x={startPosition[0] + unitWidth * 2.165 +
           3.4 * unitPortWidth + offSet * 0.5 + 2.5}
           y={endPoint - unitHeight * 0.05} 
@@ -138,6 +164,7 @@ const PanelArrayCollection = () => {
           fill="black"
         ></Circle>)
         groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()}
           x={startPosition[0] + unitWidth * 2.165 +
           3.45 * unitPortWidth + offSet * 0.5 + 2.5}
           y={endPoint - unitHeight * 0.05} 
@@ -145,6 +172,7 @@ const PanelArrayCollection = () => {
           fill="black"
         ></Circle>)
         groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()}
           x={startPosition[0] + unitWidth * 2.165 +
           3.5 * unitPortWidth + offSet * 0.5 + 2.5}
           y={endPoint - unitHeight * 0.05} 
@@ -154,6 +182,7 @@ const PanelArrayCollection = () => {
 
 
         groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()}
           x={startPosition[0] + unitWidth * 2.165 +
           3.4 * unitPortWidth + offSet * 0.5 + 2.5}
           y={endPoint + unitHeight * 0.2} 
@@ -161,6 +190,7 @@ const PanelArrayCollection = () => {
           fill="black"
         ></Circle>)
         groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()}
           x={startPosition[0] + unitWidth * 2.165 +
           3.45 * unitPortWidth + offSet * 0.5 + 2.5}
           y={endPoint + unitHeight * 0.2} 
@@ -168,6 +198,7 @@ const PanelArrayCollection = () => {
           fill="black"
         ></Circle>)
         groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()}
           x={startPosition[0] + unitWidth * 2.165 +
           3.5 * unitPortWidth + offSet * 0.5 + 2.5}
           y={endPoint + unitHeight * 0.2} 
@@ -229,6 +260,17 @@ const PanelArrayCollection = () => {
       lineCap='round'
       lineJoin='round'
       ></Line>)
+
+    groupOfPvArray.push(<Text
+      key = {"Meter-Text-" + uuidv4()}
+      x={startPosition[0] + unitWidth * 2 + inverterWidth * 0.5 + 30}
+      y={startPosition[1] + 1.25 * unitHeight}
+      text={combiSelect(props.combiboxIe) + 'A'}
+      fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
+      fontFamily='Arial'
+      fill='Black'
+    ></Text>)
+
     groupOfPvArray.push(<Line 
       key= {"Boundary-Line-" + uuidv4()}
       points={[
@@ -290,10 +332,16 @@ const PanelArrayCollection = () => {
       lineJoin='round'
       closed={true}
       ></Line>)
-
-      dispatch(setMeterAccess([
-        startPosition[0] + unitWidth * 2 + inverterWidth * 0.5,
-        startPosition[1] + 0.8 * unitHeight]))
+      if (props.index === 1) {
+        dispatch(setMeterAccess([
+          startPosition[0] + unitWidth * 2 + inverterWidth * 0.5,
+          startPosition[1] + 0.8 * unitHeight]))
+      }
+      if (props.index === 2) {
+        dispatch(setMeterAccessAllIn([
+            startPosition[0] + unitWidth * 2 + inverterWidth * 0.5,
+            startPosition[1] + 0.8 * unitHeight]))
+      }
     
   }
     
@@ -316,13 +364,13 @@ const PanelArrayCollection = () => {
       key= {"PV-Array-Line-" + uuidv4()}
       points={[
         startPoint[0],
-        startPoint[1] + 0.05 * unitHeight,
+        startPoint[1] + 0.05 * unitHeight + 5,
         startPoint[0] + 5,
-        startPoint[1]+ 0.05 * unitHeight,
+        startPoint[1]+ 0.05 * unitHeight + 5,
         startPoint[0],
-        startPoint[1]+ 0.1 * unitHeight,
+        startPoint[1]+ 0.1 * unitHeight + 5,
         startPoint[0] - 5,
-        startPoint[1]+ 0.05 * unitHeight]}
+        startPoint[1]+ 0.05 * unitHeight + 5]}
       stroke='black'
       strokeWidth={1.5}
       lineCap='round'
@@ -394,7 +442,6 @@ const PanelArrayCollection = () => {
       ></Text>)
 
     const DCOffset = width === 800 ? 0 : (width / 800 - 1) * 12
-    console.log(DCOffset)
     groupOfPvArray.push(<Line 
       key= {"PV-Array-Line-" + uuidv4()}
       points={[startPoint[0] + unitW * 0.3,
@@ -406,6 +453,7 @@ const PanelArrayCollection = () => {
       lineCap='round'
       lineJoin='round'
       ></Line>)
+
       groupOfPvArray.push(<Line 
         key= {"PV-Array-Line-" + uuidv4()}
         points={[startPoint[0] + unitW * 0.3,
@@ -594,18 +642,21 @@ const PanelArrayCollection = () => {
           ></Line>)
 
         groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()}
           x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
           y={startPoint[1]+ 1.29 * unitHeight} 
           radius={1} 
           fill="black"
         ></Circle>)
         groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()} 
           x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
           y={startPoint[1]+ 1.31 * unitHeight} 
           radius={1} 
           fill="black"
         ></Circle>)
         groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()}
           x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
           y={startPoint[1]+ 1.33 * unitHeight} 
           radius={1} 
@@ -691,18 +742,21 @@ const PanelArrayCollection = () => {
 
     }
     groupOfPvArray.push(<Circle
+      key= {"PV-Circle-" + uuidv4()}
       x={startPoint[0] - 0.4 * unitW + 2.05 * unitArrayWidth + offset}
       y={startPoint[1]+ 1.48 * unitHeight} 
       radius={1} 
       fill="black"
     ></Circle>)
     groupOfPvArray.push(<Circle
+      key= {"PV-Circle-" + uuidv4()}
       x={startPoint[0] - 0.4 * unitW + 2.15 * unitArrayWidth + offset}
       y={startPoint[1]+ 1.48 * unitHeight} 
       radius={1} 
       fill="black"
     ></Circle>)
     groupOfPvArray.push(<Circle
+      key= {"PV-Circle-" + uuidv4()}
       x={startPoint[0] - 0.4 * unitW + 2.25 * unitArrayWidth + offset}
       y={startPoint[1]+ 1.48 * unitHeight} 
       radius={1} 

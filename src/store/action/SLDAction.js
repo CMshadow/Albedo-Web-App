@@ -105,3 +105,11 @@ export const setMeterAccess = (newPosition) =>
     meterAccess: newPosition
   })
 }
+
+export const setMeterAccessAllIn = (newPosition) => 
+(dispatch, getState) => {
+  return dispatch({
+    type: ActionTypes.SET_METER_ACCESS_ALL_IN,
+    meterAllInAccess: newPosition
+  })
+}

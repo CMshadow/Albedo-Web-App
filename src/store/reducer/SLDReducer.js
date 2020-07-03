@@ -22,7 +22,8 @@ const initialState = {
   diagramHeight: window.innerHeight - 64,
   diagramBoundaryPosition: [0 , 0],
   diagramInverterPorts: [],
-  diagramMeterAccessPort: []
+  diagramMeterAccessPort: [],
+  diagramMeterAccessAllIn: []
 
 };
 
@@ -118,13 +119,19 @@ export const setInverterAccessPorts = (state, action) => {
 }
 
 export const setMeterAccessPort = (state, action) => {
-  console.log(action.meterAccess)
   return{
     ...state,
     diagramMeterAccessPort: action.meterAccess
   }
 }
 
+export const diagramMeterAccessAllIn = (state, action) => {
+  // console.log(action.meterAllInAccess)
+  return{
+    ...state,
+    diagramMeterAccessAllIn: action.meterAllInAccess
+  }
+}
 
 
 
@@ -169,6 +176,9 @@ const reducer = (state=initialState, action) => {
     case actionTypes.SET_METER_ACCESS:
       return setMeterAccessPort(state, action);
     default: return state;
+
+    case actionTypes.SET_METER_ACCESS_ALL_IN:
+      return diagramMeterAccessAllIn(state, action);
   }
 };
 
