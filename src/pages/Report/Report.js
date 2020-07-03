@@ -102,12 +102,12 @@ const Report = () => {
         setloading(false)
       }
     }
-  },[buildingID, curBuilding.reGenReport, dispatch, history, projectData.p_loss_soiling, projectID])
+  },[buildingID, curBuilding, dispatch, history, projectData.p_loss_soiling, projectID])
 
   return (
     <Spin indicator={<LoadingOutlined spin />} size='large' spinning={loading}>
       {
-        loading ?
+        loading || !reportData[buildingID]?
         <Card loading /> :
         <>
           <GlobalAlert/>
