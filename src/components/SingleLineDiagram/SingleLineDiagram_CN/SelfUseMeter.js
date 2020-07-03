@@ -430,7 +430,7 @@ const SelfUseMeter = (props) => {
     groupOfMeter.push(<Text
       key = {"Meter-Text-" + uuidv4()}
       x={accessPort[0] + unitWidth * 1.1}
-      y={accessPort[1] - unitHeight * 0.7 - 10}
+      y={accessPort[1] - unitHeight * 0.7 - 15}
       text={" 公用电网"}
       fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
       fontFamily='Arial'

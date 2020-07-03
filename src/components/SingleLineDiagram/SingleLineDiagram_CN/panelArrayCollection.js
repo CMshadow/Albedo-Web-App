@@ -497,7 +497,8 @@ const PanelArrayCollection = (props) => {
 
     let offset = 5
     for (let string = 0; string < 4; string++) {
-      if (string === 3) offset = unitArrayWidth * 0.75
+      if (string === 3) {offset = unitArrayWidth * 0.75}
+
       groupOfPvArray.push(<Line 
         key= {"PV-Array-Line-" + uuidv4()}
         points={[
@@ -506,7 +507,7 @@ const PanelArrayCollection = (props) => {
           startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
           startPoint[1]+ 0.8 * unitHeight]}
         stroke='black'
-        strokeWidth={1}
+        strokeWidth={0.5}
         lineCap='round'
         lineJoin='round'
         closed={true}
