@@ -20,3 +20,17 @@ export const bindDrawingObj = ({objType, objId}) => (dispatch, getState) => {
     objId: objId
   })
 }
+
+export const deleteDrawingObj = ({objType, objId}) => (dispatch, getState) => {
+  // switch (objType) {
+  //   case KEEPOUT:
+  //     dispatch()
+  //   default:
+  //     break
+  // }
+  return dispatch({
+    type: actionTypes.DELETE_DRAWING_OBJECT,
+    objType: objType,
+    objId: objId
+  })
+}

@@ -51,6 +51,32 @@ export const pointAddMapping = ({pointId, polygonId, polylineId, circleId, secto
   })
 }
 
+export const pointRemoveMapping = ({pointId, polygonId, polylineId, circleId, sectorId}) => (dispatch, getState) => {
+  const point = getState().undoable.present.point[pointId].entity
+  const polygonMap = getState().undoable.present.point[pointId].polygonMap
+  const polylineMap = getState().undoable.present.point[pointId].polylineMap
+  const circleMap = getState().undoable.present.point[pointId].circleMap
+  const sectorMap = getState().undoable.present.point[pointId].sectorMap
+
+  if (polygonId) {
+    const index = polygonMap.indexOf(polygonId)
+    polygonMap.splice(index, 1)
+  }
+  if (polylineId) {
+    const index = polylineMap.indexOf(polygonId)
+    polylineMap.splice(index, 1)
+  }
+
+  return dispatch({
+    type: actionTypes.POINT_SET,
+    entity: point,
+    polygonMap: polygonMap,
+    polylineMap: polylineMap,
+    circleMap: circleMap,
+    sectorMap: sectorMap
+  })
+}
+
 export const setPointHeight = (pointId, newHeight) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId].entity
   const polygonMap = getState().undoable.present.point[pointId].polygonMap

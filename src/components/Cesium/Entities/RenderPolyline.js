@@ -81,7 +81,6 @@ export const RenderPolyline = ({polyline}) => {
       />
     ),
     ...segmentPolylines.slice(1, ).map((subline, index) => {
-      console.log(subline)
       const brngThisLine = Coordinate.bearing(subline.points[0], subline.points[1])
       const brngPrevLine = Coordinate.bearing(
         segmentPolylines[index].points[1], segmentPolylines[index].points[0]

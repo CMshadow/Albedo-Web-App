@@ -3,7 +3,7 @@ import Polygon from '../../../infrastructure/polygon/polygon'
 import Coordinate from '../../../infrastructure/point/coordinate'
 import { bindDrawingObj } from '../modeling/modelingBuildingAction'
 import { polylineSetShow } from './polylineAction'
-import { moveHoriPoint, moveVertiPoint } from './pointAction'
+import { moveHoriPoint, moveVertiPoint, addPoint } from './pointAction'
 import { Color } from 'cesium'
 
 const polygonColor = Color.WHITE.withAlpha(0.2)
@@ -41,7 +41,7 @@ export const polygonSetShow = (polygonId, show) => (dispatch, getState) => {
   const outPolylineId = getState().undoable.present.polygon[polygonId].outPolylineId
   const newPolygon = Polygon.fromPolygon(polygon)
   newPolygon.show = show
-  dispatch(polylineSetShow(outPolylineId, false))
+  dispatch(polylineSetShow(outPolylineId, show))
 
   return dispatch({
     type: actionTypes.POLYGON_SET,
@@ -152,4 +152,8 @@ export const polygonDeleteVertex = (polygonId, pointId) => (dispatch, getState) 
     ),
     pointMap: newPointMap,
   })
+}
+
+export const polygonDelete = (polygonId) => (dispatch, getState) => {
+  return
 }

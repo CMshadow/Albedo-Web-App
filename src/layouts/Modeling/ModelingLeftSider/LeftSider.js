@@ -36,7 +36,7 @@ const LeftSider = (props) => {
       title = t('modeling.IDLE')
       content = <BuildingList />
   }
-  content = <Drawing />
+  content = <DrawingTest />
 
   return (
     <Layout className={styles.outerLayout}>

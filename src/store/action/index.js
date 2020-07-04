@@ -125,8 +125,12 @@ export {
   addSector
 } from './drawing/sectorAction'
 
-
 export {
   setUICreateBuilding,
   setUIDrawing
 } from './modeling/modelingUIAction'
+
+export {
+  bindDrawingObj,
+  deleteDrawingObj
+} from './modeling/modelingBuildingAction'

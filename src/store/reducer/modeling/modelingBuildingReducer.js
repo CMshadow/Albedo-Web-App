@@ -2,6 +2,7 @@ import * as uiTypes from '../../action/modeling/modelingUITypes'
 import * as actionTypes from '../../action/actionTypes';
 
 const FOUNDATION = 'FOUNDATION'
+const KEEPOUT = 'KEEPOUT'
 
 const initialState = {
   buildingName: '1',
@@ -39,6 +40,22 @@ const bindDrawingObj = (state, action) => {
     case FOUNDATION:
       newState.buildingPolygonId = [action.objId]
       break
+    case KEEPOUT:
+      newState.keepoutId = [...newState.keepoutId, action.objId]
+    break
+    default:
+      break
+  }
+  return newState
+}
+
+const deleteDrawingObj = (state, action) => {
+  const newState = {...state}
+  switch (action.objType) {
+    case KEEPOUT:
+      const index = newState.keepoutId.indexOf(id => id === action.objId)
+      newState.keepoutId.splice(index ,1)
+    break
     default:
       break
   }
@@ -51,6 +68,8 @@ const reducer = (state=initialState, action) => {
       return setBuildingParams(state, action)
     case actionTypes.BIND_DRAWING_OBJECT:
       return bindDrawingObj(state, action)
+    case actionTypes.DELETE_DRAWING_OBJECT:
+      return deleteDrawingObj(state, action)
     default: return state;
   }
 };

@@ -31,7 +31,6 @@ export const polylineSetShow = (polylineId, show) => (dispatch, getState) => {
   const polyline = getState().undoable.present.polyline[polylineId].entity
   const newPolyline = Polyline.fromPolyline(polyline)
   newPolyline.show = show
-  console.log(newPolyline)
 
   return dispatch({
     type: actionTypes.POLYLINE_SET,
@@ -122,5 +121,15 @@ export const polylineDeleteVertex = (polylineId, pointId) => (dispatch, getState
       newPoints, polyline.entityId, polylineColor
     ),
     pointMap: newPointMap
+  })
+}
+
+export const polylineDelete = (polylineId) => (dispatch, getState) => {
+  const polyline = getState().undoable.present.polyline[polylineId].entity
+  const pointMap = getState().undoable.present.polyline[polylineId].pointMap
+
+  return dispatch({
+    type: actionTypes.POLYGON_DELETE,
+    polylineId: polyline.entityId
   })
 }
