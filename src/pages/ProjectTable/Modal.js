@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { amapGeocoder, googleGeocoder, getApiKey, createProject } from './service';
+import { amapGeocoder, googleGeocoder, googleRevGeocoder, getApiKey, createProject } from './service';
 import { Tabs, Form, Input, Select, Modal, Divider, Button, notification, Tooltip, Collapse, Slider } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { genFullName } from '../../utils/genFullName';
@@ -190,7 +190,14 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
           key="googleMap"
           forceRender
         >
-          <GoogleMap mapPos={mapPos} validated={validated} apiKey={googleMapKey}/>
+          <GoogleMap
+            mapPos={mapPos}
+            setmapPos={setmapPos}
+            validated={validated}
+            setvalidated={setvalidated}
+            apiKey={googleMapKey}
+            form={form}
+          />
         </TabPane>
       </Tabs>
 
