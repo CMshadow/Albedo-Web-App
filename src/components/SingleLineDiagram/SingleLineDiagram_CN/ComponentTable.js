@@ -18,7 +18,7 @@ const ComponentTable = (props) => {
     50 + boundaryWidth * 0.04
   
   const offset = (boundaryWidth * 4/6 + 100) * (props.index - 1)
-  const startPosition = [width * 0.1, height * 0.1 + offset]
+  const startPosition = [width * 0.1, 100 + offset]
   const headerFont= boundaryWidth * 0.03 > 16 ? 16 : boundaryWidth * 0.03
   const bodyFont = 12
 

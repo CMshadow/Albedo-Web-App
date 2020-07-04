@@ -15,7 +15,7 @@ const DiagramBoundary = (props) => {
   const boundaryWidth = width * 0.8 > 800 ? width * 0.8: 800
   const boundaryHeight = boundaryWidth * (4/6)
   const offset = props.index === 1 ? 0 : boundaryHeight + 100
-  const startPosition = [width * 0.1, height * 0.1 + offset]
+  const startPosition = [width * 0.1, 100 + offset]
   const unitHeight = boundaryHeight / 4 
   const unitWidth = boundaryWidth / 6
   const heightMark = ['A', 'B', 'C', 'D']
