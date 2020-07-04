@@ -11,7 +11,7 @@ import * as DataGenerator from '../../utils/singleLineDiagramDataGenerator'
 import ComponentsTable from '../../components/SingleLineDiagram/SingleLineDiagram_CN/ComponentTable';
 import { ReactReduxContext, Provider, useSelector } from "react-redux";
 
-const SingleLineDiagUS = () => {
+const SingleLineDiagCN = () => {
   const { buildingID } = useParams();
 
   const userPV = useSelector(state => state.pv.data);
@@ -68,7 +68,7 @@ const SingleLineDiagUS = () => {
   let newWidth = useSelector(state => state.SLD.diagramWidth);
   let newHeight =useSelector(state => state.SLD.diagramHeight);
 
-  
+
   return (
     <div className={classes.SLD}>
       <ReactReduxContext.Consumer>
@@ -84,8 +84,6 @@ const SingleLineDiagUS = () => {
                 <Background />
                 <Boundary 
                   index = {1}
-                  width = {newWidth}
-                  height = {newHeight}
                   combiBox = {combiboxCableChoice}
                   acData = {acCableChoice}
                   dcData = {dcCableChoice}
@@ -104,8 +102,6 @@ const SingleLineDiagUS = () => {
                 <MeterSelfUse combiboxIe = {combiboxIe}/>
                 <Boundary 
                   index = {2}
-                  width = {newWidth}
-                  height = {newHeight}
                   combiBox = {combiboxCableChoice}
                   acData = {acCableChoice}
                   dcData = {dcCableChoice}
@@ -126,8 +122,6 @@ const SingleLineDiagUS = () => {
 
                 <ComponentsTable 
                   index = {3}
-                  width = {newWidth}
-                  height = {newHeight}
                   allPVArray = {allPVArray}
                   dcData = {dcCableChoice}
                   numOfInv = {numOfInverter}
@@ -145,4 +139,4 @@ const SingleLineDiagUS = () => {
 }
 
 
-export default SingleLineDiagUS;
+export default SingleLineDiagCN;

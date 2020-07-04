@@ -11,7 +11,6 @@ const DiagramBoundary = (props) => {
   const dispatch = useDispatch()
   const groupOfBoundary = []
   const width = useSelector(state => state.SLD.diagramWidth)
-  const height = useSelector(state => state.SLD.diagramHeight)
   const boundaryWidth = width * 0.8 > 800 ? width * 0.8: 800
   const boundaryHeight = boundaryWidth * (4/6)
   const offset = props.index === 1 ? 0 : boundaryHeight + 100
@@ -339,7 +338,7 @@ const DiagramBoundary = (props) => {
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
             y={startPosition[1] + index * unitHeight + 3 * font + heightOffSet}
-            text={` 芯数x截面: ${acData[0]} ${acDataSet.size > 1 ? ", ..." : ''}`}
+            text={` 芯数x截面: ${acData[0]} ${acDataSet.size > 1 ? " (见附表)" : ''}`}
             fontSize={font}
             fontFamily='Arial'
             fill='Black'
@@ -350,7 +349,8 @@ const DiagramBoundary = (props) => {
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
             y={startPosition[1] + index * unitHeight + heightOffSet}
-            text={`  ${sortedPacoKeys[0]} kW 组串式逆变器${Object.keys(aggrePacpData).length > 1 ? ', ...' : '' } `}
+            text={`  ${props.numOfInv === 1 ? 
+              sortedPacoKeys[0] + "kW" : ''} 组串式逆变器`}
             fontSize={font}
             fontFamily='Arial'
             fill='Black'
@@ -360,7 +360,7 @@ const DiagramBoundary = (props) => {
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
             y={startPosition[1] + index * unitHeight + 1.5 * font + heightOffSet}
-            text={`  ${aggrePacpData[sortedPacoKeys[0]]} 台, ${Object.keys(aggrePacpData).length > 1 ? ', ...' : '' } `}
+            text={`  ${props.numOfInv}台 (见附表) `}
             fontSize={font}
             fontFamily='Arial'
             fill='Black'
@@ -389,7 +389,7 @@ const DiagramBoundary = (props) => {
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
             y={startPosition[1] + index * unitHeight + 3 * font + heightOffSet}
-            text={ ` 芯数x截面: ${dcData} ${ dcDataSet.size > 1 ? ", ..." : ''}`}
+            text={ ` 芯数x截面: ${dcData} ${ dcDataSet.size > 1 ? " (见附表)" : ''}`}
             fontSize={font}
             fontFamily='Arial'
             fill='Black'
@@ -399,7 +399,7 @@ const DiagramBoundary = (props) => {
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
             y={startPosition[1] + index * unitHeight + heightOffSet}
-            text={ ` ${pv_Cell}电池组件  ${allPVArray[0].pmax}W${pvNameSet.size > 1 ? ", ..." : '' }`}
+            text={ ` ${pv_Cell}电池组件  ${allPVArray[0].pmax}W${pvNameSet.size > 1 ? " (见附表)" : '' }`}
             fontSize={font}
             fontFamily='Arial'
             fill='Black'
@@ -444,7 +444,7 @@ const DiagramBoundary = (props) => {
             key = {"Boundary-Text-" + uuidv4()}
             x={startPosition[0] + boundaryWidth * 1 / 18 + 0.5 * unitWidth}
             y={startPosition[1] + index * unitHeight + 5.3 * font + heightOffSet}
-            text={' 光伏组件数量(块): ' + allPVArray[0].string_per_inverter *   allPVArray[0].panels_per_string + " (子阵列: 1)"}
+            text={' 光伏组件数量(块): ' + allPVArray[0].string_per_inverter *   allPVArray[0].panels_per_string}
             fontSize={font}
             fontFamily='Arial'
             fill='Black'
