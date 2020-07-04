@@ -54,7 +54,11 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
       const payload = res.data.geocodes
       if (payload.length === 0) {
         setvalidated(false)
-        notification.error({message: t('project.error.invalid-address')})
+        if (selectedMap === 'aMap') {
+          notification.error({message: t('project.error.invalid-address.amap')})
+        } else {
+          notification.error({message: t('project.error.invalid-address.googlemap')})
+        }
       } else {
         form.setFieldsValue({address: payload[0].formatted_address})
         setvalidated(true)
@@ -242,7 +246,7 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
             onSearch={() => validateAddress()}
             enterButton={
               <Button danger={!validated}>
-                { 
+                {
                   validated ?
                   t('project.create.validation.finished') :
                   t('project.create.validation.unfinished')

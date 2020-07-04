@@ -28,7 +28,7 @@ const AMap = ({apikey, mapPos, setmapPos, validated, setvalidated, form, webApiK
                 form.setFieldsValue({projectAddress: res.data.regeocode.formatted_address})
                 setvalidated(true)
               } else {
-                notification.error({message: t('project.error.invalid-address')})
+                notification.error({message: t('project.error.invalid-address.amap')})
               }
             })
           }

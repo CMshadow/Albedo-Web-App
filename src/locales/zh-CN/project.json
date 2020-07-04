@@ -23,7 +23,8 @@
   "project.create.albedo.desert": "沙漠",
   "project.create.albedo.full": "全反射",
 
-  "project.error.invalid-address": "地址无法验证",
+  "project.error.invalid-address.amap": "高德地图无法验证该地址",
+  "project.error.invalid-address.googlemap": "谷歌地图无法验证该地址",
 
   "project.createdAt": "创建时间",
   "project.updatedAt": "更新时间",

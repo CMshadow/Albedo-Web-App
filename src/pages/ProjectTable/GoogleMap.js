@@ -25,7 +25,7 @@ const GoogleMap = ({google, apiKey, mapPos, setmapPos, validated, setvalidated, 
             form.setFieldsValue({projectAddress: res.data.results[0].formatted_address})
             setvalidated(true)
           } else {
-            notification.error({message: t('project.error.invalid-address')})
+            notification.error({message: t('project.error.invalid-address.googlemap')})
           }
         })
       }}

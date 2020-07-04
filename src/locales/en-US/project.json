@@ -23,7 +23,8 @@
   "project.create.albedo.desert": "Desert",
   "project.create.albedo.full": "All Reflection",
 
-  "project.error.invalid-address": "Address cannot be verified",
+  "project.error.invalid-address.amap": "AMap cannot verify the address",
+  "project.error.invalid-address.googlemap": "Google Map cannot verify the address",
 
   "project.createdAt": "Date of Creation",
   "project.updatedAt": "Last Modified",
