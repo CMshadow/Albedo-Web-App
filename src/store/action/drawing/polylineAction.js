@@ -1,7 +1,7 @@
 import * as actionTypes from '../actionTypes'
 import Polyline from '../../../infrastructure/line/polyline'
 import { Color } from 'cesium'
-import { deletePointNoSideEff } from './pointAction'
+import { deletePointNoSideEff, pointRemoveMapping } from './pointAction'
 
 const polylineColor = Color.STEELBLUE
 
@@ -74,12 +74,13 @@ export const polylineAddVertex = ({polylineId, mouseCor, pointId, position=null}
 export const polylineUpdateVertex = ({polylineId, mouseCor, pointId}) => (dispatch, getState) => {
   const drawingPolyline = getState().undoable.present.polyline[polylineId].entity
   const pointMap = getState().undoable.present.polyline[polylineId].pointMap
-  const pointIndex = pointMap.indexOf(pointId)
+
   const newPoints = [...drawingPolyline.points]
-  newPoints.splice(pointIndex, 1, mouseCor)
-  if (pointIndex === 0 && pointMap.slice(-1)[0] === pointId) {
-    newPoints.splice(-1, 1, mouseCor)
-  }
+  pointMap.forEach((pId, index) => {
+    if (pId === pointId) {
+      newPoints.splice(index, 1, mouseCor)
+    }
+  })
 
   return dispatch({
     type: actionTypes.POLYLINE_SET,
@@ -125,15 +126,17 @@ export const polylineDeleteVertex = (polylineId, pointId) => (dispatch, getState
   })
 }
 
-export const polylineDelete = (polylineId) => (dispatch, getState) => {
-  const polyline = getState().undoable.present.polyline[polylineId].entity
+export const polylineDelete = (polylineId) => async (dispatch, getState) => {
   const pointMap = getState().undoable.present.polyline[polylineId].pointMap
+  await Promise.all(Array.from(new Set(pointMap)).map(pointId =>
+    dispatch(pointRemoveMapping({pointId, polylineId}))
+  ))
   Array.from(new Set(pointMap)).map(pointId =>
     dispatch(deletePointNoSideEff(pointId))
   )
 
   return dispatch({
     type: actionTypes.POLYLINE_DELETE,
-    polylineId: polyline.entityId
+    polylineId: polylineId
   })
 }

@@ -18,8 +18,8 @@ export const addPoint = ({mouseCor, pointId, polygonId, polylineId, circleId, se
     entity: point,
     polygonMap: polygonId ? [polygonId] : [],
     polylineMap: polylineId ? [polylineId] : [],
-    circleMap: circleId || 'EMPTY',
-    sectorMap: sectorId || 'EMPTY'
+    circleMap: circleId ? [circleId] : [],
+    sectorMap: sectorId ? [sectorId] : []
   })
 }
 
@@ -63,7 +63,7 @@ export const pointRemoveMapping = ({pointId, polygonId, polylineId, circleId, se
     polygonMap.splice(index, 1)
   }
   if (polylineId) {
-    const index = polylineMap.indexOf(polygonId)
+    const index = polylineMap.indexOf(polylineId)
     polylineMap.splice(index, 1)
   }
 
@@ -114,13 +114,12 @@ export const moveHoriPoint = (pointId, mouseCor) => (dispatch, getState) => {
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
   const circleMap = getState().undoable.present.point[pointId].circleMap
   const sectorMap = getState().undoable.present.point[pointId].sectorMap
-
   point.setCoordinate(mouseCor.lon, mouseCor.lat, point.height)
   mouseCor.setCoordinate(null, null, point.height - 0.05)
   polygonMap.map(polygonId => dispatch(polygonUpdateVertex({polygonId, mouseCor, pointId})))
   polylineMap.map(polylineId => dispatch(polylineUpdateVertex({polylineId, mouseCor, pointId})))
-  if (circleMap !== 'EMPTY') dispatch(circleUpdate({circleId: circleMap, pointId, mouseCor}))
-  if (sectorMap !== 'EMPTY') dispatch(sectorUpdate({sectorId: sectorMap, pointId, mouseCor}))
+  circleMap.map(circleId => dispatch(circleUpdate({circleId, mouseCor, pointId})))
+  sectorMap.map(sectorId => dispatch(sectorUpdate({sectorId, mouseCor, pointId})))
 
   return dispatch({
     type: actionTypes.POINT_SET,
@@ -173,14 +172,16 @@ export const moveVertiPoint = (pointId, heightChange) => (dispatch, getState) =>
 export const deletePoint = (pointId) => (dispatch, getState) => {
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
+  const circleMap = getState().undoable.present.point[pointId].circleMap
+  const sectorMap = getState().undoable.present.point[pointId].sectorMap
   const polygonOK = polygonMap.every(polygonId =>
     getState().undoable.present.polygon[polygonId].entity.hierarchy.length / 3 > 3
   )
   const polylineOK = polylineMap.every(polylineId =>
     getState().undoable.present.polyline[polylineId].entity.length > 2
   )
-  const circleOK = getState().undoable.present.point[pointId].circleMap === 'EMPTY'
-  const sectorOK = getState().undoable.present.point[pointId].sectorMap === 'EMPTY'
+  const circleOK = circleMap.length === 0
+  const sectorOK = sectorMap.length === 0
   if (polylineOK && polygonOK && circleOK && sectorOK) {
     polylineMap.map(polylineId => {
       return dispatch(polylineDeleteVertex(polylineId, pointId))})
@@ -200,5 +201,16 @@ export const deletePoint = (pointId) => (dispatch, getState) => {
 export const deletePointNoSideEff = (pointId) => (dispatch, getState) => {
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
-  console.log(polylineMap)
+  const circleMap = getState().undoable.present.point[pointId].circleMap
+  const sectorMap = getState().undoable.present.point[pointId].sectorMap
+
+  if(
+    polygonMap.length === 0 && polylineMap.length === 0 &&
+    circleMap.length === 0 && sectorMap.length === 0
+  ) {
+    return dispatch({
+      type: actionTypes.POINT_DELETE,
+      pointId: pointId
+    })
+  }
 }
