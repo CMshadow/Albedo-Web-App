@@ -9,6 +9,7 @@ const ComponentTable = (props) => {
   const dispatch = useDispatch()
   const groupOfTable = []
   const width = useSelector(state => state.SLD.diagramWidth)
+
   const numOfpvArray = props.allPVArray.length
   const numOfInverter = props.numOfInv
   const boundaryWidth = width * 0.8 > 800 ? width * 0.8: 800

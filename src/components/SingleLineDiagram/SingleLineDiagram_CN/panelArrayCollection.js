@@ -29,7 +29,7 @@ const PanelArrayCollection = (props) => {
     return combiboxIe
   }  
 
-  console.log(1)
+  // console.log(1)
   const DrawPanelArray = () => {
     drawInverter()
     return groupOfPvArray

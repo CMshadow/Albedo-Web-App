@@ -66,8 +66,9 @@ const SingleLineDiagCN = () => {
   DataGenerator.getCombiBoxData(buildingReport)
   : '';
   let newWidth = useSelector(state => state.SLD.diagramWidth);
-  let newHeight =useSelector(state => state.SLD.diagramHeight);
+  let newHeight = useSelector(state => state.SLD.diagramHeight);
 
+  console.log('SLD rerender')
   return (
     <div className={classes.SLD}>
       <ReactReduxContext.Consumer>
