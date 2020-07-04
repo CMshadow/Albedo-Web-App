@@ -22,7 +22,7 @@ const setPolyline = (state, action) => {
 
 const deletePolyline = (state, action) => {
   const newState = {...state}
-  delete newState[action.pointId]
+  delete newState[action.polylineId]
   return newState
 }
 

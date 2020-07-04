@@ -44,8 +44,8 @@ export const pointAddMapping = ({pointId, polygonId, polylineId, circleId, secto
   return dispatch({
     type: actionTypes.POINT_SET,
     entity: point,
-    polygonMap: polygonId ? [...polygonMap, polygonId] : polygonMap,
-    polylineMap: polylineId ? [...polylineMap, polylineId] : polylineMap,
+    polygonMap: polygonId ? Array.from(new Set([...polygonMap, polygonId])) : polygonMap,
+    polylineMap: polylineId ? Array.from(new Set([...polylineMap, polylineId])) : polylineMap,
     circleMap: circleId || circleMap,
     sectorMap: sectorId || sectorMap
   })
@@ -195,4 +195,10 @@ export const deletePoint = (pointId) => (dispatch, getState) => {
       description: 'The point cannot be deleted because it has other shapes associated'
     })
   }
+}
+
+export const deletePointNoSideEff = (pointId) => (dispatch, getState) => {
+  const polygonMap = getState().undoable.present.point[pointId].polygonMap
+  const polylineMap = getState().undoable.present.point[pointId].polylineMap
+  console.log(polylineMap)
 }

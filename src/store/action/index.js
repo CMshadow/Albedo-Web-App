@@ -114,7 +114,8 @@ export {
   polylineDynamic,
   polylineAddVertex,
   polylineTerminate,
-  polylineUpdateVertex
+  polylineUpdateVertex,
+  polylineDelete
 } from './drawing/polylineAction'
 
 export {

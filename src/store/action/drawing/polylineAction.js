@@ -1,6 +1,7 @@
 import * as actionTypes from '../actionTypes'
 import Polyline from '../../../infrastructure/line/polyline'
 import { Color } from 'cesium'
+import { deletePointNoSideEff } from './pointAction'
 
 const polylineColor = Color.STEELBLUE
 
@@ -127,9 +128,12 @@ export const polylineDeleteVertex = (polylineId, pointId) => (dispatch, getState
 export const polylineDelete = (polylineId) => (dispatch, getState) => {
   const polyline = getState().undoable.present.polyline[polylineId].entity
   const pointMap = getState().undoable.present.polyline[polylineId].pointMap
+  Array.from(new Set(pointMap)).map(pointId =>
+    dispatch(deletePointNoSideEff(pointId))
+  )
 
   return dispatch({
-    type: actionTypes.POLYGON_DELETE,
+    type: actionTypes.POLYLINE_DELETE,
     polylineId: polyline.entityId
   })
 }
