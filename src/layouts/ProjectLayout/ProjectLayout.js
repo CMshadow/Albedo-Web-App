@@ -27,7 +27,8 @@ const ProjectLayout = (props) => {
   const dispatch = useDispatch()
   const { t } = useTranslation();
   const { projectID } = useParams()
-  const [loading, setloading] = useState(false)
+  const [saveLoading, setsaveLoading] = useState(false)
+  const [fetchLoading, setfetchLoading] = useState(true)
   const projectData = useSelector(state => state.project)
   const cognitoUser = useSelector(state => state.auth.cognitoUser)
   const selectMenu = history.location.pathname.split('/').slice(3,).join('/')
@@ -79,7 +80,7 @@ const ProjectLayout = (props) => {
         building.data.every(obj => obj.pv_panel_parameters.tilt_angle >= 0) &&
         building.data.every(obj => obj.inverter_wiring.every(inverterSpec =>
           inverterSpec.panels_per_string >= 0
-        )) && !building.reGenReport 
+        )) && !building.reGenReport
       ) {
         disabled = false
       }
@@ -98,17 +99,17 @@ const ProjectLayout = (props) => {
   }
 
   const saveProjectClick = () => {
-    setloading(true)
+    setsaveLoading(true)
     dispatch(saveProject(projectID))
     .then(async res => {
       dispatch(saveReport({projectID}))
       dispatch(updateProjectAttributes({updatedAt: res.Attributes.updatedAt}))
-      setloading(false)
+      setsaveLoading(false)
     }).catch(err => {
       notification.error({
         message: t('error.save')
       })
-      setloading(false)
+      setsaveLoading(false)
     })
   }
 
@@ -122,6 +123,7 @@ const ProjectLayout = (props) => {
   // 读pv 逆变器 项目数据 最佳倾角朝向
   useEffect(() => {
     const fetchData = async () => {
+      setfetchLoading(true)
       const fetchPromises = []
       fetchPromises.push(
         dispatch(getPV())
@@ -163,6 +165,8 @@ const ProjectLayout = (props) => {
         )
       })
       await Promise.all(getReportPromises)
+      setfetchLoading(false)
+
       if (
         !projectData.optTilt || !projectData.optAzimuth ||
         !projectData.optPOA || !projectData.tiltAzimuthPOA ||
@@ -190,7 +194,6 @@ const ProjectLayout = (props) => {
     }
 
     fetchData()
-    setloading(false)
 
     return () => {
       saveProjectOnExit()
@@ -265,7 +268,7 @@ const ProjectLayout = (props) => {
                 size='large'
                 className={styles.saveBut}
                 onClick={saveProjectClick}
-                loading={loading}
+                loading={saveLoading}
               >
                 {t('sider.save')}
               </Button>
@@ -279,8 +282,7 @@ const ProjectLayout = (props) => {
         <Layout className={styles.main}>
           {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
           <Content className={styles.content}>
-
-            {Object.keys(projectData).length !== 0 ? props.children : null}
+            {fetchLoading ? null : props.children}
           </Content>
           <Footer className={styles.footer}>
             <DefaultFooter/>

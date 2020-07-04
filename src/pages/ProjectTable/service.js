@@ -10,10 +10,24 @@ export const googleGeocoder = async ({address, key}) => {
   )
 }
 
+export const googleRevGeocoder = ({lon, lat, key}) => {
+  return axios.get(
+    'https://maps.googleapis.com/maps/api/geocode/json?',
+    {params: {latlng: `${lat},${lon}`, key: key}}
+  )
+}
+
 export const amapGeocoder = async ({address, key}) => {
   return axios.get(
     'https://restapi.amap.com/v3/geocode/geo',
     {params: {address: address, key: key}}
+  )
+}
+
+export const amapRevGeocoder = async ({lon, lat, key}) => {
+  return axios.get(
+    'https://restapi.amap.com/v3/geocode/regeo',
+    {params: {location: `${lon},${lat}`, key: key}}
   )
 }
 

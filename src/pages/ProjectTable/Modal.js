@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { amapGeocoder, googleGeocoder, getApiKey, createProject } from './service';
+import { amapGeocoder, googleGeocoder, googleRevGeocoder, getApiKey, createProject } from './service';
 import { Tabs, Form, Input, Select, Modal, Divider, Button, notification, Tooltip, Collapse, Slider } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { genFullName } from '../../utils/genFullName';
@@ -54,7 +54,11 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
       const payload = res.data.geocodes
       if (payload.length === 0) {
         setvalidated(false)
-        notification.error({message: t('project.error.invalid-address')})
+        if (selectedMap === 'aMap') {
+          notification.error({message: t('project.error.invalid-address.amap')})
+        } else {
+          notification.error({message: t('project.error.invalid-address.googlemap')})
+        }
       } else {
         form.setFieldsValue({address: payload[0].formatted_address})
         setvalidated(true)
@@ -183,14 +187,29 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
           key="aMap"
           forceRender
         >
-          <AMap mapPos={mapPos} validated={validated} apiKey={aMapKey} />
+          <AMap
+            mapPos={mapPos}
+            setmapPos={setmapPos}
+            validated={validated}
+            setvalidated={setvalidated}
+            apiKey={aMapKey}
+            webApiKey={aMapWebKey}
+            form={form}
+          />
         </TabPane>
         <TabPane
           tab={t(`project.map.googleMap`)}
           key="googleMap"
           forceRender
         >
-          <GoogleMap mapPos={mapPos} validated={validated} apiKey={googleMapKey}/>
+          <GoogleMap
+            mapPos={mapPos}
+            setmapPos={setmapPos}
+            validated={validated}
+            setvalidated={setvalidated}
+            apiKey={googleMapKey}
+            form={form}
+          />
         </TabPane>
       </Tabs>
 
@@ -225,7 +244,15 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
         >
           <Input.Search
             onSearch={() => validateAddress()}
-            enterButton={<Button danger={!validated}>{t('project.create.validation')}</Button>}
+            enterButton={
+              <Button danger={!validated}>
+                {
+                  validated ?
+                  t('project.create.validation.finished') :
+                  t('project.create.validation.unfinished')
+                }
+              </Button>
+            }
             placeholder={t('project.create.address.placeholder')}
           />
         </FormItem>
