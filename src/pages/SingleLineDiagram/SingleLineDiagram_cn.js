@@ -62,14 +62,11 @@ const SingleLineDiagUS = () => {
   const dcCableChoice = buildingReport ? buildingReport.setup_dc_wir_choice.flatMap(ary => ary.flatMap(ary2 => ary2)) : []
   const combiboxIe = buildingReport && buildingReport.combibox_Ie ? buildingReport.combibox_Ie.toFixed(0) : ''
   const acIe = buildingReport && buildingReport.setup_ac_Ie ? buildingReport.setup_ac_Ie.flatMap(ary => ary.map(val => val.toFixed(0))) : []
-
   const combiboxName = buildingReport && buildingReport.investment ?
   DataGenerator.getCombiBoxData(buildingReport)
   : '';
   let newWidth = useSelector(state => state.SLD.diagramWidth);
   let newHeight =useSelector(state => state.SLD.diagramHeight);
-
-
 
   
   return (

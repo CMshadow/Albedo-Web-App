@@ -18,8 +18,6 @@ const PanelArrayCollection = (props) => {
   const trigger = props.numOfInv > 5 ? true : false
   const inverterWidth = unitWidth * 3.3
   const inverterAccessPorts = []
-
-  
   const combiSelect = (combiboxIe) => {
     const standard = [32, 63, 80, 100, 125, 160, 225]
     for (let element = 0; element < standard.length; element++) {
@@ -135,13 +133,16 @@ const PanelArrayCollection = (props) => {
         lineCap='round'
         lineJoin='round'
         ></Line>)
-
+      
+      const currentACIe =  (numOfArray === 1) ?
+       props.acIe[0] : 
+       props.acIe[index]
       groupOfPvArray.push(<Text
         key = {"Meter-Text-" + uuidv4()}
         x={startPosition[0] + unitWidth * 2.165 +
           index * unitPortWidth + offSet * 0.5 + 10}
         y={startPosition[1] + 1.4 * unitHeight + 10}
-        text={combiSelect(props.acIe[index]) + 'A'}
+        text={combiSelect(currentACIe) + 'A'}
         fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
         fontFamily='Arial'
         fill='Black'
@@ -345,6 +346,7 @@ const PanelArrayCollection = (props) => {
   }
     
   const drawSingleArray = (startPoint, unitW, index) => {
+    if (numOfArrays === 1) index = 0
     const unitArrayWidth = unitW / 5
     groupOfPvArray.push(<Line 
       key= {"PV-Array-Line-" + uuidv4()}
@@ -497,8 +499,7 @@ const PanelArrayCollection = (props) => {
 
     let offset = 5
     for (let string = 0; string < 4; string++) {
-      if (string === 3) {offset = unitArrayWidth * 0.75}
-
+      if (string === 3) offset = unitArrayWidth * 0.75
       groupOfPvArray.push(<Line 
         key= {"PV-Array-Line-" + uuidv4()}
         points={[
@@ -507,7 +508,7 @@ const PanelArrayCollection = (props) => {
           startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
           startPoint[1]+ 0.8 * unitHeight]}
         stroke='black'
-        strokeWidth={0.5}
+        strokeWidth={1}
         lineCap='round'
         lineJoin='round'
         closed={true}
