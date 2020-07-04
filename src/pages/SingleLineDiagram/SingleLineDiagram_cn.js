@@ -27,7 +27,7 @@ const SingleLineDiagUS = () => {
     building.buildingID === buildingID
   )
   const invSpec = DataGenerator.getInverterWring(buildingData)
-  const aggrePaco = invSpec.map(spec => 
+  const aggrePaco = invSpec.map(spec =>
     allInverter.find(inv => inv.inverterID === spec.inverter_model.inverterID).paco
     ).reduce((cum, val) => {
       Object.keys(cum).includes(val.toString()) ? cum[val] += 1 : cum[val] = 1
@@ -68,7 +68,6 @@ const SingleLineDiagUS = () => {
   let newWidth = useSelector(state => state.SLD.diagramWidth);
   let newHeight =useSelector(state => state.SLD.diagramHeight);
 
-  
   return (
     <div className={classes.SLD}>
       <ReactReduxContext.Consumer>
@@ -82,7 +81,7 @@ const SingleLineDiagUS = () => {
             <Provider store={store}>
               <Layer>
                 <Background />
-                <Boundary 
+                <Boundary
                   index = {1}
                   width = {newWidth}
                   height = {newHeight}
@@ -94,7 +93,7 @@ const SingleLineDiagUS = () => {
                   allPVArray = {allPVArray}
                   projectData = {projectData}
                   />
-                <PanelArrayCollection 
+                <PanelArrayCollection
                   index={1}
                   combiboxIe = {combiboxIe}
                   acIe={acIe}
@@ -102,7 +101,7 @@ const SingleLineDiagUS = () => {
                   allPVArray = {allPVArray}
                   />
                 <MeterSelfUse combiboxIe = {combiboxIe}/>
-                <Boundary 
+                <Boundary
                   index = {2}
                   width = {newWidth}
                   height = {newHeight}
@@ -115,7 +114,7 @@ const SingleLineDiagUS = () => {
                   combiboxIe = {combiboxIe}
                   projectData = {projectData}
                   />
-                <PanelArrayCollection 
+                <PanelArrayCollection
                   index={2}
                   numOfInv = {numOfInverter}
                   combiboxIe = {combiboxIe}
@@ -124,7 +123,7 @@ const SingleLineDiagUS = () => {
                   />
                 <MeterAllIn combiboxIe = {combiboxIe}/>
 
-                <ComponentsTable 
+                <ComponentsTable
                   index = {3}
                   width = {newWidth}
                   height = {newHeight}
