@@ -183,7 +183,15 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
           key="aMap"
           forceRender
         >
-          <AMap mapPos={mapPos} validated={validated} apiKey={aMapKey} />
+          <AMap
+            mapPos={mapPos}
+            setmapPos={setmapPos}
+            validated={validated}
+            setvalidated={setvalidated}
+            apiKey={aMapKey}
+            webApiKey={aMapWebKey}
+            form={form}
+          />
         </TabPane>
         <TabPane
           tab={t(`project.map.googleMap`)}
@@ -232,7 +240,15 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
         >
           <Input.Search
             onSearch={() => validateAddress()}
-            enterButton={<Button danger={!validated}>{t('project.create.validation')}</Button>}
+            enterButton={
+              <Button danger={!validated}>
+                { 
+                  validated ?
+                  t('project.create.validation.finished') :
+                  t('project.create.validation.unfinished')
+                }
+              </Button>
+            }
             placeholder={t('project.create.address.placeholder')}
           />
         </FormItem>

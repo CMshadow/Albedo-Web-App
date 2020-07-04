@@ -1,7 +1,11 @@
 import React from 'react';
 import { Map, Marker } from 'react-amap';
+import { amapRevGeocoder } from './service'
+import { notification } from 'antd'
+import { useTranslation } from 'react-i18next'
 
-const AMap = ({apikey, mapPos, validated}) => {
+const AMap = ({apikey, mapPos, setmapPos, validated, setvalidated, form, webApiKey}) => {
+  const { t } = useTranslation()
   const plugins = [
     'MapType',
     'ToolBar'
@@ -14,6 +18,21 @@ const AMap = ({apikey, mapPos, validated}) => {
         plugins={plugins}
         zoom={14}
         center={{latitude: mapPos.lat, longitude: mapPos.lon}}
+        onClick={(...props) => console.log(props)}
+        events={{
+          click: (e) => {
+            amapRevGeocoder({lon: e.lnglat.lng, lat: e.lnglat.lat, key: webApiKey})
+            .then(res => {
+              if (res.data.regeocode.formatted_address.length > 0) {
+                setmapPos({lon: e.lnglat.lng, lat: e.lnglat.lat})
+                form.setFieldsValue({projectAddress: res.data.regeocode.formatted_address})
+                setvalidated(true)
+              } else {
+                notification.error({message: t('project.error.invalid-address')})
+              }
+            })
+          }
+        }}
       >
         {
           validated ?

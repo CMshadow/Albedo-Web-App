@@ -24,6 +24,13 @@ export const amapGeocoder = async ({address, key}) => {
   )
 }
 
+export const amapRevGeocoder = async ({lon, lat, key}) => {
+  return axios.get(
+    'https://restapi.amap.com/v3/geocode/regeo',
+    {params: {location: `${lon},${lat}`, key: key}}
+  )
+}
+
 export const getApiKey = () => async dispatch => {
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
