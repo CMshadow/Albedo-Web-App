@@ -14,7 +14,7 @@ class Polyline {
   ) {
     this.points = points ? points : [];
     this.entityId = id || uuid();
-    this.color = color || Cesium.Color.WHITE;
+    this.color = color || Cesium.Color.STEELBLUE;
     this.theme = theme || Cesium.Color.STEELBLUE
     this.highlight = highlight || Cesium.Color.ORANGE
     this.show = show;

@@ -14,7 +14,9 @@ const MouseMoveShiftHandler = () => {
   const drwStat = useSelector(state => state.undoable.present.drwStat.status)
   const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
   const pickedType = useSelector(state => state.undoable.present.drawing.pickedType)
-  const drwProps = useSelector(state => state.undoable.present.drwStat.props)
+
+  const allPoint = useSelector(state => state.undoable.present.point)
+  const allPolygon = useSelector(state => state.undoable.present.polygon)
 
   const mouseMoveActions = (event) => {
     const mouseEndCart3 = viewer.scene.pickPosition(event.endPosition)
@@ -25,14 +27,14 @@ const MouseMoveShiftHandler = () => {
 
     switch(drwStat) {
       case objTypes.IDLE:
-        if (pickedId && pickedType === objTypes.POINT && drwProps.pointHeight) {
+        if (pickedId && pickedType === objTypes.POINT && allPoint[pickedId].props.pointHeight) {
           const deltaY = event.startPosition.y - event.endPosition.y;
           const heightChange = deltaY > 0 ?
             Math.min(0.5, deltaY) :
             Math.max(-0.5, deltaY)
           dispatch(actions.pointMoveVerti(pickedId, heightChange))
         }
-        else if (pickedId && pickedType === objTypes.POLYGON && drwProps.polygonHeight) {
+        else if (pickedId && pickedType === objTypes.POLYGON && allPolygon[pickedId].props.polygonHeight) {
           const deltaY = event.startPosition.y - event.endPosition.y;
           const heightChange = deltaY > 0 ?
             Math.min(0.5, deltaY) :

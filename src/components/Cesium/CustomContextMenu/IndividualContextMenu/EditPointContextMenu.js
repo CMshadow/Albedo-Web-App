@@ -8,8 +8,8 @@ const Text = Typography.Text
 
 const EditPointContextMenu = ({hoverId}) => {
   const dispatch = useDispatch()
-  const drwProps = useSelector(state => state.undoable.present.drwStat.props)
   const point = useSelector(state => state.undoable.present.point[hoverId]).entity
+  const props = useSelector(state => state.undoable.present.point[hoverId]).props
   const pointH = point ? point.height : null
 
   return (
@@ -22,7 +22,7 @@ const EditPointContextMenu = ({hoverId}) => {
     >
       <Card bodyStyle={{padding: 10, width: '200px'}}>
         {
-          drwProps.pointHeight ?
+          props.pointHeight ?
           <MenuItem preventClose>
             <Row gutter={[8, 8]} align='middle'>
               <Col span={8}><Text strong>Height</Text></Col>

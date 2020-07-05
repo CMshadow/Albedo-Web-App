@@ -10,16 +10,24 @@ const polygonColor = Color.WHITE.withAlpha(0.2)
 
 export const createPolygon = ({mouseCor, polygonId, pointId, outPolylineId}) =>
 (dispatch, getState) => {
+  const props = getState().undoable.present.drwStat.props
   const drwProps = getState().undoable.present.drwStat.props
   const modelingObjType = drwProps.objType
   const polygonH = mouseCor.height
   const polygon = new Polygon(
-    mouseCor.getCoordinate(true), polygonH, polygonId, null, polygonColor
+    mouseCor.getCoordinate(true), polygonH, polygonId, null, polygonColor,
+    props.theme, props.highlight
   )
   dispatch(bindDrawingObj({objType: modelingObjType, objId: polygonId}))
   return dispatch({
     type: actionTypes.POLYGON_SET,
     entity: polygon,
+    props: {
+      polygonPos: props.polygonPos !== null ? props.polygonPos : false,
+      polygonHeight: props.polygonHeight !== null ? props.polygonHeight : false,
+      theme: props.theme || Color.WHITE(0.2),
+      highlight: props.highlight || Color.ORANGE(0.2)
+    },
     pointMap: pointId ? [pointId] : [],
     outPolylineId: outPolylineId
   })

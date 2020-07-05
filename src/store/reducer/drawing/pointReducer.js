@@ -8,6 +8,7 @@ const setPoint = (state, action) => {
     ...state,
     [action.entity.entityId]: {
       entity: action.entity,
+      props: action.props || state[action.entity.entityId].props,
       polygonMap: action.polygonMap || state[action.entity.entityId].polygonMap,
       polylineMap: action.polylineMap || state[action.entity.entityId].polylineMap,
       circleMap: action.circleMap || state[action.entity.entityId].circleMap,

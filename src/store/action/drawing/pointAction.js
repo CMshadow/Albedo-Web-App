@@ -12,10 +12,16 @@ const POLYGON_OFFSET = -0.05
 
 export const addPoint = ({mouseCor, pointId, polygonId, polylineId, circleId, sectorId}) =>
 (dispatch, getState) => {
+  const props = getState().undoable.present.drwStat.props
   const point = Point.fromCoordinate(mouseCor, pointId)
+  console.log(props)
   return dispatch({
     type: actionTypes.POINT_SET,
     entity: point,
+    props: {
+      pointHeight: props.pointHeight !== null ? props.pointHeight : false,
+      pointDelete: props.pointDelete !== null ? props.pointDelete : false
+    },
     polygonMap: polygonId ? [polygonId] : [],
     polylineMap: polylineId ? [polylineId] : [],
     circleMap: circleId ? [circleId] : [],

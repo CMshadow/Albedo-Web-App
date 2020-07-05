@@ -14,6 +14,7 @@ const setPolyline = (state, action) => {
     ...state,
     [action.entity.entityId]: {
       entity: action.entity,
+      props: action.props || state[action.entity.entityId].props,
       pointMap: action.pointMap || state[action.entity.entityId].pointMap,
       insidePolygonId: insidePolygonId
     }
