@@ -23,7 +23,8 @@ export const DrawingTest = () => {
           polylineTheme: Color.STEELBLUE,
           polylineHighlight: Color.ORANGE,
           polylineAddVertex: false,
-          pointHeight: false
+          pointHeight: false,
+          pointDelete: false
         }))}
       >
         不能添加点的单段线, 点不能改高度不能删除
@@ -34,7 +35,8 @@ export const DrawingTest = () => {
           polylineTheme: Color.RED,
           polylineHighlight: Color.ORANGE,
           polylineAddVertex: true,
-          pointHeight: true
+          pointHeight: true,
+          pointDelete: true
         }))}
       >
         能添加点的红色多段线 点可以改高度可删除
@@ -43,23 +45,31 @@ export const DrawingTest = () => {
         loading={drawStatus === objTypes.POLYGON}
         onClick={() => dispatch(dispatch(actions.setDrwStatPolygon({
           pointHeight: true,
+          pointDelete: true,
           polygonPos: true,
           polygonHeight: true,
           polygonTheme: Color.RED.withAlpha(0.2),
-          polygonHighlight: Color.ORANGE.withAlpha(0.2)
+          polygonHighlight: Color.ORANGE.withAlpha(0.2),
+          polylineTheme: Color.GREEN,
+          polylineHighlight: Color.ORANGE,
+          polylineAddVertex: true,
+          polylineDelete: false
         })))}
       >
-        Draw with-height Polygon
+        可调整高度可拖动红色多边体，绿线，点可改高度
       </Button>
       <Button
         loading={drawStatus === objTypes.POLYGON}
         onClick={() => dispatch(dispatch(actions.setDrwStatPolygon({
           pointHeight: false,
+          pointDelete: true,
           polygonPos: false,
           polygonHeight: false,
+          polylineAddVertex: true,
+          polylineDelete: false
         })))}
       >
-        Draw No-height Polygon
+        不可调整高度不可拖动白色多边体，蓝线，点不可改高度
       </Button>
       <Button
         loading={drawStatus === objTypes.CIRCLE}

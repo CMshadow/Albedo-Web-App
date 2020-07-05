@@ -65,24 +65,27 @@ const EditPolylineContextMenu = ({hoverId}) => {
             </Row>
           </MenuItem> :
           null
+        }{
+          props.polylineDelete ?
+          <MenuItem
+            onClick={() => {
+              dispatch(actions.polylineDelete(hoverId))
+              dispatch(actions.releaseHoverObj())
+            }}
+          >
+            <Row gutter={[8, 8]} align='middle'>
+              <Button
+                className={styles.button}
+                type='primary'
+                size='small'
+                danger
+              >
+                Delete Polyline
+              </Button>
+            </Row>
+          </MenuItem> :
+          null
         }
-        <MenuItem
-          onClick={() => {
-            dispatch(actions.polylineDelete(hoverId))
-            dispatch(actions.releaseHoverObj())
-          }}
-        >
-          <Row gutter={[8, 8]} align='middle'>
-            <Button
-              className={styles.button}
-              type='primary'
-              size='small'
-              danger
-            >
-              Delete Polyline
-            </Button>
-          </Row>
-        </MenuItem>
       </Card>
     </ContextMenu>
   );

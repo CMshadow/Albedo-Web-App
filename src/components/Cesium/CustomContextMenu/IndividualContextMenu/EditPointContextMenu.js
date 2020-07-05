@@ -40,24 +40,27 @@ const EditPointContextMenu = ({hoverId}) => {
             </Row>
           </MenuItem> :
           null
+        }{
+          props.pointDelete ?
+          <MenuItem
+            onClick={() => {
+              dispatch(actions.releaseHoverObj())
+              dispatch(actions.pointDelete(hoverId))
+            }}
+          >
+            <Row gutter={[8, 8]} align='middle'>
+              <Button
+                className={styles.button}
+                type='primary'
+                size='small'
+                danger
+              >
+                Delete Point
+              </Button>
+            </Row>
+          </MenuItem> :
+          null
         }
-        <MenuItem
-          onClick={() => {
-            dispatch(actions.pointDelete(hoverId))
-            dispatch(actions.releaseHoverObj())
-          }}
-        >
-          <Row gutter={[8, 8]} align='middle'>
-            <Button
-              className={styles.button}
-              type='primary'
-              size='small'
-              danger
-            >
-              Delete Point
-            </Button>
-          </Row>
-        </MenuItem>
       </Card>
     </ContextMenu>
   );

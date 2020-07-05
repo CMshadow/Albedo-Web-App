@@ -15,6 +15,7 @@ export const createPolyline = ({mouseCor, polylineId, pointId, insidePolygonId})
     entity: polyline,
     props: {
       polylineAddVertex: props.polylineAddVertex !== null ? props.polylineAddVertex : true,
+      polylineDelete: props.polylineDelete !== null ? props.polylineDelete : true,
       theme: props.polylineTheme || Color.STEELBLUE,
       highlight: props.polylineHighlight || Color.ORANGE
     },

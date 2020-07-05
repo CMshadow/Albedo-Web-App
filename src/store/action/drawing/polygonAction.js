@@ -6,8 +6,6 @@ import { polylineSetShow, polylineDelete } from './polylineAction'
 import { pointMoveHori, pointMoveVerti, pointRemoveMapping, pointDeleteNoSideEff, pointSetHeight } from './pointAction'
 import { Color } from 'cesium'
 
-const polygonColor = Color.WHITE.withAlpha(0.2)
-
 export const createPolygon = ({mouseCor, polygonId, pointId, outPolylineId}) =>
 (dispatch, getState) => {
   const props = getState().undoable.present.drwStat.props
@@ -15,8 +13,8 @@ export const createPolygon = ({mouseCor, polygonId, pointId, outPolylineId}) =>
   const modelingObjType = drwProps.objType
   const polygonH = mouseCor.height
   const polygon = new Polygon(
-    mouseCor.getCoordinate(true), polygonH, polygonId, null, polygonColor,
-    props.theme, props.highlight
+    mouseCor.getCoordinate(true), polygonH, polygonId, null, props.polygonTheme,
+    props.polygonTheme, props.polygonHighlight
   )
   dispatch(bindDrawingObj({objType: modelingObjType, objId: polygonId}))
   return dispatch({
@@ -25,8 +23,8 @@ export const createPolygon = ({mouseCor, polygonId, pointId, outPolylineId}) =>
     props: {
       polygonPos: props.polygonPos !== null ? props.polygonPos : false,
       polygonHeight: props.polygonHeight !== null ? props.polygonHeight : false,
-      theme: props.theme || Color.WHITE(0.2),
-      highlight: props.highlight || Color.ORANGE(0.2)
+      theme: props.polygonTheme || Color.WHITE.withAlpha(0.2),
+      highlight: props.polygonHighlight || Color.ORANGE.withAlpha(0.2)
     },
     pointMap: pointId ? [pointId] : [],
     outPolylineId: outPolylineId
@@ -73,12 +71,11 @@ export const polygonDynamic = (polygonId, mouseCor) => (dispatch, getState) => {
     drawingPolygon.hierarchy.slice(0, -3) :
     drawingPolygon.hierarchy
   const newHier = fixedHier.concat(mouseCor.getCoordinate(true))
+  const newPolygon = Polygon.fromPolygon(drawingPolygon, null, mouseCor.height, newHier)
 
   return dispatch({
     type: actionTypes.POLYGON_SET,
-    entity: new Polygon(
-      newHier, mouseCor.height, drawingPolygon.entityId, null, polygonColor
-    ),
+    entity: newPolygon,
     pointMap: pointMap,
   })
 }
@@ -92,12 +89,11 @@ export const polygonAddVertex = ({polygonId, mouseCor, pointId, position=null}) 
   newHier.splice(
     position ? position * 3 : newHier.length, 0, ...mouseCor.getCoordinate(true)
   )
+  const newPolygon = Polygon.fromPolygon(drawingPolygon, null, mouseCor.height, newHier)
 
   return dispatch({
     type: actionTypes.POLYGON_SET,
-    entity: new Polygon(
-      newHier, mouseCor.height, drawingPolygon.entityId, null, polygonColor
-    ),
+    entity: newPolygon,
     pointMap: newPointMap,
   })
 }
@@ -108,12 +104,11 @@ export const polygonUpdateVertex = ({polygonId, mouseCor, pointId}) => (dispatch
   const pointIndex = pointMap.indexOf(pointId)
   const newHier = [...drawingPolygon.hierarchy]
   newHier.splice(pointIndex * 3, 3, ...mouseCor.getCoordinate(true))
+  const newPolygon = Polygon.fromPolygon(drawingPolygon, null, null, newHier)
 
   return dispatch({
     type: actionTypes.POLYGON_SET,
-    entity: new Polygon(
-      newHier, drawingPolygon.height, drawingPolygon.entityId, null, polygonColor
-    ),
+    entity: newPolygon,
     pointMap: pointMap,
   })
 }
@@ -123,6 +118,7 @@ export const polygonTerminate = (polygonId) => (dispatch, getState) => {
   const newHier = drawingPolygon.hierarchy.length > 3 ?
     drawingPolygon.hierarchy.slice(0, -3) :
     drawingPolygon.hierarchy
+  const newPolygon = Polygon.fromPolygon(drawingPolygon, null, null, newHier)
 
   dispatch({
     type: actionTypes.RELEASE_DRAWING_OBJECT
@@ -130,9 +126,7 @@ export const polygonTerminate = (polygonId) => (dispatch, getState) => {
 
   return dispatch({
     type: actionTypes.POLYGON_SET,
-    entity: new Polygon(
-      newHier, drawingPolygon.height, drawingPolygon.entityId, null, polygonColor
-    ),
+    entity: newPolygon,
   })
 }
 
@@ -167,11 +161,11 @@ export const polygonDeleteVertex = (polygonId, pointId) => (dispatch, getState) 
   newPointMap.splice(pointIndex, 1)
   const newHier = [...polygon.hierarchy]
   newHier.splice(pointIndex * 3, 3)
+  const newPolygon = Polygon.fromPolygon(polygon, null, null, newHier)
+
   return dispatch({
     type: actionTypes.POLYGON_SET,
-    entity: new Polygon(
-      newHier, polygon.height, polygon.entityId, null, polygonColor
-    ),
+    entity: newPolygon,
     pointMap: newPointMap,
   })
 }

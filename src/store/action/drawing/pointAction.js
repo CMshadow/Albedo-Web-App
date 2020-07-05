@@ -14,7 +14,6 @@ export const addPoint = ({mouseCor, pointId, polygonId, polylineId, circleId, se
 (dispatch, getState) => {
   const props = getState().undoable.present.drwStat.props
   const point = Point.fromCoordinate(mouseCor, pointId)
-  console.log(props)
   return dispatch({
     type: actionTypes.POINT_SET,
     entity: point,

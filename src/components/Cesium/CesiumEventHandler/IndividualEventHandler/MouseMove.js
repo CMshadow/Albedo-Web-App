@@ -60,7 +60,7 @@ const MouseMoveHandler = () => {
         if (pickedId && pickedType === objTypes.POINT) {
           mouseEndCor.setCoordinate(null, null, POINT_OFFSET)
           dispatch(actions.pointMoveHori(pickedId, mouseEndCor))
-        } else if ( pickedId && pickedType === objTypes.POLYGON && drwProps.polygonPos) {
+        } else if ( pickedId && pickedType === objTypes.POLYGON && allPolygon[pickedId].props.polygonPos) {
           mouseStartCor.setCoordinate(null, null, POLYGON_OFFSET)
           mouseEndCor.setCoordinate(null, null, POLYGON_OFFSET)
           const brng = Coordinate.bearing(mouseStartCor, mouseEndCor)

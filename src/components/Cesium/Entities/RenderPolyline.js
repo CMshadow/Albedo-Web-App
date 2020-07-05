@@ -20,6 +20,9 @@ export const RenderPolyline = ({polyline}) => {
     const brng = Coordinate.bearing(startCor, endCor)
     const dist = Coordinate.surfaceDistance(startCor, endCor)
     const midDest = Coordinate.destination(startCor, brng, dist / 2)
+    const heightChange = Math.abs(startCor.height - endCor.height) / 2
+    const midHeight = Math.min(startCor.height, endCor.height) + heightChange
+    midDest.setCoordinate(null, null, midHeight)
     return Coordinate.toCartesian(midDest)
   }
 
