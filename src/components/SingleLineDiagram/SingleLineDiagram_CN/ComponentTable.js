@@ -9,26 +9,48 @@ const ComponentTable = (props) => {
   const dispatch = useDispatch()
   const groupOfTable = []
   const width = useSelector(state => state.SLD.diagramWidth)
+  const allPVArray = props.allPVArray
+  const numOfRoofTop = new Set(allPVArray.map( index => index.inverter_serial_number[0])).size
 
-  const numOfpvArray = props.allPVArray.length
+  const numOfpvArray = allPVArray.length
   const numOfInverter = props.numOfInv
   const boundaryWidth = width * 0.8 > 800 ? width * 0.8: 800
   const boundaryHeight = numOfpvArray > 0 ? 
-    numOfpvArray  * 40 + 50 + boundaryWidth * 0.04 : 
+    (numOfpvArray + numOfRoofTop) * 40 + 50 + boundaryWidth * 0.04 : 
     50 + boundaryWidth * 0.04
   
   const offset = (boundaryWidth * 4/6 + 100) * (props.index - 1)
   const startPosition = [width * 0.1, 100 + offset]
   const headerFont= boundaryWidth * 0.03 > 16 ? 16 : boundaryWidth * 0.03
   const bodyFont = 12
+  const sortedArray = new Map()
+  const pvArray = allPVArray.map(index => [index.inverter_serial_number[0], index])
+
+  const sortPVArray = (PV) => {
+    PV.forEach(element => {
+      if (sortedArray.has(element[0])) 
+        sortedArray.get(element[0]).push(element[1])
+      else{
+        sortedArray.set(element[0], [element[1]])
+      } 
+    });
+  }
+
+  const filterDCType = (dcArray) => {
+    const dcSet = new Set(dcArray)
+    return Array.from(dcSet)
+  }
 
 
   const DrawBasicCompomentTable = () => {
-    drawBasicTable(startPosition)
+    sortPVArray(pvArray)
+    drawBasicTable(startPosition, sortedArray)
     drawComponentTable([startPosition[0], 
-      startPosition[1] + boundaryHeight + 100])
+      startPosition[1] + boundaryHeight + 100],
+      sortedArray)
     drawInverterTable([startPosition[0], 
-      startPosition[1] + (boundaryHeight + 100) * 2])
+      startPosition[1] + (boundaryHeight + 100) * 2], 
+      sortedArray)
     drawCombiBoxTable([startPosition[0], 
       startPosition[1] + (boundaryHeight + 100) * 3])
     
@@ -36,7 +58,7 @@ const ComponentTable = (props) => {
     return groupOfTable 
   }
   
-  const drawBasicTable = (position) => {
+  const drawBasicTable = (position, pvArray) => {
     groupOfTable.push(<Rect
       key= {"ComponentTable-Rect-" + uuidv4()}
       x={position[0]}
@@ -93,7 +115,7 @@ const ComponentTable = (props) => {
         points={[position[0] + boundaryWidth * 0.01 + index * unitRow,
         position[1] + boundaryWidth * 0.03,
         position[0] + boundaryWidth * 0.01 + index * unitRow,
-        position[1] + boundaryWidth * 0.03 + 50 + numOfpvArray * 40]}
+        position[1] + boundaryWidth * 0.03 + 50]}
         stroke='#7b7b85'
         strokeWidth={2}
         lineCap='round'
@@ -169,108 +191,17 @@ const ComponentTable = (props) => {
           ></Text>)
         }
     }
-
-    for (let i = 0; i < numOfpvArray; i++) {
-      groupOfTable.push(<Line 
-        key= {"CompoTable-Line-" + uuidv4()}
-        points={[position[0] + boundaryWidth * 0.01,
-        position[1] + boundaryWidth * 0.03 + 40 * i + 50,
-        position[0] + boundaryWidth * 0.99,
-        position[1] + boundaryWidth * 0.03 + 40 * i + 50]}
-        stroke='#7b7b85'
-        strokeWidth={1}
-        lineCap='round'
-        lineJoin='round'
-        ></Line>)
-
-      for (let j = 1; j <= 6; j++) {
-        const pvName = props.allPVArray[i].pvName.length > (unitRow/bodyFont) * 1.5 ? 
-        props.allPVArray[i].pvName.slice(0, (unitRow/bodyFont) * 1.5  - 1 ) : 
-        props.allPVArray[i].pvName
-
-        if (j === 1) 
-          groupOfTable.push(<Text
-            key = {"CompTable-Text-" + uuidv4()}
-            x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-            y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-            text={ `  ${pvName} `}
-            fontSize={bodyFont}
-            fontFamily='Arial'
-            fill='black'
-          ></Text>)
-
-        else if (j === 2) 
-        groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={ `    ${props.allPVArray[i].siliconMaterial === "c-Si" 
-          ? "单晶硅" : "多晶硅"} `}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-        ></Text>)
-
-        else if (j === 3) 
-          groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={ `    ${props.allPVArray[i].voc} `}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-        ></Text>)
-
-        else if (j === 4) 
-          groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={ `    ${props.allPVArray[i].vpm} `}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-        ></Text>)
-
-        else if (j === 5) 
-          groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={ `    ${props.allPVArray[i].isc} `}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-        ></Text>)
-
-        else if (j === 6) 
-          groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={`   ${props.allPVArray[i].ipm}`}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-          ></Text>)
-        
-      }
-
-      groupOfTable.push(<Text
-        key = {"CompTable-Text-" + uuidv4()}
-        x={position[0] + boundaryWidth * 0.01}
-        y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-        text={ `   光伏阵列 ${props.allPVArray[i].inverter_serial_number} `}
-        fontSize={bodyFont}
-        fontFamily='Arial'
-        fill='black'
-      ></Text>)
-
-    }
+    let rowCount = 0
+    Array.from(pvArray).forEach( (element, index) => {
+      const numRows = element[1].length + 1
+      drawSingleRowBlock([position[0] + boundaryWidth * 0.01, 
+        position[1] + boundaryWidth * 0.03 + (rowCount + 1) * 40], 
+        numRows, unitRow, element[0], element[1], 1 )
+      rowCount += numRows
+    });
   }
 
-  const drawComponentTable = (position) => {
+  const drawComponentTable = (position, pvArray) => {
     groupOfTable.push(<Rect
       key= {"ComponentTable-Rect-" + uuidv4()}
       x={position[0]}
@@ -327,7 +258,7 @@ const ComponentTable = (props) => {
         points={[position[0] + boundaryWidth * 0.01 + index * unitRow,
         position[1] + boundaryWidth * 0.03,
         position[0] + boundaryWidth * 0.01 + index * unitRow,
-        position[1] + boundaryWidth * 0.03 + 50 + numOfpvArray * 40]}
+        position[1] + boundaryWidth * 0.03 + 50]}
         stroke='#7b7b85'
         strokeWidth={2}
         lineCap='round'
@@ -352,7 +283,7 @@ const ComponentTable = (props) => {
             key = {"CompTable-Text-" + uuidv4()}
             x={position[0] + boundaryWidth * 0.02 + index * unitRow}
             y={position[1] + boundaryWidth * 0.04}
-            text={ "光伏组件数/组串"}
+            text={ "并联组串数"}
             fontSize={bodyFont}
             fontFamily='Arial'
             fill='black'
@@ -363,7 +294,7 @@ const ComponentTable = (props) => {
             key = {"CompTable-Text-" + uuidv4()}
             x={position[0] + boundaryWidth * 0.02 + index * unitRow}
             y={position[1] + boundaryWidth * 0.04}
-            text={ "并联组串数"}
+            text={ "光伏组件数/组串"}
             fontSize={bodyFont}
             fontFamily='Arial'
             fill='black'
@@ -415,93 +346,19 @@ const ComponentTable = (props) => {
         lineCap='round'
         lineJoin='round'
         ></Line>)
-
-      groupOfTable.push(<Text
-        key = {"CompTable-Text-" + uuidv4()}
-        x={position[0] + boundaryWidth * 0.01}
-        y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-        text={ `   光伏阵列 ${props.allPVArray[i].inverter_serial_number} `}
-        fontSize={bodyFont}
-        fontFamily='Arial'
-        fill='black'
-      ></Text>)
-
-      for (let j = 1; j <= 6; j++) {
-        const pvName = props.allPVArray[i].pvName.length > (unitRow/bodyFont) * 1.5 ? 
-        props.allPVArray[i].pvName.slice(0, (unitRow/bodyFont) * 1.5  - 1 ) : 
-        props.allPVArray[i].pvName
-
-        if (j === 1) 
-          groupOfTable.push(<Text
-            key = {"CompTable-Text-" + uuidv4()}
-            x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-            y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-            text={ `  ${pvName} `}
-            fontSize={bodyFont}
-            fontFamily='Arial'
-            fill='black'
-          ></Text>)
-
-        else if (j === 2) 
-        groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={ `    ${props.allPVArray[i].string_per_inverter} `}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-        ></Text>)
-
-        else if (j === 3) 
-          groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={ `    ${props.allPVArray[i].panels_per_string} `}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-        ></Text>)
-
-        else if (j === 4) 
-          groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={ `    ${props.allPVArray[i].string_per_inverter * 
-            props.allPVArray[i].panels_per_string} `}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-        ></Text>)
-
-        else if (j === 5) 
-          groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={ `    PV-F-1kV `}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-        ></Text>)
-
-        else if (j === 6) 
-          groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={`   ${props.dcData[i]}`}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-          ></Text>)
-      }
     }
+
+    let rowCount = 0
+    Array.from(pvArray).forEach( (element, index) => {
+      const numRows = element[1].length + 1
+      drawSingleRowBlock([position[0] + boundaryWidth * 0.01, 
+        position[1] + boundaryWidth * 0.03 + (rowCount + 1) * 40], 
+        numRows, unitRow, element[0], element[1], 2 )
+      rowCount += numRows
+    });
   }
 
-  const drawInverterTable = (position) => {
+  const drawInverterTable = (position, pvArray) => {
     groupOfTable.push(<Rect
       key= {"ComponentTable-Rect-" + uuidv4()}
       x={position[0]}
@@ -558,7 +415,7 @@ const ComponentTable = (props) => {
         points={[position[0] + boundaryWidth * 0.01 + index * unitRow,
         position[1] + boundaryWidth * 0.03,
         position[0] + boundaryWidth * 0.01 + index * unitRow,
-        position[1] + boundaryWidth * 0.03 + 50 + numOfpvArray * 40]}
+        position[1] + boundaryWidth * 0.03 + 50]}
         stroke='#7b7b85'
         strokeWidth={2}
         lineCap='round'
@@ -623,91 +480,14 @@ const ComponentTable = (props) => {
           ></Text>)
       }
     }
-    for (let i = 0; i < numOfInverter; i++) {
-      groupOfTable.push(<Line 
-        key= {"CompoTable-Line-" + uuidv4()}
-        points={[position[0] + boundaryWidth * 0.01,
-        position[1] + boundaryWidth * 0.03 + 40 * i + 50,
-        position[0] + boundaryWidth * 0.99,
-        position[1] + boundaryWidth * 0.03 + 40 * i + 50]}
-        stroke='#7b7b85'
-        strokeWidth={0.5}
-        lineCap='round'
-        lineJoin='round'
-        ></Line>)
-
-      groupOfTable.push(<Text
-        key = {"CompTable-Text-" + uuidv4()}
-        x={position[0] + boundaryWidth * 0.01}
-        y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-        text={ `   逆变器 ${props.allPVArray[i].inverter_serial_number} `}
-        fontSize={bodyFont}
-        fontFamily='Arial'
-        fill='black'
-      ></Text>)
-
-
-    for (let j = 1; j <= 6; j++) {
-      const pvName = props.allPVArray[i].pvName.length > (unitRow/bodyFont) * 1.5 ? 
-      props.allPVArray[i].pvName.slice(0, (unitRow/bodyFont) * 1.5  - 1 ) : 
-      props.allPVArray[i].pvName
-
-      if (j === 1) 
-        groupOfTable.push(<Text
-          key = {"CompTable-Text-" + uuidv4()}
-          x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-          y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-          text={ `  ${props.allPVArray[i].inverterName} `}
-          fontSize={bodyFont}
-          fontFamily='Arial'
-          fill='black'
-        ></Text>)
-
-      else if (j === 2) 
-      groupOfTable.push(<Text
-        key = {"CompTable-Text-" + uuidv4()}
-        x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-        y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-        text={ `    ${props.allPVArray[i].paco} `}
-        fontSize={bodyFont}
-        fontFamily='Arial'
-        fill='black'
-      ></Text>)
-
-      else if (j === 3) 
-        groupOfTable.push(<Text
-        key = {"CompTable-Text-" + uuidv4()}
-        x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-        y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-        text={ `    低压电缆 `}
-        fontSize={bodyFont}
-        fontFamily='Arial'
-        fill='black'
-      ></Text>)
-
-      else if (j === 4) 
-        groupOfTable.push(<Text
-        key = {"CompTable-Text-" + uuidv4()}
-        x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-        y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-        text={ `    ZRC-YJY23-0.6/1kV `}
-        fontSize={bodyFont}
-        fontFamily='Arial'
-        fill='black'
-      ></Text>)
-
-      else if (j === 5) 
-        groupOfTable.push(<Text
-        key = {"CompTable-Text-" + uuidv4()}
-        x={position[0] + boundaryWidth * 0.01 + j * unitRow}
-        y={position[1] + boundaryWidth * 0.03 + 40 * i + 60}
-        text={`   ${props.acData[i]}`}
-        fontSize={bodyFont}
-        fontFamily='Arial'
-        fill='black'
-        ></Text>)
-      }
-    }
+    let rowCount = 0
+    Array.from(pvArray).forEach( (element, index) => {
+      const numRows = element[1].length + 1
+      drawInverterRowBlock([position[0] + boundaryWidth * 0.01, 
+        position[1] + boundaryWidth * 0.03 + (rowCount + 1) * 40], 
+        numRows, unitRow, element[0], element[1], 2 )
+      rowCount += numRows
+    });
   }
 
   const drawCombiBoxTable = (position) => {
@@ -887,6 +667,243 @@ const ComponentTable = (props) => {
         fontSize={bodyFont}
         fontFamily='Arial'
         fill='black'
+        ></Text>)
+      }
+    }
+  }
+
+
+  const drawSingleRowBlock = (position, numOfRow, unitRow, blockIndex,blockData, table) => {
+    for (let i = 0; i < numOfRow; ++i) {
+      if (i === 0) {
+        groupOfTable.push(<Text
+          key = {"CompTable-Text-" + uuidv4()}
+          x={position[0] + unitRow * 3.45}
+          y={position[1] + 20}
+          text={ `   屋面${blockIndex} `}
+          fontSize={bodyFont + 2}
+          fontFamily='Arial'
+          fill='black'
+        ></Text>)
+      }
+      if(i !== 0) {
+        for (let j = 1; j <= 6; j++) {
+          groupOfTable.push(<Line 
+            key= {"CompoTable-Line-" + uuidv4()}
+            points={[position[0] + j * unitRow,
+              position[1] + 40 * i + 50,
+              position[0] + j * unitRow,
+              position[1] + 40 * (i - 1) + 50]}
+            stroke='#7b7b85'
+            strokeWidth={2}
+            lineCap='round'
+            lineJoin='round'
+          ></Line>)
+        }
+        
+      }
+      groupOfTable.push(<Line 
+        key= {"CompoTable-Line-" + uuidv4()}
+        points={[position[0],
+        position[1] + 40 * i + 50,
+        position[0] + boundaryWidth * 0.98,
+        position[1] + 40 * i + 50]}
+        stroke='black'
+        strokeWidth={1}
+        lineCap='round'
+        lineJoin='round'
+        ></Line>)
+
+      for (let j = 0; j <= 6; j++) {
+        
+        if (j === 0 && i < numOfRow - 1) {
+          groupOfTable.push(<Text
+            key = {"CompTable-Text-" + uuidv4()}
+            x={position[0] + j * unitRow}
+            y={position[1] + 40 * i + 60}
+            text={ `    光伏子阵列 ${blockData[i].inverter_serial_number}  `}
+            fontSize={bodyFont}
+            fontFamily='Arial'
+            fill='black'
+          ></Text>)
+        }
+        else if (j === 1 && i < numOfRow - 1) {
+          const pvName = blockData[i].pvName.length > (unitRow/bodyFont) * 1.5 ? blockData[i].pvName.slice(0, (unitRow/bodyFont) * 1.5  - 1 ) : 
+          blockData[i].pvName
+          groupOfTable.push(<Text
+            key = {"CompTable-Text-" + uuidv4()}
+            x={position[0] + j * unitRow}
+            y={position[1] + 40 * i + 60}
+            text={ `  ${pvName} `}
+            fontSize={bodyFont}
+            fontFamily='Arial'
+            fill='black'
+          ></Text>)
+        }
+        else if (j === 2 && i < numOfRow - 1) {
+          groupOfTable.push(<Text
+            key = {"CompTable-Text-" + uuidv4()}
+            x={position[0] + j * unitRow}
+            y={position[1] + 40 * i + 60}
+            text={ `    ${ table === 1 ? blockData[i].siliconMaterial === "c-Si" 
+            ? "单晶硅" : "多晶硅" : blockData[i].string_per_inverter} `}
+            fontSize={bodyFont}
+            fontFamily='Arial'
+            fill='black'
+          ></Text>)
+        }
+        else if (j === 3 && i < numOfRow - 1) {
+          groupOfTable.push(<Text
+            key = {"CompTable-Text-" + uuidv4()}
+            x={position[0] + j * unitRow}
+            y={position[1] + 40 * i + 60}
+            text={ `    ${table === 1 ? blockData[i].voc : 
+              blockData[i].panels_per_string} `}
+            fontSize={bodyFont}
+            fontFamily='Arial'
+            fill='black'
+          ></Text>)
+        }
+        else if (j === 4 && i < numOfRow - 1) {
+          groupOfTable.push(<Text
+            key = {"CompTable-Text-" + uuidv4()}
+            x={position[0] + j * unitRow}
+            y={position[1] + 40 * i + 60}
+            text={ `    ${table === 1 ? blockData[i].vpm : 
+              blockData[i].panels_per_string * blockData[i].string_per_inverter}`}
+            fontSize={bodyFont}
+            fontFamily='Arial'
+            fill='black'
+          ></Text>)
+        }
+        else if (j === 5 && i < numOfRow - 1) {
+          groupOfTable.push(<Text
+            key = {"CompTable-Text-" + uuidv4()}
+            x={position[0] + j * unitRow}
+            y={position[1] + 40 * i + 60}
+            text={ `    ${table === 1 ? blockData[i].isc : "PV-F-1kV"} `}
+            fontSize={bodyFont}
+            fontFamily='Arial'
+            fill='black'
+          ></Text>)
+        }
+        else if (j === 6 && i < numOfRow - 1) {
+          groupOfTable.push(<Text
+            key = {"CompTable-Text-" + uuidv4()}
+            x={position[0] + j * unitRow}
+            y={position[1] + 40 * i + 60}
+            text={ `    ${table === 1 ? blockData[i].ipm : 
+              filterDCType(blockData[i].dcCableChoice) } `}
+            fontSize={bodyFont}
+            fontFamily='Arial'
+            fill='black'
+          ></Text>)
+        }
+      }
+    }
+  }
+
+  const drawInverterRowBlock = (position, numOfRow, unitRow, blockIndex,blockData, table) => {
+    for (let i = 0; i < numOfRow; ++i) {
+      if (i === 0) {
+        groupOfTable.push(<Text
+          key = {"CompTable-Text-" + uuidv4()}
+          x={position[0] + unitRow * 2.95}
+          y={position[1] + 20}
+          text={ `   屋面${blockIndex} `}
+          fontSize={bodyFont + 2}
+          fontFamily='Arial'
+          fill='black'
+        ></Text>)
+      }
+      if(i !== 0) {
+        for (let j = 1; j <= 6; j++) {
+          groupOfTable.push(<Line 
+            key= {"CompoTable-Line-" + uuidv4()}
+            points={[position[0] + j * unitRow,
+              position[1] + 40 * i + 50,
+              position[0] + j * unitRow,
+              position[1] + 40 * (i - 1) + 50]}
+            stroke='#7b7b85'
+            strokeWidth={2}
+            lineCap='round'
+            lineJoin='round'
+          ></Line>)
+        }
+        
+      }
+      groupOfTable.push(<Line 
+        key= {"CompoTable-Line-" + uuidv4()}
+        points={[position[0],
+        position[1] + 40 * i + 50,
+        position[0] + boundaryWidth * 0.98,
+        position[1] + 40 * i + 50]}
+        stroke='black'
+        strokeWidth={1}
+        lineCap='round'
+        lineJoin='round'
+        ></Line>)
+
+      for (let j = 0; j <= 6; j++) {
+        if (j === 0 && i < numOfRow - 1) 
+          groupOfTable.push(<Text
+            key = {"CompTable-Text-" + uuidv4()}
+            x={position[0] + j * unitRow}
+            y={position[1] + 40 * i + 60}
+            text={ `    逆变器 ${blockData[i].inverter_serial_number}  `}
+            fontSize={bodyFont}
+            fontFamily='Arial'
+            fill='black'
+          ></Text>)
+        else if (j === 1 && i < numOfRow - 1) 
+          groupOfTable.push(<Text
+            key = {"CompTable-Text-" + uuidv4()}
+            x={position[0] + j * unitRow}
+            y={position[1] + 40 * i + 60}
+            text={ `  ${blockData[i].inverterName} `}
+            fontSize={bodyFont}
+            fontFamily='Arial'
+            fill='black'
+          ></Text>)
+        else if (j === 2 && i < numOfRow - 1) 
+          groupOfTable.push(<Text
+            key = {"CompTable-Text-" + uuidv4()}
+            x={position[0] + j * unitRow}
+            y={position[1] + 40 * i + 60}
+            text={ `    ${blockData[i].paco} `}
+            fontSize={bodyFont}
+            fontFamily='Arial'
+            fill='black'
+          ></Text>)
+        else if (j === 3 && i < numOfRow - 1) 
+        groupOfTable.push(<Text
+          key = {"CompTable-Text-" + uuidv4()}
+          x={position[0] + j * unitRow}
+          y={position[1] + 40 * i + 60}
+          text={ `    低压电缆 `}
+          fontSize={bodyFont}
+          fontFamily='Arial'
+          fill='black'
+        ></Text>)
+        else if (j === 4 && i < numOfRow - 1) 
+        groupOfTable.push(<Text
+          key = {"CompTable-Text-" + uuidv4()}
+          x={position[0] + j * unitRow}
+          y={position[1] + 40 * i + 60}
+          text={ `    ZRC-YJY23-0.6/1kV `}
+          fontSize={bodyFont}
+          fontFamily='Arial'
+          fill='black'
+        ></Text>)
+        else if (j === 5 && i < numOfRow - 1) 
+        groupOfTable.push(<Text
+          key = {"CompTable-Text-" + uuidv4()}
+          x={position[0] + j * unitRow}
+          y={position[1] + 40 * i + 60}
+          text={ `    ${blockData[i].acCableChoice} `}
+          fontSize={bodyFont}
+          fontFamily='Arial'
+          fill='black'
         ></Text>)
       }
     }

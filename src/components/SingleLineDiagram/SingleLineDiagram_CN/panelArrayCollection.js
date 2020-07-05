@@ -29,7 +29,6 @@ const PanelArrayCollection = (props) => {
     return combiboxIe
   }  
 
-  // console.log(1)
   const DrawPanelArray = () => {
     drawInverter()
     return groupOfPvArray
@@ -155,8 +154,9 @@ const PanelArrayCollection = (props) => {
       inverterAccessPorts.push([
         index * unitPortWidth + offSet * 0.5 + 2.5,
         endPoint])
-        drawSingleArray([startPosition[0] + unitWidth * 2.165 +
-          index * unitPortWidth + offSet * 0.5 + 2.5, endPoint], unitArrayWidth, index)
+
+      drawSingleArray([startPosition[0] + unitWidth * 2.165 +
+        index * unitPortWidth + offSet * 0.5 + 2.5, endPoint], unitArrayWidth, index)
       
       if (trigger && index === 3) {
         groupOfPvArray.push(<Circle
@@ -268,12 +268,12 @@ const PanelArrayCollection = (props) => {
     
     groupOfPvArray.push(<Text
       key = {"Meter-Text-" + uuidv4()}
-      x={startPosition[0] + unitWidth * 2 + inverterWidth * 0.5 + 30}
+      x={startPosition[0] + unitWidth * 2 + inverterWidth * 0.5 + 10}
       y={startPosition[1] + 1.25 * unitHeight}
       text={combiSelect(props.combiboxIe) + 'A'}
       fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
       fontFamily='Arial'
-      fill='Black'
+      fill='black'
     ></Text>)
 
     groupOfPvArray.push(<Line 
@@ -352,6 +352,7 @@ const PanelArrayCollection = (props) => {
     
   const drawSingleArray = (startPoint, unitW, index) => {
     if (numOfArrays === 1) index = 0
+    if (index === 4 && trigger) index = numOfArrays
     const unitArrayWidth = unitW / 5
     groupOfPvArray.push(<Line 
       key= {"PV-Array-Line-" + uuidv4()}
@@ -503,21 +504,84 @@ const PanelArrayCollection = (props) => {
         ></Line>)
 
     let offset = 5
-    if (props.numOfInv === 1) {
-      const string_per_inverter = props.allPVArray[0].string_per_inverter > 4 ? 4 : props.allPVArray[0].string_per_inverter
-      for (let string = 0;
-        string < string_per_inverter; string++ ) {
-        offset = string_per_inverter > 3 ?  5 :
-        0.8 * unitW / (string_per_inverter + 1)
-        if (string === 3 && string_per_inverter > 3) 
-          offset = unitArrayWidth * 0.75
+    const string_per_inverter = props.allPVArray[index].string_per_inverter > 4 ? 4 : props.allPVArray[index].string_per_inverter
+    for (let string = 0;
+      string < string_per_inverter; string++ ) {
+      offset = string_per_inverter > 3 ?  5 :
+      0.8 * unitW / (string_per_inverter + 1)
+      if (string === 3 && string_per_inverter > 3) 
+        offset = unitArrayWidth * 0.75
+
+      groupOfPvArray.push(<Line 
+        key= {"PV-Array-Line-" + uuidv4()}
+        points={[
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
+          startPoint[1] + 0.5 * unitHeight,
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
+          startPoint[1]+ 0.8 * unitHeight]}
+        stroke='black'
+        strokeWidth={1}
+        lineCap='round'
+        lineJoin='round'
+        closed={true}
+        ></Line>)
+
+      groupOfPvArray.push(<Line 
+        key= {"PV-Array-Line-" + uuidv4()}
+        points={[
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
+          startPoint[1] + 0.55 * unitHeight,
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
+          startPoint[1] + 0.55 * unitHeight,
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
+          startPoint[1] + 0.6 * unitHeight,
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
+          startPoint[1]+ 0.55 * unitHeight]}
+        stroke='black'
+        strokeWidth={1.5}
+        lineCap='round'
+        lineJoin='round'
+        closed={true}
+        ></Line>)
+
+      groupOfPvArray.push(<Line 
+        key= {"PV-Array-Line-" + uuidv4()}
+        points={[
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
+          startPoint[1] + 0.725 * unitHeight,
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
+          startPoint[1]+ 0.725 * unitHeight,
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
+          startPoint[1]+ 0.675 * unitHeight,
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
+          startPoint[1] + 0.725 * unitHeight]}
+        stroke='black'
+        strokeWidth={1.5}
+        lineCap='round'
+        lineJoin='round'
+        closed={true}
+        ></Line>)
+
+        groupOfPvArray.push(<Rect
+          key= {"PV-Array-Rect-" + uuidv4()}
+          x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
+          y={startPoint[1]+ 0.8 * unitHeight}
+          width={10}
+          height={0.2 * unitHeight}
+          stroke='black'
+          strokeWidth={1}
+          lineCap='round'
+          lineJoin='round'
+        ></Rect>)
 
         groupOfPvArray.push(<Line 
           key= {"PV-Array-Line-" + uuidv4()}
           points={[
+            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
+            startPoint[1]+ 0.8 * unitHeight,
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1] + 0.5 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
+            startPoint[1]+ 0.85 * unitHeight,
+            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
             startPoint[1]+ 0.8 * unitHeight]}
           stroke='black'
           strokeWidth={1}
@@ -526,217 +590,74 @@ const PanelArrayCollection = (props) => {
           closed={true}
           ></Line>)
 
+        groupOfPvArray.push(<Text
+          key = {"PV-Array-Text-" + uuidv4()}
+          x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3}
+          y={startPoint[1]+ 0.86 * unitHeight}
+          text={'1'}
+          fontSize={12}
+          fontFamily='Arial'
+          fill='Black'
+        ></Text>)
+
         groupOfPvArray.push(<Line 
           key= {"PV-Array-Line-" + uuidv4()}
           points={[
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1] + 0.55 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
-            startPoint[1] + 0.55 * unitHeight,
+            startPoint[1]+ 1.0 * unitHeight,
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1] + 0.6 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
-            startPoint[1]+ 0.55 * unitHeight]}
+            startPoint[1]+ 1.05 * unitHeight]}
           stroke='black'
-          strokeWidth={1.5}
+          strokeWidth={1}
           lineCap='round'
           lineJoin='round'
           closed={true}
           ></Line>)
 
+        groupOfPvArray.push(<Rect
+          key= {"PV-Array-Rect-" + uuidv4()}
+          x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
+          y={startPoint[1]+ 1.05 * unitHeight}
+          width={10}
+          height={0.2 * unitHeight}
+          stroke='black'
+          strokeWidth={1}
+          lineCap='round'
+          lineJoin='round'
+        ></Rect>)
+
         groupOfPvArray.push(<Line 
           key= {"PV-Array-Line-" + uuidv4()}
           points={[
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1] + 0.725 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
-            startPoint[1]+ 0.725 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1]+ 0.675 * unitHeight,
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
-            startPoint[1] + 0.725 * unitHeight]}
+            startPoint[1]+ 1.05 * unitHeight,
+            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
+            startPoint[1]+ 1.1 * unitHeight,
+            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
+            startPoint[1]+ 1.05 * unitHeight]}
           stroke='black'
-          strokeWidth={1.5}
+          strokeWidth={1}
           lineCap='round'
           lineJoin='round'
           closed={true}
           ></Line>)
 
-          groupOfPvArray.push(<Rect
-            key= {"PV-Array-Rect-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
-            y={startPoint[1]+ 0.8 * unitHeight}
-            width={10}
-            height={0.2 * unitHeight}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-          ></Rect>)
-
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
-              startPoint[1]+ 0.8 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 0.85 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
-              startPoint[1]+ 0.8 * unitHeight]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            closed={true}
-            ></Line>)
-
-          groupOfPvArray.push(<Text
-            key = {"PV-Array-Text-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3}
-            y={startPoint[1]+ 0.86 * unitHeight}
-            text={'1'}
-            fontSize={12}
-            fontFamily='Arial'
-            fill='Black'
-          ></Text>)
-
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.0 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.05 * unitHeight]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            closed={true}
-            ></Line>)
-
-          groupOfPvArray.push(<Rect
-            key= {"PV-Array-Rect-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
-            y={startPoint[1]+ 1.05 * unitHeight}
-            width={10}
-            height={0.2 * unitHeight}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-          ></Rect>)
-
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
-              startPoint[1]+ 1.05 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.1 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
-              startPoint[1]+ 1.05 * unitHeight]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            closed={true}
-            ></Line>)
-
-          groupOfPvArray.push(<Text
-            key = {"PV-Array-Text-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3}
-            y={startPoint[1]+ 1.15 * unitHeight}
-            text={'2'}
-            fontSize={12}
-            fontFamily='Arial'
-            fill='Black'
-          ></Text>)
-
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.25 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.38 * unitHeight]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            closed={true}
-            ></Line>)
-
-          groupOfPvArray.push(<Circle
-            key= {"PV-Circle-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
-            y={startPoint[1]+ 1.29 * unitHeight} 
-            radius={1} 
-            fill="black"
-          ></Circle>)
-          groupOfPvArray.push(<Circle
-            key= {"PV-Circle-" + uuidv4()} 
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
-            y={startPoint[1]+ 1.31 * unitHeight} 
-            radius={1} 
-            fill="black"
-          ></Circle>)
-          groupOfPvArray.push(<Circle
-            key= {"PV-Circle-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
-            y={startPoint[1]+ 1.33 * unitHeight} 
-            radius={1} 
-            fill="black"
-          ></Circle>)
-          
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3,
-              startPoint[1]+ 1.3 * unitHeight + 5,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.3 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 3,
-              startPoint[1]+ 1.3 * unitHeight + 5]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            ></Line>)
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3,
-              startPoint[1]+ 1.32 * unitHeight + 5,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.32 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 3,
-              startPoint[1]+ 1.32 * unitHeight + 5]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            ></Line>)
-
-          groupOfPvArray.push(<Rect
-            key= {"PV-Array-Rect-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
-            y={startPoint[1]+ 1.38 * unitHeight}
-            width={10}
-            height={0.2 * unitHeight}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-          ></Rect>)
+        groupOfPvArray.push(<Text
+          key = {"PV-Array-Text-" + uuidv4()}
+          x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3}
+          y={startPoint[1]+ 1.15 * unitHeight}
+          text={'2'}
+          fontSize={12}
+          fontFamily='Arial'
+          fill='Black'
+        ></Text>)
 
         groupOfPvArray.push(<Line 
           key= {"PV-Array-Line-" + uuidv4()}
           points={[
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
-            startPoint[1]+ 1.38 * unitHeight,
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1]+ 1.43 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
+            startPoint[1]+ 1.25 * unitHeight,
+            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
             startPoint[1]+ 1.38 * unitHeight]}
           stroke='black'
           strokeWidth={1}
@@ -745,307 +666,106 @@ const PanelArrayCollection = (props) => {
           closed={true}
           ></Line>)
 
-        groupOfPvArray.push(<Text
-          key = {"PV-Array-Text-" + uuidv4()}
-          x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 4}
-          y={startPoint[1]+ 1.44 * unitHeight}
-          text={'N'}
-          fontSize={11}
-          fontFamily='Arial'
-          fill='Black'
-        ></Text>)
-
-        groupOfPvArray.push(<Text
-          key = {"PV-Array-Text-" + uuidv4()}
-          x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
-          y={startPoint[1]+ 1.6 * unitHeight}
-          text={ string === 3 ? 'N' : string + 1}
-          fontSize={11}
-          fontFamily='Arial'
-          fill='Black'
-        ></Text>)
-
-        if (props.allPVArray[0].string_per_inverter > 4 && string === 3) {
-          groupOfPvArray.push(<Circle
-            key= {"PV-Circle-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + 2.05 * unitArrayWidth + offset}
-            y={startPoint[1]+ 1.48 * unitHeight} 
-            radius={1} 
-            fill="black"
-          ></Circle>)
-          groupOfPvArray.push(<Circle
-            key= {"PV-Circle-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + 2.15 * unitArrayWidth + offset}
-            y={startPoint[1]+ 1.48 * unitHeight} 
-            radius={1} 
-            fill="black"
-          ></Circle>)
-          groupOfPvArray.push(<Circle
-            key= {"PV-Circle-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + 2.25 * unitArrayWidth + offset}
-            y={startPoint[1]+ 1.48 * unitHeight} 
-            radius={1} 
-            fill="black"
-          ></Circle>)
-        } 
-       
-      }
-    } else {
-      for (let string = 0; string < 4; string++) {
-        if (string === 3) offset = unitArrayWidth * 0.75
+        groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()}
+          x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
+          y={startPoint[1]+ 1.29 * unitHeight} 
+          radius={1} 
+          fill="black"
+        ></Circle>)
+        groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()} 
+          x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
+          y={startPoint[1]+ 1.31 * unitHeight} 
+          radius={1} 
+          fill="black"
+        ></Circle>)
+        groupOfPvArray.push(<Circle
+          key= {"PV-Circle-" + uuidv4()}
+          x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
+          y={startPoint[1]+ 1.33 * unitHeight} 
+          radius={1} 
+          fill="black"
+        ></Circle>)
+        
         groupOfPvArray.push(<Line 
           key= {"PV-Array-Line-" + uuidv4()}
           points={[
+            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3,
+            startPoint[1]+ 1.3 * unitHeight + 5,
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1] + 0.5 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1]+ 0.8 * unitHeight]}
+            startPoint[1]+ 1.3 * unitHeight,
+            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 3,
+            startPoint[1]+ 1.3 * unitHeight + 5]}
           stroke='black'
           strokeWidth={1}
           lineCap='round'
           lineJoin='round'
-          closed={true}
           ></Line>)
-
         groupOfPvArray.push(<Line 
           key= {"PV-Array-Line-" + uuidv4()}
           points={[
+            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3,
+            startPoint[1]+ 1.32 * unitHeight + 5,
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1] + 0.55 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
-            startPoint[1] + 0.55 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1] + 0.6 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
-            startPoint[1]+ 0.55 * unitHeight]}
-          stroke='black'
-          strokeWidth={1.5}
-          lineCap='round'
-          lineJoin='round'
-          closed={true}
-          ></Line>)
-
-        groupOfPvArray.push(<Line 
-          key= {"PV-Array-Line-" + uuidv4()}
-          points={[
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1] + 0.725 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
-            startPoint[1]+ 0.725 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1]+ 0.675 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
-            startPoint[1] + 0.725 * unitHeight]}
-          stroke='black'
-          strokeWidth={1.5}
-          lineCap='round'
-          lineJoin='round'
-          closed={true}
-          ></Line>)
-
-          groupOfPvArray.push(<Rect
-            key= {"PV-Array-Rect-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
-            y={startPoint[1]+ 0.8 * unitHeight}
-            width={10}
-            height={0.2 * unitHeight}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-          ></Rect>)
-
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
-              startPoint[1]+ 0.8 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 0.85 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
-              startPoint[1]+ 0.8 * unitHeight]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            closed={true}
-            ></Line>)
-
-          groupOfPvArray.push(<Text
-            key = {"PV-Array-Text-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3}
-            y={startPoint[1]+ 0.86 * unitHeight}
-            text={'1'}
-            fontSize={12}
-            fontFamily='Arial'
-            fill='Black'
-          ></Text>)
-
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.0 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.05 * unitHeight]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            closed={true}
-            ></Line>)
-
-          groupOfPvArray.push(<Rect
-            key= {"PV-Array-Rect-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
-            y={startPoint[1]+ 1.05 * unitHeight}
-            width={10}
-            height={0.2 * unitHeight}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-          ></Rect>)
-
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
-              startPoint[1]+ 1.05 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.1 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
-              startPoint[1]+ 1.05 * unitHeight]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            closed={true}
-            ></Line>)
-
-          groupOfPvArray.push(<Text
-            key = {"PV-Array-Text-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3}
-            y={startPoint[1]+ 1.15 * unitHeight}
-            text={'2'}
-            fontSize={12}
-            fontFamily='Arial'
-            fill='Black'
-          ></Text>)
-
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.25 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.38 * unitHeight]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            closed={true}
-            ></Line>)
-
-          groupOfPvArray.push(<Circle
-            key= {"PV-Circle-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
-            y={startPoint[1]+ 1.29 * unitHeight} 
-            radius={1} 
-            fill="black"
-          ></Circle>)
-          groupOfPvArray.push(<Circle
-            key= {"PV-Circle-" + uuidv4()} 
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
-            y={startPoint[1]+ 1.31 * unitHeight} 
-            radius={1} 
-            fill="black"
-          ></Circle>)
-          groupOfPvArray.push(<Circle
-            key= {"PV-Circle-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
-            y={startPoint[1]+ 1.33 * unitHeight} 
-            radius={1} 
-            fill="black"
-          ></Circle>)
-          
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3,
-              startPoint[1]+ 1.3 * unitHeight + 5,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.3 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 3,
-              startPoint[1]+ 1.3 * unitHeight + 5]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            ></Line>)
-          groupOfPvArray.push(<Line 
-            key= {"PV-Array-Line-" + uuidv4()}
-            points={[
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 3,
-              startPoint[1]+ 1.32 * unitHeight + 5,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-              startPoint[1]+ 1.32 * unitHeight,
-              startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 3,
-              startPoint[1]+ 1.32 * unitHeight + 5]}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-            ></Line>)
-
-          groupOfPvArray.push(<Rect
-            key= {"PV-Array-Rect-" + uuidv4()}
-            x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
-            y={startPoint[1]+ 1.38 * unitHeight}
-            width={10}
-            height={0.2 * unitHeight}
-            stroke='black'
-            strokeWidth={1}
-            lineCap='round'
-            lineJoin='round'
-          ></Rect>)
-
-        groupOfPvArray.push(<Line 
-          key= {"PV-Array-Line-" + uuidv4()}
-          points={[
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
-            startPoint[1]+ 1.38 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
-            startPoint[1]+ 1.43 * unitHeight,
-            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
-            startPoint[1]+ 1.38 * unitHeight]}
+            startPoint[1]+ 1.32 * unitHeight,
+            startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 3,
+            startPoint[1]+ 1.32 * unitHeight + 5]}
           stroke='black'
           strokeWidth={1}
           lineCap='round'
           lineJoin='round'
-          closed={true}
           ></Line>)
 
-        groupOfPvArray.push(<Text
-          key = {"PV-Array-Text-" + uuidv4()}
-          x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 4}
-          y={startPoint[1]+ 1.44 * unitHeight}
-          text={'N'}
-          fontSize={11}
-          fontFamily='Arial'
-          fill='Black'
-        ></Text>)
-
-        groupOfPvArray.push(<Text
-          key = {"PV-Array-Text-" + uuidv4()}
+        groupOfPvArray.push(<Rect
+          key= {"PV-Array-Rect-" + uuidv4()}
           x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
-          y={startPoint[1]+ 1.6 * unitHeight}
-          text={ string === 3 ? 'N' : string + 1}
-          fontSize={11}
-          fontFamily='Arial'
-          fill='Black'
-        ></Text>)
+          y={startPoint[1]+ 1.38 * unitHeight}
+          width={10}
+          height={0.2 * unitHeight}
+          stroke='black'
+          strokeWidth={1}
+          lineCap='round'
+          lineJoin='round'
+        ></Rect>)
 
+      groupOfPvArray.push(<Line 
+        key= {"PV-Array-Line-" + uuidv4()}
+        points={[
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
+          startPoint[1]+ 1.38 * unitHeight,
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
+          startPoint[1]+ 1.43 * unitHeight,
+          startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
+          startPoint[1]+ 1.38 * unitHeight]}
+        stroke='black'
+        strokeWidth={1}
+        lineCap='round'
+        lineJoin='round'
+        closed={true}
+        ></Line>)
+
+      groupOfPvArray.push(<Text
+        key = {"PV-Array-Text-" + uuidv4()}
+        x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 4}
+        y={startPoint[1]+ 1.44 * unitHeight}
+        text={'N'}
+        fontSize={11}
+        fontFamily='Arial'
+        fill='black'
+      ></Text>)
+
+      groupOfPvArray.push(<Text
+        key = {"PV-Array-Text-" + uuidv4()}
+        x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
+        y={startPoint[1]+ 1.6 * unitHeight}
+        text={ props.allPVArray[index].string_per_inverter > 4 && string === 3 ? 'N' : string + 1}
+        fontSize={11}
+        fontFamily='Arial'
+        fill='black'
+      ></Text>)
+
+      if (props.allPVArray[index].string_per_inverter > 4 && string === 3) {
         groupOfPvArray.push(<Circle
           key= {"PV-Circle-" + uuidv4()}
           x={startPoint[0] - 0.4 * unitW + 2.05 * unitArrayWidth + offset}
@@ -1066,11 +786,10 @@ const PanelArrayCollection = (props) => {
           y={startPoint[1]+ 1.48 * unitHeight} 
           radius={1} 
           fill="black"
-        ></Circle>)
+        ></Circle>) 
+       
       }
-    }
-    
-
+    } 
   }
 
   return(<Group>

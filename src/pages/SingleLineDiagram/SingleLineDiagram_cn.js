@@ -49,7 +49,7 @@ const SingleLineDiagCN = () => {
       string_per_inverter: invSpec.string_per_inverter,
       panels_per_string: invSpec.panels_per_string,
       inverterName: inverter.name,
-      paco: inverter.paco
+      paco: inverter.paco,
     }
   }))
 
@@ -59,7 +59,10 @@ const SingleLineDiagCN = () => {
     DataGenerator.getCombiBoxCableChoice(buildingReport)
     : ''
   const acCableChoice = buildingReport ? buildingReport.setup_ac_wir_choice.flatMap(ary => ary) : []
-  const dcCableChoice = buildingReport ? buildingReport.setup_dc_wir_choice.flatMap(ary => ary.flatMap(ary2 => ary2)) : []
+  acCableChoice.forEach((cableChoiceAry, index) => allPVArray[index].acCableChoice = cableChoiceAry)
+  const dcCableChoice = buildingReport ? buildingReport.setup_dc_wir_choice.flatMap(ary => ary.map(ary2=> ary2)) : []
+  dcCableChoice.forEach((cableChoiceAry, index) => allPVArray[index].dcCableChoice = cableChoiceAry)
+
   const combiboxIe = buildingReport && buildingReport.combibox_Ie ? buildingReport.combibox_Ie.toFixed(0) : ''
   const acIe = buildingReport && buildingReport.setup_ac_Ie ? buildingReport.setup_ac_Ie.flatMap(ary => ary.map(val => val.toFixed(0))) : []
   const combiboxName = buildingReport && buildingReport.investment ?
@@ -67,8 +70,7 @@ const SingleLineDiagCN = () => {
   : '';
   let newWidth = useSelector(state => state.SLD.diagramWidth);
   let newHeight = useSelector(state => state.SLD.diagramHeight);
-
-  console.log('SLD rerender')
+  
   return (
     <div className={classes.SLD}>
       <ReactReduxContext.Consumer>

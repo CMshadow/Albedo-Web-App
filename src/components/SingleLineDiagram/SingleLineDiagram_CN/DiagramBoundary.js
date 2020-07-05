@@ -26,7 +26,7 @@ const DiagramBoundary = (props) => {
   const aggrePacpData = props.aggrePacpData
   const sortedPacoKeys = Object.keys(aggrePacpData).sort((a,b) => 
     aggrePacpData[a] > aggrePacpData[b] ? -1 : 1)
-  const dcData = props.dcData.length > 0 ? props.dcData[0] : ''
+  const dcData = props.dcData.length > 0 ? props.dcData[0][0] : ''
   const dcDataSet = new Set(props.dcData)
   const allPVArray = props.allPVArray
   const pv_Cell = allPVArray[0].siliconMaterial === "c-Si" ? "单晶硅" : "多晶硅"

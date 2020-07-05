@@ -106,7 +106,7 @@ const SelfUseMeter = (props) => {
     
     groupOfMeter.push(<Text
       key = {"Meter-Text-" + uuidv4()}
-      x={startX + 10}
+      x={accessPort[0] - 50}
       y={accessPort[1] - unitHeight * 0.3 + 10 - 2.5}
       text={combiSelect(props.combiboxIe) + 'A'}
       fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
