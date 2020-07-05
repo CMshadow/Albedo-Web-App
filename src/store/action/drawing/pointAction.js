@@ -23,14 +23,23 @@ export const addPoint = ({mouseCor, pointId, polygonId, polylineId, circleId, se
   })
 }
 
-export const pointSetColor = (pointId, color) => (dispatch, getState) => {
+export const pointHighlight = (pointId) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId].entity
-  const newPoint = Point.fromPoint(point)
-  newPoint.setColor(color)
+  point.setColor(point.highlight)
 
   return dispatch({
     type: actionTypes.POINT_SET,
-    entity: newPoint,
+    entity: point,
+  })
+}
+
+export const pointDeHighlight = (pointId) => (dispatch, getState) => {
+  const point = getState().undoable.present.point[pointId].entity
+  point.setColor(point.theme)
+
+  return dispatch({
+    type: actionTypes.POINT_SET,
+    entity: point,
   })
 }
 
@@ -77,7 +86,7 @@ export const pointRemoveMapping = ({pointId, polygonId, polylineId, circleId, se
   })
 }
 
-export const setPointHeight = (pointId, newHeight) => (dispatch, getState) => {
+export const pointSetHeight = (pointId, newHeight) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId].entity
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
@@ -108,7 +117,7 @@ export const setPointHeight = (pointId, newHeight) => (dispatch, getState) => {
   })
 }
 
-export const moveHoriPoint = (pointId, mouseCor) => (dispatch, getState) => {
+export const pointMoveHori = (pointId, mouseCor) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId].entity
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
@@ -127,7 +136,7 @@ export const moveHoriPoint = (pointId, mouseCor) => (dispatch, getState) => {
   })
 }
 
-export const moveHoriPointNoSideEff = (pointId, mouseCor) => (dispatch, getState) => {
+export const pointMoveHoriNoSideEff = (pointId, mouseCor) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId].entity
   point.setCoordinate(mouseCor.lon, mouseCor.lat, point.height)
 
@@ -137,7 +146,7 @@ export const moveHoriPointNoSideEff = (pointId, mouseCor) => (dispatch, getState
   })
 }
 
-export const moveVertiPoint = (pointId, heightChange) => (dispatch, getState) => {
+export const pointMoveVerti = (pointId, heightChange) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId].entity
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
@@ -169,7 +178,7 @@ export const moveVertiPoint = (pointId, heightChange) => (dispatch, getState) =>
   })
 }
 
-export const deletePoint = (pointId) => (dispatch, getState) => {
+export const pointDelete = (pointId) => (dispatch, getState) => {
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
   const circleMap = getState().undoable.present.point[pointId].circleMap
@@ -198,7 +207,7 @@ export const deletePoint = (pointId) => (dispatch, getState) => {
   }
 }
 
-export const deletePointNoSideEff = (pointId) => (dispatch, getState) => {
+export const pointDeleteNoSideEff = (pointId) => (dispatch, getState) => {
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
   const circleMap = getState().undoable.present.point[pointId].circleMap

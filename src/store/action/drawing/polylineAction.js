@@ -1,7 +1,7 @@
 import * as actionTypes from '../actionTypes'
 import Polyline from '../../../infrastructure/line/polyline'
 import { Color } from 'cesium'
-import { deletePointNoSideEff, pointRemoveMapping } from './pointAction'
+import { pointDeleteNoSideEff, pointRemoveMapping } from './pointAction'
 
 const polylineColor = Color.STEELBLUE
 
@@ -17,14 +17,23 @@ export const createPolyline = ({mouseCor, polylineId, pointId, insidePolygonId})
   })
 }
 
-export const polylineSetColor = (polylineId, color) => (dispatch, getState) => {
+export const polylineHighlight = (polylineId) => (dispatch, getState) => {
   const polyline = getState().undoable.present.polyline[polylineId].entity
-  const newPolyline = Polyline.fromPolyline(polyline)
-  newPolyline.setColor(color)
+  polyline.setColor(polyline.highlight)
 
   return dispatch({
     type: actionTypes.POLYLINE_SET,
-    entity: newPolyline,
+    entity: polyline,
+  })
+}
+
+export const polylineDeHighlight = (polylineId) => (dispatch, getState) => {
+  const polyline = getState().undoable.present.polyline[polylineId].entity
+  polyline.setColor(polyline.theme)
+
+  return dispatch({
+    type: actionTypes.POLYLINE_SET,
+    entity: polyline,
   })
 }
 
@@ -132,7 +141,7 @@ export const polylineDelete = (polylineId) => async (dispatch, getState) => {
     dispatch(pointRemoveMapping({pointId, polylineId}))
   ))
   Array.from(new Set(pointMap)).map(pointId =>
-    dispatch(deletePointNoSideEff(pointId))
+    dispatch(pointDeleteNoSideEff(pointId))
   )
 
   return dispatch({

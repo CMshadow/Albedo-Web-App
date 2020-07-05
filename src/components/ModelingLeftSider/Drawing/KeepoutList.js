@@ -2,7 +2,6 @@ import React from 'react'
 import { EyeTwoTone, EyeInvisibleTwoTone, DeleteOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, List, Typography } from 'antd';
-import { Color } from 'cesium'
 import * as actions from '../../../store/action/index'
 const Text = Typography.Text
 
@@ -42,10 +41,10 @@ export const KeepoutList = () => {
             />
           ]}
           onMouseEnter={() =>
-            dispatch(actions.polygonSetColor(kptPolygonId, Color.ORANGE.withAlpha(0.2)))
+            dispatch(actions.polygonHighlight(kptPolygonId))
           }
           onMouseLeave={() =>
-            dispatch(actions.polygonSetColor(kptPolygonId, Color.WHITE.withAlpha(0.2)))
+            dispatch(actions.polygonHighlight(kptPolygonId))
           }
         >
           <Text>{`屋顶障碍物${index}`}</Text>

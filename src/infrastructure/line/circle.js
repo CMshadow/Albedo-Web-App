@@ -4,10 +4,11 @@ import Coordinate from '../point/coordinate';
 class Circle extends Polyline {
 
   constructor (
-    originCor, radius, id = null, color = null, width = null, show = true
+    originCor, radius, id = null, color = null, theme=null, highlight=null,
+    width = null, show = true
   ) {
     const points = Circle.calculatePoints(originCor, radius)
-    super([...points, points[0]], id, color, width, show);
+    super([...points, points[0]], id, color, theme, highlight, width, show);
     this.centerPoint = originCor
     this.radius = radius;
   }

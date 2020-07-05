@@ -86,30 +86,36 @@ export {
 
 export {
   addPoint,
-  pointSetColor,
-  setPointHeight,
+  pointHighlight,
+  pointDeHighlight,
+  pointSetHeight,
   pointAddMapping,
-  moveHoriPoint,
-  moveHoriPointNoSideEff,
-  moveVertiPoint,
-  deletePoint
+  pointMoveHori,
+  pointMoveHoriNoSideEff,
+  pointMoveVerti,
+  pointDelete,
+  pointDeleteNoSideEff
 } from './drawing/pointAction'
 
 export {
   createPolygon,
-  polygonSetColor,
+  polygonHighlight,
+  polygonDeHighlight,
   polygonSetShow,
   polygonDynamic,
   polygonAddVertex,
   polygonTerminate,
   polygonUpdateVertex,
+  polygonSetHeight,
   polygonMoveHori,
-  polygonMoveVerti
+  polygonMoveVerti,
+  polygonDelete
 } from './drawing/polygonAction'
 
 export {
   createPolyline,
-  polylineSetColor,
+  polylineHighlight,
+  polylineDeHighlight,
   polylineSetShow,
   polylineDynamic,
   polylineAddVertex,

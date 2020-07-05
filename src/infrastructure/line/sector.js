@@ -6,10 +6,10 @@ import Coordinate from '../point/coordinate';
 class Sector extends Polyline {
 
   constructor (originCor, brng, radius, angle, id = null,
-    color = null, width = null, show = true
+    color = null, theme=null, highlight=null, width = null, show = true
   ) {
     const points = Sector.calculatePoints(originCor, brng, radius, angle)
-    super(points, id, color, width, show);
+    super(points, id, color, theme, highlight, width, show);
     this.originCor = originCor;
     this.brng = brng;
     this.radius = radius;
@@ -31,7 +31,7 @@ class Sector extends Polyline {
   static fromSector = (sector) => {
     return new Sector(
       sector.originCor, sector.brng, sector.radius, sector.angle, sector.entityId,
-      sector.color, sector.width, sector.show
+      sector.color, sector.theme, sector.highlight, sector.width, sector.show
     )
   }
 

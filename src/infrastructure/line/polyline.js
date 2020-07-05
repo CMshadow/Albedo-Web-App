@@ -9,26 +9,30 @@ import { angleBetweenBrngs } from '../math/math'
 class Polyline {
 
   constructor (
-    points = null, id = null, color = null, width = null,
+    points = null, id = null, color = null, theme=null, highlight=null, width = null,
     show = true
   ) {
     this.points = points ? points : [];
     this.entityId = id || uuid();
     this.color = color || Cesium.Color.WHITE;
+    this.theme = theme || Cesium.Color.STEELBLUE
+    this.highlight = highlight || Cesium.Color.ORANGE
     this.show = show;
     this.width = width || 4;
   }
 
   static fromPolyline (
-    polyline, points=null, id = null, color = null, width = null,
-    show = true
+    polyline, points=null, id = null, color = null, theme=null, highlight=null,
+    width = null, show = true
   ) {
     const newPoints = points || polyline.points;
     const newId = id || polyline.entityId
     const newColor = color || polyline.color;
+    const newTheme = theme || polyline.theme
+    const newHighlight = highlight || polyline.highlight
     const newShow = show || polyline.show;
     const newWidth = width || polyline.width;
-    return new Polyline (newPoints, newId, newColor, newWidth, newShow);
+    return new Polyline (newPoints, newId, newColor, newTheme, newHighlight, newWidth, newShow);
     }
 
 

@@ -30,7 +30,7 @@ const MouseMoveShiftHandler = () => {
           const heightChange = deltaY > 0 ?
             Math.min(0.5, deltaY) :
             Math.max(-0.5, deltaY)
-          dispatch(actions.moveVertiPoint(pickedId, heightChange))
+          dispatch(actions.pointMoveVerti(pickedId, heightChange))
         }
         else if (pickedId && pickedType === objTypes.POLYGON && drwProps.polygonHeight) {
           const deltaY = event.startPosition.y - event.endPosition.y;

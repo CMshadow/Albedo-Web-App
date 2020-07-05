@@ -12,6 +12,8 @@ class Polygon {
     id = null,
     extrudedHeight = null,
     material= null,
+    theme = null,
+    highlight = null,
     outlineColor = null,
     shadow = null,
     show = null,
@@ -27,6 +29,8 @@ class Polygon {
     this.perPositionHeight = true;
     this.extrudedHeight = extrudedHeight || 0;
     this.material = material || Cesium.Color.WHITE;
+    this.theme = theme || Cesium.Color.WHITE.withAlpha(0.2)
+    this.highlight = highlight || Cesium.Color.ORANGE.withAlpha(0.2)
     this.outlineColor = outlineColor || Cesium.Color.BLACK;
     this.outlineWidth = 4;
     this.shadow = shadow || Cesium.ShadowMode.DISABLED;
@@ -45,6 +49,8 @@ class Polygon {
     hierarchy = null,
     extrudedHeight = null,
     material=null,
+    theme = null,
+    highlight = null,
     outlineColor= null,
     shadow=null,
     show=null,
@@ -59,6 +65,8 @@ class Polygon {
     const newHierarchy = hierarchy ? [...hierarchy]: polygon.hierarchy;
     const newExtrudedHeight = extrudedHeight || polygon.extrudedHeight;
     const newMaterial = material || polygon.material;
+    const newTheme = theme || polygon.theme
+    const newHighlight = highlight || polygon.highlight
     const newOutLineColor = outlineColor || polygon.outlineColor;
     const newShadow = shadow || true;
     const newShow = show || true;
@@ -68,7 +76,7 @@ class Polygon {
     const newLowestNode = lowestNode || polygon.lowestNode;
     const newEdgesCollection = edgesCollection? [...edgesCollection]: polygon.edgesCollection;
     return new Polygon(
-      newHierarchy, newHeight, newID, newExtrudedHeight, newMaterial,
+      newHierarchy, newHeight, newID, newExtrudedHeight, newMaterial, newTheme, newHighlight,
       newOutLineColor, newShadow, newShow, newBrng, newObliquily,
       newHighestNode, newLowestNode, newEdgesCollection
     );

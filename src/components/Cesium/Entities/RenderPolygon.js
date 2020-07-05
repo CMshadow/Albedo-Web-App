@@ -41,7 +41,6 @@ export const RenderPolygon = ({polygon}) => {
 
 			onMouseEnter={(move, tar) => {
 				if (!drawingId && !pickedId) {
-					dispatch(actions.polygonSetColor(polygon.entityId, Color.ORANGE.withAlpha(0.2)))
 	        dispatch(actions.setHoverObj(POLYGON, polygon.entityId))
 				}
       }}

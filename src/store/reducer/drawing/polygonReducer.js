@@ -16,7 +16,7 @@ const setPolygon = (state, action) => {
 
 const deletePolygon = (state, action) => {
   const newState = {...state}
-  delete newState[action.polylineId]
+  delete newState[action.polygonId]
   return newState
 }
 

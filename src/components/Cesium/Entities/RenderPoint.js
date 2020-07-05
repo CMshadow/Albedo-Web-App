@@ -48,7 +48,6 @@ export const RenderPoint = ({point}) => {
 
       onMouseEnter={(move, tar) => {
         if ((!drawingId && !pickedId) || drawingType === objTypes.POLYLINE) {
-          dispatch(actions.pointSetColor(point.entityId, Color.ORANGE))
           dispatch(actions.setHoverObj(POINT, point.entityId))
         }
       }}

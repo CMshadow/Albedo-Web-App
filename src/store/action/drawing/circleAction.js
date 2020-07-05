@@ -1,7 +1,7 @@
 import * as actionTypes from '../actionTypes'
 import Circle from '../../../infrastructure/line/circle'
 import Coordinate from '../../../infrastructure/point/coordinate'
-import { moveHoriPointNoSideEff } from './pointAction'
+import { pointMoveHoriNoSideEff, pointRemoveMapping, pointDeleteNoSideEff } from './pointAction'
 import { Color } from 'cesium'
 
 const circleColor = Color.SEAGREEN
@@ -27,7 +27,7 @@ export const circleUpdate = ({circleId, pointId, mouseCor}) => (dispatch, getSta
       mouseCor, drawingCircle.radius, drawingCircle.entityId, circleColor
     )
     const newEdgeCor = Coordinate.destination(mouseCor, 0, drawingCircle.radius)
-    dispatch(moveHoriPointNoSideEff(edgePointId, newEdgeCor))
+    dispatch(pointMoveHoriNoSideEff(edgePointId, newEdgeCor))
     return dispatch({
       type: actionTypes.CIRCLE_SET,
       entity: newCircle,
@@ -40,10 +40,26 @@ export const circleUpdate = ({circleId, pointId, mouseCor}) => (dispatch, getSta
     const newEdgeCor = Coordinate.destination(
       drawingCircle.centerPoint, 0, drawingCircle.radius
     )
-    dispatch(moveHoriPointNoSideEff(edgePointId, newEdgeCor))
+    dispatch(pointMoveHoriNoSideEff(edgePointId, newEdgeCor))
     return dispatch({
       type: actionTypes.CIRCLE_SET,
       entity: newCircle,
     })
   }
+}
+
+export const circleDelete = (circleId) => async (dispatch, getState) => {
+  const centerPointId = getState().undoable.present.circle[circleId].centerPointId
+  const edgePointId = getState().undoable.present.circle[circleId].edgePointId
+  await Promise.all([
+    dispatch(pointRemoveMapping({pointId: centerPointId, circleId})),
+    dispatch(pointRemoveMapping({pointId: edgePointId, circleId})),
+  ])
+  dispatch(pointDeleteNoSideEff(centerPointId))
+  dispatch(pointDeleteNoSideEff(edgePointId))
+
+  return dispatch({
+    type: actionTypes.CIRCLE_DELETE,
+    circleId: circleId
+  })
 }

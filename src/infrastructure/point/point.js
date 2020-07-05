@@ -31,19 +31,18 @@ class Point extends Coordinate {
    * @param {bool}    [render=true] whether to render the point, default true
    */
   constructor(
-    lon, lat, height, id = null, color = null, size = null, show = true
+    lon, lat, height, id = null, color = null, theme=null, highlight=null,
+    size = null, show = true
   ) {
     super(lon, lat, height);
     this.entityId = id || uuid();
     this.color = color || Color.WHITE;
+    this.theme = theme || Color.WHITE
+    this.highlight = highlight || Color.ORANGE
     this.pixelSize = size || 15;
     this.show = show;
   };
 
-  /**
-   * change the color of the point
-   * @param {Color} newColor new Cesium.Color or RGBA color
-   */
   setColor = (newColor) => {
     this.color = newColor;
   };
@@ -81,10 +80,13 @@ class Point extends Coordinate {
     const newHeight = point.height;
     const newId = point.entityId
     const newColor = point.color;
+    const newTheme = point.theme
+    const newHighlight = point.highlight
     const newShow = point.show;
     const newPixelSize = point.pixelSize;
     return new Point (
-      newLon, newLat, newHeight, newId, newColor, newPixelSize, newShow
+      newLon, newLat, newHeight, newId, newColor, newTheme, newHighlight,
+      newPixelSize, newShow
     );
   };
 

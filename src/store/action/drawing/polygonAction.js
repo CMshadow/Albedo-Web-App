@@ -2,8 +2,8 @@ import * as actionTypes from '../actionTypes'
 import Polygon from '../../../infrastructure/polygon/polygon'
 import Coordinate from '../../../infrastructure/point/coordinate'
 import { bindDrawingObj } from '../modeling/modelingBuildingAction'
-import { polylineSetShow } from './polylineAction'
-import { moveHoriPoint, moveVertiPoint, addPoint } from './pointAction'
+import { polylineSetShow, polylineDelete } from './polylineAction'
+import { pointMoveHori, pointMoveVerti, pointRemoveMapping, pointDeleteNoSideEff, pointSetHeight } from './pointAction'
 import { Color } from 'cesium'
 
 const polygonColor = Color.WHITE.withAlpha(0.2)
@@ -25,14 +25,23 @@ export const createPolygon = ({mouseCor, polygonId, pointId, outPolylineId}) =>
   })
 }
 
-export const polygonSetColor = (polygonId, color) => (dispatch, getState) => {
+export const polygonHighlight = (polygonId) => (dispatch, getState) => {
   const polygon = getState().undoable.present.polygon[polygonId].entity
-  const newPolygon = Polygon.fromPolygon(polygon)
-  newPolygon.setColor(color)
+  polygon.setColor(polygon.highlight)
 
   return dispatch({
     type: actionTypes.POLYGON_SET,
-    entity: newPolygon,
+    entity: polygon,
+  })
+}
+
+export const polygonDeHighlight = (polygonId) => (dispatch, getState) => {
+  const polygon = getState().undoable.present.polygon[polygonId].entity
+  polygon.setColor(polygon.theme)
+
+  return dispatch({
+    type: actionTypes.POLYGON_SET,
+    entity: polygon,
   })
 }
 
@@ -119,13 +128,18 @@ export const polygonTerminate = (polygonId) => (dispatch, getState) => {
   })
 }
 
+export const polygonSetHeight = (polygonId, newHeight) => (dispatch, getState) => {
+  const pointMap = getState().undoable.present.polygon[polygonId].pointMap
+  Array.from(new Set(pointMap)).map(pointId => dispatch(pointSetHeight(pointId, newHeight)))
+}
+
 export const polygonMoveHori = (polygonId, brng, dist) => (dispatch, getState) => {
   const polygon = getState().undoable.present.polygon[polygonId].entity
   const pointMap = getState().undoable.present.polygon[polygonId].pointMap
   const coordinates = polygon.convertHierarchyToCoordinate()
   pointMap.map((pointId, index) => {
     const pointNewCor = Coordinate.destination(coordinates[index], brng, dist)
-    return dispatch(moveHoriPoint(pointId, pointNewCor))
+    return dispatch(pointMoveHori(pointId, pointNewCor))
   })
 }
 
@@ -133,7 +147,7 @@ export const polygonMoveVerti = (polygonId, heightChange) => (dispatch, getState
   const pointMap = getState().undoable.present.polygon[polygonId].pointMap
 
   pointMap.map((pointId, index) =>
-    dispatch(moveVertiPoint(pointId, heightChange))
+    dispatch(pointMoveVerti(pointId, heightChange))
   )
 }
 
@@ -154,6 +168,19 @@ export const polygonDeleteVertex = (polygonId, pointId) => (dispatch, getState) 
   })
 }
 
-export const polygonDelete = (polygonId) => (dispatch, getState) => {
-  return
+export const polygonDelete = (polygonId) => async (dispatch, getState) => {
+  const pointMap = getState().undoable.present.polygon[polygonId].pointMap
+  const outPolylineId = getState().undoable.present.polygon[polygonId].outPolylineId
+  await Promise.all(Array.from(new Set(pointMap)).map(pointId =>
+    dispatch(pointRemoveMapping({pointId, polygonId}))
+  ))
+  Array.from(new Set(pointMap)).map(pointId =>
+    dispatch(pointDeleteNoSideEff(pointId))
+  )
+  dispatch(polylineDelete(outPolylineId))
+
+  return dispatch({
+    type: actionTypes.POLYGON_DELETE,
+    polygonId: polygonId
+  })
 }

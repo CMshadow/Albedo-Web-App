@@ -52,7 +52,6 @@ export const RenderPolyline = ({polyline}) => {
 
       onMouseEnter={(move, tar) => {
         if (!drawingId && !pickedId) {
-          dispatch(actions.polylineSetColor(polyline.entityId, Color.ORANGE))
           dispatch(actions.setHoverObj(POLYLINE, polyline.entityId))
         }
       }}

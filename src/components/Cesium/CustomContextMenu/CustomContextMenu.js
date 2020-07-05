@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import * as objTypes from '../../../store/action/drawing/objTypes';
 import EditPointContextMenu from './IndividualContextMenu/EditPointContextMenu';
 import EditPolylineContextMenu from './IndividualContextMenu/EditPolylineContextMenu'
+import EditPolygonContextMenu from './IndividualContextMenu/EditPolygonContextMenu'
 
 export const CustomContextMenu = (props) => {
   const hoverId = useSelector(state => state.undoable.present.drawing.hoverId)
@@ -15,6 +16,9 @@ export const CustomContextMenu = (props) => {
       break
     case objTypes.POLYLINE:
       menu = <EditPolylineContextMenu hoverId={hoverId}/>
+      break
+    case objTypes.POLYGON:
+      menu = <EditPolygonContextMenu hoverId={hoverId} />
       break
     default:
       menu = null

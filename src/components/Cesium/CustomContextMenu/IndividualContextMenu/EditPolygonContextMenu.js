@@ -6,11 +6,11 @@ import * as actions from '../../../../store/action/index'
 import * as styles from './ContextMenu.module.scss'
 const Text = Typography.Text
 
-const EditPointContextMenu = ({hoverId}) => {
+const EditPolygonContextMenu = ({hoverId}) => {
   const dispatch = useDispatch()
   const drwProps = useSelector(state => state.undoable.present.drwStat.props)
-  const point = useSelector(state => state.undoable.present.point[hoverId]).entity
-  const pointH = point ? point.height : null
+  const polygon = useSelector(state => state.undoable.present.polygon[hoverId]).entity
+  const polygonH = polygon ? polygon.height : null
 
   return (
     <ContextMenu
@@ -21,29 +21,25 @@ const EditPointContextMenu = ({hoverId}) => {
       preventHideOnScroll
     >
       <Card bodyStyle={{padding: 10, width: '200px'}}>
-        {
-          drwProps.pointHeight ?
-          <MenuItem preventClose>
-            <Row gutter={[8, 8]} align='middle'>
-              <Col span={8}><Text strong>Height</Text></Col>
-              <Col span={16}>
-                <Input
-                  type='number'
-                  addonAfter='m'
-                  size='middle'
-                  defaultValue={pointH}
-                  onChange={e =>
-                    dispatch(actions.pointSetHeight(hoverId, Number(e.target.value)))
-                  }
-                />
-              </Col>
-            </Row>
-          </MenuItem> :
-          null
-        }
+        <MenuItem preventClose>
+          <Row gutter={[8, 8]} align='middle'>
+            <Col span={8}><Text strong>Height</Text></Col>
+            <Col span={16}>
+              <Input
+                type='number'
+                addonAfter='m'
+                size='middle'
+                defaultValue={polygonH}
+                onChange={e =>
+                  dispatch(actions.polygonSetHeight(hoverId, Number(e.target.value)))
+                }
+              />
+            </Col>
+          </Row>
+        </MenuItem>
         <MenuItem
           onClick={() => {
-            dispatch(actions.pointDelete(hoverId))
+            dispatch(actions.polygonDelete(hoverId))
             dispatch(actions.releaseHoverObj())
           }}
         >
@@ -54,7 +50,7 @@ const EditPointContextMenu = ({hoverId}) => {
               size='small'
               danger
             >
-              Delete Point
+              Delete Polygon
             </Button>
           </Row>
         </MenuItem>
@@ -63,4 +59,4 @@ const EditPointContextMenu = ({hoverId}) => {
   );
 }
 
-export default EditPointContextMenu;
+export default EditPolygonContextMenu;

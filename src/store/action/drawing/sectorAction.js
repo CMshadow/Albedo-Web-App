@@ -1,9 +1,8 @@
 import * as actionTypes from '../actionTypes'
 import Sector from '../../../infrastructure/line/sector'
 import Coordinate from '../../../infrastructure/point/coordinate'
-import { moveHoriPointNoSideEff } from './pointAction'
+import { pointMoveHoriNoSideEff } from './pointAction'
 import { Color } from 'cesium'
-import { angleBetweenBrngs } from '../../../infrastructure/math/math'
 
 const sectorColor = Color.DARKCYAN
 
@@ -37,11 +36,11 @@ export const sectorUpdate = ({sectorId, pointId, mouseCor}) => (dispatch, getSta
     const newEdgeCor = Coordinate.destination(
       mouseCor, drawingSector.brng, drawingSector.radius
     )
-    dispatch(moveHoriPointNoSideEff(edgePointId, newEdgeCor))
+    dispatch(pointMoveHoriNoSideEff(edgePointId, newEdgeCor))
     const newAngleCor = newSector.points[1]
-    dispatch(moveHoriPointNoSideEff(anglePointId, newAngleCor))
+    dispatch(pointMoveHoriNoSideEff(anglePointId, newAngleCor))
     const newBrngCor = newSector.points.slice(-2)[0]
-    dispatch(moveHoriPointNoSideEff(brngPointId, newBrngCor))
+    dispatch(pointMoveHoriNoSideEff(brngPointId, newBrngCor))
 
     return dispatch({
       type: actionTypes.SECTOR_SET,
@@ -56,11 +55,11 @@ export const sectorUpdate = ({sectorId, pointId, mouseCor}) => (dispatch, getSta
     const newEdgeCor = Coordinate.destination(
       drawingSector.originCor, drawingSector.brng, newRadius
     )
-    dispatch(moveHoriPointNoSideEff(edgePointId, newEdgeCor))
+    dispatch(pointMoveHoriNoSideEff(edgePointId, newEdgeCor))
     const newAngleCor = newSector.points[1]
-    dispatch(moveHoriPointNoSideEff(anglePointId, newAngleCor))
+    dispatch(pointMoveHoriNoSideEff(anglePointId, newAngleCor))
     const newBrngCor = newSector.points.slice(-2)[0]
-    dispatch(moveHoriPointNoSideEff(brngPointId, newBrngCor))
+    dispatch(pointMoveHoriNoSideEff(brngPointId, newBrngCor))
 
     return dispatch({
       type: actionTypes.SECTOR_SET,
@@ -74,11 +73,11 @@ export const sectorUpdate = ({sectorId, pointId, mouseCor}) => (dispatch, getSta
     const newEdgeCor = Coordinate.destination(
       newSector.originCor, newSector.brng, newSector.radius
     )
-    dispatch(moveHoriPointNoSideEff(edgePointId, newEdgeCor))
+    dispatch(pointMoveHoriNoSideEff(edgePointId, newEdgeCor))
     const newAngleCor = newSector.points[1]
-    dispatch(moveHoriPointNoSideEff(anglePointId, newAngleCor))
+    dispatch(pointMoveHoriNoSideEff(anglePointId, newAngleCor))
     const newBrngCor = newSector.points.slice(-2)[0]
-    dispatch(moveHoriPointNoSideEff(brngPointId, newBrngCor))
+    dispatch(pointMoveHoriNoSideEff(brngPointId, newBrngCor))
 
     return dispatch({
       type: actionTypes.SECTOR_SET,
@@ -92,11 +91,11 @@ export const sectorUpdate = ({sectorId, pointId, mouseCor}) => (dispatch, getSta
     const newEdgeCor = Coordinate.destination(
       newSector.originCor, newSector.brng, newSector.radius
     )
-    dispatch(moveHoriPointNoSideEff(edgePointId, newEdgeCor))
+    dispatch(pointMoveHoriNoSideEff(edgePointId, newEdgeCor))
     const newAngleCor = newSector.points[1]
-    dispatch(moveHoriPointNoSideEff(anglePointId, newAngleCor))
+    dispatch(pointMoveHoriNoSideEff(anglePointId, newAngleCor))
     const newBrngCor = newSector.points.slice(-2)[0]
-    dispatch(moveHoriPointNoSideEff(brngPointId, newBrngCor))
+    dispatch(pointMoveHoriNoSideEff(brngPointId, newBrngCor))
 
     return dispatch({
       type: actionTypes.SECTOR_SET,

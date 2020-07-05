@@ -1,10 +1,12 @@
 import * as actionTypes from '../actionTypes'
+import * as objTypes from './objTypes'
+import * as actions from '../index'
 
-export const setDrawingObj = (drawingType, entityId) => (dispatch, getState) => {
+export const setDrawingObj = (objType, entityId) => (dispatch, getState) => {
   return dispatch({
     type: actionTypes.SET_DRAWING_OBJECT,
     entityId: entityId,
-    drawingType: drawingType
+    drawingType: objType
   })
 }
 
@@ -14,11 +16,11 @@ export const releaseDrawingObj = () => (dispatch, getState) => {
   })
 }
 
-export const setPickedObj = (pickedType, entityId) => (dispatch, getState) => {
+export const setPickedObj = (objType, entityId) => (dispatch, getState) => {
   return dispatch({
     type: actionTypes.SET_PICKED_OBJECT,
     entityId: entityId,
-    pickedType: pickedType
+    pickedType: objType
   })
 }
 
@@ -28,15 +30,58 @@ export const releasePickedObj = () => (dispatch, getState) => {
   })
 }
 
-export const setHoverObj = (pickedType, entityId) => (dispatch, getState) => {
+export const setHoverObj = (objType, entityId) => (dispatch, getState) => {
+  const hoverId = getState().undoable.present.drawing.hoverId
+  const hoverType = getState().undoable.present.drawing.hoverType
+  switch (hoverType) {
+    case objTypes.POINT:
+      dispatch(actions.pointDeHighlight(hoverId))
+      break
+    case objTypes.POLYLINE:
+      dispatch(actions.polylineDeHighlight(hoverId))
+      break
+    case objTypes.POLYGON:
+      dispatch(actions.polygonDeHighlight(hoverId))
+      break
+    default:
+      break
+  }
+  switch (objType) {
+    case objTypes.POINT:
+      dispatch(actions.pointHighlight(entityId))
+      break
+    case objTypes.POLYLINE:
+      dispatch(actions.polylineHighlight(entityId))
+      break
+    case objTypes.POLYGON:
+      dispatch(actions.polygonHighlight(entityId))
+      break
+    default:
+      break
+  }
   return dispatch({
     type: actionTypes.SET_HOVER_OBJECT,
     hoverId: entityId,
-    hoverType: pickedType
+    hoverType: objType
   })
 }
 
 export const releaseHoverObj = () => (dispatch, getState) => {
+  const hoverId = getState().undoable.present.drawing.hoverId
+  const hoverType = getState().undoable.present.drawing.hoverType
+  switch (hoverType) {
+    case objTypes.POINT:
+      dispatch(actions.pointDeHighlight(hoverId))
+      break
+    case objTypes.POLYLINE:
+      dispatch(actions.polylineDeHighlight(hoverId))
+      break
+    case objTypes.POLYGON:
+      dispatch(actions.polygonDeHighlight(hoverId))
+      break
+    default:
+      break
+  }
   return dispatch({
     type: actionTypes.RELEASE_HOVER_OBJECT
   })

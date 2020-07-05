@@ -9,9 +9,6 @@ import * as actions from '../../../../store/action/index';
 const POINT_OFFSET = 0.15
 const POLYLINE_OFFSET = 0.125
 const POLYGON_OFFSET = 0.1
-const POINT_COLOR = Color.WHITE
-const POLYLINE_COLOR = Color.STEELBLUE
-const POLYGON_COLOR = Color.WHITE.withAlpha(0.2)
 
 const MouseMoveHandler = () => {
   const dispatch = useDispatch()
@@ -44,15 +41,12 @@ const MouseMoveHandler = () => {
       if (!pickedObjIdArray.includes(hoverId)) {
         switch (hoverType) {
           case objTypes.POINT:
-            dispatch(actions.pointSetColor(hoverId, POINT_COLOR))
             dispatch(actions.releaseHoverObj())
             break
           case objTypes.POLYLINE:
-            dispatch(actions.polylineSetColor(hoverId, POLYLINE_COLOR))
             dispatch(actions.releaseHoverObj())
             break
           case objTypes.POLYGON:
-            dispatch(actions.polygonSetColor(hoverId, POLYGON_COLOR))
             dispatch(actions.releaseHoverObj())
             break
           default:
@@ -65,7 +59,7 @@ const MouseMoveHandler = () => {
       case objTypes.IDLE:
         if (pickedId && pickedType === objTypes.POINT) {
           mouseEndCor.setCoordinate(null, null, POINT_OFFSET)
-          dispatch(actions.moveHoriPoint(pickedId, mouseEndCor))
+          dispatch(actions.pointMoveHori(pickedId, mouseEndCor))
         } else if ( pickedId && pickedType === objTypes.POLYGON && drwProps.polygonPos) {
           mouseStartCor.setCoordinate(null, null, POLYGON_OFFSET)
           mouseEndCor.setCoordinate(null, null, POLYGON_OFFSET)
