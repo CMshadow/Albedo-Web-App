@@ -6,15 +6,10 @@ import Coordinate from '../../../../infrastructure/point/coordinate'
 import * as objTypes from '../../../../store/action/drawing/objTypes'
 import * as actions from '../../../../store/action/index';
 
-const POINT_OFFSET = 0.15
-const POLYLINE_OFFSET = 0.125
-const POLYGON_OFFSET = 0.1
-
 const MouseMoveHandler = () => {
   const dispatch = useDispatch()
   const viewer = useSelector(state => state.cesium.viewer)
   const drwStat = useSelector(state => state.undoable.present.drwStat.status)
-  const drwProps = useSelector(state => state.undoable.present.drwStat.props)
   const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
   const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
   const pickedType = useSelector(state => state.undoable.present.drawing.pickedType)
@@ -58,11 +53,8 @@ const MouseMoveHandler = () => {
     switch(drwStat) {
       case objTypes.IDLE:
         if (pickedId && pickedType === objTypes.POINT) {
-          mouseEndCor.setCoordinate(null, null, POINT_OFFSET)
           dispatch(actions.pointMoveHori(pickedId, mouseEndCor))
         } else if ( pickedId && pickedType === objTypes.POLYGON && allPolygon[pickedId].props.polygonPos) {
-          mouseStartCor.setCoordinate(null, null, POLYGON_OFFSET)
-          mouseEndCor.setCoordinate(null, null, POLYGON_OFFSET)
           const brng = Coordinate.bearing(mouseStartCor, mouseEndCor)
           const dist = Coordinate.linearDistance(mouseStartCor, mouseEndCor)
           dispatch(actions.polygonMoveHori(pickedId, brng, dist))
@@ -71,18 +63,15 @@ const MouseMoveHandler = () => {
 
       case objTypes.LINE:
       case objTypes.POLYLINE:
-        mouseEndCor.setCoordinate(null, null, POLYLINE_OFFSET)
         if (drawingId) {
           dispatch(actions.polylineDynamic(drawingId, mouseEndCor))
         }
         break
 
       case objTypes.POLYGON:
-        mouseEndCor.setCoordinate(null, null, POLYGON_OFFSET)
         if (drawingId) {
           dispatch(actions.polygonDynamic(drawingId, mouseEndCor))
           const outPolylineId = allPolygon[drawingId].outPolylineId
-          mouseEndCor.setCoordinate(null, null, POLYLINE_OFFSET)
           dispatch(actions.polylineDynamic(outPolylineId, mouseEndCor))
         }
         break

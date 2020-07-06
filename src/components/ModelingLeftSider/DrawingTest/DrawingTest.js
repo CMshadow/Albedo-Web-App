@@ -5,6 +5,10 @@ import * as actions from '../../../store/action/index'
 import * as objTypes from '../../../store/action/drawing/objTypes'
 import { Color } from 'cesium'
 
+const POINT_OFFSET = 0.025
+const POLYLINE_OFFSET = 0.0125
+const POLYGON_OFFSET = 0
+
 export const DrawingTest = () => {
   const dispatch = useDispatch()
   const drawStatus = useSelector(state => state.undoable.present.drwStat.status)
@@ -12,14 +16,10 @@ export const DrawingTest = () => {
   return (
     <>
       <Button
-        loading={drawStatus === objTypes.POINT}
-        onClick={() => dispatch(actions.setDrwStatPoint())}
-      >
-        Draw Point
-      </Button>
-      <Button
         loading={drawStatus === objTypes.LINE}
         onClick={() => dispatch(actions.setDrwStatLine({
+          polylineHt: 0.5 + POLYLINE_OFFSET,
+          pointHt: 0.5 + POINT_OFFSET,
           polylineTheme: Color.STEELBLUE,
           polylineHighlight: Color.ORANGE,
           polylineAddVertex: false,
@@ -32,6 +32,8 @@ export const DrawingTest = () => {
       <Button
         loading={drawStatus === objTypes.POLYLINE}
         onClick={() => dispatch(actions.setDrwStatPolyline({
+          polylineHt: 0.01 + POLYLINE_OFFSET,
+          pointHt: 0.01 + POINT_OFFSET,
           polylineTheme: Color.RED,
           polylineHighlight: Color.ORANGE,
           polylineAddVertex: true,
@@ -44,6 +46,9 @@ export const DrawingTest = () => {
       <Button
         loading={drawStatus === objTypes.POLYGON}
         onClick={() => dispatch(dispatch(actions.setDrwStatPolygon({
+          polygonHt: 0.05 + POLYGON_OFFSET,
+          polylineHt: 0.05 + POLYLINE_OFFSET,
+          pointHt: 0.05 + POINT_OFFSET,
           pointHeight: true,
           pointDelete: true,
           polygonPos: true,
@@ -61,6 +66,9 @@ export const DrawingTest = () => {
       <Button
         loading={drawStatus === objTypes.POLYGON}
         onClick={() => dispatch(dispatch(actions.setDrwStatPolygon({
+          polygonHt: 0.01 + POLYGON_OFFSET,
+          polylineHt: 0.01 + POLYLINE_OFFSET,
+          pointHt: 0.01 + POINT_OFFSET,
           pointHeight: false,
           pointDelete: true,
           polygonPos: false,

@@ -7,13 +7,16 @@ import { circleUpdate } from './circleAction'
 import { sectorUpdate } from './sectorAction'
 import { notification } from 'antd'
 
-const POLYLINE_OFFSET = -0.025
-const POLYGON_OFFSET = -0.05
+const POLYLINE_OFFSET = -0.0125
+const POLYGON_OFFSET = -0.025
+const CIRCLE_OFFSET = POLYLINE_OFFSET
+const SECTOR_OFFSET = POLYLINE_OFFSET
 
-export const addPoint = ({mouseCor, pointId, polygonId, polylineId, circleId, sectorId}) =>
+export const addPoint = ({mouseCor, pointId, polygonId, polylineId, circleId, sectorId, props=null}) =>
 (dispatch, getState) => {
-  const props = getState().undoable.present.drwStat.props
-  const point = Point.fromCoordinate(mouseCor, pointId)
+  const props = props || getState().undoable.present.drwStat.props
+  const cor = new Coordinate(mouseCor.lon, mouseCor.lat, props.pointHt)
+  const point = Point.fromCoordinate(cor, pointId)
   return dispatch({
     type: actionTypes.POINT_SET,
     entity: point,
@@ -122,6 +125,17 @@ export const pointSetHeight = (pointId, newHeight) => (dispatch, getState) => {
   })
 }
 
+export const pointSetHeightNoSideEff = (pointId, newHeight) => (dispatch, getState) => {
+  const point = getState().undoable.present.point[pointId].entity
+
+  point.setCoordinate(null, null, newHeight > 0.1 ? newHeight : 0.1)
+
+  return dispatch({
+    type: actionTypes.POINT_SET,
+    entity: point,
+  })
+}
+
 export const pointMoveHori = (pointId, mouseCor) => (dispatch, getState) => {
   const point = getState().undoable.present.point[pointId].entity
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
@@ -129,11 +143,23 @@ export const pointMoveHori = (pointId, mouseCor) => (dispatch, getState) => {
   const circleMap = getState().undoable.present.point[pointId].circleMap
   const sectorMap = getState().undoable.present.point[pointId].sectorMap
   point.setCoordinate(mouseCor.lon, mouseCor.lat, point.height)
-  mouseCor.setCoordinate(null, null, point.height - 0.05)
-  polygonMap.map(polygonId => dispatch(polygonUpdateVertex({polygonId, mouseCor, pointId})))
-  polylineMap.map(polylineId => dispatch(polylineUpdateVertex({polylineId, mouseCor, pointId})))
-  circleMap.map(circleId => dispatch(circleUpdate({circleId, mouseCor, pointId})))
-  sectorMap.map(sectorId => dispatch(sectorUpdate({sectorId, mouseCor, pointId})))
+  mouseCor.setCoordinate(null, null, point.height)
+  polygonMap.map(polygonId => {
+    mouseCor.setCoordinate(null, null, point.height + POLYGON_OFFSET)
+    return dispatch(polygonUpdateVertex({polygonId, mouseCor, pointId}))
+  })
+  polylineMap.map(polylineId => {
+    mouseCor.setCoordinate(null, null, point.height + POLYLINE_OFFSET)
+    return dispatch(polylineUpdateVertex({polylineId, mouseCor, pointId}))
+  })
+  circleMap.map(circleId => {
+    mouseCor.setCoordinate(null, null, point.height + CIRCLE_OFFSET)
+    return dispatch(circleUpdate({circleId, mouseCor, pointId}))
+  })
+  sectorMap.map(sectorId => {
+    mouseCor.setCoordinate(null, null, point.height + SECTOR_OFFSET)
+    return dispatch(sectorUpdate({sectorId, mouseCor, pointId}))
+  })
 
   return dispatch({
     type: actionTypes.POINT_SET,
@@ -156,7 +182,7 @@ export const pointMoveVerti = (pointId, heightChange) => (dispatch, getState) =>
   const polygonMap = getState().undoable.present.point[pointId].polygonMap
   const polylineMap = getState().undoable.present.point[pointId].polylineMap
   const newHeight = point.height + heightChange
-  if (newHeight >= 0.1) point.setCoordinate(null, null, newHeight)
+  point.setCoordinate(null, null, newHeight)
 
   polygonMap.map(polygonId => {
     const polygon = getState().undoable.present.polygon[polygonId].entity
@@ -182,6 +208,19 @@ export const pointMoveVerti = (pointId, heightChange) => (dispatch, getState) =>
     entity: point,
   })
 }
+
+export const pointMoveVertiNoSideEff = (pointId, heightChange) => (dispatch, getState) => {
+  const point = getState().undoable.present.point[pointId].entity
+
+  const newHeight = point.height + heightChange
+  point.setCoordinate(null, null, newHeight)
+
+  return dispatch({
+    type: actionTypes.POINT_SET,
+    entity: point,
+  })
+}
+
 
 export const pointDelete = (pointId) => (dispatch, getState) => {
   const polygonMap = getState().undoable.present.point[pointId].polygonMap

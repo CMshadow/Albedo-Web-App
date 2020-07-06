@@ -89,10 +89,13 @@ export {
   pointHighlight,
   pointDeHighlight,
   pointSetHeight,
+  pointSetHeightNoSideEff,
   pointAddMapping,
+  pointRemoveMapping,
   pointMoveHori,
   pointMoveHoriNoSideEff,
   pointMoveVerti,
+  pointMoveVertiNoSideEff,
   pointDelete,
   pointDeleteNoSideEff
 } from './drawing/pointAction'
@@ -119,6 +122,9 @@ export {
   polylineSetShow,
   polylineDynamic,
   polylineAddVertex,
+  polylineMoveHoriNoSideEff,
+  polylineSetHeightNoSideEff,
+  polylineMoveVertiNoSideEff,
   polylineTerminate,
   polylineUpdateVertex,
   polylineDelete

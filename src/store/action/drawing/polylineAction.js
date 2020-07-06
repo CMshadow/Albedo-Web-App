@@ -1,13 +1,15 @@
 import * as actionTypes from '../actionTypes'
 import Polyline from '../../../infrastructure/line/polyline'
+import Coordinate from '../../../infrastructure/point/coordinate'
 import { Color } from 'cesium'
 import { pointDeleteNoSideEff, pointRemoveMapping } from './pointAction'
 
 export const createPolyline = ({mouseCor, polylineId, pointId, insidePolygonId}) =>
 (dispatch, getState) => {
   const props = getState().undoable.present.drwStat.props
+  const cor = new Coordinate(mouseCor.lon, mouseCor.lat, props.polylineHt)
   const polyline = new Polyline(
-    [mouseCor], polylineId, props.polylineTheme, props.polylineTheme, props.polylineHighlight
+    [cor], polylineId, props.polylineTheme, props.polylineTheme, props.polylineHighlight
   )
 
   return dispatch({
@@ -72,14 +74,16 @@ export const polylineDynamic = (polylineId, mouseCor) => (dispatch, getState) =>
 export const polylineAddVertex = ({polylineId, mouseCor, pointId, position=null}) =>
 (dispatch, getState) => {
   const drawingPolyline = getState().undoable.present.polyline[polylineId].entity
+  const props = getState().undoable.present.drwStat.props
   const pointMap = getState().undoable.present.polyline[polylineId].pointMap
   const newPointMap = [...pointMap]
   const newPoints = [...drawingPolyline.points]
+  const cor = new Coordinate(mouseCor.lon, mouseCor.lat, props.polylineHt)
   newPointMap.splice(
     position || newPointMap.length, 0, pointId
   )
   newPoints.splice(
-    position || newPointMap.length - 1, 0, mouseCor
+    position || newPointMap.length - 1, 0, cor
   )
   const newPolyline = Polyline.fromPolyline(drawingPolyline, newPoints)
 
@@ -101,6 +105,48 @@ export const polylineUpdateVertex = ({polylineId, mouseCor, pointId}) => (dispat
     }
   })
   const newPolyline = Polyline.fromPolyline(drawingPolyline, newPoints)
+
+  return dispatch({
+    type: actionTypes.POLYLINE_SET,
+    entity: newPolyline,
+  })
+}
+
+export const polylineMoveHoriNoSideEff = (polylineId, brng, dist) => (dispatch, getState) => {
+  const polyline = getState().undoable.present.polyline[polylineId].entity
+
+  const newPoints = polyline.points.map(cor => Coordinate.destination(cor, brng, dist))
+  const newPolyline = Polyline.fromPolyline(polyline, newPoints)
+
+  return dispatch({
+    type: actionTypes.POLYLINE_SET,
+    entity: newPolyline,
+  })
+}
+
+export const polylineSetHeightNoSideEff = (polylineId, newHeight) => (dispatch, getState) => {
+  const polyline = getState().undoable.present.polyline[polylineId].entity
+
+  const newPoints = polyline.points.map(cor => {
+    cor.setCoordinate(null, null, newHeight)
+    return cor
+  })
+  const newPolyline = Polyline.fromPolyline(polyline, newPoints)
+
+  return dispatch({
+    type: actionTypes.POLYLINE_SET,
+    entity: newPolyline,
+  })
+}
+
+export const polylineMoveVertiNoSideEff = (polylineId, heightChange) => (dispatch, getState) => {
+  const polyline = getState().undoable.present.polyline[polylineId].entity
+
+  const newPoints = polyline.points.map(cor => {
+    cor.setCoordinate(null, null, cor.height + heightChange)
+    return cor
+  })
+  const newPolyline = Polyline.fromPolyline(polyline, newPoints)
 
   return dispatch({
     type: actionTypes.POLYLINE_SET,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Entity } from 'resium';
 import { useSelector, useDispatch } from 'react-redux'
-import { Cartesian3, CallbackProperty, PolygonHierarchy, Color } from 'cesium';
+import { Cartesian3, CallbackProperty, PolygonHierarchy } from 'cesium';
 import * as actions from '../../../store/action/index'
 import { POLYGON } from '../../../store/action/drawing/objTypes'
 
