@@ -53,8 +53,6 @@ const ProjectTable = (props) => {
       dataIndex: 'projectAddress',
       key: 'projectAddress',
       sorter: (a, b) => a.projectAddress - b.projectAddress,
-      width: 250,
-      ...SearchString({colKey: 'projectAddress'}),
     },
     {
       title: t('project.createdAt'),
@@ -79,7 +77,7 @@ const ProjectTable = (props) => {
       render: (value) => t(`project.type.${value}`),
       filters: projectTypeFilters,
       onFilter: (value, record) => record.projectType.indexOf(value) === 0,
-      width: 100
+      width: 150
     },
     {
       title: t('table.action'),
