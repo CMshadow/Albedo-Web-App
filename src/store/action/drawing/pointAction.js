@@ -12,9 +12,9 @@ const POLYGON_OFFSET = -0.025
 const CIRCLE_OFFSET = POLYLINE_OFFSET
 const SECTOR_OFFSET = POLYLINE_OFFSET
 
-export const addPoint = ({mouseCor, pointId, polygonId, polylineId, circleId, sectorId, props=null}) =>
+export const addPoint = ({mouseCor, pointId, polygonId, polylineId, circleId, sectorId, existProps=null}) =>
 (dispatch, getState) => {
-  const props = props || getState().undoable.present.drwStat.props
+  const props = existProps || getState().undoable.present.drwStat.props
   const cor = new Coordinate(mouseCor.lon, mouseCor.lat, props.pointHt)
   const point = Point.fromCoordinate(cor, pointId)
   return dispatch({

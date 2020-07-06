@@ -16,6 +16,7 @@ export const createPolyline = ({mouseCor, polylineId, pointId, insidePolygonId})
     type: actionTypes.POLYLINE_SET,
     entity: polyline,
     props: {
+      ...props,
       polylineAddVertex: props.polylineAddVertex !== null ? props.polylineAddVertex : true,
       polylineDelete: props.polylineDelete !== null ? props.polylineDelete : true,
       theme: props.polylineTheme || Color.STEELBLUE,
@@ -74,7 +75,7 @@ export const polylineDynamic = (polylineId, mouseCor) => (dispatch, getState) =>
 export const polylineAddVertex = ({polylineId, mouseCor, pointId, position=null}) =>
 (dispatch, getState) => {
   const drawingPolyline = getState().undoable.present.polyline[polylineId].entity
-  const props = getState().undoable.present.drwStat.props
+  const props = getState().undoable.present.polyline[polylineId].props
   const pointMap = getState().undoable.present.polyline[polylineId].pointMap
   const newPointMap = [...pointMap]
   const newPoints = [...drawingPolyline.points]

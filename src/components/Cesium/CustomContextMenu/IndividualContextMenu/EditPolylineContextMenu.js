@@ -43,7 +43,7 @@ const EditPolylineContextMenu = ({hoverId}) => {
               dispatch(actions.addPoint({
                 mouseCor: pointCor, pointId, polylineId: hoverId,
                 polygonId: insidePolygonId === 'EMPTY' ? null : insidePolygonId,
-                props: props
+                existProps: props
               }))
               if (insidePolygonId !== 'EMPTY') {
                 const polygonCor = new Coordinate(

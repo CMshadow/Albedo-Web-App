@@ -10,7 +10,6 @@ const setDrwStatIdle = (state, action) => {
   return {
     status: objTypes.IDLE,
     props: {
-      ...state.props,
       ...action.props
     }
   }
@@ -26,7 +25,6 @@ const setDrwStatPolygon = (state, action) => {
   return {
     status: objTypes.POLYGON,
     props: {
-      ...state.props,
       ...action.props
     }
   }
@@ -36,7 +34,6 @@ const setDrwStatePolyline = (state, action) => {
   return {
     status: objTypes.POLYLINE,
     props: {
-      ...state.props,
       ...action.props
     }
   }
@@ -46,7 +43,6 @@ const setDrwStateLine = (state, action) => {
   return {
     status: objTypes.LINE,
     props: {
-      ...state.props,
       ...action.props
     }
   }
@@ -56,7 +52,6 @@ const setDrwStateCircle = (state, action) => {
   return {
     status: objTypes.CIRCLE,
     props: {
-      ...state.props,
       ...action.props
     }
   }
@@ -66,7 +61,6 @@ const setDrwStateSector = (state, action) => {
   return {
     status: objTypes.SECTOR,
     props: {
-      ...state.props,
       ...action.props
     }
   }

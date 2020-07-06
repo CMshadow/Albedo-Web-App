@@ -1,5 +1,5 @@
 import { v1 as uuid } from 'uuid';
-import  * as Cesium from 'cesium';
+import { Color, ShadowMode } from 'cesium';
 
 import Coordinate from '../point/coordinate';
 
@@ -28,12 +28,12 @@ class Polygon {
     this.hierarchy = hierarchy ? [...hierarchy] : [];
     this.perPositionHeight = true;
     this.extrudedHeight = extrudedHeight || 0;
-    this.material = material || Cesium.Color.WHITE;
-    this.theme = theme || Cesium.Color.WHITE.withAlpha(0.2)
-    this.highlight = highlight || Cesium.Color.ORANGE.withAlpha(0.2)
-    this.outlineColor = outlineColor || Cesium.Color.BLACK;
+    this.material = material || Color.WHITE.withAlpha(0.2);
+    this.theme = theme || Color.WHITE.withAlpha(0.2)
+    this.highlight = highlight || Color.ORANGE.withAlpha(0.2)
+    this.outlineColor = outlineColor || Color.BLACK;
     this.outlineWidth = 4;
-    this.shadow = shadow || Cesium.ShadowMode.DISABLED;
+    this.shadow = shadow || ShadowMode.DISABLED;
     this.show = show || true;
     this.brng = brng || null;
     this.obliquity = obliquity || 0;

@@ -11,6 +11,7 @@ const POLYLINE_OFFSET = 0.0125
 export const createPolygon = ({mouseCor, polygonId, pointId, outPolylineId}) =>
 (dispatch, getState) => {
   const props = getState().undoable.present.drwStat.props
+  console.log(props)
   const modelingObjType = props.objType
   const cor = new Coordinate(mouseCor.lon, mouseCor.lat, props.polygonHt)
   const polygon = new Polygon(
