@@ -188,6 +188,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
               rules={[{required: true}]}
             >
               <Select
+                showSearch
                 options={
                   invActiveData.map(record => ({
                     label: record.name,
@@ -196,6 +197,9 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
                 }
                 disabled={disabled}
                 onChange={onInverterIDChange}
+                filterOption={(value, option) =>
+                  option.label.toLowerCase().includes(value.toLowerCase())
+                }
               />
             </FormItem>
           </Col>

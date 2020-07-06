@@ -127,10 +127,16 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     }))
     .then(res => {
       setautoInvLoading(false)
+      if (res === 'PV and Inverter does not fit') {
+        notification.error({
+          message: t('project.autoInverter.no-fit'),
+        })
+        return
+      }
       if (res.plan.length === 0) {
         notification.warning({
-          message: t('project.autoInverter.no-fit'),
-          description: t('project.autoInverter.no-fit.detail'),
+          message: t('project.autoInverter.too-small'),
+          description: t('project.autoInverter.too-small.detail'),
           duration: 15,
         })
         return
@@ -210,9 +216,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
       })
     })
     .catch(err => {
-      notification.error({
-        message: t('error.oversize'),
-      })
+      console.log(err)
       setautoInvLoading(false)
     })
   }
@@ -238,11 +242,15 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
               rules={[{required: true}]}
             >
               <Select
+                showSearch
                 options={
                   pvActiveData.map(record => ({
                     label: record.name,
                     value: record.pvID
                   }))
+                }
+                filterOption={(value, option) =>
+                  option.label.toLowerCase().includes(value.toLowerCase())
                 }
               />
             </FormItem>
@@ -331,6 +339,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
               label={t('project.spec.inverter')}
             >
               <Select
+                showSearch
                 disabled={!capacity}
                 options={
                   invActiveData.map(record => ({
@@ -339,6 +348,9 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
                   }))
                 }
                 onSelect={genInverterPlan}
+                filterOption={(value, option) =>
+                  option.label.toLowerCase().includes(value.toLowerCase())
+                }
               />
             </FormItem>
           </Col>

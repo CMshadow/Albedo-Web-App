@@ -78,8 +78,9 @@
   "project.spec.error.over-max": "超过逆变器限制",
   "project.spec.total_panels": "光伏组件总数",
 
-  "project.autoInverter.no-fit": "逆变器规格与装机量不匹配",
-  "project.autoInverter.no-fit.detail": "当前装机容量小于逆变器最佳输入装机容量，考虑增大装机量或选用更小规格逆变器",
+  "project.autoInverter.too-small": "逆变器规格与装机量不匹配",
+  "project.autoInverter.too-small.detail": "当前装机容量小于逆变器最佳输入装机容量，考虑增大装机量或选用更小规格逆变器",
+  "project.autoInverter.no-fit": "组件与逆变器不匹配，请选用其他型号",
   "project.autoInverter.title": "最佳逆变器配置",
   "project.autoInverter.invModel": "逆变器型号",
   "project.autoInverter.requiredInv": "所需逆变器数量",
