@@ -4,27 +4,66 @@ import Coordinate from '../../../infrastructure/point/coordinate'
 import { pointMoveHoriNoSideEff, pointRemoveMapping, pointDeleteNoSideEff } from './pointAction'
 import { Color } from 'cesium'
 
-const circleColor = Color.SEAGREEN
-
 export const addCircle = ({mouseCor, radius, circleId, centerPointId, edgePointId}) =>
 (dispatch, getState) => {
-  const circle = new Circle(mouseCor, radius, circleId, circleColor)
+  const props = getState().undoable.present.drwStat.props
+  const cor = new Coordinate(mouseCor.lon, mouseCor.lat, props.circleHt)
+  const circle = new Circle(
+    cor, radius, circleId, props.circleTheme, props.circleTheme, props.highlight
+  )
   return dispatch({
     type: actionTypes.CIRCLE_SET,
     entity: circle,
+    props: {
+      ...props,
+      circleDelete: props.circleDelete !== null ? props.circleDelete : true,
+      theme: props.circleTheme || Color.SEAGREEN,
+      highlight: props.circleHighlight || Color.ORANGE
+    },
     centerPointId: centerPointId,
     edgePointId: edgePointId
   })
 }
 
+export const circleHighlight = (circleId) => (dispatch, getState) => {
+  const circle = getState().undoable.present.circle[circleId].entity
+  circle.setColor(circle.highlight)
+
+  return dispatch({
+    type: actionTypes.CIRCLE_SET,
+    entity: circle,
+  })
+}
+
+export const circleDeHighlight = (circleId) => (dispatch, getState) => {
+  const circle = getState().undoable.present.circle[circleId].entity
+  circle.setColor(circle.theme)
+  return dispatch({
+    type: actionTypes.CIRCLE_SET,
+    entity: circle,
+  })
+}
+
+export const circleSetShow = (circleId, show) => (dispatch, getState) => {
+  const circle = getState().undoable.present.circle[circleId].entity
+  circle.setShow(show)
+
+  return dispatch({
+    type: actionTypes.CIRCLE_SET,
+    entity: circle,
+  })
+}
+
 export const circleUpdate = ({circleId, pointId, mouseCor}) => (dispatch, getState) => {
   const drawingCircle = getState().undoable.present.circle[circleId].entity
+  const props = getState().undoable.present.circle[circleId].props
   const centerPointId = getState().undoable.present.circle[circleId].centerPointId
   const edgePointId = getState().undoable.present.circle[circleId].edgePointId
+  const cor = new Coordinate(mouseCor.lon, mouseCor.lat, props.circleHt)
 
   if (pointId === centerPointId) {
     const newCircle = new Circle(
-      mouseCor, drawingCircle.radius, drawingCircle.entityId, circleColor
+      cor, drawingCircle.radius, drawingCircle.entityId, props.theme, props.theme, props.highlight
     )
     const newEdgeCor = Coordinate.destination(mouseCor, 0, drawingCircle.radius)
     dispatch(pointMoveHoriNoSideEff(edgePointId, newEdgeCor))
@@ -35,7 +74,7 @@ export const circleUpdate = ({circleId, pointId, mouseCor}) => (dispatch, getSta
   } else {
     const newRadius = Coordinate.surfaceDistance(drawingCircle.centerPoint, mouseCor)
     const newCircle = new Circle(
-      drawingCircle.centerPoint, newRadius, drawingCircle.entityId, circleColor
+      drawingCircle.centerPoint, newRadius, drawingCircle.entityId, props.theme, props.theme, props.highlight
     )
     const newEdgeCor = Coordinate.destination(
       drawingCircle.centerPoint, 0, drawingCircle.radius

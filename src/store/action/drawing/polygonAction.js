@@ -11,7 +11,6 @@ const POLYLINE_OFFSET = 0.0125
 export const createPolygon = ({mouseCor, polygonId, pointId, outPolylineId}) =>
 (dispatch, getState) => {
   const props = getState().undoable.present.drwStat.props
-  console.log(props)
   const modelingObjType = props.objType
   const cor = new Coordinate(mouseCor.lon, mouseCor.lat, props.polygonHt)
   const polygon = new Polygon(
@@ -69,12 +68,15 @@ export const polygonSetShow = (polygonId, show) => (dispatch, getState) => {
 
 export const polygonDynamic = (polygonId, mouseCor) => (dispatch, getState) => {
   const drawingPolygon = getState().undoable.present.polygon[polygonId].entity
+  const props = getState().undoable.present.polygon[polygonId].props
   const pointMap = getState().undoable.present.polygon[polygonId].pointMap
   const fixedHier = drawingPolygon.hierarchy.length > 3 ?
     drawingPolygon.hierarchy.slice(0, -3) :
     drawingPolygon.hierarchy
-  const newHier = fixedHier.concat(mouseCor.getCoordinate(true))
-  const newPolygon = Polygon.fromPolygon(drawingPolygon, null, mouseCor.height, newHier)
+  const newHier = fixedHier.concat(
+    new Coordinate(mouseCor.lon, mouseCor.lat, props.polygonHt).getCoordinate(true)
+  )
+  const newPolygon = Polygon.fromPolygon(drawingPolygon, null, null, newHier)
 
   return dispatch({
     type: actionTypes.POLYGON_SET,

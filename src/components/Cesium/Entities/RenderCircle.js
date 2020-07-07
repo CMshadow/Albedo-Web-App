@@ -1,12 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Entity } from 'resium';
 import { CallbackProperty, Cartesian3, NearFarScalar, Math as CesiumMath, VerticalOrigin } from 'cesium';
 import Coordinate from '../../../infrastructure/point/coordinate'
-
+import { CIRCLE } from '../../../store/action/drawing/objTypes'
+import * as actions from '../../../store/action/index'
 
 export const RenderCircle = ({circle}) => {
+  const dispatch = useDispatch()
   const showAngle = useSelector(state => state.cesium.showAngle)
+  const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
+  const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
 
   return (
     <Entity
@@ -22,6 +26,11 @@ export const RenderCircle = ({circle}) => {
         material: circle.color
       }}
       show={circle.show}
+      onMouseEnter={(move, tar) => {
+        if (!drawingId && !pickedId) {
+          dispatch(actions.setHoverObj(CIRCLE, circle.entityId))
+        }
+      }}
     >
       <Entity
         key={`${circle.entityId}.label`}

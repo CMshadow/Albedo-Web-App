@@ -81,7 +81,15 @@ export const DrawingTest = () => {
       </Button>
       <Button
         loading={drawStatus === objTypes.CIRCLE}
-        onClick={() => dispatch(actions.setDrwStatCircle())}
+        onClick={() => dispatch(actions.setDrwStatCircle({
+          circleHt: 0.05 + POLYLINE_OFFSET,
+          pointHt: 0.05 + POINT_OFFSET,
+          pointHeight: false,
+          pointDelete: false,
+          circleTheme: Color.SEAGREEN,
+          circleHighlight: Color.ORANGE,
+          circleDelete: true,
+        }))}
       >
         Draw Circle
       </Button>

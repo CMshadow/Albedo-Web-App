@@ -8,6 +8,7 @@ const setCircle = (state, action) => {
     ...state,
     [action.entity.entityId]: {
       entity: action.entity,
+      props: action.props || state[action.entity.entityId].props,
       centerPointId: action.centerPointId || state[action.entity.entityId].centerPointId,
       edgePointId: action.edgePointId  || state[action.entity.entityId].edgePointId,
     }

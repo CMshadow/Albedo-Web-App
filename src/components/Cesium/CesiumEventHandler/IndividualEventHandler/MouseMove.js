@@ -35,15 +35,13 @@ const MouseMoveHandler = () => {
       const pickedObjIdArray = viewer.scene.drillPick(event.endPosition).map(elem => elem.id.id)
       if (!pickedObjIdArray.includes(hoverId)) {
         switch (hoverType) {
-          case objTypes.POINT:
-            dispatch(actions.releaseHoverObj())
-            break
           case objTypes.POLYLINE:
-            dispatch(actions.releaseHoverObj())
-            break
+          case objTypes.POINT:
           case objTypes.POLYGON:
+          case objTypes.CIRCLE:
             dispatch(actions.releaseHoverObj())
             break
+
           default:
             break
         }

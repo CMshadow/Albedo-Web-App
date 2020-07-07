@@ -33,6 +33,7 @@ export const releasePickedObj = () => (dispatch, getState) => {
 export const setHoverObj = (objType, entityId) => (dispatch, getState) => {
   const hoverId = getState().undoable.present.drawing.hoverId
   const hoverType = getState().undoable.present.drawing.hoverType
+  // dehighlight已有的hover object
   switch (hoverType) {
     case objTypes.POINT:
       dispatch(actions.pointDeHighlight(hoverId))
@@ -43,9 +44,13 @@ export const setHoverObj = (objType, entityId) => (dispatch, getState) => {
     case objTypes.POLYGON:
       dispatch(actions.polygonDeHighlight(hoverId))
       break
+    case objTypes.CIRCLE:
+      dispatch(actions.circleDeHighlight(hoverId))
+      break
     default:
       break
   }
+  // highlight 新hover object
   switch (objType) {
     case objTypes.POINT:
       dispatch(actions.pointHighlight(entityId))
@@ -55,6 +60,9 @@ export const setHoverObj = (objType, entityId) => (dispatch, getState) => {
       break
     case objTypes.POLYGON:
       dispatch(actions.polygonHighlight(entityId))
+      break
+    case objTypes.CIRCLE:
+      dispatch(actions.circleHighlight(entityId))
       break
     default:
       break
@@ -78,6 +86,9 @@ export const releaseHoverObj = () => (dispatch, getState) => {
       break
     case objTypes.POLYGON:
       dispatch(actions.polygonDeHighlight(hoverId))
+      break
+    case objTypes.CIRCLE:
+      dispatch(actions.circleDeHighlight(hoverId))
       break
     default:
       break

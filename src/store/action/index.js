@@ -131,7 +131,12 @@ export {
 } from './drawing/polylineAction'
 
 export {
-  addCircle
+  addCircle,
+  circleHighlight,
+  circleDeHighlight,
+  circleSetShow,
+  circleUpdate,
+  circleDelete
 } from './drawing/circleAction'
 
 export {

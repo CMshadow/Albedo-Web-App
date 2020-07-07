@@ -58,6 +58,10 @@ class Polyline {
     this.points.splice(position, 0, point);
   }
 
+  setShow = (show) => {
+    this.show = show
+  }
+
 
   addPointPrecision = (position, point) => {
     const newCoordinate = this.preciseAddPointPosition(position, point);

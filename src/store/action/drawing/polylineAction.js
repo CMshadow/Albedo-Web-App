@@ -49,21 +49,22 @@ export const polylineDeHighlight = (polylineId) => (dispatch, getState) => {
 
 export const polylineSetShow = (polylineId, show) => (dispatch, getState) => {
   const polyline = getState().undoable.present.polyline[polylineId].entity
-  const newPolyline = Polyline.fromPolyline(polyline)
-  newPolyline.show = show
+  polyline.setShow(show)
 
   return dispatch({
     type: actionTypes.POLYLINE_SET,
-    entity: newPolyline,
+    entity: polyline,
   })
 }
 
 export const polylineDynamic = (polylineId, mouseCor) => (dispatch, getState) => {
   const drawingPolyline = getState().undoable.present.polyline[polylineId].entity
+  const props = getState().undoable.present.polyline[polylineId].props
   const fixedPoints = drawingPolyline.points.length > 1 ?
     drawingPolyline.points.slice(0, -1) :
     drawingPolyline.points
-  const newPoints = fixedPoints.concat(mouseCor)
+  const cor = new Coordinate(mouseCor.lon, mouseCor.lat, props.polylineHt)
+  const newPoints = fixedPoints.concat(cor)
   const newPolyline = Polyline.fromPolyline(drawingPolyline, newPoints)
 
   return dispatch({
