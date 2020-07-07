@@ -39,6 +39,7 @@ const MouseMoveHandler = () => {
           case objTypes.POINT:
           case objTypes.POLYGON:
           case objTypes.CIRCLE:
+          case objTypes.SECTOR:
             dispatch(actions.releaseHoverObj())
             break
 

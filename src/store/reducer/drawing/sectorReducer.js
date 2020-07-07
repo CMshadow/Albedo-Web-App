@@ -8,6 +8,7 @@ const setSector = (state, action) => {
     ...state,
     [action.entity.entityId]: {
       entity: action.entity,
+      props: action.props || state[action.entity.entityId].props,
       centerPointId: action.centerPointId || state[action.entity.entityId].centerPointId,
       edgePointId: action.edgePointId  || state[action.entity.entityId].edgePointId,
       anglePointId: action.anglePointId  || state[action.entity.entityId].anglePointId,
@@ -18,7 +19,7 @@ const setSector = (state, action) => {
 
 const deleteSector = (state, action) => {
   const newState = {...state}
-  delete newState[action.circleId]
+  delete newState[action.sectorId]
   return newState
 }
 

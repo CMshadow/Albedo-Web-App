@@ -140,7 +140,12 @@ export {
 } from './drawing/circleAction'
 
 export {
-  addSector
+  addSector,
+  sectorHighlight,
+  sectorDeHighlight,
+  sectorSetShow,
+  sectorUpdate,
+  sectorDelete
 } from './drawing/sectorAction'
 
 export {

@@ -47,6 +47,9 @@ export const setHoverObj = (objType, entityId) => (dispatch, getState) => {
     case objTypes.CIRCLE:
       dispatch(actions.circleDeHighlight(hoverId))
       break
+    case objTypes.SECTOR:
+      dispatch(actions.sectorDeHighlight(hoverId))
+      break
     default:
       break
   }
@@ -63,6 +66,9 @@ export const setHoverObj = (objType, entityId) => (dispatch, getState) => {
       break
     case objTypes.CIRCLE:
       dispatch(actions.circleHighlight(entityId))
+      break
+    case objTypes.SECTOR:
+      dispatch(actions.sectorHighlight(entityId))
       break
     default:
       break
@@ -89,6 +95,9 @@ export const releaseHoverObj = () => (dispatch, getState) => {
       break
     case objTypes.CIRCLE:
       dispatch(actions.circleDeHighlight(hoverId))
+      break
+    case objTypes.SECTOR:
+      dispatch(actions.sectorDeHighlight(hoverId))
       break
     default:
       break

@@ -1,13 +1,17 @@
 import React from 'react';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Entity } from 'resium';
 import { CallbackProperty, Cartesian3, NearFarScalar, Math as CesiumMath, VerticalOrigin } from 'cesium';
 import Coordinate from '../../../infrastructure/point/coordinate'
-
+import { SECTOR } from '../../../store/action/drawing/objTypes'
+import * as actions from '../../../store/action/index'
 
 
 export const RenderSector = ({sector}) => {
+  const dispatch = useDispatch()
   const showAngle = useSelector(state => state.cesium.showAngle)
+  const pickedId = useSelector(state => state.undoable.present.drawing.pickedId)
+  const drawingId = useSelector(state => state.undoable.present.drawing.drawingId)
 
   return (
     <Entity
@@ -23,6 +27,11 @@ export const RenderSector = ({sector}) => {
         material: sector.color
       }}
       show={sector.show}
+      onMouseEnter={(move, tar) => {
+        if (!drawingId && !pickedId) {
+          dispatch(actions.setHoverObj(SECTOR, sector.entityId))
+        }
+      }}
     >
       <Entity
         key={`${sector.entityId}.label`}

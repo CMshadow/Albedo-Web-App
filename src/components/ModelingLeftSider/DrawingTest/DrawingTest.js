@@ -95,7 +95,15 @@ export const DrawingTest = () => {
       </Button>
       <Button
         loading={drawStatus === objTypes.SECTOR}
-        onClick={() => dispatch(actions.setDrwStatSector())}
+        onClick={() => dispatch(actions.setDrwStatSector({
+          sectorHt: 0.05 + POLYLINE_OFFSET,
+          pointHt: 0.05 + POINT_OFFSET,
+          pointHeight: false,
+          pointDelete: false,
+          sectorTheme: Color.DARKCYAN,
+          sectorHighlight: Color.ORANGE,
+          sectorDelete: true,
+        }))}
       >
         Draw Sector
       </Button>
