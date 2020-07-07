@@ -36,6 +36,13 @@ const MeterAllIn = (props) => {
     return groupOfMeterAllIn
   }
 
+  const combiSelect = (combiboxIe) => {
+    const standard = [32, 63, 80, 100, 125, 160, 225]
+    for (let element = 0; element < standard.length; element++) {
+      if (standard[element] > combiboxIe) return standard[element]
+    }
+  }
+
   const drawSwictchPort = (position, groupOfMeter) => {
     groupOfMeterAllIn.push(<Line
       key= {"Meter-Line-" + uuidv4()}
@@ -62,6 +69,16 @@ const MeterAllIn = (props) => {
       lineCap='round'
       lineJoin='round'
       ></Line>)
+
+    groupOfMeter.push(<Text
+      key = {"Meter-Text-" + uuidv4()}
+      x={position[0] + 15}
+      y={position[1] - 4.5}
+      text={combiSelect(props.combiboxIe) + 'A'}
+      fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
+      fontFamily='Arial'
+      fill='Black'
+    ></Text>)
 
     groupOfMeterAllIn.push(<Line
       key= {"Meter-Line-" + uuidv4()}
