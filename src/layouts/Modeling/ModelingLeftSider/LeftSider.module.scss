@@ -7,13 +7,12 @@
   z-index: 5;
   background-color: rgba(240, 245, 255, 0.9);
   height: calc(100vh - 64px);
-  position: fixed;
-  left: 75px;
   top: 64px;
 }
 
 .upperPart {
   position: 'fixed';
+  overflow: auto;
   background-color: rgba(255, 255, 255, 0);
   height: calc(100vh - 124px);
 }
