@@ -17,14 +17,19 @@ export const IrradianceChart = ({buildingID}) => {
     building.buildingID === buildingID
   )
 
-  const allSetup = reportData[buildingID].setup_month_irr.map((setup, setupIndex) => (
-    <Space>
-      {`${t('irrTable.tilt')}: ${curBuilding.data[setupIndex].pv_panel_parameters.tilt_angle}°`}
-      {`${t('irrTable.azimuth')}: ${curBuilding.data[setupIndex].pv_panel_parameters.azimuth}°`}
-    </Space>
-  ))
+  const stringifySetupMonthIrr = reportData[buildingID].setup_month_irr.map(JSON.stringify)
+  const uniqueSetupMonthIrr = [...new Set(stringifySetupMonthIrr)].map(JSON.parse)
+  const allSetup = uniqueSetupMonthIrr.map(setup => {
+    const setupIndex = stringifySetupMonthIrr.indexOf(JSON.stringify(setup))
+    return (
+      <Space>
+        {`${t('irrTable.tilt')}: ${curBuilding.data[setupIndex].pv_panel_parameters.tilt_angle}°`}
+        {`${t('irrTable.azimuth')}: ${curBuilding.data[setupIndex].pv_panel_parameters.azimuth}°`}
+      </Space>
+    )
+  })
 
-  const dataSource = reportData[buildingID].setup_month_irr.map((setup, setupIndex) =>
+  const dataSource = uniqueSetupMonthIrr.map(setup =>
     setup.map((val, index) => ({
       month: index,
       value: val

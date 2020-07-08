@@ -49,6 +49,7 @@
   "project.add.combibox_cable_len": "Cable length (AC combiner box to meter)",
   "project.add.spec": "",
   "project.add.spec.prefix": "Add PV array for Building  ",
+  "project.add.building.aggr": "Aggregated",
 
   "project.spec.tilt_angle": "Array Tilt",
   "project.spec.tilt_angle.hint": "Angle between module and the ground",

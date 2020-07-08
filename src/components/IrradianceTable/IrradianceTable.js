@@ -14,12 +14,16 @@ export const IrradianceTable = ({ buildingID }) => {
     building.buildingID === buildingID
   )
 
-  const dataSource = reportData[buildingID].setup_month_irr[0].map((irr, monthIndex) => {
+  const stringifySetupMonthIrr = reportData[buildingID].setup_month_irr.map(JSON.stringify)
+  const uniqueSetupMonthIrr = [...new Set(stringifySetupMonthIrr)].map(JSON.parse)
+
+  const dataSource = uniqueSetupMonthIrr[0].map((irr, monthIndex) => {
     const record = {
       key: monthIndex,
       title: `${monthIndex + 1}${t('irrTable.month')}`
     }
-    reportData[buildingID].setup_month_irr.forEach((setup, setupIndex) => {
+    uniqueSetupMonthIrr.forEach(setup => {
+      const setupIndex = stringifySetupMonthIrr.indexOf(JSON.stringify(setup))
       record[`setup${setupIndex}irr`] = setup[monthIndex]
       record[`setup${setupIndex}avgPkHr`] =
         reportData[buildingID].setup_month_irr_avg_pk_hr[setupIndex][monthIndex]
@@ -27,28 +31,32 @@ export const IrradianceTable = ({ buildingID }) => {
     return record
   })
 
-  const columns = reportData[buildingID].setup_month_irr.map((setup, setupIndex) => ({
-    key: setupIndex + 1,
-    title:
-      <Space size='large'>
-        {`${t('irrTable.tilt')}: ${curBuilding.data[setupIndex].pv_panel_parameters.tilt_angle}°`}
-        {`${t('irrTable.azimuth')}: ${curBuilding.data[setupIndex].pv_panel_parameters.azimuth}°`}
-      </Space>,
-    align: 'center',
-    children: [{
-      key: `${setupIndex + 1}.1`,
-      title: t('irrTable.irradiance'),
-      dataIndex: `setup${setupIndex}irr`,
+  const columns = uniqueSetupMonthIrr.map(setup => {
+    const setupIndex = stringifySetupMonthIrr.indexOf(JSON.stringify(setup))
+      return {
+      key: setupIndex + 1,
+      title:
+        <Space size='large'>
+          {`${t('irrTable.tilt')}: ${curBuilding.data[setupIndex].pv_panel_parameters.tilt_angle}°`}
+          {`${t('irrTable.azimuth')}: ${curBuilding.data[setupIndex].pv_panel_parameters.azimuth}°`}
+        </Space>,
       align: 'center',
-      render: text => `${text.toFixed(2)} MJ/㎡`
-    }, {
-      key: `${setupIndex + 1}.2`,
-      title: t('irrTable.avgPkHr'),
-      dataIndex: `setup${setupIndex}avgPkHr`,
-      align: 'center',
-      render: text => `${text.toFixed(2)} h`
-    }]
-  }))
+      children: [{
+        key: `${setupIndex + 1}.1`,
+        title: t('irrTable.irradiance'),
+        dataIndex: `setup${setupIndex}irr`,
+        align: 'center',
+        render: text => `${text.toFixed(2)} MJ/㎡`
+      }, {
+        key: `${setupIndex + 1}.2`,
+        title: t('irrTable.avgPkHr'),
+        dataIndex: `setup${setupIndex}avgPkHr`,
+        align: 'center',
+        render: text => `${text.toFixed(2)} h`
+      }]
+    }
+  })
+
   columns.splice(0, 0, {
     key: 0,
     title: t('table.month'),

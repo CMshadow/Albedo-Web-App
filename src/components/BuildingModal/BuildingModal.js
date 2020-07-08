@@ -41,7 +41,7 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
     if (editRecord) {
       dispatch(editBuilding({buildingID: editRecord.buildingID, ...values}))
     } else {
-      dispatch(addBuilding(values))
+      dispatch(addBuilding(values, t))
     }
     setshowModal(false)
   }
