@@ -36,12 +36,15 @@ export const circleHighlight = (circleId) => (dispatch, getState) => {
 }
 
 export const circleDeHighlight = (circleId) => (dispatch, getState) => {
-  const circle = getState().undoable.present.circle[circleId].entity
-  circle.setColor(circle.theme)
-  return dispatch({
-    type: actionTypes.CIRCLE_SET,
-    entity: circle,
-  })
+  const obj = getState().undoable.present.circle[circleId]
+  if (obj) {
+    const circle = obj.entity
+    circle.setColor(circle.theme)
+    return dispatch({
+      type: actionTypes.CIRCLE_SET,
+      entity: circle,
+    })
+  }
 }
 
 export const circleSetShow = (circleId, show) => (dispatch, getState) => {

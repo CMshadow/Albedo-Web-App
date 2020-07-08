@@ -4,6 +4,7 @@ import Coordinate from '../../../infrastructure/point/coordinate'
 import { bindDrawingObj } from '../modeling/modelingBuildingAction'
 import * as actions from '../index'
 import { Color } from 'cesium'
+import { v4 as uuid } from 'uuid';
 
 const POINT_OFFSET = 0.025
 const POLYLINE_OFFSET = 0.0125
@@ -44,13 +45,16 @@ export const polygonHighlight = (polygonId) => (dispatch, getState) => {
 }
 
 export const polygonDeHighlight = (polygonId) => (dispatch, getState) => {
-  const polygon = getState().undoable.present.polygon[polygonId].entity
-  polygon.setColor(polygon.theme)
+  const obj = getState().undoable.present.polygon[polygonId]
+  if (obj) {
+    const polygon = obj.entity
+    polygon.setColor(polygon.theme)
 
-  return dispatch({
-    type: actionTypes.POLYGON_SET,
-    entity: polygon,
-  })
+    return dispatch({
+      type: actionTypes.POLYGON_SET,
+      entity: polygon,
+    })
+  }
 }
 
 export const polygonSetShow = (polygonId, show) => (dispatch, getState) => {
@@ -232,5 +236,46 @@ export const polygonDelete = (polygonId) => async (dispatch, getState) => {
   return dispatch({
     type: actionTypes.POLYGON_DELETE,
     polygonId: polygonId
+  })
+}
+
+export const polygonClone = (originId) => async (dispatch, getState) => {
+  const polygon = getState().undoable.present.polygon[originId].entity
+  const props = getState().undoable.present.polygon[originId].props
+  const pointMap = getState().undoable.present.polygon[originId].pointMap
+  const outPolylineId = getState().undoable.present.polygon[originId].outPolylineId
+
+  const newPolygonId = uuid()
+  const newPolylineId = uuid()
+
+  const coordinates = polygon.convertHierarchyToCoordinate()
+  const newPointMap = pointMap.map((pointId, index) => {
+    const newPointId = uuid()
+    const pointNewCor = Coordinate.destination(coordinates[index], 135, 3)
+    dispatch(actions.addPoint({
+      mouseCor: pointNewCor, pointId: newPointId, polygonId: newPolygonId,
+      polylineId: newPolylineId, existProps: props
+    }))
+    return newPointId
+  })
+  const oldNewPointMap = {}
+  pointMap.forEach((pointId, index) => oldNewPointMap[pointId] = newPointMap[index])
+
+  dispatch(actions.polylineClone({
+    originId: outPolylineId, newId: newPolylineId, oldNewPointMap,
+    newInsidePolygonId: newPolygonId
+  }))
+
+  const newCoordinates = coordinates.map(cor => Coordinate.destination(cor, 135, 3))
+  const newHier = Polygon.makeHierarchyFromCoordinates(newCoordinates)
+  const newPolygon = Polygon.fromPolygon(polygon, newPolygonId, null, newHier)
+
+  dispatch(bindDrawingObj({objType: props.objType, objId: newPolygon.entityId}))
+  return dispatch({
+    type: actionTypes.POLYGON_SET,
+    entity: newPolygon,
+    props: props,
+    pointMap: newPointMap,
+    outPolylineId: newPolylineId
   })
 }

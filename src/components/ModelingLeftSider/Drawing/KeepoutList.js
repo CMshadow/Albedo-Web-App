@@ -1,5 +1,7 @@
 import React from 'react'
 import { EyeTwoTone, EyeInvisibleTwoTone, DeleteOutlined } from '@ant-design/icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClone } from '@fortawesome/pro-light-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, List, Typography } from 'antd';
 import * as actions from '../../../store/action/index'
@@ -13,7 +15,6 @@ export const KeepoutList = () => {
   const buildingKeepoutId = modelingReducer.keepoutId
 
   const allPolygon = useSelector(state => state.undoable.present.polygon)
-
   return (
     <List
       itemLayout="horizontal"
@@ -33,21 +34,30 @@ export const KeepoutList = () => {
                 dispatch(actions.polygonSetShow(kptPolygonId, true))
               }
             />,
+            <Button size='small' type='link'
+              icon={<FontAwesomeIcon icon={faClone} />}
+              onClick={() =>
+                dispatch(actions.polygonClone(kptPolygonId))
+              }
+            />,
             <Button size='small' type='link' danger
               icon={<DeleteOutlined />}
-              onClick={() =>
+              onClick={() => {
+                dispatch(actions.polygonDelete(kptPolygonId))
                 dispatch(actions.deleteDrawingObj({objType: KEEPOUT, objId: kptPolygonId}))
-              }
+              }}
             />
           ]}
-          onMouseEnter={() =>
+          onMouseEnter={() => {
+            dispatch(actions.releaseHoverObj())
             dispatch(actions.polygonHighlight(kptPolygonId))
-          }
-          onMouseLeave={() =>
-            dispatch(actions.polygonHighlight(kptPolygonId))
-          }
+          }}
+          onMouseLeave={() => {
+            dispatch(actions.releaseHoverObj())
+            dispatch(actions.polygonDeHighlight(kptPolygonId))
+          }}
         >
-          <Text>{`屋顶障碍物${index}`}</Text>
+          <Text>{`屋顶障碍物${index + 1}`}</Text>
         </List.Item>
       )}
     />

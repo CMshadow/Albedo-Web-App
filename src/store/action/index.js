@@ -112,7 +112,8 @@ export {
   polygonSetHeight,
   polygonMoveHori,
   polygonMoveVerti,
-  polygonDelete
+  polygonDelete,
+  polygonClone
 } from './drawing/polygonAction'
 
 export {
@@ -127,7 +128,8 @@ export {
   polylineMoveVertiNoSideEff,
   polylineTerminate,
   polylineUpdateVertex,
-  polylineDelete
+  polylineDelete,
+  polylineClone
 } from './drawing/polylineAction'
 
 export {
@@ -154,6 +156,8 @@ export {
 } from './modeling/modelingUIAction'
 
 export {
+  setBuildingParams,
+  setModelingLoading,
   bindDrawingObj,
   deleteDrawingObj
 } from './modeling/modelingBuildingAction'

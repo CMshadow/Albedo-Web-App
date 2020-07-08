@@ -41,23 +41,6 @@ const EditPolygonContextMenu = ({hoverId}) => {
           </MenuItem> :
           null
         }
-        <MenuItem
-          onClick={() => {
-            dispatch(actions.polygonDelete(hoverId))
-            dispatch(actions.releaseHoverObj())
-          }}
-        >
-          <Row gutter={[8, 8]} align='middle'>
-            <Button
-              className={styles.button}
-              type='primary'
-              size='small'
-              danger
-            >
-              Delete Polygon
-            </Button>
-          </Row>
-        </MenuItem>
       </Card>
     </ContextMenu>
   );

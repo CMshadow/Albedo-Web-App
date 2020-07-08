@@ -27,6 +27,7 @@ const RightClickHandler = () => {
         dispatch(actions.polylineTerminate(drawingId))
         dispatch(actions.setDrwStatIdle())
         dispatch(actions.enableRotate())
+        dispatch(actions.setModelingLoading(false))
         break
 
       case objTypes.POLYGON:
@@ -39,6 +40,7 @@ const RightClickHandler = () => {
         dispatch(actions.polylineAddVertex({polylineId, mouseCor, pointId}))
         dispatch(actions.setDrwStatIdle())
         dispatch(actions.enableRotate())
+        dispatch(actions.setModelingLoading(false))
         break
 
       default:

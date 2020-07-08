@@ -13,6 +13,13 @@ export const setBuildingParams = ({
   });
 }
 
+export const setModelingLoading = (loading) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.SET_MODELING_LOADING,
+    modelingLoading: loading
+  })
+}
+
 export const bindDrawingObj = ({objType, objId}) => (dispatch, getState) => {
   return dispatch({
     type: actionTypes.BIND_DRAWING_OBJECT,
@@ -22,12 +29,6 @@ export const bindDrawingObj = ({objType, objId}) => (dispatch, getState) => {
 }
 
 export const deleteDrawingObj = ({objType, objId}) => (dispatch, getState) => {
-  // switch (objType) {
-  //   case KEEPOUT:
-  //     dispatch()
-  //   default:
-  //     break
-  // }
   return dispatch({
     type: actionTypes.DELETE_DRAWING_OBJECT,
     objType: objType,

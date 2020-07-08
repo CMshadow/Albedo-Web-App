@@ -15,7 +15,8 @@ const initialState = {
   passageId: [],
   ventId: [],
   treeId: [],
-  envId: []
+  envId: [],
+  modelingLoading: false
 }
 
 const setBuildingParams = (state, action) => {
@@ -30,7 +31,15 @@ const setBuildingParams = (state, action) => {
     passageId: [],
     ventId: [],
     treeId: [],
-    envId: []
+    envId: [],
+    modelingLoading: false
+  }
+}
+
+const setModelingLoading = (state, action) => {
+  return {
+    ...state,
+    modelingLoading: action.modelingLoading
   }
 }
 
@@ -53,9 +62,9 @@ const deleteDrawingObj = (state, action) => {
   const newState = {...state}
   switch (action.objType) {
     case KEEPOUT:
-      const index = newState.keepoutId.indexOf(id => id === action.objId)
+      const index = newState.keepoutId.indexOf(action.objId)
       newState.keepoutId.splice(index ,1)
-    break
+      break
     default:
       break
   }
@@ -66,6 +75,8 @@ const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.MODELING_CREATE_BUILDING:
       return setBuildingParams(state, action)
+    case actionTypes.SET_MODELING_LOADING:
+      return setModelingLoading(state, action)
     case actionTypes.BIND_DRAWING_OBJECT:
       return bindDrawingObj(state, action)
     case actionTypes.DELETE_DRAWING_OBJECT:

@@ -41,12 +41,15 @@ export const sectorHighlight = (sectorId) => (dispatch, getState) => {
 }
 
 export const sectorDeHighlight = (sectorId) => (dispatch, getState) => {
-  const sector = getState().undoable.present.sector[sectorId].entity
-  sector.setColor(sector.theme)
-  return dispatch({
-    type: actionTypes.SECTOR_SET,
-    entity: sector,
-  })
+  const obj = getState().undoable.present.sector[sectorId]
+  if (obj) {
+    const sector = obj.entity
+    sector.setColor(sector.theme)
+    return dispatch({
+      type: actionTypes.SECTOR_SET,
+      entity: sector,
+    })
+  }
 }
 
 export const sectorSetShow = (sectorId, show) => (dispatch, getState) => {

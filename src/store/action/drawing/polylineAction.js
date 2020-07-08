@@ -38,13 +38,16 @@ export const polylineHighlight = (polylineId) => (dispatch, getState) => {
 }
 
 export const polylineDeHighlight = (polylineId) => (dispatch, getState) => {
-  const polyline = getState().undoable.present.polyline[polylineId].entity
-  polyline.setColor(polyline.theme)
+  const obj = getState().undoable.present.polyline[polylineId]
+  if (obj) {
+    const polyline = obj.entity
+    polyline.setColor(polyline.theme)
 
-  return dispatch({
-    type: actionTypes.POLYLINE_SET,
-    entity: polyline,
-  })
+    return dispatch({
+      type: actionTypes.POLYLINE_SET,
+      entity: polyline,
+    })
+  }
 }
 
 export const polylineSetShow = (polylineId, show) => (dispatch, getState) => {
@@ -206,5 +209,25 @@ export const polylineDelete = (polylineId) => async (dispatch, getState) => {
   return dispatch({
     type: actionTypes.POLYLINE_DELETE,
     polylineId: polylineId
+  })
+}
+
+export const polylineClone = ({originId, newId, oldNewPointMap, newInsidePolygonId}) => (dispatch, getState) => {
+  const polyline = getState().undoable.present.polyline[originId].entity
+  const props = getState().undoable.present.polyline[originId].props
+  const pointMap = getState().undoable.present.polyline[originId].pointMap
+  const newPointMap = pointMap.map(pointId => oldNewPointMap[pointId])
+  const newPoints = polyline.points.map(cor =>
+    Coordinate.destination(cor, 135, 3)
+  )
+
+  const newPolyline = Polyline.fromPolyline(polyline, newPoints, newId)
+
+  return dispatch({
+    type: actionTypes.POLYLINE_SET,
+    entity: newPolyline,
+    props: props,
+    pointMap: newPointMap,
+    insidePolygonId: newInsidePolygonId || 'EMPTY'
   })
 }
