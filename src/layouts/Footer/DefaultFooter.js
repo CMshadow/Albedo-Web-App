@@ -9,10 +9,10 @@ const DefaultFooter = (props) => {
   const { t } = useTranslation();
   return (
     <Footer className={styles.footer}>
-      <a href="https://albedopowered.com" target="_blank" rel="noopener noreferrer">
+      {/* <a href="https://albedopowered.com" target="_blank" rel="noopener noreferrer">
         {t('footer.about')}
       </a>
-      <Divider type="vertical" />
+      <Divider type="vertical" /> */}
       <a href="https://albedowebdesign.com/terms" target="_blank" rel="noopener noreferrer">
         {t('footer.term-of-use')}
       </a>
