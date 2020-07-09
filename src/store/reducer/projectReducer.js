@@ -31,36 +31,30 @@ const releaseProjectData = (state, action) => {
 }
 
 const addBuilding = (state, action) => {
-  if (state.buildings) {
-    const newState = {
-      ...state,
-      buildings: [
-        ...state.buildings,
-        {
-          buildingID: uuidv1(),
-          buildingName: action.buildingName,
-          combibox_cable_len: action.combibox_cable_len,
-          reGenReport: true,
-          data:[]
-        }
-      ]
-    }
+  const newState = {...state}
+  if (!newState.buildings) newState.buildings = []
+
+  newState.buildings.splice(0, 0, {
+    buildingID: uuidv1(),
+    buildingName: action.buildingName,
+    combibox_cable_len: action.combibox_cable_len,
+    reGenReport: true,
+    data:[]
+  })
+
+  if (newState.buildings.length >= 2) {
     const aggrBuilding = newState.buildings.find(building => building.buildingID === 'aggr')
-    console.log(aggrBuilding)
-  } else {
-    return {
-      ...state,
-      buildings: [
-        {
-          buildingID: uuidv1(),
-          buildingName: action.buildingName,
-          combibox_cable_len: action.combibox_cable_len,
-          reGenReport: true,
-          data:[]
-        }
-      ]
+    if (!aggrBuilding) {
+      newState.buildings.push({
+        buildingID: 'aggr',
+        buildingName: action.t('project.add.building.aggr'),
+        combibox_cable_len: 50,
+        reGenReport: true,
+        data: newState.buildings[newState.buildings.length - 1].data
+      })
     }
   }
+  return newState
 }
 
 const editBuilding = (state, action) => {
@@ -83,6 +77,10 @@ const deleteBuilding = (state, action) => {
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   newBuildings.splice(spliceIndex, 1)
+  if (newBuildings.length <= 2) {
+    const aggrBuilding = newBuildings.find(building => building.buildingID === 'aggr')
+    if (aggrBuilding) newBuildings.splice(newBuildings.length - 1, 1)
+  }
   return {
     ...state,
     buildings: newBuildings
@@ -101,6 +99,8 @@ const setBuildingReGenReport = (state, action) => {
 }
 
 const addPVSpec = (state, action) => {
+  console.log('addpvspec')
+  console.log(state.buildings)
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
@@ -114,6 +114,16 @@ const addPVSpec = (state, action) => {
     },
     inverter_wiring: []
   })
+
+  const aggrBuilding = newBuildings.find(building => building.buildingID === 'aggr')
+  console.log(aggrBuilding)
+  if (aggrBuilding) {
+    aggrBuilding.reGenReport = true
+    aggrBuilding.data = []
+    newBuildings.slice(0, -1).forEach(building => building.data.forEach(record => {
+      aggrBuilding.data.push(record)
+    }))
+  }
   return {
     ...state,
     buildings: newBuildings
@@ -121,6 +131,7 @@ const addPVSpec = (state, action) => {
 }
 
 const editPVSpec = (state, action) => {
+  console.log('editPvSpec')
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
@@ -145,6 +156,15 @@ const editPVSpec = (state, action) => {
       dc_cable_len: new Array(plan.spi).fill(0)
     }))
   }
+  const aggrBuilding = newBuildings.find(building => building.buildingID === 'aggr')
+  if (aggrBuilding) {
+    aggrBuilding.reGenReport = true
+    aggrBuilding.data = []
+    newBuildings.slice(0, -1).forEach(building => building.data.forEach(record => {
+      aggrBuilding.data.push(record)
+    }))
+  }
+  console.log(newBuildings)
   return {
     ...state,
     buildings: newBuildings
@@ -157,6 +177,14 @@ const deletePVSpec = (state, action) => {
   const newBuildings = [...state.buildings]
   newBuildings[buildingIndex].reGenReport = true
   newBuildings[buildingIndex].data.splice(action.specIndex, 1)
+
+  const aggrBuilding = newBuildings.find(building => building.buildingID === 'aggr')
+  if (aggrBuilding) {
+    aggrBuilding.reGenReport = true
+    newBuildings.slice(0, -1).forEach(building => building.data.forEach(data => {
+      aggrBuilding.data.push(data)
+    }))
+  }
   return {
     ...state,
     buildings: newBuildings
@@ -164,6 +192,7 @@ const deletePVSpec = (state, action) => {
 }
 
 const addInverterSpec = (state, action) => {
+  console.log('addInverterSpec')
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
@@ -182,6 +211,7 @@ const addInverterSpec = (state, action) => {
 }
 
 const editInverterSpec = (state, action) => {
+  console.log('editInverterSpec')
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]

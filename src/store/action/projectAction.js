@@ -23,7 +23,8 @@ export const releaseProjectData = () => (dispatch, getState) => {
 export const addBuilding = (values, t) => (dispatch, getState) => {
   return dispatch({
     type: actionTypes.ADD_BUILDING,
-    ...values
+    t: t,
+    ...values,
   })
 }
 
