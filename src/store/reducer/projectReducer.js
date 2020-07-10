@@ -99,8 +99,6 @@ const setBuildingReGenReport = (state, action) => {
 }
 
 const addPVSpec = (state, action) => {
-  console.log('addpvspec')
-  console.log(state.buildings)
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
@@ -115,15 +113,6 @@ const addPVSpec = (state, action) => {
     inverter_wiring: []
   })
 
-  const aggrBuilding = newBuildings.find(building => building.buildingID === 'aggr')
-  console.log(aggrBuilding)
-  if (aggrBuilding) {
-    aggrBuilding.reGenReport = true
-    aggrBuilding.data = []
-    newBuildings.slice(0, -1).forEach(building => building.data.forEach(record => {
-      aggrBuilding.data.push(record)
-    }))
-  }
   return {
     ...state,
     buildings: newBuildings
@@ -131,16 +120,16 @@ const addPVSpec = (state, action) => {
 }
 
 const editPVSpec = (state, action) => {
-  console.log('editPvSpec')
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
-  newBuildings[buildingIndex].data[action.specIndex].pv_panel_parameters = {
+  const newPVSpec = {
     tilt_angle: Number(action.tilt_angle),
     azimuth: Number(action.azimuth),
     mode: 'single',
     pv_model: {pvID: action.pvID, userID: action.pv_userID}
   }
+  newBuildings[buildingIndex].data[action.specIndex].pv_panel_parameters = newPVSpec
   newBuildings[buildingIndex].reGenReport = true
   if (action.invPlan.plan) {
     newBuildings[buildingIndex].data[action.specIndex].inverter_wiring =
@@ -156,18 +145,10 @@ const editPVSpec = (state, action) => {
       dc_cable_len: new Array(plan.spi).fill(0)
     }))
   }
-  const aggrBuilding = newBuildings.find(building => building.buildingID === 'aggr')
-  if (aggrBuilding) {
-    aggrBuilding.reGenReport = true
-    aggrBuilding.data = []
-    newBuildings.slice(0, -1).forEach(building => building.data.forEach(record => {
-      aggrBuilding.data.push(record)
-    }))
-  }
-  console.log(newBuildings)
+
   return {
     ...state,
-    buildings: newBuildings
+    buildings: updateAggrBuilding(newBuildings)
   }
 }
 
@@ -181,18 +162,18 @@ const deletePVSpec = (state, action) => {
   const aggrBuilding = newBuildings.find(building => building.buildingID === 'aggr')
   if (aggrBuilding) {
     aggrBuilding.reGenReport = true
+    aggrBuilding.data = []
     newBuildings.slice(0, -1).forEach(building => building.data.forEach(data => {
       aggrBuilding.data.push(data)
     }))
   }
   return {
     ...state,
-    buildings: newBuildings
+    buildings: updateAggrBuilding(newBuildings)
   }
 }
 
 const addInverterSpec = (state, action) => {
-  console.log('addInverterSpec')
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
@@ -211,7 +192,6 @@ const addInverterSpec = (state, action) => {
 }
 
 const editInverterSpec = (state, action) => {
-  console.log('editInverterSpec')
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
@@ -228,7 +208,7 @@ const editInverterSpec = (state, action) => {
   newBuildings[buildingIndex].reGenReport = true
   return {
     ...state,
-    buildings: newBuildings
+    buildings: updateAggrBuilding(newBuildings)
   }
 }
 
@@ -245,8 +225,34 @@ const deleteInverterSpec = (state, action) => {
   })
   return {
     ...state,
-    buildings: newBuildings
+    buildings: updateAggrBuilding(newBuildings)
   }
+}
+
+const updateAggrBuilding = (newBuildings) => {
+  const aggrBuilding = newBuildings.find(building => building.buildingID === 'aggr')
+  if (aggrBuilding) {
+    aggrBuilding.reGenReport = true
+    aggrBuilding.data = []
+    const existSpecIndexMap = {}
+    newBuildings.slice(0, -1).forEach(building => building.data.forEach(spec => {
+      const searchKey = JSON.stringify(spec.pv_panel_parameters)
+      if (searchKey in existSpecIndexMap) {
+        aggrBuilding.data[existSpecIndexMap[searchKey]].inverter_wiring =
+        [
+          ...aggrBuilding.data[existSpecIndexMap[searchKey]].inverter_wiring,
+          ...spec.inverter_wiring
+        ]
+      } else {
+        existSpecIndexMap[searchKey] = aggrBuilding.data.length
+        aggrBuilding.data.push({
+          pv_panel_parameters: {...spec.pv_panel_parameters},
+          inverter_wiring: [...spec.inverter_wiring]
+        })
+      }
+    }))
+  }
+  return newBuildings
 }
 
 const reducer = (state=initialState, action) => {
