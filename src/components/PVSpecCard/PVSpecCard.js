@@ -30,6 +30,9 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
     if (props.tilt_angle !== null) setediting(false)
   }, [props.tilt_angle])
 
+  const editDisabled = editing || buildingID === 'aggr'
+  const deleteDisabled = buildingID === 'aggr'
+
   return (
     <Card className={styles.card} bodyStyle={{padding: '0px'}}>
       <Row gutter={12} justify='center'>
@@ -45,14 +48,15 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
         <Col {...toolbarSpan} flex="auto">
           <Row align='middle' className={styles.toolbar}>
             <Button
-              disabled={editing}
+              disabled={editDisabled}
               type='link'
               shape="circle"
-              icon={<EditTwoTone twoToneColor={editing ? '#bfbfbf' : '#1890ff'}/>}
+              icon={<EditTwoTone twoToneColor={editDisabled ? '#bfbfbf' : '#1890ff'}/>}
               onClick={() => setediting(true)}
             />
             <Divider className={styles.divider}/>
             <Button
+              disabled={deleteDisabled}
               type='link'
               shape="circle"
               danger
@@ -78,14 +82,14 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
                     buildingID={buildingID}
                     specIndex={specIndex}
                     invIndex={invIndex}
-                    disabled={editing}
+                    disabled={editDisabled}
                     {...invSpec}
                   />
                 )
               }
               <Button
                 className={styles.addSpec}
-                disabled={editing}
+                disabled={editDisabled}
                 block
                 type="dashed"
                 onClick={addSpec}

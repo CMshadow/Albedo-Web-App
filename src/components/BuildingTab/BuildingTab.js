@@ -16,12 +16,12 @@ export const BuildingTab = ({buildings, ...props}) => {
   const [showModal, setshowModal] = useState(false)
   const [editRecord, seteditRecord] = useState(null)
 
-  const deleteBuildingTab = (targetKey) => {
-    dispatch(deleteBuilding(targetKey))
+  const deleteBuildingTab = (buildingID) => {
+    dispatch(deleteBuilding(buildingID))
   }
 
-  const onEdit = (targetKey, action) => {
-    if (action === 'remove') deleteBuildingTab(targetKey)
+  const onEdit = (buildingID, action) => {
+    if (action === 'remove' && buildingID !== 'aggr') deleteBuildingTab(buildingID)
   }
 
   const addSpec = (buildingID) => {
@@ -48,46 +48,55 @@ export const BuildingTab = ({buildings, ...props}) => {
         tabBarExtraContent={addBuildingButton}
         onEdit={onEdit}
       >
-        {buildings.map(building => (
-          <TabPane
-            tab={
-              <Space size='middle'>
-                {building.buildingName}
-                <SettingOutlined
-                  className={styles.icon}
-                  onClick={() => {
-                    seteditRecord(building)
-                    setshowModal(true)}
+        {
+          buildings.map(building => (
+            <TabPane
+              tab={
+                <Space size='middle'>
+                  {building.buildingName}
+                  {
+                    building.buildingID !== 'aggr' ?
+                    <SettingOutlined
+                      className={styles.icon}
+                      onClick={() => {
+                        seteditRecord(building)
+                        setshowModal(true)}
+                      }
+                    /> :
+                    null
                   }
-                />
-              </Space>
-            }
-            key={building.buildingID}
-          >
-            {building.data.map((spec, specIndex) => (
-              <PVSpecCard
-                editing={
-                  spec.pv_panel_parameters.tilt_angle === null ?
-                  true : false
-                }
-                buildingID={building.buildingID}
-                specIndex={specIndex}
-                key={specIndex}
-                {...spec.pv_panel_parameters}
-              />
-            ))}
-          <Button
-            className={styles.addSpec}
-            block
-            type="dashed"
-            onClick={() => addSpec(building.buildingID)}
-          >
-            {t('project.add.spec.prefix')}
-            {building.buildingName}
-            {t('project.add.spec')}
-          </Button>
-        </TabPane>
-      ))}
+                </Space>
+              }
+              key={building.buildingID}
+            >
+              {
+                building.data.map((spec, specIndex) => (
+                  <PVSpecCard
+                    editing={
+                      spec.pv_panel_parameters.tilt_angle === null ?
+                      true : false
+                    }
+                    buildingID={building.buildingID}
+                    specIndex={specIndex}
+                    key={specIndex}
+                    {...spec.pv_panel_parameters}
+                  />
+                ))
+              }
+              <Button
+                className={styles.addSpec}
+                block
+                type="dashed"
+                onClick={() => addSpec(building.buildingID)}
+                disabled={building.buildingID === 'aggr'}
+              >
+                {t('project.add.spec.prefix')}
+                {building.buildingName}
+                {t('project.add.spec')}
+              </Button>
+            </TabPane>
+          ))
+        }
       </Tabs>
       <BuildingModal
         showModal={showModal}
