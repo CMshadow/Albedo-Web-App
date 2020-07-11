@@ -32,7 +32,7 @@ const releaseProjectData = (state, action) => {
 
 const addBuilding = (state, action) => {
   if (state.buildings) {
-    const newState = {
+    return {
       ...state,
       buildings: [
         ...state.buildings,
@@ -45,8 +45,6 @@ const addBuilding = (state, action) => {
         }
       ]
     }
-    const aggrBuilding = newState.buildings.find(building => building.buildingID === 'aggr')
-    console.log(aggrBuilding)
   } else {
     return {
       ...state,
