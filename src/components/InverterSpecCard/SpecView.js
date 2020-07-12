@@ -50,8 +50,8 @@ export const SpecView = ({buildingID, specIndex, invIndex}) => {
       <Item label={t('project.spec.panels_per_string')} span={4}>
         <Space>{spec.panels_per_string} {checkPpsWarning()}</Space>
       </Item>
-      <Item label={t('project.spec.ac_cable_len')} span={4}>{m2other(unit, spec.ac_cable_len)} {unit}</Item>
-      <Item label={t('project.spec.dc_cable_len')} span={4}>{spec.dc_cable_len.map(v => `${m2other(unit, v)} ${unit}`).join(', ')}</Item>
+      <Item label={t('project.spec.ac_cable_len')} span={4}>{m2other(unit, spec.ac_cable_len).toFixed(2)} {unit}</Item>
+      <Item label={t('project.spec.dc_cable_len')} span={4}>{spec.dc_cable_len.map(v => `${m2other(unit, v).toFixed(2)} ${unit}`).join(', ')}</Item>
       <Item label={t('project.spec.total_panels')} span={4}>{spec.string_per_inverter * spec.panels_per_string}</Item>
     </Descriptions>
   )

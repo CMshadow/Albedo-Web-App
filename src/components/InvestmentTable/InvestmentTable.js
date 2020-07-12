@@ -352,7 +352,7 @@ export const InvestmentTable = ({ buildingID }) => {
           return `${newText.value} ${newText.unit}`
         }
         if (dcReg.test(row.key) || acReg.test(row.key) || combiboxReg.test(row.key)) {
-          return `${m2other(unit, text).toFixed(4)} ${unit}`
+          return `${m2other(unit, text).toFixed(2)} ${unit}`
         }
         return text
       },
