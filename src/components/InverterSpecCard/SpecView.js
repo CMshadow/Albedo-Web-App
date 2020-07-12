@@ -2,12 +2,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next'
 import { Descriptions, Typography, Space } from 'antd'
 import { useSelector } from 'react-redux'
+import { m2other } from '../../utils/unitConverter'
 const Item = Descriptions.Item
 const Text = Typography.Text
 
 export const SpecView = ({buildingID, specIndex, invIndex}) => {
   const { t } = useTranslation()
-
+  const unit = useSelector(state => state.unit.unit)
   const buildings = useSelector(state => state.project.buildings)
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
@@ -49,8 +50,8 @@ export const SpecView = ({buildingID, specIndex, invIndex}) => {
       <Item label={t('project.spec.panels_per_string')} span={4}>
         <Space>{spec.panels_per_string} {checkPpsWarning()}</Space>
       </Item>
-      <Item label={t('project.spec.ac_cable_len')} span={4}>{spec.ac_cable_len}m</Item>
-      <Item label={t('project.spec.dc_cable_len')} span={4}>{spec.dc_cable_len.map(v => `${v}m`).join(', ')}</Item>
+      <Item label={t('project.spec.ac_cable_len')} span={4}>{m2other(unit, spec.ac_cable_len)} {unit}</Item>
+      <Item label={t('project.spec.dc_cable_len')} span={4}>{spec.dc_cable_len.map(v => `${m2other(unit, v)} ${unit}`).join(', ')}</Item>
       <Item label={t('project.spec.total_panels')} span={4}>{spec.string_per_inverter * spec.panels_per_string}</Item>
     </Descriptions>
   )

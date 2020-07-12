@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react'
 import { Modal, Input, Form, InputNumber } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addBuilding, editBuilding } from '../../store/action/index';
+import { other2m } from '../../utils/unitConverter'
 const FormItem = Form.Item;
 
 export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecord}) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [form] = Form.useForm()
+  const unit = useSelector(state => state.unit.unit)
 
   // 通用required项提示文本
   const validateMessages = {
@@ -38,6 +40,7 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
   }
 
   const submitForm = (values) => {
+    values.combibox_cable_len = other2m(unit, values.combibox_cable_len)
     if (editRecord) {
       dispatch(editBuilding({buildingID: editRecord.buildingID, ...values}))
     } else {
@@ -81,8 +84,8 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
           rules={[{required: true}]}
         >
           <InputNumber
-            formatter={value => `${value}m`}
-            parser={value => value.replace('m', '')}
+            formatter={value => `${value}${unit}`}
+            parser={value => value.replace(unit, '')}
             precision={2}
             min={0}
             style={{width: '100%'}}

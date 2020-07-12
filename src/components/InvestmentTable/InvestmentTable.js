@@ -3,7 +3,7 @@ import { Table, Form, Input, InputNumber, Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { TableHeadDescription } from '../Descriptions/TableHeadDescription'
-import { other2w, w2other } from '../../utils/unitConverter'
+import { other2w, w2other, m2other } from '../../utils/unitConverter'
 import { updateReportAttributes } from '../../store/action/index'
 import { MoneyText } from '../../utils/genMoneyText'
 import './InvestmentTable.scss'
@@ -106,6 +106,7 @@ export const InvestmentTable = ({ buildingID }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const projectData = useSelector(state => state.project)
+  const unit = useSelector(state => state.unit.unit)
   const pvData = useSelector(state => state.pv.data).concat(
     useSelector(state => state.pv.officialData)
   )
@@ -238,7 +239,7 @@ export const InvestmentTable = ({ buildingID }) => {
       ...Object.keys(uniqueDCLength).map((DCwir, index) => ({
         key: `1.3.${index + 1}`,
         description: DCwir,
-        unit: t('investment.unit.price/m'),
+        unit: t(`investment.unit.price/${unit}`),
         quantity: uniqueDCLength[DCwir],
         unitPriceEditable: true
       })),{
@@ -249,7 +250,7 @@ export const InvestmentTable = ({ buildingID }) => {
       ...Object.keys(uniqueACLength).map((ACwir, index) => ({
         key: `1.4.${index + 1}`,
         description: ACwir,
-        unit: t('investment.unit.price/m'),
+        unit: t(`investment.unit.price/${unit}`),
         quantity: uniqueACLength[ACwir],
         unitPriceEditable: true
       })),{
@@ -259,7 +260,7 @@ export const InvestmentTable = ({ buildingID }) => {
         description: reportData[buildingID] ?
           `${reportData[buildingID].combibox_wir_choice} (AC)` :
           null,
-        unit: t('investment.unit.price/m'),
+        unit: t(`investment.unit.price/${unit}`),
         quantity: buildingData.combibox_cable_len,
         unitPriceEditable: true
       },{
@@ -342,7 +343,7 @@ export const InvestmentTable = ({ buildingID }) => {
           return `${newText.value} ${newText.unit}`
         }
         if (dcReg.test(row.key) || acReg.test(row.key) || combiboxReg.test(row.key)) {
-          return `${text} m`
+          return `${m2other(unit, text).toFixed(4)} ${unit}`
         }
         return text
       },
