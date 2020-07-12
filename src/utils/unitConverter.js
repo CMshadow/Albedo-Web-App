@@ -170,3 +170,13 @@ export const kg2other = (data) => {
   if (data < 1000) return {value: data, unit: 'kg'}
   else return {value: data / 1000, unit: 't'}
 }
+
+export const other2m = (unit, value) => {
+  if (unit === 'm') return value
+  else return Number((value * 0.3048).toFixed(4))
+}
+
+export const m2other = (unit, value) => {
+  if (unit === 'm') return value
+  else return Number((value * 3.28084).toFixed(4))
+}

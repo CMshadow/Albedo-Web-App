@@ -41,6 +41,7 @@
   "investment.unit.price/tao": "$/Set",
   "investment.unit.price/xiang": "$/Project",
   "investment.unit.price/m": "$/m",
+  "investment.unit.price/ft": "$/ft",
   "investment.unit.price": "$",
   "investment.unit.price/W": "$/W",
   "investment.unit.price/KW": "$/kW"

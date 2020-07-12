@@ -3,7 +3,7 @@ import { Table, Form, Input, InputNumber, Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { TableHeadDescription } from '../Descriptions/TableHeadDescription'
-import { other2w, w2other } from '../../utils/unitConverter'
+import { other2w, w2other, m2other } from '../../utils/unitConverter'
 import { updateReportAttributes } from '../../store/action/index'
 import { MoneyText } from '../../utils/genMoneyText'
 import './InvestmentTable.scss'
@@ -106,6 +106,7 @@ export const InvestmentTable = ({ buildingID }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const projectData = useSelector(state => state.project)
+  const unit = useSelector(state => state.unit.unit)
   const pvData = useSelector(state => state.pv.data).concat(
     useSelector(state => state.pv.officialData)
   )
@@ -127,7 +128,7 @@ export const InvestmentTable = ({ buildingID }) => {
       return acc
     }, 0)
   }))
-  const uniquePVCount = reduceUnique(pvCount)
+  const uniquePVCountJSON = JSON.stringify(reduceUnique(pvCount))
   // 统计每种用到的逆变器型号及数量
   const inverterCount = buildingData.data.flatMap(spec =>
     spec.inverter_wiring.map(inverterSpec => ({
@@ -137,7 +138,7 @@ export const InvestmentTable = ({ buildingID }) => {
       count: 1
     }))
   )
-  const uniqueInverterCount = reduceUnique(inverterCount)
+  const uniqueInverterCountJSON = JSON.stringify(reduceUnique(inverterCount))
   // 统计每种用到的DC线型号及线长
   const DCLength = buildingData.data.flatMap((spec, specIndex) =>
     spec.inverter_wiring.flatMap((inverterSpec, inverterSpecIndex) =>
@@ -147,7 +148,7 @@ export const InvestmentTable = ({ buildingID }) => {
       }))
     )
   )
-  const uniqueDCLength = reduceUnique(DCLength)
+  const uniqueDCLengthJSON = JSON.stringify(reduceUnique(DCLength))
   // 统计每种用到的AC线型号及线长
   const ACLength = buildingData.data.flatMap((spec, specIndex) =>
     spec.inverter_wiring.flatMap((inverterSpec, inverterSpecIndex) => ({
@@ -155,134 +156,143 @@ export const InvestmentTable = ({ buildingID }) => {
       count: inverterSpec.ac_cable_len
     }))
   )
-  const uniqueACLength = reduceUnique(ACLength)
+  const uniqueACLengthJSON = JSON.stringify(reduceUnique(ACLength))
   // 项目DC装机量单位W
   const DCCapacityInW = other2w(
     reportData[buildingID].ttl_dc_power_capacity.value,
     reportData[buildingID].ttl_dc_power_capacity.unit
   )
-  const initDataSource = reportData[buildingID].investment.length > 0 ?
-    reportData[buildingID].investment :
-    [
-      {
-        key: 0,
-        series: t('investment.series.one'),
-        name: t('investment.name.costList'),
-      },{
-        key: 1,
-        series: 1,
-        name: t('investment.name.pv'),
-      },
-      ...Object.keys(uniquePVCount).map((pvName, index) => ({
-        key: `1.1.${index + 1}`,
-        description: pvName,
-        unit: t('investment.unit.price/kuai'),
-        quantity: uniquePVCount[pvName],
-        unitPriceEditable: true
-      })),{
-        key: 2,
-        series: 2,
-        name: t('investment.name.rack'),
-        description: t('investment.description.rack'),
-        unit: t('investment.unit.price/W'),
-        quantity: reportData[buildingID] ? DCCapacityInW : null,
-        unitPriceEditable: true
-      },{
-        key: 3,
-        series: 3,
-        name: t('investment.name.inverter'),
-      },
-      ...Object.keys(uniqueInverterCount).map((inverterName, index) => ({
-        key: `1.2.${index + 1}`,
-        description: inverterName,
-        unit: t('investment.unit.price/tai'),
-        quantity: uniqueInverterCount[inverterName],
-        unitPriceEditable: true
-      })),{
-        key: 4,
-        series: 4,
-        name: t('investment.name.combibox'),
-        unit: t('investment.unit.price/tai'),
-        quantity: 1,
-        descriptionEditable: true,
-        unitPriceEditable: true
-      },{
-        key: 5,
-        series: 5,
-        name: t('investment.name.meter'),
-        unit: t('investment.unit.price/kuai'),
-        quantity: 1,
-        descriptionEditable: true,
-        unitPriceEditable: true
-      },{
-        key: 6,
-        series: 6,
-        name: t('investment.name.router'),
-        unit: t('investment.unit.price/tao'),
-        quantity: 1,
-        descriptionEditable: true,
-        unitPriceEditable: true
-      },{
-        key: 7,
-        series: 7,
-        name: t('investment.name.comm'),
-        unit: t('investment.unit.price/tai'),
-        quantity: 1,
-        descriptionEditable: true,
-        unitPriceEditable: true
-      },{
-        key: 8,
-        series: 8,
-        name: t('investment.name.dc_wiring'),
-      },
-      ...Object.keys(uniqueDCLength).map((DCwir, index) => ({
-        key: `1.3.${index + 1}`,
-        description: DCwir,
-        unit: t('investment.unit.price/m'),
-        quantity: uniqueDCLength[DCwir],
-        unitPriceEditable: true
-      })),{
-        key: 9,
-        series: 9,
-        name: t('investment.name.ac_wiring'),
-      },
-      ...Object.keys(uniqueACLength).map((ACwir, index) => ({
-        key: `1.4.${index + 1}`,
-        description: ACwir,
-        unit: t('investment.unit.price/m'),
-        quantity: uniqueACLength[ACwir],
-        unitPriceEditable: true
-      })),{
-        key: 10,
-        series: 10,
-        name: t('investment.name.combibox_wiring'),
-        description: reportData[buildingID] ?
-          `${reportData[buildingID].combibox_wir_choice} (AC)` :
-          null,
-        unit: t('investment.unit.price/m'),
-        quantity: buildingData.combibox_cable_len,
-        unitPriceEditable: true
-      },{
-        key: 11,
-        series: 11,
-        name: t('investment.name.rooftop'),
-        description: t('investment.description.rooftop'),
-        unit: t('investment.unit.price/xiang'),
-        quantity: 1,
-        unitPriceEditable: true
-      },{
-        key: 12,
-        series: 12,
-        name: t('investment.name.other'),
-        description: t('investment.description.other'),
-        unit: t('investment.unit.price/xiang'),
-        quantity: 1,
-        unitPriceEditable: true
-      }
-    ]
 
   // 生成表格数据
-  const [dataSource, setdataSource] = useState(initDataSource)
+  const [dataSource, setdataSource] = useState([])
+
+  useEffect(() => {
+    const uniquePVCount = JSON.parse(uniquePVCountJSON)
+    const uniqueInverterCount = JSON.parse(uniqueInverterCountJSON)
+    const uniqueDCLength = JSON.parse(uniqueDCLengthJSON)
+    const uniqueACLength = JSON.parse(uniqueACLengthJSON)
+
+    const ds = reportData[buildingID].investment.length > 0 ?
+      reportData[buildingID].investment :
+      [
+        {
+          key: 0,
+          series: t('investment.series.one'),
+          name: t('investment.name.costList'),
+        },{
+          key: 1,
+          series: 1,
+          name: t('investment.name.pv'),
+        },
+        ...Object.keys(uniquePVCount).map((pvName, index) => ({
+          key: `1.1.${index + 1}`,
+          description: pvName,
+          unit: t('investment.unit.price/kuai'),
+          quantity: uniquePVCount[pvName],
+          unitPriceEditable: true
+        })),{
+          key: 2,
+          series: 2,
+          name: t('investment.name.rack'),
+          description: t('investment.description.rack'),
+          unit: t('investment.unit.price/W'),
+          quantity: reportData[buildingID] ? DCCapacityInW : null,
+          unitPriceEditable: true
+        },{
+          key: 3,
+          series: 3,
+          name: t('investment.name.inverter'),
+        },
+        ...Object.keys(uniqueInverterCount).map((inverterName, index) => ({
+          key: `1.2.${index + 1}`,
+          description: inverterName,
+          unit: t('investment.unit.price/tai'),
+          quantity: uniqueInverterCount[inverterName],
+          unitPriceEditable: true
+        })),{
+          key: 4,
+          series: 4,
+          name: t('investment.name.combibox'),
+          unit: t('investment.unit.price/tai'),
+          quantity: 1,
+          descriptionEditable: true,
+          unitPriceEditable: true
+        },{
+          key: 5,
+          series: 5,
+          name: t('investment.name.meter'),
+          unit: t('investment.unit.price/kuai'),
+          quantity: 1,
+          descriptionEditable: true,
+          unitPriceEditable: true
+        },{
+          key: 6,
+          series: 6,
+          name: t('investment.name.router'),
+          unit: t('investment.unit.price/tao'),
+          quantity: 1,
+          descriptionEditable: true,
+          unitPriceEditable: true
+        },{
+          key: 7,
+          series: 7,
+          name: t('investment.name.comm'),
+          unit: t('investment.unit.price/tai'),
+          quantity: 1,
+          descriptionEditable: true,
+          unitPriceEditable: true
+        },{
+          key: 8,
+          series: 8,
+          name: t('investment.name.dc_wiring'),
+        },
+        ...Object.keys(uniqueDCLength).map((DCwir, index) => ({
+          key: `1.3.${index + 1}`,
+          description: DCwir,
+          unit: t(`investment.unit.price/${unit}`),
+          quantity: uniqueDCLength[DCwir],
+          unitPriceEditable: true
+        })),{
+          key: 9,
+          series: 9,
+          name: t('investment.name.ac_wiring'),
+        },
+        ...Object.keys(uniqueACLength).map((ACwir, index) => ({
+          key: `1.4.${index + 1}`,
+          description: ACwir,
+          unit: t(`investment.unit.price/${unit}`),
+          quantity: uniqueACLength[ACwir],
+          unitPriceEditable: true
+        })),{
+          key: 10,
+          series: 10,
+          name: t('investment.name.combibox_wiring'),
+          description: reportData[buildingID] ?
+            `${reportData[buildingID].combibox_wir_choice} (AC)` :
+            null,
+          unit: t(`investment.unit.price/${unit}`),
+          quantity: buildingData.combibox_cable_len,
+          unitPriceEditable: true
+        },{
+          key: 11,
+          series: 11,
+          name: t('investment.name.rooftop'),
+          description: t('investment.description.rooftop'),
+          unit: t('investment.unit.price/xiang'),
+          quantity: 1,
+          unitPriceEditable: true
+        },{
+          key: 12,
+          series: 12,
+          name: t('investment.name.other'),
+          description: t('investment.description.other'),
+          unit: t('investment.unit.price/xiang'),
+          quantity: 1,
+          unitPriceEditable: true
+        }
+      ]
+      setdataSource(ds)
+  }, [DCCapacityInW, buildingData.combibox_cable_len, buildingID, reportData, t, uniqueACLengthJSON, uniqueDCLengthJSON, uniqueInverterCountJSON, uniquePVCountJSON, unit])
 
   // 需要整行合并单元格的row keys
   const disabledRowKeys = [0, 1, 3, 8, 9]
@@ -342,7 +352,7 @@ export const InvestmentTable = ({ buildingID }) => {
           return `${newText.value} ${newText.unit}`
         }
         if (dcReg.test(row.key) || acReg.test(row.key) || combiboxReg.test(row.key)) {
-          return `${text} m`
+          return `${m2other(unit, text).toFixed(2)} ${unit}`
         }
         return text
       },

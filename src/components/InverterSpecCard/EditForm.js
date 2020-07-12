@@ -5,6 +5,7 @@ import { Form, Input, InputNumber, Row, Col, Select, Button, Drawer, Tooltip, Sp
 import { TableOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { editInverterSpec } from '../../store/action/index'
 import { InverterTableViewOnly } from '../InverterTable/InverterTableViewOnly'
+import { other2m } from '../../utils/unitConverter'
 import * as styles from './EditForm.module.scss'
 const FormItem = Form.Item;
 
@@ -15,6 +16,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
   const { t } = useTranslation()
   const [form] = Form.useForm()
   const [showDrawer, setshowDrawer] = useState(false)
+  const unit = useSelector(state => state.unit.unit)
   const pvData = useSelector(state => state.pv.data).concat(
     useSelector(state => state.pv.officialData)
   )
@@ -153,8 +155,12 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
   }
 
   const submitForm = (values) => {
-    // 组串线缆长度string转换数字array
-    values.dc_cable_len = values.dc_cable_len.split(',').map(v => Number(v))
+    // 组串线缆长度string转换数字array并进行m/ft到m的转换
+    values.dc_cable_len = values.dc_cable_len.split(',').map(v =>
+      other2m(unit, Number(v))
+    )
+    // ac线缆长度m/ft到m的转换
+    values.ac_cable_len = other2m(unit, values.ac_cable_len)
     dispatch(editInverterSpec({
       buildingID, specIndex, invIndex, ...values,
       inverter_userID: inverterData.find(
@@ -263,8 +269,8 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
               rules={[{required: true}]}
             >
               <InputNumber
-                formatter={value => `${value}m`}
-                parser={value => value.replace('m', '')}
+                formatter={value => `${value}${unit}`}
+                parser={value => value.replace(unit, '')}
                 precision={2}
                 min={0}
                 className={styles.inputNumber}
@@ -288,7 +294,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
             >
               <Input
                 className={styles.inputNumber}
-                addonAfter='m'
+                addonAfter={unit}
                 value={dc_cable_len.value}
                 onChange={onDCCableLenChange}
                 disabled={disabled}
