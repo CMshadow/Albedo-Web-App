@@ -8,6 +8,10 @@ export {
 } from './localeAction'
 
 export {
+  setUnit
+} from './unitAction'
+
+export {
   setProjectData,
   updateProjectAttributes,
   releaseProjectData,
@@ -128,4 +132,3 @@ export {
 export {
   addSector
 } from './drawing/sectorAction'
-
