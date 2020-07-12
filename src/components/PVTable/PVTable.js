@@ -59,6 +59,12 @@ export const PVTable = ({
       })
     }
   })
+  // 生成表单组件备注列属性
+  tableCols.splice(0, 0, {
+    title: t('PVtable.table.note'),
+    dataIndex: 'note',
+    key: 'note',
+  })
   // 生成表单组件名称列属性
   tableCols.splice(0, 0, {
     title: t('PVtable.table.name'),
