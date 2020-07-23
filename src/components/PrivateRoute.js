@@ -12,7 +12,7 @@ const PrivateRoute = ({ children, ...rest }) => {
           children
         ) : (
           <Redirect
-            to={{pathname: "/cn"}}
+            to={{pathname: "/user/login"}}
           />
         )
       }
