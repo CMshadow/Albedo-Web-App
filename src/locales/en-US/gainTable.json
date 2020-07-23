@@ -33,7 +33,7 @@
   "gain.net-cash-flow": "Net Cash Flow",
   "gain.acc-net-cash-flow": "Cumulative Net Cash Flow",
 
-  "gain.year.prefix": "",
+  "gain.year.prefix": "Year ",
   "gain.year.suffix": "",
 
   "gain.cash-in-flow.25year": "Total Gain over 25 Years",

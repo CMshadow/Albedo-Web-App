@@ -25,7 +25,6 @@ const Verification = (props) => {
   })
 
   const onFinish = (values) => {
-    console.log(location.state)
     setloading(true);
     ConfirmSignUp({
       username: location.state.username,

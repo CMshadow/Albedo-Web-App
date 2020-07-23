@@ -1,14 +1,14 @@
 import React from 'react';
 import { LogoutOutlined, UserOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import { Layout, Avatar, Dropdown, Menu, Row, Button } from 'antd';
+import { Layout, Avatar, Dropdown, Menu, Row, Button, Switch, Space } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import SelectLang from '../../components/SelectLang/index';
 import * as styles from './PrivateHeader.module.scss';
 import { Auth } from 'aws-amplify';
 import { genInitial } from '../../utils/genInitial';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { setCognitoUser } from '../../store/action/index';
+import { setCognitoUser, setUnit } from '../../store/action/index';
 
 const { Header } = Layout;
 
@@ -16,7 +16,8 @@ const PrivateHeader = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const history = useHistory();
-  const projectExist = Object.keys(useSelector(state => state.project)).length !== 0
+  const projectExist = useLocation().pathname.split('/')[1] === 'project'
+  const unit = useSelector(state => state.unit.unit)
 
   const signOut = () => {
     dispatch(setCognitoUser(null))
@@ -48,7 +49,16 @@ const PrivateHeader = (props) => {
         </Button> :
         null
       }
-      <Row className={styles.right}>
+      <Row className={styles.right} align='middle'>
+        <Space>
+          {t('header.unit')}
+          <Switch
+            checkedChildren='m'
+            unCheckedChildren='ft'
+            checked={unit === 'm'}
+            onChange={checked => dispatch(setUnit(checked ? 'm' : 'ft'))}
+          />
+        </Space>
         <Dropdown overlay={menuHeaderDropdown}>
           <div className={styles.item}>
             <Avatar className={styles.avatar} alt="avatar" icon={<UserOutlined />}/>

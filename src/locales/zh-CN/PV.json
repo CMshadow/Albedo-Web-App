@@ -8,6 +8,7 @@
   "PVTable.my": "我的光伏组件",
   "PVTable.official": "官方光伏组件",
   "PVtable.table.name": "组件名称",
+  "PVtable.table.note": "组件备注",
   "PVtable.table.companyName": "提供者",
   "PVtable.table.pmax": "峰值功率",
   "PVtable.table.vmpo": "最佳工作电压",

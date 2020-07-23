@@ -61,8 +61,15 @@ export const PVTableViewOnly = ({data, activeData, setactiveData}) => {
     dataIndex: 'companyName',
     key: 'companyName',
     sorter: (a, b) => a.companyName - b.companyName,
-    width: 200,
+    width: 150,
     ...SearchString({colKey: 'companyName', data, setactiveData}),
+  })
+  // 生成表单组件备注列属性
+  tableCols.splice(0, 0, {
+    title: t('PVtable.table.note'),
+    dataIndex: 'note',
+    key: 'note',
+    width: 150,
   })
   // 生成表单组件名称列属性
   tableCols.splice(0, 0, {

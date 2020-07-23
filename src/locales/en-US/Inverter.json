@@ -8,6 +8,7 @@
   "InverterTable.my": "My Inverters",
   "InverterTable.official": "Official Inverters",
   "InverterTable.table.name": "Inverter Model",
+  "InverterTable.table.note": "Description",
   "InverterTable.table.companyName": "Providers",
   "InverterTable.table.paco": "Rated Output Power",
   "InverterTable.table.vac": "Rated Output Voltage",

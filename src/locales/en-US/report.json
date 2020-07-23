@@ -25,6 +25,9 @@
   "report.paramsForm.loss_5": "5% Loss",
   "report.paramsForm.availability_0": "Completely Fail",
   "report.paramsForm.availability_100": "100% Efficiency",
+  "report.paramsForm.drop_0.1": "0.1% Voltage Drop",
+  "report.paramsForm.drop_2": "2% Voltage Drop",
+  "report.paramsForm.drop_5": "5% Voltage Drop",
 
   "report.paramsForm.disabled": "Auto",
   "report.paramsForm.pv": "Depends on Module",

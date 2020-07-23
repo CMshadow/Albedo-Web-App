@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom'
-import { Form, Input, Row, Col, Select, Button, Drawer, Divider, notification, Spin, Space, Descriptions, Tooltip } from 'antd';
+import { Form, Input, Row, Col, Select, Button, Drawer, Divider, notification, Spin, Space, Descriptions, Tooltip, Table } from 'antd';
 import { TableOutlined } from '@ant-design/icons'
 import { editPVSpec } from '../../store/action/index'
 import { PVTableViewOnly } from '../PVTable/PVTableViewOnly'
@@ -127,6 +127,20 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     }))
     .then(res => {
       setautoInvLoading(false)
+      if (res === 'PV and Inverter does not fit') {
+        notification.error({
+          message: t('project.autoInverter.no-fit'),
+        })
+        return
+      }
+      if (res.plan.length === 0) {
+        notification.warning({
+          message: t('project.autoInverter.too-small'),
+          description: t('project.autoInverter.too-small.detail'),
+          duration: 15,
+        })
+        return
+      }
       const notiKey = 'notification'
       const actCapacity = w2other((ttlPV - res.wasted) * pvPmax)
       const description = (
@@ -144,18 +158,25 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
             {ttlPV - res.wasted}
           </Item>
           <Item label={t('project.autoInverter.detail')} span={1}>
-            <Row>
-              <Col span={24}>
-                {res.plan.map((obj, i) => (
-                  <Row key={i}>
-                    {`
-                      ${t('project.spec.string_per_inverter')}: ${obj.spi},
-                      ${t('project.spec.panels_per_string')}: ${obj.pps}
-                    `}
-                  </Row>
-                ))}
-              </Col>
-            </Row>
+            <Table
+              scroll={{y: '40vh'}}
+              dataSource={res.plan.map((obj, index) => ({...obj, key: index}))}
+              pagination={false}
+              columns={[
+                {
+                  key: 'spi',
+                  title: t('project.spec.string_per_inverter'),
+                  dataIndex: 'spi',
+                  align: 'center'
+                },
+                {
+                  key: 'pps',
+                  title: t('project.spec.panels_per_string'),
+                  dataIndex: 'pps',
+                  align: 'center'
+                }
+              ]}
+            />
           </Item>
         </Descriptions>
       )
@@ -194,6 +215,10 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         }
       })
     })
+    .catch(err => {
+      console.log(err)
+      setautoInvLoading(false)
+    })
   }
 
 
@@ -217,11 +242,15 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
               rules={[{required: true}]}
             >
               <Select
+                showSearch
                 options={
                   pvActiveData.map(record => ({
                     label: record.name,
                     value: record.pvID
                   }))
+                }
+                filterOption={(value, option) =>
+                  option.label.toLowerCase().includes(value.toLowerCase())
                 }
               />
             </FormItem>
@@ -238,7 +267,13 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
           <Col span={12}>
             <FormItem
               name='tilt_angle'
-              label={t('project.spec.tilt_angle')}
+              label={
+                <Tooltip title={t(`project.spec.tilt_angle.hint`)}>
+                  <Space>
+                    <QuestionCircleOutlined/>{t('project.spec.tilt_angle')}
+                  </Space>
+                </Tooltip>
+              }
               rules={[{required: true}]}
               validateStatus={tilt.validateStatus}
               help={tilt.errorMsg || null}
@@ -254,7 +289,13 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
           <Col span={12}>
             <FormItem
               name='azimuth'
-              label={t('project.spec.azimuth')}
+              label={
+                <Tooltip title={t(`project.spec.azimuth.hint`)}>
+                  <Space>
+                    <QuestionCircleOutlined/>{t('project.spec.azimuth')}
+                  </Space>
+                </Tooltip>
+              }
               rules={[{required: true}]}
               validateStatus={azimuth.validateStatus}
               help={azimuth.errorMsg || null}
@@ -270,8 +311,9 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         </Row>
         <Divider>
           <Tooltip title={t('project.spec.optional.tooltip')}>
-            <QuestionCircleOutlined />
-            {t('project.spec.optional')}
+            <Space>
+              <QuestionCircleOutlined />{t('project.spec.optional')}
+            </Space>
           </Tooltip>
         </Divider>
         <Row gutter={8}>
@@ -297,6 +339,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
               label={t('project.spec.inverter')}
             >
               <Select
+                showSearch
                 disabled={!capacity}
                 options={
                   invActiveData.map(record => ({
@@ -305,6 +348,9 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
                   }))
                 }
                 onSelect={genInverterPlan}
+                filterOption={(value, option) =>
+                  option.label.toLowerCase().includes(value.toLowerCase())
+                }
               />
             </FormItem>
           </Col>

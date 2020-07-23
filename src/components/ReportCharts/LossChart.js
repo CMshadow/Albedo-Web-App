@@ -33,10 +33,9 @@ export const LossChart = ({buildingID}) => {
   keys.forEach(([key, cat]) => {
     systemStatus = systemStatus - buildingReport[key] * 100 ||
       systemStatus - (100 - projectData[key]) || systemStatus
-
     dataSource.push({
       cat: t(`lossChart.${cat}`),
-      value: buildingReport[key] * 100 || (100 - projectData[key]) || 0,
+      value: buildingReport[key] >= 0 ? buildingReport[key] * 100 : (100 - projectData[key]) || 0,
       stage: 'loss',
       type: t(`lossChart.${key}`),
       color: colorMap.loss

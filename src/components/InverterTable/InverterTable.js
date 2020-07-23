@@ -46,6 +46,12 @@ export const InverterTable = ({
       })
     }
   })
+  // 生成表单组件备注列属性
+  tableCols.splice(0, 0, {
+    title: t('InverterTable.table.note'),
+    dataIndex: 'note',
+    key: 'note',
+  })
   // 生成表单组件名称列属性
   tableCols.splice(0, 0, {
     title: t('InverterTable.table.name'),

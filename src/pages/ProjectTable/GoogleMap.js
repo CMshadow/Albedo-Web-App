@@ -1,8 +1,12 @@
 import React from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { googleRevGeocoder } from './service'
+import { notification } from 'antd'
+import { useTranslation } from 'react-i18next'
 
+const GoogleMap = ({google, apiKey, mapPos, setmapPos, validated, setvalidated, form}) => {
+  const { t } = useTranslation()
 
-const GoogleMap = ({google, mapPos, validated}) => {
   return (
     <Map
       containerStyle={{
@@ -13,6 +17,18 @@ const GoogleMap = ({google, mapPos, validated}) => {
       google={google}
       zoom={14}
       center={{lat: mapPos.lat, lng: mapPos.lon}}
+      onClick={(props, map, event) => {
+        googleRevGeocoder({lon: event.latLng.lng(), lat: event.latLng.lat(), key: apiKey})
+        .then(res => {
+          if (res.data.results.length > 0) {
+            setmapPos({lon: event.latLng.lng(), lat: event.latLng.lat()})
+            form.setFieldsValue({projectAddress: res.data.results[0].formatted_address})
+            setvalidated(true)
+          } else {
+            notification.error({message: t('project.error.invalid-address.googlemap')})
+          }
+        })
+      }}
     >
       {
         validated ?

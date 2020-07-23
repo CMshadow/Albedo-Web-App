@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber, Input } from 'antd';
+import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProjectAttributes } from '../../store/action/index'
@@ -51,13 +51,25 @@ const ParamsForm = () => {
   };
   const transformerEfficiencyMarks = systemAvailabilityMarks
 
+  // ACVolDropFac标识
+  const ACVolDropFacMarks = {
+    0.1: t('report.paramsForm.drop_0.1'),
+    5: {style: markStyle, label: t('report.paramsForm.drop_5')}
+  }
+
+  // DCVolDropFac标识
+  const DCVolDropFacMarks = {
+    0.1: t('report.paramsForm.drop_0.1'),
+    2: {style: markStyle, label: t('report.paramsForm.drop_2')}
+  }
+
   const irrandianceKeys = [
-    [['p_loss_soiling', 0.1, 5, pLossSoilingMarks], ['p_loss_tilt_azimuth', 'disabled', 'disabled']],
+    [['p_loss_soiling', 0.1, 0, 5, pLossSoilingMarks], ['p_loss_tilt_azimuth', 'disabled', 'disabled']],
     [['p_loss_eff_irradiance', 'disabled', 'disabled']]
   ]
 
   const dcKeys = [
-    [['p_loss_connection', 0.01, 1, pLossConnectionMarks], ['p_loss_mismatch', 0.1, 5, pLossMismatchMarks]],
+    [['p_loss_connection', 0.01, 0, 1, pLossConnectionMarks], ['p_loss_mismatch', 0.1, 0, 5, pLossMismatchMarks]],
     [['p_loss_temperature', 'disabled', 'disabled'], ['year1Decay', 'pv', 'pv']],
     [['p_loss_dc_wiring', 'disabled', 'disabled'], ['year2To25Decay', 'pv', 'pv']]
   ]
@@ -71,8 +83,8 @@ const ParamsForm = () => {
   ]
 
   const wiringKeys = [
-    [['Ub', 'n', 'V'], ['ACVolDropFac', 'n', '%']],
-    [['DCVolDropFac', 'n', '%']]
+    [['Ub', 'n', 'V'], ['ACVolDropFac', 0.05, 0.1, 5, ACVolDropFacMarks]],
+    [['DCVolDropFac', 0.05, 0.1, 2, DCVolDropFacMarks]]
   ]
 
   // 通用required项提示文本
@@ -80,7 +92,7 @@ const ParamsForm = () => {
     required: t('form.required')
   };
 
-  const genFormInputArea = (key, step, max, marks) => {
+  const genFormInputArea = (key, step, min, max, marks) => {
     switch(step) {
       case 'disabled':
         return (
@@ -99,16 +111,21 @@ const ParamsForm = () => {
           </Space>
         )
       case 'n':
-        return <Input addonAfter={max} type='number' className={styles.numberInput} />
+        return (
+          <InputNumber
+            style={{width: '100%'}} min={0} formatter={value => `${value}${min}`}
+            parser={value => value.replace(`${min}`, '')}
+          />
+        )
       default:
-      return <Slider marks={marks} step={step} max={max}/>
+        return <Slider marks={marks} step={step} min={min} max={max}/>
     }
   }
 
   // 动态生成表单字段组件
   const genFormItems = (keys, itemsPerRow) => keys.map((keysInRow, index) =>
     <Row gutter={rowGutter} key={index}>
-      {keysInRow.map(([key, step, max, marks]) =>
+      {keysInRow.map(([key, step, min, max, marks]) =>
         <Col span={ 24 / itemsPerRow } key={key}>
           <FormItem
             name={key}
@@ -118,7 +135,7 @@ const ParamsForm = () => {
             }
           >
             {
-              genFormInputArea(key, step, max, marks)
+              genFormInputArea(key, step, min, max, marks)
             }
           </FormItem>
         </Col>
@@ -136,23 +153,23 @@ const ParamsForm = () => {
       values[key]=Number(values[key])
     );
     // 更新redux中项目数据后更新后端的项目数据
-    dispatch(updateProjectAttributes(values))
-    setTimeout(() => {
-      dispatch(saveProject(projectID))
-      .then(res => {
-        setloading(false)
-        if (history.location.state && history.location.state.buildingID) {
-          history.replace(`/project/${projectID}/report/${history.location.state.buildingID}`)
-        } else {
-          history.replace(`/project/${projectID}/dashboard`)
-        }
-      })
-    }, 500)
+    await dispatch(updateProjectAttributes(values))
+
+    dispatch(saveProject(projectID))
+    .then(res => {
+      setloading(false)
+      if (history.location.state && history.location.state.buildingID) {
+        history.replace(`/project/${projectID}/report/${history.location.state.buildingID}`)
+      } else {
+        history.replace(`/project/${projectID}/dashboard`)
+      }
+    })
+
   }
 
   // 组间渲染后设置表单默认值
   useEffect(() => {
-    if (projectData.p_loss_soiling) {
+    if (projectData.p_loss_soiling >= 0) {
       form.setFieldsValue(projectData)
     } else {
       form.setFieldsValue({

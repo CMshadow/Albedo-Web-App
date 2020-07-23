@@ -4,7 +4,7 @@ $pro-header-hover-bg: rgba(0, 0, 0, 0.025);
 
 .header {
   position: fixed;
-  z-index: 1;
+  z-index: 999;
   width: calc(100vw - 250px);
   background-color: white;
   padding-left: 15px;

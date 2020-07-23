@@ -8,6 +8,7 @@
   "PVTable.my": "My PV Modules",
   "PVTable.official": "Official PV Modules",
   "PVtable.table.name": "Module Model",
+  "PVtable.table.note": "Description",
   "PVtable.table.companyName": "Provider",
   "PVtable.table.pmax": "Max Power",
   "PVtable.table.vmpo": "Max Power Voltage",

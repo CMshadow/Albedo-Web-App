@@ -7,7 +7,7 @@ import { SpecView } from './SpecView'
 import { deleteInverterSpec } from '../../store/action/index'
 import * as styles from './InverterSpecCard.module.scss';
 
-export const InverterSpecCard = ({buildingID, specIndex, invIndex, ...props}) => {
+export const InverterSpecCard = ({buildingID, specIndex, invIndex, disabled, ...props}) => {
   const dispatch = useDispatch()
   const [editing, setediting] = useState(true)
 
@@ -22,16 +22,14 @@ export const InverterSpecCard = ({buildingID, specIndex, invIndex, ...props}) =>
       hoverable
       actions={[
         <Button
-          disabled={editing}
-          ghost
+          disabled={editing || disabled}
           type='link'
           shape="circle"
-          icon={<EditTwoTone />}
+          icon={<EditTwoTone twoToneColor={editing || disabled ? '#bfbfbf' : '#1890ff'}/>}
           onClick={() => setediting(true)}
         />,
         <Button
-          disabled={editing}
-          ghost
+          disabled={disabled}
           type='link'
           shape="circle"
           danger
@@ -50,6 +48,7 @@ export const InverterSpecCard = ({buildingID, specIndex, invIndex, ...props}) =>
             specIndex={specIndex}
             invIndex={invIndex}
             setediting={setediting}
+            disabled={disabled}
           /> :
           <SpecView
             buildingID={buildingID}

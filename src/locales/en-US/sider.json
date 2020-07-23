@@ -1,16 +1,24 @@
 {
-  "sider.company": "Albedo Inc.",
-  "sider.edition": "DEV-Alpha",
+  "sider.company": "Albedo",
+  "sider.edition": "Beta Version 0.2.1",
   "sider.menu.project": "Manage Projects",
 
 
-  "sider.menu.back-project": "Return to Manage Projects",
+  "sider.menu.back-project": "Exit the project",
   "sider.menu.projectDetail": "Project Info",
+  "sider.menu.reportParams": "Report Parameters",
   "sider.menu.report": "Open Report",
   "sider.menu.report.prefix": "Report of  ",
   "sider.menu.report.suffix": "",
   "sider.menu.pv": "Manage Module",
   "sider.menu.inverter": "Manage Inverter",
+
+
+  "sider.menu.singleLineDiagram": "Single Line Diagram",
+  "sider.menu.singleLineDiagram.prefix": "Building: ",
+  "sider.menu.singleLineDiagram.suffix": "",
+  "sider.menu.singleLineDiagram.disabled": "Generate Report first to view SLD",
+
 
   "sider.save": "Save",
 

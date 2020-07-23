@@ -25,6 +25,9 @@
   "report.paramsForm.loss_5": "5%损失",
   "report.paramsForm.availability_0": "完全失效",
   "report.paramsForm.availability_100": "100%工作效率",
+  "report.paramsForm.drop_0.1": "0.1%压降系数",
+  "report.paramsForm.drop_2": "2%压降系数",
+  "report.paramsForm.drop_5": "5%压降系数",
 
   "report.paramsForm.disabled": "自动计算",
   "report.paramsForm.pv": "由选用组件决定",
@@ -42,8 +45,8 @@
   "report.paramsForm.p_loss_ac_wiring": "交流线损 (%)",
 
   "report.paramsForm.Ub": "并网电压",
-  "report.paramsForm.ACVolDropFac": "交流侧允许压降系数",
-  "report.paramsForm.DCVolDropFac": "直流侧允许压降系数",
+  "report.paramsForm.ACVolDropFac": "交流侧允许压降系数 (%)",
+  "report.paramsForm.DCVolDropFac": "直流侧允许压降系数 (%)",
 
   "report.head.buildingName": "房屋名称",
   "report.head.ttl_dc_power_capacity": "项目装机总量",

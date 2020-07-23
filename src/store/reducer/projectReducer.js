@@ -119,7 +119,6 @@ const addPVSpec = (state, action) => {
 }
 
 const editPVSpec = (state, action) => {
-  console.log(action)
   const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
@@ -210,7 +209,7 @@ const deleteInverterSpec = (state, action) => {
   .splice(action.invIndex, 1)
   newBuildings[buildingIndex].data[action.specIndex].inverter_wiring
   .forEach((obj, ind) => {
-    if (ind >= action.specIndex) obj.inverter_serial_number -= 1
+    obj.inverter_serial_number = ind + 1
   })
   return {
     ...state,
