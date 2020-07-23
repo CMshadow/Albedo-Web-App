@@ -55,8 +55,8 @@ const DisplayPage = ()=>(
             
           </Col>
           <Col span={4}>
-            <div style={{marginTop:'20px', marginRight:'60px'}}>
-              <img src = {pad} alt="designDisplay" width='150%' height='150%' min-width='200px' />
+            <div style={{marginTop:'20px', marginRight:'5px'}}>
+              <img src = {pad} alt="designDisplay" width='130%' height='130%' min-width='200px' />
             </div>
           </Col>
           <Col span={10}>
