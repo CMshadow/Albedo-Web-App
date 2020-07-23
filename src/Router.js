@@ -15,6 +15,7 @@ import NotFound404 from './pages/404';
 import FakeParking from './components/FakeParking/FakeParking'
 import Term from './pages/static/Term'
 import ModelingLayout from './layouts/Modeling/ModelingLayout/ModelingLayout'
+import DisplayPage from './pages/static/DisplayPage/index';
 const Report = lazy(() => import('./pages/Report/Report'))
 const ParamsForm = lazy(() => import('./pages/ParamsForm/ParamsForm'))
 const Dashboard = lazy(() => import('./pages/Project/Dashboard'))
@@ -29,7 +30,8 @@ const Router = () => {
       <Suspense fallback={<EmptyLayout/>} >
         <ScrollToTop />
         <Switch>
-          <Route path="/me" component={FakeParking} />
+          {/*<Route path="/" component={DisplayPage} />*/}
+          {/* <Route path="/me" component={FakeParking} /> */}
           <Route path="/user">
             <UserLayout>
               <Switch>
@@ -87,13 +89,13 @@ const Router = () => {
           <Route path="/terms">
             <Term />
           </Route>
-          <PrivateRoute path="/">
+          <PrivateRoute path="/cn" component ={DisplayPage}>
             <BasicLayout>
               <Switch>
-                <PrivateRoute path='/dashboard'>
+                {/* <PrivateRoute path='/dashboard'>
                   <ProjectTable/>
                 </PrivateRoute>
-                <Redirect path='*' to="/user/login"/>
+                <Redirect path='*' to="/user/login"/> */}
                 <Route path='*' component={NotFound404} />
               </Switch>
             </BasicLayout>
