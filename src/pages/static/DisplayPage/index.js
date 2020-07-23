@@ -114,7 +114,7 @@ const DisplayPage = ()=>(
             </Card>
           </Col>
           <Col span={10}>
-            <img src = {computer} alt="designDisplay" width='70%' height='50%' />
+            <img src = {elec} alt="designDisplay" width='70%' height='50%' />
           </Col> 
           <Col span={2}/>   
         </Row>
@@ -161,7 +161,7 @@ const DisplayPage = ()=>(
         <Row justify="center" align="top">
           <Col span={2}/>
           <Col span={10}>
-            <img src = {elec} alt="designDisplay" width='80%' height='60%' />
+            <img src = {computer} alt="designDisplay" width='80%' height='60%' />
           </Col>
           <Col span={10}>
             <Card bordered={false}  style={{ width: '80%',float:'left'}}>
