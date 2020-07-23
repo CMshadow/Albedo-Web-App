@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import undoable, { includeAction } from 'redux-undo';
 import authReducer from './authReducer';
 import localReducer from './locale'
-import unitReducer from './UnitReducer'
+import unitReducer from './unitReducer'
 import projectReducer from './projectReducer';
 import pvTableReducer from './pvTableReducer'
 import inverterTableReducer from './inverterTableReducer'
