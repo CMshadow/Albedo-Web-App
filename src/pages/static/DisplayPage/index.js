@@ -32,8 +32,8 @@ const DisplayPage = ()=>(
 
       <Content className = {styles.content} >
       <Title level={2} className={styles.title1} style={{marginBottom:'60px'}}>多项设计功能统一整合</Title>
-        <Row justify="center" align="top">
-          <Col span={10} >
+        <Row justify="center" align="top" >  
+          <Col span={9} align="right">  
             <div className={styles.div_left}>
               <div className={styles.thang}>
                 <p className={styles.highlight}>多功能</p>
@@ -53,12 +53,12 @@ const DisplayPage = ()=>(
             </div>
 
           </Col>
-          <Col span={4}>
-            <div style={{marginTop:'20px', marginRight:'5px'}}>
-              <img src = {pad} alt="designDisplay" width='130%' height='130%' min-width='200px' />
+          <Col span={6} align="middle">
+            <div style={{paddingTop:'20px', paddingRight:'10px'}}>
+              <img src = {pad} alt="designDisplay" width='100%' height='100%' min-width='100%' />
             </div>
           </Col>
-          <Col span={10}>
+          <Col span={9} align="left">
             <div className={styles.div_right}>
               <div className={styles.thang}>
                 <p>系统设备</p>
@@ -190,7 +190,7 @@ const DisplayPage = ()=>(
           </Col>
           <Col span={8}>
             <Title level={3} className={styles.title1}>项目累计装机容量</Title>
-            <UserIncrease count={1430000} increase = {100} />
+            <UserIncrease count={1430000} increase = {100} name='KW'/>
           </Col>
         </Row>
       </Content>
