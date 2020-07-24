@@ -191,7 +191,7 @@ const DisplayPage = ()=>(
           </Col>
           <Col span={8}>
             <Title level={3} className={styles.title1}>项目累计装机容量</Title>
-            <UserIncrease count={1430000} increase = {100} />
+            <UserIncrease count={1430000} increase = {100} name='KW'/>
           </Col>
         </Row>
       </Content>
