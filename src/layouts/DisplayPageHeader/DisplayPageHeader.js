@@ -1,7 +1,6 @@
 import React from 'react';
-import 'antd/dist/antd.css';
-import { Button, Layout ,Breadcrumb} from 'antd';
-import { Link } from 'react-router-dom';
+import {Button, Layout, Breadcrumb} from 'antd';
+import {Link} from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './DisplayPageHeader.scss'
 import { Menu } from 'antd';
@@ -43,6 +42,5 @@ const disPlayPageHeader =()=>(
       </Header>
       </div>
 )
-
 
 export default disPlayPageHeader;
