@@ -1,46 +1,59 @@
-import React from 'react';
-import {Button, Layout, Breadcrumb} from 'antd';
-import {Link} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Button, Layout, Menu, Row, Space } from 'antd';
+import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 import logo from '../../assets/logo.png';
-import './DisplayPageHeader.scss'
-import { Menu } from 'antd';
-const { Header} = Layout;
+import * as styles from './DisplayPageHeader.module.scss'
 
-const disPlayPageHeader =()=>(
-    <div className="DiplayPageHeader">
-    <Header style = {{backgroundColor:'#ffffff',Width: "100%",Height:"64px", minWidth:'1080px', display:'flex',padding:'16px,16px'}}> 
-        <strong><Link to="/cn"><img src = {logo} alt="logo" width="110px" height="45px"/></Link></strong>
-        <Menu mode="horizontal" style={{width: "100%",border:'none'}} selectedKeys={['']} >
-            
-            <Menu.Item key="产品功能" >
-                <li className='DiplayPageHeader'><Link to="/cn">产品功能</Link></li>
-            </Menu.Item>
-            <Menu.Item key="产品定价">
-            <li className='DiplayPageHeader'><Link to="/cn">产品定价</Link></li>
-            </Menu.Item>
-            
-        </Menu> 
-        <Link to="/user/login"><Button style = {{background:'#f6f6f6',float:'right',marginTop:'15px'}} shape="middle" size='large'>登录</Button></Link>
-        <Link to="/user/register"><Button style = {{backgroundColor:'#f6f6f6',float:'right',marginTop:'15px'}} shape="middle" size='large'>快速注册</Button></Link>   
-            {/* <nav className="DiplayPageHeader-nav">  
-                <strong><Link to="/cn"><img src = {logo} alt="logo" width="110px" height="45px"/></Link></strong>                   
-                <ul className="DiplayPageHeader-nav-item">                                 
-                    <li><Link to="/cn">产品功能</Link>
-                    <Link to="/cn">产品定价</Link></li>
-                    <li><a><Link to="/">空间</Link></a></li>
-                    <li><a><Link to="/">定价</Link></a></li>
-                    <li><a><Link to="/">下载</Link></a></li>
-                    <li><a><Link to="/">发现</Link></a></li>              
-                </ul> */}
-        
-                {/* <Link to="/user/login"><Button style = {{background:'#f6f6f6',float:'right',marginTop:'15px'}} shape="middle" size='large'>登录</Button></Link>
-                <Link to="/user/register"><Button style = {{backgroundColor:'#f6f6f6',float:'right',marginTop:'15px',marginRight:'80px'}} shape="middle" size='large'>快速注册</Button></Link> */}
-                
-            {/* </nav> */}
-            
-          
-      </Header>
-      </div>
-)
+const {Header} = Layout;
 
-export default disPlayPageHeader;
+const DisplayPageHeader = () => {
+  const [headerClass, setheaderClass] = useState(styles.headerInFixed)
+  const location = useLocation()
+  const cognitoUser = useSelector(state => state.auth.cognitoUser)
+
+  const navKey = location.pathname === 'tutorial' ? 'tutorial' : 'home'
+
+  const handleScroll=() =>{
+    if (document.documentElement.scrollTop > 0) {
+      setheaderClass(styles.headerInScroll)
+    } else {
+      setheaderClass(styles.headerInFixed)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [])
+
+  return(
+    <Header className={headerClass}>
+      <Row>
+        <Row className={styles.logo} align='middle'>
+          <Link to="/cn"><img src={logo} alt="logo" height='45px'/></Link>
+        </Row>
+        <Menu className={styles.nav} mode="horizontal" selectedKeys={[navKey]}>
+          <Menu.Item key="home">
+            <Link to="/cn">产品介绍</Link>
+          </Menu.Item>
+          <Menu.Item key="tutorial">
+            <Link to="/tutorial">视频教程</Link>
+          </Menu.Item>
+        </Menu>
+        <Row className={styles.right} justify='end' align='middle'>
+          {
+            cognitoUser ?
+            <Button type='primary'><Link to='/dashboard'>进入操作台</Link></Button> :
+            <Space>
+              <Button type='primary'><Link to='/user/register'>免费注册账户</Link></Button>
+              <Button ><Link to='/user/login'>账户登录</Link></Button>
+            </Space>
+          }
+        </Row>
+      </Row>
+    </Header>
+  )
+}
+
+export default DisplayPageHeader;

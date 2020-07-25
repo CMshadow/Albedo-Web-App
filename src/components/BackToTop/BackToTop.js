@@ -1,13 +1,21 @@
 import React from 'react';
 import { BackTop } from 'antd';
-import { UpCircleTwoTone } from '@ant-design/icons';
-import classes from './BackToTop.module.scss';
+import { VerticalAlignTopOutlined } from '@ant-design/icons';
+
+const style = {
+  height: 40,
+  width: 40,
+  lineHeight: '40px',
+  borderRadius: 4,
+  backgroundColor: '#1088e9',
+  color: '#fff',
+  textAlign: 'center',
+  fontSize: 40,
+};
 
 const backToTop = () => (
   <BackTop>
-    <div className={classes.BackToTop}>
-      <UpCircleTwoTone style={{fontSize: '30px'}}/>
-    </div>
+    <VerticalAlignTopOutlined style={style}/>
   </BackTop>
 )
 

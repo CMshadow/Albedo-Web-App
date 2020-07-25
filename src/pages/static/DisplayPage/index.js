@@ -1,10 +1,9 @@
 import React from 'react';
 import * as styles from './index.module.scss';
 import BackToTop from '../../../components/BackToTop/BackToTop';
-import UserIncrease from '../../../components/UserIncrease/UserIncrease';
 import DisplayPageHeader from '../../../layouts/DisplayPageHeader/DisplayPageHeader'
 import DisplayPageFooter from '../../../layouts/DisplayPageFooter/DisplayPageFooter';
-import { Layout ,Typography,Row, Col,Card,Descriptions} from 'antd';
+import { Layout, Typography, Row, Col, Card, Statistic } from 'antd';
 import designDisplay from '../../../assets/design-display3.png';
 import pad from '../../../assets/pad.png';
 import dash from '../../../assets/dash.jpeg';
@@ -14,215 +13,241 @@ import pads from '../../../assets/2pads.jpeg';
 import earth from '../../../assets/earth.jpeg';
 import multitasks from '../../../assets/multitasks.jpeg';
 import cloud from '../../../assets/cloud.jpeg';
-import {  CloudOutlined,ThunderboltOutlined, FallOutlined, BarChartOutlined ,ClusterOutlined} from '@ant-design/icons';
+import { genMockNumber } from '../../../utils/genMockNumber'
+import { CloudOutlined, ThunderboltOutlined, FallOutlined, BarChartOutlined, ClusterOutlined, UserOutlined } from '@ant-design/icons';
+
 const { Title } = Typography;
 const { Content } = Layout;
 
+const DisplayPage = () => (
+  <>
+  <BackToTop/>
+  <Layout className={styles.layout}>
+    <DisplayPageHeader/>
 
-const DisplayPage = ()=>(
-  <div >
-    <Layout style={{backgroundColor:'#ffffff'}}>
-      <DisplayPageHeader/>
+    <Content className={styles.content}>
+      <Row justify="center">
+        <Title level={1} type='primary'>
+          智能化云端光伏设计
+        </Title>
+        <Title level={3} type='secondary' style={{marginTop: 0}}>
+          极速生成报告、一键出图，简单高效的设计模式，开创光伏设计新维度
+        </Title>
+        <img src={designDisplay} alt="designDisplay" width='70%'/>
+      </Row>
 
-      <Content className = {styles.content}>
-        <Title className={styles.title1}>智能化云端光伏设计</Title>
-        <Title level={4} type="secondary" className={styles.title2}>极速生成报告、一键出图，简单高效的设计模式，开创光伏设计新维度</Title>
-         <img src = {designDisplay} alt="designDisplay" width='60%' vertical-align='middle'/>
-      </Content>
-
-      <Content className = {styles.content} >
-      <Title level={2} className={styles.title1} style={{marginBottom:'60px'}}>多项设计功能统一整合</Title>
-        <Row justify="center" align="top" >  
-          <Col span={9} align="right">  
-            <div className={styles.div_left}>
-              <div className={styles.thang}>
-                <p className={styles.highlight}>多功能</p>
-                <p>光伏设计专家</p>
-              </div>
-
-              <div className={styles.circle_left}>
-                <div className={styles.thang}>
-                  <p className={styles.highlight}>自动化</p>
-                  <p>光伏阵列排布</p>
-                </div>
-              </div>
-              <div className={styles.thang}>
-                <p className={styles.highlight}>系统产能</p>
-                <p>计算及损耗分析</p>
-              </div>
-            </div>
-
+      <Row justify="center" className={styles.part}>
+        <Title level={2}>多项设计功能统一整合</Title>
+        <Row className={styles.section} gutter={12}>
+          <Col span={7}>
+            <Row justify='end' align='middle' className={styles.padSentence}>
+              <p className={styles.highlightTxt}>多功能</p>
+              <p className={styles.regularTxt}>光伏设计专家</p>
+            </Row>
+            <Row justify='start' align='middle' className={styles.padSentence}>
+              <p className={styles.highlightTxt}>自动化</p>
+              <p className={styles.regularTxt}>光伏阵列排布</p>
+            </Row>
+            <Row justify='end' align='middle' className={styles.padSentence}>
+              <p className={styles.highlightTxt}>系统产能</p>
+              <p className={styles.regularTxt}>计算及损耗分析</p>
+            </Row>
           </Col>
-          <Col span={6} align="middle">
-            <div style={{paddingTop:'20px', paddingRight:'10px'}}>
-              <img src = {pad} alt="designDisplay" width='100%' height='100%' min-width='100%' />
-            </div>
+          <Col span={10}>
+            <img src={pad} alt="designDisplay" width='100%'/>
           </Col>
-          <Col span={9} align="left">
-            <div className={styles.div_right}>
-              <div className={styles.thang}>
-                <p>系统设备</p>
-                <p className={styles.highlight}>自动化</p>
-                <p>统计</p>
-              </div>
-              <div className={styles.circle_right}>
-                <div className={styles.thang}>
-                  <p className={styles.highlight} >25年</p>
-                  <p>全生命周期投资及收益分析</p>
-                </div>
-              </div>
-              <div className={styles.thang}>
-                <p className={styles.highlight}>一键</p>
-                <p>生成系统电气主接线图</p>
-              </div>
-            </div>
-          </Col>
-
-        </Row>
-      </Content>
-
-
-
-      <Content className = {styles.content} >
-        <Title level={2} className={styles.title1} style={{marginBottom:'60px'}}>丰富强大的报告内核</Title>
-        <Row justify="center" align="top">
-          <Col span={2}/>
-          <Col span={10} >
-            <img src = {earth} alt="designDisplay" width='70%' height='50%'/>
-          </Col>
-          <Col span={12} >
-            <Card bordered={false}  style={{ width: '80%',float:'left'}}>
-              <CloudOutlined style={{fontSize:'50px',float:'left',marginRight:'50px'}}/>
-              <br/><br/><br/>
-              <Title level={3} className={styles.title3}>天气分析</Title>
-              <p className={styles.pleft}>根据项目所在地经纬度，快速获取全年小时精度的天气数据。自动计算当地最佳铺设朝向倾角，及系统发电量</p>
-            </Card>
+          <Col span={7}>
+            <Row justify='start' align='middle' className={styles.padSentence}>
+              <p className={styles.regularTxt}>系统设备</p>
+              <p className={styles.highlightTxt}>自动化</p>
+              <p className={styles.regularTxt}>统计</p>
+            </Row>
+            <Row justify='end' align='middle' className={styles.padSentence}>
+              <p className={styles.highlightTxt}>25年</p>
+              <p className={styles.regularTxt}>生命周期投资收益分析</p>
+            </Row>
+            <Row justify='start' align='middle' className={styles.padSentence}>
+              <p className={styles.highlightTxt}>一键</p>
+              <p className={styles.regularTxt}>生成系统电气主接线图</p>
+            </Row>
           </Col>
         </Row>
-      </Content>
+      </Row>
 
-      <Content className = {styles.content} >
-        <Row justify="center" align="top"  >
-          <Col span={2}/>
-          <Col span={10}>
-            <Card bordered={false}  style={{ width: '80%',float:'right'}}>
-            <ThunderboltOutlined style={{fontSize:'50px',float:'left',marginRight:'50px'}}/>
-              <br/><br/><br/>
-              <Title level={3} className={styles.title3}>发电量计算</Title>
-              <p className={styles.pleft}>使用自主研发的发电量计算模型，支持创建多个不同朝向倾角的光伏阵列，精确高效的计算出以小时为单位的光伏系统总发电量</p>
-            </Card>
-          </Col>
-          <Col span={10}>
-            <img src = {elec} alt="designDisplay" width='70%' height='50%' />
-          </Col>
-          <Col span={2}/>
+      <Row justify="center" className={styles.part}>
+        <Title level={2}>丰富强大的报告内核</Title>
+      </Row>
+
+      <Row align='middle'>
+        <Col offset={1} span={10}>
+          <img src={earth} alt="designDisplay" width='100%'/>
+        </Col>
+        <Col offset={1} span={11}>
+          <Card bordered={false} hoverable className={styles.card}>
+            <Row>
+              <CloudOutlined className={styles.icon}/>
+            </Row>
+            <Row>
+              <Title level={3}>天气分析</Title>
+            </Row>
+            <Row>
+              <p className={styles.regularTxt}>
+                根据项目所在地经纬度，快速获取全年小时精度的天气数据。
+                自动计算当地最佳铺设朝向倾角，及系统发电量
+              </p>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+
+      <Row align='middle' className={styles.feature}>
+        <Col offset={1} span={11}>
+          <Card bordered={false} hoverable className={styles.card}>
+            <Row>
+              <ThunderboltOutlined className={styles.icon}/>
+            </Row>
+            <Row>
+              <Title level={3}>发电量计算</Title>
+            </Row>
+            <Row>
+              <p className={styles.regularTxt}>
+                使用自主研发的发电量计算模型，支持创建多个不同朝向倾角的光伏阵列，
+                精确高效的计算出以小时为单位的光伏系统总发电量
+              </p>
+            </Row>
+          </Card>
+        </Col>
+        <Col offset={1} span={10}>
+          <img src={elec} alt="designDisplay" width='100%'/>
+        </Col>
+      </Row>
+
+      <Row align='middle' className={styles.feature}>
+        <Col offset={1} span={10}>
+          <img src={cloud} alt="designDisplay" width='100%'/>
+        </Col>
+        <Col offset={1} span={11}>
+          <Card bordered={false} hoverable className={styles.card}>
+            <Row>
+              <FallOutlined className={styles.icon}/>
+            </Row>
+            <Row>
+              <Title level={3}>系统损失</Title>
+            </Row>
+            <Row>
+              <p className={styles.regularTxt}>
+                采用瀑布式发电与损耗计算，辐照端、直流端、交流端、以及升压端，
+                步步相扣，准确计算出环节之间的具体损耗，与损耗因数说再见
+              </p>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+
+      <Row align='middle' className={styles.feature}>
+        <Col offset={1} span={11}>
+          <Card bordered={false} hoverable className={styles.card}>
+            <Row>
+              <BarChartOutlined className={styles.icon}/>
+            </Row>
+            <Row>
+              <Title level={3}>投资收益</Title>
+            </Row>
+            <Row>
+              <p className={styles.regularTxt}>
+                自动统计项目设计中所有使用设备数量与线缆长度，完全实现项目造价自定义。
+                支持手动输入上下网电价与补贴，收益与回本周期从此全掌握
+              </p>
+            </Row>
+          </Card>
+        </Col>
+        <Col offset={1} span={10}>
+          <img src={multitasks} alt="designDisplay" width='100%'/>
+        </Col>
+      </Row>
+
+      <Row align='middle' className={styles.feature}>
+        <Col offset={1} span={10}>
+          <img src={computer} alt="designDisplay" width='100%'/>
+        </Col>
+        <Col offset={1} span={11}>
+          <Card bordered={false} hoverable className={styles.card}>
+            <Row>
+              <ClusterOutlined className={styles.icon}/>
+            </Row>
+            <Row>
+              <Title level={3}>电气接线图</Title>
+            </Row>
+            <Row>
+              <p className={styles.regularTxt}>
+                根据用户电气接入配置，自动生成光伏系统电气接线图，
+                轻松实现一键出图，为设计师省时增效
+              </p>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+
+      <Row justify="center" className={styles.feature}>
+        <Row justify="center">
+          <Title level={2}>与我们一起成长，为光伏设计添砖加瓦</Title>
         </Row>
-      </Content>
-
-
-      <Content className = {styles.content} >
-        <Row justify="center" align="middle">
-          <Col span={2}/>
-          <Col span={10}>
-            <img src = {cloud} alt="designDisplay" width='80%' height='80%' />
-          </Col>
-          <Col span={10}>
-            <Card bordered={false}  style={{ width: '80%',float:'left'}}>
-            <FallOutlined style={{fontSize:'50px',float:'left',marginRight:'50px'}}/>
-              <br/><br/><br/>
-              <Title level={3} className={styles.title3}>系统损失</Title>
-              <p className={styles.pright}>采用瀑布式发电与损耗计算，辐照端、直流端、交流端、以及升压端，步步相扣，准确计算出环节之间的具体损耗，与损耗因数说再见</p>
-            </Card>
-          </Col>
-          <Col span={2}/>
-        </Row>
-      </Content>
-
-      <Content className = {styles.content} >
-        <Row justify="center" align="top">
-          <Col span={2}/>
-          <Col span={10}>
-            <Card bordered={false}  style={{ width: '80%',float:'right'}}>
-              <BarChartOutlined style={{fontSize:'50px',float:'left',marginRight:'50px'}}/>
-              <br/><br/><br/>
-              <Title level={3} className={styles.title3}>投资收益</Title>
-              <p className={styles.pright}>自动统计项目设计中所有使用设备数量与线缆长度，完全实现项目造价自定义。支持手动输入上下网电价与补贴，收益与回本周期从此全掌握</p>
-            </Card>
-          </Col>
-          <Col span={10}>
-            <img src = {multitasks} alt="designDisplay" width='90%' height='90%' />
-          </Col>
-          <Col span={2}/>
-        </Row>
-      </Content>
-
-      <Content className = {styles.content} >
-        <Row justify="center" align="top">
-          <Col span={2}/>
-          <Col span={10}>
-            <img src = {computer} alt="designDisplay" width='80%' height='60%' />
-          </Col>
-          <Col span={10}>
-            <Card bordered={false}  style={{ width: '80%',float:'left'}}>
-              <ClusterOutlined  style={{fontSize:'50px',float:'left',marginRight:'50px'}}/>
-              <br/><br/><br/>
-              <Title level={3} className={styles.title3}>电气接线图</Title>
-              <p className={styles.pleft}>根据用户电气接入配置，自动生成光伏系统电气接线图，轻松实现一键出图，为设计师省时增效。</p>
-            </Card>
-          </Col>
-          <Col span={2}/>
-        </Row>
-      </Content>
-
-
-      <Content className = {styles.content} >
-        <Title level={2} className={styles.title1} style={{marginBottom:'60px'}}>与我们一起成长，为光伏设计添砖加瓦！</Title>
-        <Row justify="center" align="top">
+        <Row className={styles.section}>
           <Col span={8}>
-            <Title level={3} className={styles.title1}>用户总数</Title>
-            <p>
-              <UserIncrease count={203} increase = {5}/>
-            </p>
+            <Statistic
+              title={<Title level={3}>用户总数</Title> }
+              value={genMockNumber({base: 203, increase: 5})}
+              valueStyle={{fontSize: 25, padding: '15px 0px'}}
+              prefix={<UserOutlined />}
+            />
           </Col>
           <Col span={8}>
-            <Title level={3} className={styles.title1}>累计生成的项目报告</Title>
-            <UserIncrease count={765} increase = {10} />
+            <Statistic
+              title={<Title level={3}>累计生成的项目报告</Title> }
+              value={genMockNumber({base: 765, increase: 10})}
+              valueStyle={{fontSize: 25, padding: '15px 0px'}}
+              prefix={<BarChartOutlined />}
+            />
           </Col>
           <Col span={8}>
-            <Title level={3} className={styles.title1}>项目累计装机容量</Title>
-            <UserIncrease count={1430000} increase = {100} name='KW'/>
+            <Statistic
+              title={<Title level={3}>项目累计装机容量</Title> }
+              value={genMockNumber({base: 1430000, increase: 100})}
+              valueStyle={{fontSize: 25, padding: '15px 0px'}}
+              prefix={<ThunderboltOutlined />}
+              suffix='kW'
+            />
           </Col>
         </Row>
-      </Content>
+      </Row>
 
-      <Content className = {styles.content} >
-        <Row justify="center" align="top">
-          <Col span={3}/>
-          <Col span={9} >
-            <img src = {pads} alt="designDisplay" width='50%' height='50%' />
-          </Col>
-          <Col span={9}>
-            <Card bordered={false}  style={{ width: '80%',float:'left'}}>
-              <Title level={4} className={styles.title3}>联系我们</Title>
-              {/* <p className={styles.pleft}>负责人: Zhou Maomao</p>
-              <br/><br/> */}
-              <p className={styles.pleft}>电话: +86 18811061946</p>
-              <br/><br/>
-              <p className={styles.pleft}>邮箱: admin-cn@albedopowered.com</p>
-              <br/><br/>
-              <p className={styles.pleft}>公司地址: 北京市丰台区方庄顺八条8号院三区6号楼 </p>
-            </Card>
+      <Row align='middle' className={styles.part}>
+        <Col offset={2} span={8}>
+          <img src={pads} alt="designDisplay" width='100%'/>
+        </Col>
+        <Col offset={2} span={10}>
+          <Card bordered={false} className={styles.card}>
+            <Row>
+              <Title level={3}>联系我们</Title>
+            </Row>
+            <Row>
+              <p className={styles.regularTxt}>电话: +86 18811061946</p>
+            </Row>
+            <Row>
+              <p className={styles.regularTxt}>邮箱: admin-cn@albedopowered.com</p>
+            </Row>
+            <Row>
+              <p className={styles.regularTxt}>公司地址: 北京市丰台区方庄顺八条8号院三区6号楼</p>
+            </Row>
+          </Card>
+        </Col>
+      </Row>
+    </Content>
 
-          </Col>
-          <Col span={3}/>
-        </Row>
-      </Content>
+  <DisplayPageFooter/>
 
-      <DisplayPageFooter/>
-
-    </Layout>,
-    <BackToTop/>
-  </div>
+</Layout>
+</>
 );
 
 export default DisplayPage;
