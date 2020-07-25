@@ -22,7 +22,7 @@ const DefaultFooter = (props) => {
         {t('footer.term-of-use')}
       </a>
       <Divider type="vertical" />
-      <a href="https://albedowebdesign.com/terms" target="_blank" rel="noopener noreferrer" className={styles.imgPlace}>
+      <a href="https://albedowebdesign.com/cookies" target="_blank" rel="noopener noreferrer" className={styles.imgPlace}>
         {t('footer.cookie')}
       </a>
       <Divider type="vertical" />
