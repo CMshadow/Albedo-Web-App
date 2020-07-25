@@ -16,6 +16,7 @@ import FakeParking from './components/FakeParking/FakeParking'
 import Term from './pages/static/Term'
 import ModelingLayout from './layouts/Modeling/ModelingLayout/ModelingLayout'
 import DisplayPage from './pages/static/DisplayPage/index'
+import Privacy from './pages/static/Privacy'
 import Cookie from './pages/static/Cookie'
 const Report = lazy(() => import('./pages/Report/Report'))
 const ParamsForm = lazy(() => import('./pages/ParamsForm/ParamsForm'))
@@ -92,6 +93,9 @@ const Router = () => {
           <Route path="/cookies">
             <Cookie />
           </Route>
+          <Route path="/privacy">
+            <Privacy />
+          </Route>
           <PrivateRoute path='/dashboard'>
             <BasicLayout>
               <ProjectTable/>
@@ -99,6 +103,7 @@ const Router = () => {
           </PrivateRoute>
           <Route path="/">
             <Switch>
+              
               <Route path="/cn" component={DisplayPage} />
               <Route path="/" component={DisplayPage} />
               <Route path='*' component={NotFound404} /> 
