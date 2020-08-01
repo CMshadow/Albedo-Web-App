@@ -55,8 +55,8 @@
   "emissionReduction.kg": "千克",
   "emissionReduction.t": "吨",
 
-  "heatMap.tilt": "朝向",
-  "heatMap.azimuth": "倾角",
+  "heatMap.tilt": "倾角",
+  "heatMap.azimuth": "朝向",
   "heatMap.poa": "辐照",
 
   "productionChart.selectdate": "选择图表日期",
