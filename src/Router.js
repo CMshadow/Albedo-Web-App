@@ -14,6 +14,8 @@ import ProjectTable from './pages/ProjectTable/ProjectTable';
 import NotFound404 from './pages/404';
 import FakeParking from './components/FakeParking/FakeParking'
 import Term from './pages/static/Term'
+import Cookie from './pages/static/Cookie'
+import Privacy from './pages/static/Privacy'
 import ModelingLayout from './layouts/Modeling/ModelingLayout/ModelingLayout'
 import DisplayPage from './pages/static/DisplayPage/index'
 const Report = lazy(() => import('./pages/Report/Report'))
@@ -87,6 +89,12 @@ const Router = () => {
           </PrivateRoute>
           <Route path="/terms">
             <Term />
+          </Route>
+          <Route path="/cookie">
+            <Cookie />
+          </Route>
+          <Route path="/privacy">
+            <Privacy />
           </Route>
           <PrivateRoute path='/dashboard'>
             <BasicLayout>
