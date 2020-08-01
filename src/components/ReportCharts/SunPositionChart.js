@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Card, Typography } from 'antd'
-import { Chart, Line, Axis, Legend, Point, Guide } from 'bizcharts';
+import { Chart, Line, Axis, Legend, Point, Annotation } from 'bizcharts';
 import { titleStyle, legendStyle } from '../../styles.config'
 const Title = Typography.Title
 
@@ -55,38 +55,18 @@ export const SunPositionChart = ({buildingID}) => {
         <Axis name='azimuth' title={{style: titleStyle}} />
         <Axis name='el' title={{style: titleStyle}} />
         <Line shape="smooth" position="azimuth*el" color='month' />
+        <Line shape="smooth" position="azimuth*el" color='hour' />
         <Point position="azimuth*el" color='month' />
-        {/* <Guide>
-          <Line
-            // start={{
-            //   "month": "acPowerChart.month.6",
-            //   "hour": 12
-            // }}
-            // end={{
-            //   "month": "acPowerChart.month.12",
-            //   "hour": 12
-            // }}
-            // lineStyle={{
-            //   "stroke": "red",
-            //   "lineDash": [
-            //     0,
-            //     1,
-            //     1
-            //   ],
-            //   "lineWidth": 1
-            // }}
-            // text={{
-            //   "position": "start",
-            //   "autoRotate": false,
-            //   "style": {
-            //     "fill": "red"
-            //   },
-            //   "offsetX": 20,
-            //   "offsetY": -20,
-            //   "content": "待测试"
-            // }}
-          />
-        </Guide> */}
+        {/* <Annotation.Line
+          start={{
+            month: t(`acPowerChart.month.6`),
+            hour: 12
+          }}
+          end={{
+            month: t(`acPowerChart.month.12`),
+            hour: 12
+          }}
+        /> */}
       </Chart>
     </Card>
   )
