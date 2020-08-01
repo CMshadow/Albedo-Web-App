@@ -18,6 +18,7 @@ import Cookie from './pages/static/Cookie'
 import Privacy from './pages/static/Privacy'
 import ModelingLayout from './layouts/Modeling/ModelingLayout/ModelingLayout'
 import DisplayPage from './pages/static/DisplayPage/index'
+import VideoPage from './pages/static/VideoPage/VideoPage'
 const Report = lazy(() => import('./pages/Report/Report'))
 const ParamsForm = lazy(() => import('./pages/ParamsForm/ParamsForm'))
 const Dashboard = lazy(() => import('./pages/Project/Dashboard'))
@@ -105,6 +106,7 @@ const Router = () => {
             <Switch>
               <Route path="/cn" component={DisplayPage} />
               <Route path="/" component={DisplayPage} />
+              <Route path="/video" component={VideoPage} />
               <Route path='*' component={NotFound404} />
             </Switch>
           </Route>
