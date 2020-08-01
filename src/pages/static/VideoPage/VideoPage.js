@@ -26,11 +26,12 @@ const VideoPage = ()=>(
     <div >
     <Layout style={{backgroundColor:'#ffffff'}}>
       <DisplayPageHeader/>
+      
       <Content className = {styles.content}>
         <Title className={styles.title1}>Albedo 快速上手教程</Title>
+      
         <Title level={4} type="secondary" className={styles.title2}>三分钟快速上手，带你玩转光伏设计</Title>
-      </Content>
-      <Content className = {styles.content}>
+        <br/>
         <Player config={config} />
       </Content>
       <DisplayPageFooter/>

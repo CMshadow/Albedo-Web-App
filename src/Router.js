@@ -34,6 +34,7 @@ const Router = () => {
         <ScrollToTop />
         <Switch>
           <Route path="/me" component={FakeParking} />
+          <Route path="/tutorial" component={VideoPage} />
           <Route path="/user">
             <UserLayout>
               <Switch>
@@ -106,7 +107,7 @@ const Router = () => {
             <Switch>
               <Route path="/cn" component={DisplayPage} />
               <Route path="/" component={DisplayPage} />
-              <Route path="/video" component={VideoPage} />
+              
               <Route path='*' component={NotFound404} />
             </Switch>
           </Route>
