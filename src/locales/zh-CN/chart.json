@@ -66,5 +66,23 @@
   "productionChart.hour": "小时",
 
   "irrChart.selectspec": "选择朝向倾角",
-  "irrChart.irr": "总辐射量"
+  "irrChart.irr": "总辐射量",
+
+  "sunPosition.hour.0": "4 AM",
+  "sunPosition.hour.1": "5 AM",
+  "sunPosition.hour.2": "6 AM",
+  "sunPosition.hour.3": "7 AM",
+  "sunPosition.hour.4": "8 AM",
+  "sunPosition.hour.5": "9 AM",
+  "sunPosition.hour.6": "10 AM",
+  "sunPosition.hour.7": "11 AM",
+  "sunPosition.hour.8": "12 PM",
+  "sunPosition.hour.9": "1 PM",
+  "sunPosition.hour.10": "2 PM",
+  "sunPosition.hour.11": "3 PM",
+  "sunPosition.hour.12": "4 PM",
+  "sunPosition.hour.13": "5 PM",
+  "sunPosition.hour.14": "6 PM",
+  "sunPosition.hour.15": "7 PM",
+  "sunPosition.hour.16": "8 PM"
 }

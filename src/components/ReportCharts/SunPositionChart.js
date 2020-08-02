@@ -1,73 +1,122 @@
 import React from 'react'
+import { Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { Card, Typography } from 'antd'
-import { Chart, Line, Axis, Legend, Point, Annotation } from 'bizcharts';
-import { titleStyle, legendStyle } from '../../styles.config'
+import { titleStyle } from '../../styles.config'
+import ReactEcharts from "echarts-for-react";
 const Title = Typography.Title
 
 export const SunPositionChart = ({buildingID}) => {
   const { t } = useTranslation()
   const reportData = useSelector(state => state.report)
 
-  const dataSource = reportData[buildingID].sunPosition.flatMap((monthData, monthIndex) =>
-    monthData[0].map((sunAz, hourIndex) => ({
-      month: t(`acPowerChart.month.${monthIndex + 1}`),
-      hour: hourIndex,
-      azimuth: sunAz,
-      el: monthData[1][hourIndex]
-    }))
+  const monthlyData = Array(12).fill([]).map(ary => ([]))
+  reportData[buildingID].sunPosition.forEach((monthData, monthIndex) =>
+    monthData[0].forEach((sunAz, hourIndex) =>
+      monthlyData[monthIndex].push([sunAz, monthData[1][hourIndex]])
+    )
   )
-  console.log(dataSource)
 
-  const scale = {
-    month: {
-      type: 'cat',
-      alias: t('acPowerChart.month'),
-      tickCount: 12,
+  const hourlyData = Array(monthlyData[0].length).fill([]).map(ary => ([]))
+  reportData[buildingID].sunPosition.forEach((monthData, monthIndex) =>
+    monthData[0].forEach((sunAz, hourIndex) =>
+      (hourlyData[hourIndex].push([sunAz, monthData[1][hourIndex]]))
+    )
+  )
+
+  const option = {
+    xAxis: {
+      type: 'value',
+      name: 'Azimuth',
+      nameLocation: 'center',
+      nameTextStyle: titleStyle,
+      nameGap: 25,
+      min: value => value.min - 10,
+      max: value => value.max + 10,
+      splitNumber: 10,
+      splitLine: {show: false}
     },
-    // value: {
-    //   alias: t('acPowerChart.production'),
-    //   tickCount: 10,
-    //   formatter: text => `${text.toFixed(2)} ${reportData[buildingID].month_AC_power.unit}`,
-    //   nice: true
-    // },
-  }
+    yAxis: {
+      type: 'value',
+      name: 'El',
+      nameLocation: 'center',
+      nameTextStyle: titleStyle,
+      nameGap: 25,
+      min: 0,
+      max: 90,
+      splitNumber: 10
+    },
+    series: [
+      ...monthlyData.map((monthData, monthIndex) => {
+        const setup =  {
+          data: monthData,
+          smooth: true,
+          type: 'line',
+          lineStyle: {color: '#1890ff'},
+        }
+        if ([12, 1, 2, 3, 4, 5, 6].includes(monthIndex + 1)) {
+          const maxY = monthData.reduce((max, val) => val[1] > max ? val[1] : max, 0)
+          const text = [12, 6].includes(monthIndex + 1) ?
+            t(`acPowerChart.month.${monthIndex + 1}`) :
+            `${t(`acPowerChart.month.${monthIndex + 1}`)} & ${t(`acPowerChart.month.${12 - (monthIndex + 1)}`)}`
+          setup.markPoint = {
+            data: [{
+              symbol: 'rect',
+              symbolSize: 1,
+              coord: [180, maxY],
+              value: text,
+              name: text,
+              label: {
+                position: [12, 4, 5, 6].includes(monthIndex + 1) ? 'bottom' : 'top',
+                fontSize: 14,
+                color: '#000',
+              }
+            }]
+          }
+        }
+        return setup
+      }),
+      ...hourlyData.map((hourData, hourIndex) => {
+        const allZero = hourData.every(pair => pair[1] === 0)
+        const maxY = hourData.reduce((max, val) => val[1] > max ? val[1] : max, 0)
+        const x = hourData.find(pair => pair[1] === maxY)[0]
+        const setup = {
+          data: hourData,
+          smooth: true,
+          type: 'line',
+          lineStyle: {color: '#fa8c16', width: 3},
+        }
+        if (!allZero) {
+          setup.markPoint = {
+            data: [{
+              symbol: 'rect',
+              symbolSize: 1,
+              coord: [x, maxY],
+              value: t(`sunPosition.hour.${hourIndex}`),
+              name: t(`sunPosition.hour.${hourIndex}`),
+              label: {
+                position: 'top',
+                fontSize: 14,
+                color: '#5b8c00',
+              }
+            }]
+          }
+        }
+        return setup
+      })
+    ]
+}
 
   return (
     <Card
       title={
         <Title style={{textAlign: 'center'}} level={4}>
-          {t('acPowerChart.title')}
+          {t('heatMap.title')}
         </Title>
       }
       hoverable
     >
-      <Chart
-        // scale={scale}
-        padding={[30, 30, 100, 100]}
-        autoFit
-        height={500}
-        data={dataSource}
-        interactions={['active-region']}
-      >
-        <Legend position='bottom' itemName={{style: legendStyle}} offsetY={-10}/>
-        <Axis name='azimuth' title={{style: titleStyle}} />
-        <Axis name='el' title={{style: titleStyle}} />
-        <Line shape="smooth" position="azimuth*el" color='month' />
-        <Line shape="smooth" position="azimuth*el" color='hour' />
-        <Point position="azimuth*el" color='month' />
-        {/* <Annotation.Line
-          start={{
-            month: t(`acPowerChart.month.6`),
-            hour: 12
-          }}
-          end={{
-            month: t(`acPowerChart.month.12`),
-            hour: 12
-          }}
-        /> */}
-      </Chart>
+      <ReactEcharts option={option} style={{height: '600px', width: '100%'}}/>
     </Card>
   )
 }
