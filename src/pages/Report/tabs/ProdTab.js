@@ -3,6 +3,7 @@ import { Card, Row, Col } from 'antd'
 import { ACPowerTable } from '../../../components/ACPowerTable/ACPowerTable'
 import { ACPowerChart } from '../../../components/ReportCharts/ACPowerChart'
 import { ProductionChart } from '../../../components/ReportCharts/ProductionChart'
+import { IrrVSProdChart } from '../../../components/ReportCharts/IrrVSProdChart'
 
 export const ProdTab = ({buildingID}) => {
   return (
@@ -20,6 +21,11 @@ export const ProdTab = ({buildingID}) => {
       <Row gutter={[0, 25]}>
         <Col span={24}>
           <ProductionChart buildingID={buildingID}/>
+        </Col>
+      </Row>
+      <Row gutter={[0, 25]}>
+        <Col span={24}>
+          <IrrVSProdChart buildingID={buildingID}/>
         </Col>
       </Row>
     </Card>

@@ -9,6 +9,7 @@
   "productionChart.title": "系统首年上网发电量",
   "irrChart.title": "阵列朝向倾角辐照量",
   "sunPosition.title": "太阳位置轨迹图",
+  "irrVSProdChart.title": "每日总水平辐射与总发电量",
 
   "cashflowChart.year": "年份",
   "cashflowChart.gain": "净现金流量",
@@ -101,5 +102,9 @@
   "sunPosition.hour.13": "17:00",
   "sunPosition.hour.14": "18:00",
   "sunPosition.hour.15": "19:00",
-  "sunPosition.hour.16": "20:00"
+  "sunPosition.hour.16": "20:00",
+
+  "irrVSProdChart.ghi": "Global Horizontal Irradiance 总水平辐射 (kWh/㎡ ⋅ 日)",
+  "irrVSProdChart.ac": "总发电量",
+  "irrVSProdChart.perday": "/日"
 }

@@ -9,6 +9,7 @@
   "productionChart.title": "First Year Production",
   "irrChart.title": "Monthly POA Irradiance",
   "sunPosition.title": "Sun Position",
+  "irrVSProdChart.title": "Daily Global Irradiance and Energy Output",
 
   "cashflowChart.year": "Year",
   "cashflowChart.gain": "Net Cash Flow",
@@ -101,5 +102,9 @@
   "sunPosition.hour.13": "5 PM",
   "sunPosition.hour.14": "6 PM",
   "sunPosition.hour.15": "7 PM",
-  "sunPosition.hour.16": "8 PM"
+  "sunPosition.hour.16": "8 PM",
+
+  "irrVSProdChart.ghi": "Global Horizontal Irradiance (kWh/㎡ ⋅ day)",
+  "irrVSProdChart.ac": "Total Production",
+  "irrVSProdChart.perday": "/day"
 }
