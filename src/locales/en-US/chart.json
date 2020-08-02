@@ -8,6 +8,7 @@
   "emissionReductionCard.title": "Emission Reduction of 25 Yaer Lifetime",
   "productionChart.title": "First Year Production",
   "irrChart.title": "Monthly POA Irradiance",
+  "sunPosition.title": "Sun Position",
 
   "cashflowChart.year": "Year",
   "cashflowChart.gain": "Net Cash Flow",
@@ -67,6 +68,22 @@
 
   "irrChart.selectspec": "Select Orientation",
   "irrChart.irr": "Total Irradiance",
+
+  "sunPosition.sunElev": "Sun Elevation",
+  "sunPosition.sunAzi": "Sun Azimuth",
+  "sunPosition.day.21": "21",
+  "sunPosition.month.1": "Jan",
+  "sunPosition.month.2": "Feb",
+  "sunPosition.month.3": "Mar",
+  "sunPosition.month.4": "Apr",
+  "sunPosition.month.5": "May",
+  "sunPosition.month.6": "Jun",
+  "sunPosition.month.7": "Jul",
+  "sunPosition.month.8": "Aug",
+  "sunPosition.month.9": "Sep",
+  "sunPosition.month.10": "Oct",
+  "sunPosition.month.11": "Nov",
+  "sunPosition.month.12": "Dec",
 
   "sunPosition.hour.0": "4 AM",
   "sunPosition.hour.1": "5 AM",
