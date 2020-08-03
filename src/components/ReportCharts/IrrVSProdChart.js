@@ -53,9 +53,18 @@ export const IrrVSProdChart = ({buildingID}) => {
         <Axis name='ac' title={{style: titleStyle}} />
         <Point
           position="ghi*ac" shape="circle" size={5}
-          style={{fillOpacity: 0.85}}
+          style={{fillOpacity: 0.85}} tooltip='ghi*ac'
         />
-        <Tooltip shared />
+        <Tooltip
+          showMarkers
+          showTitle={false}
+          marker={{
+            r: 7,
+            lineWidth: 5,
+            stroke: '#fa8c16',
+            fill: '#fff'
+          }}
+        />
       </Chart>
     </Card>
   )

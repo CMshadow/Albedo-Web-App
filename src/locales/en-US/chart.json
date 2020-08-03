@@ -10,6 +10,7 @@
   "irrChart.title": "Monthly POA Irradiance",
   "sunPosition.title": "Sun Position",
   "irrVSProdChart.title": "Daily Global Irradiance and Energy Output",
+  "acDistributionChart.title": "Energy Production Histogram",
 
   "cashflowChart.year": "Year",
   "cashflowChart.gain": "Net Cash Flow",
@@ -106,5 +107,8 @@
 
   "irrVSProdChart.ghi": "Global Horizontal Irradiance (kWh/㎡ ⋅ day)",
   "irrVSProdChart.ac": "Total Production",
-  "irrVSProdChart.perday": "/day"
+  "irrVSProdChart.perday": "/day",
+
+  "acDistributionChart.dc": "System Power Output",
+  "acDistributionChart.ac": "Total Production/Bin"
 }
