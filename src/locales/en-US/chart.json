@@ -8,6 +8,9 @@
   "emissionReductionCard.title": "Emission Reduction of 25 Yaer Lifetime",
   "productionChart.title": "First Year Production",
   "irrChart.title": "Monthly POA Irradiance",
+  "sunPosition.title": "Sun Position",
+  "irrVSProdChart.title": "Daily Global Irradiance and Energy Output",
+  "acDistributionChart.title": "Energy Production Histogram",
 
   "cashflowChart.year": "Year",
   "cashflowChart.gain": "Net Cash Flow",
@@ -66,5 +69,46 @@
   "productionChart.hour": "Hour",
 
   "irrChart.selectspec": "Select Orientation",
-  "irrChart.irr": "Total Irradiance"
+  "irrChart.irr": "Total Irradiance",
+
+  "sunPosition.sunElev": "Sun Elevation",
+  "sunPosition.sunAzi": "Sun Azimuth",
+  "sunPosition.day.21": "21",
+  "sunPosition.month.1": "Jan",
+  "sunPosition.month.2": "Feb",
+  "sunPosition.month.3": "Mar",
+  "sunPosition.month.4": "Apr",
+  "sunPosition.month.5": "May",
+  "sunPosition.month.6": "Jun",
+  "sunPosition.month.7": "Jul",
+  "sunPosition.month.8": "Aug",
+  "sunPosition.month.9": "Sep",
+  "sunPosition.month.10": "Oct",
+  "sunPosition.month.11": "Nov",
+  "sunPosition.month.12": "Dec",
+
+  "sunPosition.hour.0": "4 AM",
+  "sunPosition.hour.1": "5 AM",
+  "sunPosition.hour.2": "6 AM",
+  "sunPosition.hour.3": "7 AM",
+  "sunPosition.hour.4": "8 AM",
+  "sunPosition.hour.5": "9 AM",
+  "sunPosition.hour.6": "10 AM",
+  "sunPosition.hour.7": "11 AM",
+  "sunPosition.hour.8": "12 PM",
+  "sunPosition.hour.9": "1 PM",
+  "sunPosition.hour.10": "2 PM",
+  "sunPosition.hour.11": "3 PM",
+  "sunPosition.hour.12": "4 PM",
+  "sunPosition.hour.13": "5 PM",
+  "sunPosition.hour.14": "6 PM",
+  "sunPosition.hour.15": "7 PM",
+  "sunPosition.hour.16": "8 PM",
+
+  "irrVSProdChart.ghi": "Global Horizontal Irradiance (kWh/㎡ ⋅ day)",
+  "irrVSProdChart.ac": "Total Production",
+  "irrVSProdChart.perday": "/day",
+
+  "acDistributionChart.dc": "System Power Output",
+  "acDistributionChart.ac": "Total Production/Bin"
 }

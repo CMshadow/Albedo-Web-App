@@ -1,12 +1,13 @@
 import { getLanguage } from './getLanguage'
 
+
 export const watthour2MJ = (data) => {
   return data * 0.0036
 }
 
 const wh2otherCN = (data, withH=true) => {
   let mark = data
-  if (Array.isArray(data)) mark = Math.min(data)
+  if (Array.isArray(data)) mark = Math.max(...data)
 
   if (mark < 1000) {
     return {
@@ -39,7 +40,7 @@ const wh2otherCN = (data, withH=true) => {
 
 const wh2otherUS = (data, withH=true) => {
   let mark = data
-  if (Array.isArray(data)) mark = Math.min(data)
+  if (Array.isArray(data)) mark = Math.max(...data)
 
   if (mark < 1000) {
     return {
@@ -110,41 +111,49 @@ export const other2w = (data, unit) => {
 }
 
 export const wh2kwh = (data) => {
-  return data / 1e3
+  if (Array.isArray(data)) return data.map(val => val / 1e3)
+  else return data / 1e3
 }
 
 export const kwh2wh = (data) => {
-  return data * 1e3
+  if (Array.isArray(data)) return data.map(val => val * 1e3)
+  else return data * 1e3
 }
 
 export const wh2mwh = (data) => {
-  return data / 1e6
+  if (Array.isArray(data)) return data.map(val => val / 1e6)
+  else return data / 1e6
 }
 
 export const mwh2wh = (data) => {
-  return data * 1e6
+  if (Array.isArray(data)) return data.map(val => val * 1e6)
+  else return data * 1e6
 }
 
 export const wh2WANkwh = (data) => {
-  return data / 1e7
+  if (Array.isArray(data)) return data.map(val => val / 1e7)
+  else return data / 1e7
 }
 
 export const WANkwh2wh = (data) => {
-  return data * 1e7
+  if (Array.isArray(data)) return data.map(val => val * 1e7)
+  else return data * 1e7
 }
 
 export const wh2gwh = (data) => {
-  return data / 1e9
+  if (Array.isArray(data)) return data.map(val => val / 1e9)
+  else return data / 1e9
 }
 
 export const gwh2wh = (data) => {
-  return data * 1e9
+  if (Array.isArray(data)) return data.map(val => val * 1e9)
+  else return data * 1e9
 }
 
 export const money2Other = (data) => {
   const locale = getLanguage()
   let mark = data
-  if (Array.isArray(data)) mark = Math.min(data)
+  if (Array.isArray(data)) mark = Math.max(...data)
 
   switch (locale) {
     case 'zh-CN':
