@@ -27,6 +27,10 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+`REACT_APP_STAGE_OVERWRITE='dev' yarn run build` in Mac / Linux
+
+`($env:REACT_APP_STAGE_OVERWRITE = "dev") -and (yarn run build)` in Windows to overwrite deployment stage to test dev APIs.
+
 ### `yarn eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**

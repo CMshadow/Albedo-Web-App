@@ -105,7 +105,7 @@ export const PVTableViewOnly = ({data, activeData, setactiveData}) => {
           defaultPageSize: 10,
           showSizeChanger: true
         }}
-        scroll={{ x: '100%', y: 'calc(100vh - 275px)' }}
+        scroll={{ x: 'max-content', y: 'calc(100vh - 275px)' }}
       />
       <Drawer
         bodyStyle={{padding: '0px'}}

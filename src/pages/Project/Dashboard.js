@@ -22,7 +22,7 @@ const Dashboard = () => {
       </Row>
       <Row gutter={rowGutter}>
         <Col span={24}>
-          <OptimalCard loading={!projectData.optTilt} {...projectData} />
+          <OptimalCard loading={!(projectData.optTilt >= 0)} {...projectData} />
         </Col>
       </Row>
       <Row gutter={rowGutter}>

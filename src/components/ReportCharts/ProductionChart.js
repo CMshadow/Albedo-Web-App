@@ -27,6 +27,7 @@ export const ProductionChart = ({buildingID}) => {
   const [date, setdate] = useState(moment())
   const [loading, setloading] = useState(false)
   const [dataSource, setdataSource] = useState([])
+  const [unit, setunit] = useState('')
 
   let dateFormat
   let monthFormat
@@ -44,7 +45,10 @@ export const ProductionChart = ({buildingID}) => {
     setloading(true)
     dispatch(getProductionData({projectID, buildingID, month, day, dataKey: 'hour_AC_power'}))
     .then(res => {
-      const ac_data = res.map((val,index) => ({
+      const ac_res = wh2other(res)
+      console.log(ac_res)
+      setunit(ac_res.unit)
+      const ac_data = ac_res.value.map((val,index) => ({
         date: index + 1,
         value: val,
         type: t('lossChart.ac')
@@ -52,7 +56,8 @@ export const ProductionChart = ({buildingID}) => {
       if (mode === 'day') {
         dispatch(getProductionData({projectID, buildingID, month, day, dataKey: 'hour_DC_power'}))
         .then(res2 => {
-          const dc_data = res2.map((val,index) => ({
+          const dc_res = wh2other(res2)
+          const dc_data = dc_res.value.map((val,index) => ({
             date: index + 1,
             value: val,
             type: t('lossChart.dc')
@@ -77,10 +82,7 @@ export const ProductionChart = ({buildingID}) => {
       type: 'linear',
       alias: t('acPowerChart.production'),
       tickCount: 10,
-      formatter: text => {
-        const val = wh2other(text)
-        return `${val.value.toFixed(2)} ${val.unit}`
-      },
+      formatter: text => `${text.toFixed(2)} ${unit}`,
       nice: true
     },
   }
