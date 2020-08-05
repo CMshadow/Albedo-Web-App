@@ -12,7 +12,7 @@ const DisplayPageHeader = () => {
   const location = useLocation()
   const cognitoUser = useSelector(state => state.auth.cognitoUser)
 
-  const navKey = location.pathname === 'tutorial' ? 'tutorial' : 'home'
+  const navKey = location.pathname.split('/')[2] === 'tutorial' ? 'tutorial' : 'home'
 
   const handleScroll=() =>{
     if (document.documentElement.scrollTop > 0) {
@@ -38,7 +38,7 @@ const DisplayPageHeader = () => {
             <Link to="/cn">产品介绍</Link>
           </Menu.Item>
           <Menu.Item key="tutorial">
-            <Link to="/tutorial">视频教程</Link>
+            <Link to="/cn/tutorial">视频教程</Link>
           </Menu.Item>
         </Menu>
         <Row className={styles.right} justify='end' align='middle'>

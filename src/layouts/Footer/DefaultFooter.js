@@ -13,11 +13,19 @@ const DefaultFooter = (props) => {
         {t('footer.about')}
       </a>
       <Divider type="vertical" /> */}
-      <a href="https://albedowebdesign.com/terms" target="_blank" rel="noopener noreferrer">
+      <a href="https://albedowebdesign.com/terms" target="_blank" rel="noopener noreferrer" className={styles.imgPlace}>
         {t('footer.term-of-use')}
       </a>
+      <Divider type="vertical" />
+      <a href="https://albedowebdesign.com/cookie" target="_blank" rel="noopener noreferrer" className={styles.imgPlace}>
+        {t('footer.cookie')}
+      </a>
+      <Divider type="vertical" />
+      <a href="https://albedowebdesign.com/privacy" target="_blank" rel="noopener noreferrer" className={styles.imgPlace}>
+        {t('footer.privacy')}
+      </a>
       <br/>
-      Copyright &copy; 2020 Albedo Inc.
+        Copyright &copy; 2020 Albedo Inc.
     </Footer>
   )
 }

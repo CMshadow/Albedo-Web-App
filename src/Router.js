@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
+import { getLanguage } from './utils/getLanguage'
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import Register from './pages/user/Register/index';
@@ -36,8 +37,6 @@ const Router = () => {
         <ScrollToTop />
         <Switch>
           <Route path="/me" component={FakeParking} />
-          <Route path="/tutorial" component={VideoPage} />
-          <Route path="/Entutorial" component={EnVideoPage} />
           <Route path="/user">
             <UserLayout>
               <Switch>
@@ -108,9 +107,16 @@ const Router = () => {
           </PrivateRoute>
           <Route path="/">
             <Switch>
+              <Route path="/cn/tutorial" component={VideoPage} />
+              <Route path="/en/tutorial" component={EnVideoPage} />
               <Route path="/cn" component={DisplayPage} />
-              <Route path="/" component={EnDisplayPage} />
               <Route path="/en" component={EnDisplayPage} />
+              <Route path="/">
+                {
+                  getLanguage() === 'zh-CN' ?
+                  <DisplayPage /> : <EnDisplayPage />
+                }
+              </Route>
               <Route path='*' component={NotFound404} />
             </Switch>
           </Route>

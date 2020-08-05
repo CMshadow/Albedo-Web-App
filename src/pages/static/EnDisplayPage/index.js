@@ -31,7 +31,9 @@ const EnDisplayPage = () => (
         Smart Solar Design on the Cloud
         </Title>
         <Title level={3} type='secondary' style={{marginTop: 0}}>
-          Immediate project report generation & quick rendering of single line diagram to fast track solar design process 
+          Immediate project report generation & quick rendering of single line diagram
+          <br/>
+          to fast track solar design process 
         </Title>
         <img src={designDisplay} alt="designDisplay" width='70%'/>
       </Row>
@@ -58,7 +60,7 @@ const EnDisplayPage = () => (
           </Col>
           <Col span={8}>
             <Row justify='start' align='middle' className={styles.padSentence}>
-              
+
               <p className={styles.highlightTxt}>Detailed </p>
               <p className={styles.regularTxt}>statistic of project equipments</p>
             </Row>
@@ -92,7 +94,7 @@ const EnDisplayPage = () => (
             </Row>
             <Row>
               <p className={styles.regularTxt}>
-              Acquire hourly weather data for the project location, and automatically compute optimal tilt and azimuth angle to maximize the irradiance received by the plane of array 
+              Acquire hourly weather data for the project location, and automatically compute optimal tilt and azimuth angle to maximize the irradiance received by the plane of array
               </p>
             </Row>
           </Card>
