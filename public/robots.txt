@@ -1,4 +1,4 @@
-Sitemap: https://dev.albedowebdesign.com/sitemap.xml
+Sitemap: https://albedowebdesign.com/sitemap.xml
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Disallow:
