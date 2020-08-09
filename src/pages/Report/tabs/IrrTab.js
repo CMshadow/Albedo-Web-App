@@ -21,7 +21,7 @@ export const IrrTab = ({buildingID}) => {
       </Row>
       {/* New Chart Added at Beta 0.3.0 */}
       {
-        reportData[buildingID].sunPosition ?
+        reportData[buildingID].weatherAnalysis ?
         <Row gutter={[0, 25]}>
           <Col span={24}>
             <WeatherAnalysisTable buildingID={buildingID}/>
@@ -57,7 +57,7 @@ export const IrrTab = ({buildingID}) => {
       }
       {/* New Chart Added at Beta 0.3.0 */}
       {
-        reportData[buildingID].sunPosition ?
+        reportData[buildingID].weatherAnalysis ?
         <Row gutter={[0, 25]}>
           <Col span={24}>
             <DynamicIrradianceChart buildingID={buildingID}/>

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { getProject } from '../Project/service'
 import { deleteProject, getProject as getAllProject } from './service';
-import { deleteReport, deleteProductionData } from '../Report/service'
+import { deleteReport, deleteProductionData, deleteIrradianceData } from '../Report/service'
 
 // Project列表中触发删除一个Project
 export const DeleteAction = ({record, setdata}) => {
@@ -15,11 +15,10 @@ export const DeleteAction = ({record, setdata}) => {
   const onDelete = () => {
     dispatch(getProject({projectID: record.projectID}))
     .then(async res => {
+      await dispatch(deleteProductionData({projectID: record.projectID}))
+      await dispatch(deleteIrradianceData({projectID: record.projectID}))
       await Promise.all(res.buildings.map(building =>
         dispatch(deleteReport({projectID: record.projectID, buildingID: building.buildingID}))
-      ))
-      await Promise.all(res.buildings.map(building =>
-        dispatch(deleteProductionData({projectID: record.projectID, buildingID: building.buildingID}))
       ))
       dispatch(deleteProject({projectID: record.projectID}))
       .then(() => {

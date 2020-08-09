@@ -87,12 +87,12 @@ async (dispatch, getState) => {
   })
 }
 
-export const deleteProductionData = ({projectID, buildingID}) => async dispatch => {
+export const deleteProductionData = ({projectID}) => async dispatch => {
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
 
   return axios.delete(
-    `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/production`,
+    `/project/${session.idToken.payload.sub}/${projectID}/_/production`,
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
   .then(res => res.data)
@@ -121,12 +121,12 @@ async (dispatch, getState) => {
   })
 }
 
-export const deleteIrradianceData = ({projectID, buildingID}) => async dispatch => {
+export const deleteIrradianceData = ({projectID}) => async dispatch => {
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
 
   return axios.delete(
-    `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/production`,
+    `/project/${session.idToken.payload.sub}/${projectID}/_/irradiance`,
     {headers: {'COG-TOKEN': session.idToken.jwtToken}}
   )
   .then(res => res.data)
