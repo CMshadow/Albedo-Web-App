@@ -3,6 +3,7 @@
   "acPowerChart.title": "项目首年每月发电量",
   "lossChart.title": "系统各项损失",
   "systemEfficiencyChart.title": "系统效率",
+  "monthlySystemEfficiencyChart.title": "首年每月系统效率",
   "investmentChart.title": "项目投资占比",
   "heatMap.title": "各朝向倾角辐射值",
   "emissionReductionCard.title": "25年节能减排",
@@ -11,6 +12,8 @@
   "sunPosition.title": "太阳位置轨迹图",
   "irrVSProdChart.title": "每日总水平辐射与总发电量",
   "acDistributionChart.title": "发电量分布直方图",
+  "irrRadarChart.title": "固定倾角下朝向辐射关系图",
+  "dynamicIrrChart.title": "光伏板面辐射值",
 
   "cashflowChart.year": "年份",
   "cashflowChart.gain": "净现金流量",
@@ -110,5 +113,7 @@
   "irrVSProdChart.perday": "/日",
 
   "acDistributionChart.dc": "系统发电功率",
-  "acDistributionChart.ac": "总发电量"
+  "acDistributionChart.ac": "总发电量",
+
+  "irrRadarChart.selectTilt": "选择两个倾角进行比较"
 }

@@ -3,6 +3,7 @@
   "acPowerChart.title": "First Year Monthy Production",
   "lossChart.title": "System Loss",
   "systemEfficiencyChart.title": "System Efficiency",
+  "monthlySystemEfficiencyChart.title": "First Year Monthly System Efficiency",
   "investmentChart.title": "Project Investment",
   "heatMap.title": "POA Irradiance with Array Orientations",
   "emissionReductionCard.title": "Emission Reduction of 25 Yaer Lifetime",
@@ -11,6 +12,8 @@
   "sunPosition.title": "Sun Position",
   "irrVSProdChart.title": "Daily Global Irradiance and Energy Output",
   "acDistributionChart.title": "Energy Production Histogram",
+  "irrRadarChart.title": "Irradiance v.s. Azimuth under Fixed Tilts",
+  "dynamicIrrChart.title": "PV Module Surface Irradiance",
 
   "cashflowChart.year": "Year",
   "cashflowChart.gain": "Net Cash Flow",
@@ -110,5 +113,7 @@
   "irrVSProdChart.perday": "/day",
 
   "acDistributionChart.dc": "System Power Output",
-  "acDistributionChart.ac": "Total Production/Bin"
+  "acDistributionChart.ac": "Total Production/Bin",
+
+  "irrRadarChart.selectTilt": "Select Two Tilts to Compare"
 }

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { DatePicker, Row, Divider, Typography, Space, Radio, Spin, Card } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { DatePicker, Row, Divider, Typography, Space, Radio, Spin, Card, Select } from 'antd'
 import moment from 'moment';
-import { Chart, Legend, Axis, Line, Point, Interval } from 'bizcharts';
-import { titleStyle, legendStyle } from '../../styles.config'
-import { getProductionData } from '../../pages/Report/service'
+import { Chart, Axis, Line, Point, Interval } from 'bizcharts';
+import { titleStyle } from '../../styles.config'
+import { getIrradianceData } from '../../pages/Report/service'
 import { wh2other, w2other } from '../../utils/unitConverter'
 import { getLanguage } from '../../utils/getLanguage'
-const Title = Typography.Title
-const Text = Typography.Text
+const { Title, Text } = Typography
+const { Option } = Select;
 
 const meteonormYear = 2005
 
@@ -18,8 +18,10 @@ const disabledDate = (date) => {
   return date.year() < meteonormYear || date.year() > meteonormYear
 }
 
-export const ProductionChart = ({buildingID}) => {
+export const DynamicIrradianceChart = ({buildingID}) => {
   const { t } = useTranslation()
+  const projectData = useSelector(state => state.project)
+  const reportData = useSelector(state => state.report)
   const dispatch = useDispatch()
   const history = useHistory()
   const projectID = history.location.pathname.split('/')[2]
@@ -28,6 +30,26 @@ export const ProductionChart = ({buildingID}) => {
   const [loading, setloading] = useState(false)
   const [dataSource, setdataSource] = useState([])
   const [unit, setunit] = useState('')
+  const [selSpecIndex, setselSpecIndex] = useState(0)
+
+  const curBuilding = projectData.buildings.find(building =>
+    building.buildingID === buildingID
+  )
+
+  const stringifySetupMonthIrr = reportData[buildingID].setup_month_irr.map(JSON.stringify)
+  const uniqueSetupMonthIrr = [...new Set(stringifySetupMonthIrr)].map(JSON.parse)
+  const allUniqueSetupAndIndex = uniqueSetupMonthIrr.map(setup => {
+    const setupIndex = stringifySetupMonthIrr.indexOf(JSON.stringify(setup))
+    return ({
+      setupIndex: setupIndex,
+      elem: (
+        <Space>
+          {`${t('irrTable.tilt')}: ${curBuilding.data[setupIndex].pv_panel_parameters.tilt_angle}°`}
+          {`${t('irrTable.azimuth')}: ${curBuilding.data[setupIndex].pv_panel_parameters.azimuth}°`}
+        </Space>
+      )
+    })
+  })
 
   let dateFormat
   let monthFormat
@@ -43,45 +65,34 @@ export const ProductionChart = ({buildingID}) => {
     const month = date.month() + 1
     const day = mode === 'day' ? date.date() : null
     setloading(true)
-    dispatch(getProductionData({projectID, buildingID, month, day, dataKey: 'hour_AC_power'}))
+    dispatch(getIrradianceData({
+      projectID, buildingID, month, day,
+      tilt: curBuilding.data[selSpecIndex].pv_panel_parameters.tilt_angle,
+      azimuth: curBuilding.data[selSpecIndex].pv_panel_parameters.azimuth,
+    }))
     .then(res => {
-      const ac_res = day ? w2other(res) : wh2other(res) // 月用wh日用w
-      setunit(ac_res.unit)
-      const ac_data = ac_res.value.map((val,index) => ({
+      const irr_res = mode === 'day' ? w2other(res) : wh2other(res) // 月用wh日用w
+      setunit(irr_res.unit)
+      const irr_data = irr_res.value.map((val,index) => ({
         date: `${index + 1}`,
-        value: val,
-        type: t('lossChart.ac')
+        value: val
       }))
-      if (mode === 'day') {
-        dispatch(getProductionData({projectID, buildingID, month, day, dataKey: 'hour_DC_power'}))
-        .then(res2 => {
-          const dc_res = wh2other(res2)
-          const dc_data = dc_res.value.map((val,index) => ({
-            date: `${index + 1}`,
-            value: val,
-            type: t('lossChart.dc')
-          }))
-          setdataSource(ac_data.concat(dc_data))
-          setloading(false)
-        })
-      } else {
-        setdataSource(ac_data)
-        setloading(false)
-      }
+      setdataSource(irr_data)
+      setloading(false)
     })
-  }, [buildingID, date, dispatch, mode, projectID, t])
+  }, [buildingID, curBuilding.data, date, dispatch, mode, projectID, selSpecIndex, t])
 
   const scale = {
     date: {
       type: mode === 'month' ? 'cat' : 'linear',
       alias: mode === 'month' ? t('productionChart.day') : t('productionChart.hour'),
-      tickCount: mode === 'month' ? dataSource.length : dataSource.length / 2
+      tickCount: dataSource.length,
     },
     value: {
       type: 'linear',
-      alias: t('acPowerChart.production'),
+      alias: t('irrChart.irr'),
       tickCount: 10,
-      formatter: text => `${text.toFixed(2)} ${unit}`,
+      formatter: text => `${text.toFixed(2)} ${unit}/㎡`,
       nice: true
     },
   }
@@ -90,13 +101,22 @@ export const ProductionChart = ({buildingID}) => {
     <Card
       title={
         <Title style={{textAlign: 'center'}} level={4}>
-          {t('productionChart.title')}
+          {t('dynamicIrrChart.title')}
         </Title>
       }
       hoverable
     >
       <Row justify='center'>
         <Space>
+          <Text strong>{t('irrChart.selectspec')}</Text>
+          <Select defaultValue={selSpecIndex} onChange={val => setselSpecIndex(val)}>
+            {
+              allUniqueSetupAndIndex.map(obj =>
+                <Option key={obj.setupIndex} value={obj.setupIndex}>{obj.elem}</Option>
+              )
+            }
+          </Select>
+          <Divider type='vertical' />
           <Text strong>{t('productionChart.selectdate')}</Text>
           <Radio.Group onChange={e => {
             setmode(e.target.value)
@@ -126,16 +146,15 @@ export const ProductionChart = ({buildingID}) => {
           data={dataSource}
           interactions={['active-region']}
         >
-          <Legend visible={mode === 'day'} position='bottom' itemName={{style: legendStyle}} offsetY={-10}/>
           <Axis name='date' title={{style: titleStyle}} />
           <Axis name='value' title={{style: titleStyle}} />
           {
             mode === 'day' ?
             [
-              <Line shape="smooth" position="date*value" color={["type", ['#1890ff', '#faad14']]} />,
-              <Point position="date*value" color={["type", ['#1890ff', '#faad14']]} />
+              <Line color='#1890ff' shape="smooth" position="date*value" />,
+              <Point position="date*value"/>
             ]:
-            <Interval position="date*value" color={["type", ['#1890ff', '#faad14']]}/>
+            <Interval color='#1890ff' position="date*value" />
           }
         </Chart>
       </Spin>

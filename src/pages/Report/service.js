@@ -101,3 +101,37 @@ export const deleteProductionData = ({projectID, buildingID}) => async dispatch 
     throw err
   })
 }
+
+export const getIrradianceData = ({projectID, buildingID, month, day, tilt, azimuth}) =>
+async (dispatch, getState) => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.get(
+    `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/irradiance`,
+    {
+      params: {month: month, day: day, tilt: tilt, azimuth: azimuth},
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => res.data)
+  .catch(err => {
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}
+
+export const deleteIrradianceData = ({projectID, buildingID}) => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.delete(
+    `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/production`,
+    {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+  )
+  .then(res => res.data)
+  .catch(err => {
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}

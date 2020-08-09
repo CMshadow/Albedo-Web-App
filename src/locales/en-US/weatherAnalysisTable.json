@@ -1,0 +1,24 @@
+{
+  "weatherAnalysisTable.title": "Monthly Average Weather Analysis",
+
+  "weatherAnalysisTable.month": "Month",
+  "weatherAnalysisTable.DNI": "Direct Normal Irradiance",
+  "weatherAnalysisTable.DHI": "Diffuse Horizontal Irradiance",
+  "weatherAnalysisTable.GHI": "Global Horizontal Irradiance",
+  "weatherAnalysisTable.Wspd": "Wind Speed",
+  "weatherAnalysisTable.DryBulb": "Dry Bulb Temperature",
+
+  "weatherAnalysisTable.month.1": "January",
+  "weatherAnalysisTable.month.2": "February",
+  "weatherAnalysisTable.month.3": "March",
+  "weatherAnalysisTable.month.4": "April",
+  "weatherAnalysisTable.month.5": "May",
+  "weatherAnalysisTable.month.6": "June",
+  "weatherAnalysisTable.month.7": "July",
+  "weatherAnalysisTable.month.8": "August",
+  "weatherAnalysisTable.month.9": "September",
+  "weatherAnalysisTable.month.10": "October",
+  "weatherAnalysisTable.month.11": "November",
+  "weatherAnalysisTable.month.12": "December",
+  "weatherAnalysisTable.month.annual": "Annual"
+}

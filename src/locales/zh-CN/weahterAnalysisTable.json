@@ -1,0 +1,24 @@
+{
+  "weatherAnalysisTable.title": "月平均天气数据分析",
+
+  "weatherAnalysisTable.month": "月份",
+  "weatherAnalysisTable.DNI": "直接辐射(DNI)",
+  "weatherAnalysisTable.DHI": "散射辐射(DHI)",
+  "weatherAnalysisTable.GHI": "总水平辐射(GHI)",
+  "weatherAnalysisTable.Wspd": "风速",
+  "weatherAnalysisTable.DryBulb": "干球温度",
+
+  "weatherAnalysisTable.month.1": "1月",
+  "weatherAnalysisTable.month.2": "2月",
+  "weatherAnalysisTable.month.3": "3月",
+  "weatherAnalysisTable.month.4": "4月",
+  "weatherAnalysisTable.month.5": "5月",
+  "weatherAnalysisTable.month.6": "6月",
+  "weatherAnalysisTable.month.7": "7月",
+  "weatherAnalysisTable.month.8": "8月",
+  "weatherAnalysisTable.month.9": "9月",
+  "weatherAnalysisTable.month.10": "10月",
+  "weatherAnalysisTable.month.11": "11月",
+  "weatherAnalysisTable.month.12": "12月",
+  "weatherAnalysisTable.month.annual": "全年"
+}
