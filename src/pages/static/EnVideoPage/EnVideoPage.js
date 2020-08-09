@@ -5,7 +5,6 @@ import EnDisplayPageFooter from '../../../layouts/EnDisplayPageFooter/EnDisplayP
 import {Layout, Typography} from 'antd';
 import Player from 'aliplayer-react';
 import * as styles from './EnVideoPage.module.scss';
-//import * as A  from './getUrl';
 const {Content} = Layout;
 const {Title} = Typography;
 const config = {

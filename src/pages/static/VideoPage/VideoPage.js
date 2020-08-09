@@ -5,7 +5,6 @@ import DisplayPageFooter from '../../../layouts/DisplayPageFooter/DisplayPageFoo
 import {Layout, Typography} from 'antd';
 import Player from 'aliplayer-react';
 import * as styles from './VideoPage.module.scss';
-//import * as A  from './getUrl';
 const {Content} = Layout;
 const {Title} = Typography;
 const config = {
