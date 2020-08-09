@@ -61,8 +61,15 @@ export const PVTableViewOnly = ({data, activeData, setactiveData}) => {
     dataIndex: 'companyName',
     key: 'companyName',
     sorter: (a, b) => a.companyName - b.companyName,
-    width: 200,
+    width: 150,
     ...SearchString({colKey: 'companyName', data, setactiveData}),
+  })
+  // 生成表单组件备注列属性
+  tableCols.splice(0, 0, {
+    title: t('PVtable.table.note'),
+    dataIndex: 'note',
+    key: 'note',
+    width: 150,
   })
   // 生成表单组件名称列属性
   tableCols.splice(0, 0, {
@@ -98,7 +105,7 @@ export const PVTableViewOnly = ({data, activeData, setactiveData}) => {
           defaultPageSize: 10,
           showSizeChanger: true
         }}
-        scroll={{ x: '100%', y: 'calc(100vh - 275px)' }}
+        scroll={{ x: 'max-content', y: 'calc(100vh - 275px)' }}
       />
       <Drawer
         bodyStyle={{padding: '0px'}}

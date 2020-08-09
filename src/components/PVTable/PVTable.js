@@ -59,6 +59,13 @@ export const PVTable = ({
       })
     }
   })
+  // 生成表单组件备注列属性
+  tableCols.splice(0, 0, {
+    title: t('PVtable.table.note'),
+    dataIndex: 'note',
+    key: 'note',
+    width: 150,
+  })
   // 生成表单组件名称列属性
   tableCols.splice(0, 0, {
     title: t('PVtable.table.name'),
@@ -121,7 +128,7 @@ export const PVTable = ({
           defaultPageSize: 10,
           showSizeChanger: true
         }}
-        scroll={{ x: '100%', y: 'calc(100vh - 275px)' }}
+        scroll={{ x: 'max-content', y: 'calc(100vh - 275px)' }}
       />
       <Drawer
         bodyStyle={{padding: '0px'}}

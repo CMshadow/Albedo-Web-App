@@ -52,6 +52,7 @@ const ProjectTable = (props) => {
       title: t('project.create.address'),
       dataIndex: 'projectAddress',
       key: 'projectAddress',
+      width: 250,
       sorter: (a, b) => a.projectAddress - b.projectAddress,
     },
     {
@@ -59,7 +60,7 @@ const ProjectTable = (props) => {
       dataIndex: 'createdAt',
       key: 'createdAt',
       sorter: (a, b) => a.createdAt - b.createdAt,
-      width: 150,
+      width: 200,
       render: val => new Date(val * 1000).toLocaleString()
     },
     {
@@ -67,7 +68,7 @@ const ProjectTable = (props) => {
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       sorter: (a, b) => a.updatedAt - b.updatedAt,
-      width: 150,
+      width: 200,
       render: val => new Date(val * 1000).toLocaleString()
     },
     {
@@ -147,7 +148,7 @@ const ProjectTable = (props) => {
           defaultPageSize: 10,
           showSizeChanger: true
         }}
-        scroll={{ x: '100%', y: 'calc(100vh - 275px)' }}
+        scroll={{ x: 'max-content', y: 'calc(100vh - 275px)' }}
       />
       <CreateProjectModal showModal={showModal} setshowModal={setshowModal} />
     </Card>

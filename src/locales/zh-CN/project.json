@@ -47,7 +47,7 @@
   "project.add.building": "添加房屋",
   "project.add.buildingName": "房屋名称",
   "project.add.combibox_cable_len": "汇流箱输出线缆长度",
-  "project.add.spec": "添加光伏组件配置",
+  "project.add.spec": "添加光伏子区域",
   "project.add.spec.prefix": "为房屋",
   "project.add.building.aggr": "所有房屋累计",
 

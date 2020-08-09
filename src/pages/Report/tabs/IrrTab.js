@@ -1,10 +1,17 @@
 import React from 'react'
 import { Card, Row, Col } from 'antd'
+import { useSelector } from 'react-redux'
 import { IrradianceTable } from '../../../components/IrradianceTable/IrradianceTable'
+import { WeatherAnalysisTable } from '../../../components/WeatherAnalysisTable/WeatherAnalysisTable'
 import { IrradianceChart } from '../../../components/ReportCharts/IrradianceChart'
 import { HeatMap } from '../../../components/ReportCharts/HeatMap'
+import { SunPositionChart } from '../../../components/ReportCharts/SunPositionChart'
+import { IrradianceRadarChart } from '../../../components/ReportCharts/IrradianceRadarChart'
+import { DynamicIrradianceChart } from '../../../components/ReportCharts/DynamicIrradianceChart'
 
 export const IrrTab = ({buildingID}) => {
+  const reportData = useSelector(state => state.report)
+
   return (
     <Card bordered={false}>
       <Row gutter={[0, 25]}>
@@ -12,6 +19,16 @@ export const IrrTab = ({buildingID}) => {
           <IrradianceTable buildingID={buildingID}/>
         </Col>
       </Row>
+      {/* New Chart Added at Beta 0.3.0 */}
+      {
+        reportData[buildingID].weatherAnalysis ?
+        <Row gutter={[0, 25]}>
+          <Col span={24}>
+            <WeatherAnalysisTable buildingID={buildingID}/>
+          </Col>
+        </Row> :
+        null
+      }
       <Row gutter={[0, 25]}>
         <Col span={24}>
           <IrradianceChart buildingID={buildingID}/>
@@ -22,6 +39,32 @@ export const IrrTab = ({buildingID}) => {
           <HeatMap buildingID={buildingID}/>
         </Col>
       </Row>
+      {/* New Chart Added at Beta 0.3.0 */}
+      <Row gutter={[0, 25]}>
+        <Col span={24}>
+          <IrradianceRadarChart buildingID={buildingID}/>
+        </Col>
+      </Row>
+      {/* New Chart Added at Beta 0.3.0 */}
+      {
+        reportData[buildingID].sunPosition ?
+        <Row gutter={[0, 25]}>
+          <Col span={24}>
+            <SunPositionChart buildingID={buildingID}/>
+          </Col>
+        </Row> :
+        null
+      }
+      {/* New Chart Added at Beta 0.3.0 */}
+      {
+        reportData[buildingID].weatherAnalysis ?
+        <Row gutter={[0, 25]}>
+          <Col span={24}>
+            <DynamicIrradianceChart buildingID={buildingID}/>
+          </Col>
+        </Row> :
+        null
+      }
     </Card>
   )
 }

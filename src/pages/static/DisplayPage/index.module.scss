@@ -1,0 +1,47 @@
+.layout {
+  background: #ffffff;
+}
+
+.content {
+  background: #ffffff;
+  font-size: 16px;
+  max-width: 1080px;
+  margin: 100px auto 0px auto;
+  text-align: center;
+}
+
+.highlightTxt {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.regularTxt {
+  font-size: 20px;
+}
+
+.part {
+  margin-top: 200px;
+  margin-bottom: 50px;
+}
+
+.feature {
+  margin-top: 220px;
+}
+
+.section {
+  margin-top: 25px;
+  width: 100%;
+
+  .padSentence {
+    height: 35%;
+  }
+}
+
+.card {
+  text-align: left;
+}
+
+.icon {
+  font-size: 50px;
+  float: left;
+}

@@ -3,11 +3,17 @@
   "acPowerChart.title": "项目首年每月发电量",
   "lossChart.title": "系统各项损失",
   "systemEfficiencyChart.title": "系统效率",
+  "monthlySystemEfficiencyChart.title": "首年每月系统效率",
   "investmentChart.title": "项目投资占比",
   "heatMap.title": "各朝向倾角辐射值",
   "emissionReductionCard.title": "25年节能减排",
   "productionChart.title": "系统首年上网发电量",
   "irrChart.title": "阵列朝向倾角辐照量",
+  "sunPosition.title": "太阳位置轨迹图",
+  "irrVSProdChart.title": "每日总水平辐射与总发电量",
+  "acDistributionChart.title": "发电量分布直方图",
+  "irrRadarChart.title": "固定倾角下朝向辐射关系图",
+  "dynamicIrrChart.title": "光伏板面辐射值",
 
   "cashflowChart.year": "年份",
   "cashflowChart.gain": "净现金流量",
@@ -55,8 +61,8 @@
   "emissionReduction.kg": "千克",
   "emissionReduction.t": "吨",
 
-  "heatMap.tilt": "朝向",
-  "heatMap.azimuth": "倾角",
+  "heatMap.tilt": "倾角",
+  "heatMap.azimuth": "朝向",
   "heatMap.poa": "辐照",
 
   "productionChart.selectdate": "选择图表日期",
@@ -66,5 +72,48 @@
   "productionChart.hour": "小时",
 
   "irrChart.selectspec": "选择朝向倾角",
-  "irrChart.irr": "总辐射量"
+  "irrChart.irr": "总辐射量",
+
+  "sunPosition.sunElev": "太阳高度角",
+  "sunPosition.sunAzi": "太阳方位角",
+  "sunPosition.day.21": "21日",
+  "sunPosition.month.1": "1月",
+  "sunPosition.month.2": "2月",
+  "sunPosition.month.3": "3月",
+  "sunPosition.month.4": "4月",
+  "sunPosition.month.5": "5月",
+  "sunPosition.month.6": "6月",
+  "sunPosition.month.7": "7月",
+  "sunPosition.month.8": "8月",
+  "sunPosition.month.9": "9月",
+  "sunPosition.month.10": "10月",
+  "sunPosition.month.11": "11月",
+  "sunPosition.month.12": "12月",
+
+  "sunPosition.hour.0": "04:00",
+  "sunPosition.hour.1": "05:00",
+  "sunPosition.hour.2": "06:00",
+  "sunPosition.hour.3": "07:00",
+  "sunPosition.hour.4": "08:00",
+  "sunPosition.hour.5": "09:00",
+  "sunPosition.hour.6": "10:00",
+  "sunPosition.hour.7": "11:00",
+  "sunPosition.hour.8": "12:00",
+  "sunPosition.hour.9": "13:00",
+  "sunPosition.hour.10": "14:00",
+  "sunPosition.hour.11": "15:00",
+  "sunPosition.hour.12": "16:00",
+  "sunPosition.hour.13": "17:00",
+  "sunPosition.hour.14": "18:00",
+  "sunPosition.hour.15": "19:00",
+  "sunPosition.hour.16": "20:00",
+
+  "irrVSProdChart.ghi": "总水平辐射 Global Horizontal Irradiance (kWh/㎡ ⋅ 日)",
+  "irrVSProdChart.ac": "总发电量",
+  "irrVSProdChart.perday": "/日",
+
+  "acDistributionChart.dc": "系统发电功率",
+  "acDistributionChart.ac": "总发电量",
+
+  "irrRadarChart.selectTilt": "选择两个倾角进行比较"
 }

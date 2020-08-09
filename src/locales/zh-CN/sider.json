@@ -1,12 +1,12 @@
 {
   "sider.company": "Albedo",
-  "sider.edition": "Beta版本 v0.2.0",
+  "sider.edition": "Beta版本 v0.3.0",
   "sider.menu.project": "管理项目",
 
 
   "sider.menu.back-project": "退出该项目",
   "sider.menu.projectDetail": "项目信息",
-  "sider.menu.reportParams": "报告参数设置",
+  "sider.menu.reportParams": "系统效率参数设置",
   "sider.menu.report": "查看报告",
   "sider.menu.report.prefix": "房屋",
   "sider.menu.report.suffix": "的报告",

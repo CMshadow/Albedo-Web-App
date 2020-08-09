@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
+import { getLanguage } from './utils/getLanguage'
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import Register from './pages/user/Register/index';
@@ -14,7 +15,13 @@ import ProjectTable from './pages/ProjectTable/ProjectTable';
 import NotFound404 from './pages/404';
 import FakeParking from './components/FakeParking/FakeParking'
 import Term from './pages/static/Term'
+import Cookie from './pages/static/Cookie'
+import Privacy from './pages/static/Privacy'
 import ModelingLayout from './layouts/Modeling/ModelingLayout/ModelingLayout'
+import DisplayPage from './pages/static/DisplayPage/index'
+import EnDisplayPage from './pages/static/EnDisplayPage/index'
+import VideoPage from './pages/static/VideoPage/VideoPage'
+import EnVideoPage from './pages/static/EnVideoPage/EnVideoPage'
 const Report = lazy(() => import('./pages/Report/Report'))
 const ParamsForm = lazy(() => import('./pages/ParamsForm/ParamsForm'))
 const Dashboard = lazy(() => import('./pages/Project/Dashboard'))
@@ -87,18 +94,32 @@ const Router = () => {
           <Route path="/terms">
             <Term />
           </Route>
-          <PrivateRoute path="/">
+          <Route path="/cookie">
+            <Cookie />
+          </Route>
+          <Route path="/privacy">
+            <Privacy />
+          </Route>
+          <PrivateRoute path='/dashboard'>
             <BasicLayout>
-              <Switch>
-                <PrivateRoute path='/dashboard'>
-                  <ProjectTable/>
-                </PrivateRoute>
-                <Redirect path='*' to="/user/login"/>
-                <Route path='*' component={NotFound404} />
-              </Switch>
+              <ProjectTable/>
             </BasicLayout>
           </PrivateRoute>
-
+          <Route path="/">
+            <Switch>
+              <Route path="/cn/tutorial" component={VideoPage} />
+              <Route path="/en/tutorial" component={EnVideoPage} />
+              <Route path="/cn" component={DisplayPage} />
+              <Route path="/en" component={EnDisplayPage} />
+              <Route path="/">
+                {
+                  getLanguage() === 'zh-CN' ?
+                  <DisplayPage /> : <EnDisplayPage />
+                }
+              </Route>
+              <Route path='*' component={NotFound404} />
+            </Switch>
+          </Route>
         </Switch>
       </Suspense>
     </BrowserRouter>

@@ -20,6 +20,7 @@ import irrTable from './en-US/irradianceTable.json'
 import emissionReduction from './en-US/emissionReduction.json'
 import chart from './en-US/chart.json'
 import techSupport from './en-US/techSupport.json'
+import WeatherAnalysisTable from './en-US/weatherAnalysisTable.json'
 
 export default {
   ...country,
@@ -43,5 +44,6 @@ export default {
   ...irrTable,
   ...emissionReduction,
   ...chart,
-  ...techSupport
+  ...techSupport,
+  ...WeatherAnalysisTable
 }

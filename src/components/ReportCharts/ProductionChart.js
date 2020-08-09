@@ -4,10 +4,10 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { DatePicker, Row, Divider, Typography, Space, Radio, Spin, Card } from 'antd'
 import moment from 'moment';
-import { Chart, Legend, Axis, Line, Point } from 'bizcharts';
+import { Chart, Legend, Axis, Line, Point, Interval } from 'bizcharts';
 import { titleStyle, legendStyle } from '../../styles.config'
 import { getProductionData } from '../../pages/Report/service'
-import { wh2other } from '../../utils/unitConverter'
+import { wh2other, w2other } from '../../utils/unitConverter'
 import { getLanguage } from '../../utils/getLanguage'
 const Title = Typography.Title
 const Text = Typography.Text
@@ -27,6 +27,7 @@ export const ProductionChart = ({buildingID}) => {
   const [date, setdate] = useState(moment())
   const [loading, setloading] = useState(false)
   const [dataSource, setdataSource] = useState([])
+  const [unit, setunit] = useState('')
 
   let dateFormat
   let monthFormat
@@ -44,16 +45,19 @@ export const ProductionChart = ({buildingID}) => {
     setloading(true)
     dispatch(getProductionData({projectID, buildingID, month, day, dataKey: 'hour_AC_power'}))
     .then(res => {
-      const ac_data = res.map((val,index) => ({
-        date: index + 1,
+      const ac_res = day ? w2other(res) : wh2other(res) // 月用wh日用w
+      setunit(ac_res.unit)
+      const ac_data = ac_res.value.map((val,index) => ({
+        date: `${index + 1}`,
         value: val,
         type: t('lossChart.ac')
       }))
       if (mode === 'day') {
         dispatch(getProductionData({projectID, buildingID, month, day, dataKey: 'hour_DC_power'}))
         .then(res2 => {
-          const dc_data = res2.map((val,index) => ({
-            date: index + 1,
+          const dc_res = wh2other(res2)
+          const dc_data = dc_res.value.map((val,index) => ({
+            date: `${index + 1}`,
             value: val,
             type: t('lossChart.dc')
           }))
@@ -69,18 +73,15 @@ export const ProductionChart = ({buildingID}) => {
 
   const scale = {
     date: {
-      type: 'linear',
+      type: mode === 'month' ? 'cat' : 'linear',
       alias: mode === 'month' ? t('productionChart.day') : t('productionChart.hour'),
-      tickCount: mode === 'month' ? dataSource.length : dataSource.length / 2,
+      tickCount: mode === 'month' ? dataSource.length : dataSource.length / 2
     },
     value: {
       type: 'linear',
       alias: t('acPowerChart.production'),
       tickCount: 10,
-      formatter: text => {
-        const val = wh2other(text)
-        return `${val.value.toFixed(2)} ${val.unit}`
-      },
+      formatter: text => `${text.toFixed(2)} ${unit}`,
       nice: true
     },
   }
@@ -125,11 +126,17 @@ export const ProductionChart = ({buildingID}) => {
           data={dataSource}
           interactions={['active-region']}
         >
-          <Legend position='bottom' itemName={{style: legendStyle}} offsetY={-10}/>
+          <Legend visible={mode === 'day'} position='bottom' itemName={{style: legendStyle}} offsetY={-10}/>
           <Axis name='date' title={{style: titleStyle}} />
           <Axis name='value' title={{style: titleStyle}} />
-          <Line shape="smooth" position="date*value" color={["type", ['#1890ff', '#faad14']]} />
-          <Point position="date*value" color={["type", ['#1890ff', '#faad14']]} />
+          {
+            mode === 'day' ?
+            [
+              <Line shape="smooth" position="date*value" color={["type", ['#1890ff', '#faad14']]} />,
+              <Point position="date*value" color={["type", ['#1890ff', '#faad14']]} />
+            ]:
+            <Interval position="date*value" color={["type", ['#1890ff', '#faad14']]}/>
+          }
         </Chart>
       </Spin>
     </Card>

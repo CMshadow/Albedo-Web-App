@@ -1,10 +1,14 @@
 import React from 'react'
 import { Card, Row, Col } from 'antd'
+import { useSelector } from 'react-redux'
 import { LossTable } from '../../../components/LossTable/LossTable'
 import { LossChart } from '../../../components/ReportCharts/LossChart'
 import { SystemEfficiencyChart } from '../../../components/ReportCharts/SystemEfficiencyChart'
+import { MonthlySystemEffChart } from '../../../components/ReportCharts/MonthlySystemEffChart'
 
 export const LossTab = ({buildingID}) => {
+  const reportData = useSelector(state => state.report)
+
   return (
     <Card bordered={false}>
       <Row gutter={[0, 25]}>
@@ -17,6 +21,16 @@ export const LossTab = ({buildingID}) => {
           <LossChart buildingID={buildingID}/>
         </Col>
       </Row>
+      {/* New Chart Added at Beta 0.3.0 */}
+      {
+        reportData[buildingID].p_loss_system_monthly ?
+        <Row gutter={[12, 25]}>
+          <Col span={24}>
+            <MonthlySystemEffChart buildingID={buildingID}/>
+          </Col>
+        </Row> :
+        null
+      }
       <Row gutter={[12, 25]}>
         <Col span={24}>
           <SystemEfficiencyChart buildingID={buildingID}/>

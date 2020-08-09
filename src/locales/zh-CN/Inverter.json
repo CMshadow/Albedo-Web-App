@@ -8,6 +8,7 @@
   "InverterTable.my": "我的逆变器",
   "InverterTable.official": "官方逆变器",
   "InverterTable.table.name": "逆变器名称",
+  "InverterTable.table.note": "逆变器备注",
   "InverterTable.table.companyName": "提供者",
   "InverterTable.table.paco": "交流额定功率",
   "InverterTable.table.vac": "额定交流电压",

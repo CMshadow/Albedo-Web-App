@@ -85,37 +85,42 @@ export const HeaderTable = ({ buildingID }) => {
   const dispatch = useDispatch()
   const reportData = useSelector(state => state.report)
 
-  const [dataSource, setdataSource] = useState([
-    {
-      key: 1,
-      series: t('gain.series.one'),
-      name: t('gain.name.feed-in-tariff'),
-      unit: t('gain.unit.price/kwh'),
-      description: t('gain.description.feed-in-tariff'),
-      total: reportData[buildingID]['feed-in-tariff']
-    },{
-      key: 2,
-      series: t('gain.series.two'),
-      name: t('gain.name.rate-of-electricity'),
-      unit: t('gain.unit.price/kwh'),
-      description: t('gain.description.export-credit'),
-      total: reportData[buildingID]['export-credit']
-    },{
-      key: 3,
-      series: t('gain.series.two'),
-      name: t('gain.name.rate-of-electricity'),
-      unit: t('gain.unit.price/kwh'),
-      description: t('gain.description.final-export-credit'),
-      total: reportData[buildingID]['final-export-credit']
-    },{
-      key: 4,
-      series: t('gain.series.two'),
-      name: t('gain.name.rate-of-electricity'),
-      unit: t('gain.unit.price/kwh'),
-      description: t('gain.description.rate-of-electricity'),
-      total: reportData[buildingID]['rate-of-electricity']
-    }
-  ])
+  const [dataSource, setdataSource] = useState([])
+
+  useEffect(() => {
+    console.log('useEffect')
+    setdataSource([
+      {
+        key: 1,
+        series: t('gain.series.one'),
+        name: t('gain.name.feed-in-tariff'),
+        unit: t('gain.unit.price/kwh'),
+        description: t('gain.description.feed-in-tariff'),
+        total: reportData[buildingID]['feed-in-tariff']
+      },{
+        key: 2,
+        series: t('gain.series.two'),
+        name: t('gain.name.rate-of-electricity'),
+        unit: t('gain.unit.price/kwh'),
+        description: t('gain.description.export-credit'),
+        total: reportData[buildingID]['export-credit']
+      },{
+        key: 3,
+        series: t('gain.series.two'),
+        name: t('gain.name.rate-of-electricity'),
+        unit: t('gain.unit.price/kwh'),
+        description: t('gain.description.final-export-credit'),
+        total: reportData[buildingID]['final-export-credit']
+      },{
+        key: 4,
+        series: t('gain.series.two'),
+        name: t('gain.name.rate-of-electricity'),
+        unit: t('gain.unit.price/kwh'),
+        description: t('gain.description.rate-of-electricity'),
+        total: reportData[buildingID]['rate-of-electricity']
+      }
+    ])
+  }, [buildingID, reportData, t])
 
   const columns = [
     {
