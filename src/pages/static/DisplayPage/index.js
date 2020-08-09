@@ -6,7 +6,6 @@ import DisplayPageFooter from '../../../layouts/DisplayPageFooter/DisplayPageFoo
 import { Layout, Typography, Row, Col, Card, Statistic } from 'antd';
 import designDisplay from '../../../assets/design-display3.png';
 import pad from '../../../assets/pad.png';
-import dash from '../../../assets/dash.jpeg';
 import elec from '../../../assets/elec.jpeg';
 import computer from '../../../assets/computer.jpeg';
 import pads from '../../../assets/2pads.jpeg';
@@ -33,16 +32,16 @@ const DisplayPage = () => (
         <Title level={3} type='secondary' style={{marginTop: 0}}>
           极速生成报告、一键出图，简单高效的设计模式，开创光伏设计新维度
         </Title>
-        <img src={designDisplay} alt="designDisplay" width='70%'/>
+        <img src={designDisplay} alt="designDisplay" width='80%'/>
       </Row>
 
       <Row justify="center" className={styles.part}>
-        <Title level={2}>多项设计功能统一整合</Title>
+        <Title level={2}>多项功能，统一整合</Title>
         <Row className={styles.section} gutter={12}>
           <Col span={7}>
             <Row justify='end' align='middle' className={styles.padSentence}>
-              <p className={styles.highlightTxt}>多功能</p>
-              <p className={styles.regularTxt}>光伏设计专家</p>
+              <p className={styles.highlightTxt}>小时</p>
+              <p className={styles.regularTxt}>精度天气数据</p>
             </Row>
             <Row justify='start' align='middle' className={styles.padSentence}>
               <p className={styles.highlightTxt}>自动化</p>
@@ -93,7 +92,7 @@ const DisplayPage = () => (
             <Row>
               <p className={styles.regularTxt}>
                 根据项目所在地经纬度，快速获取全年小时精度的天气数据。
-                自动计算当地最佳铺设朝向倾角，及系统发电量
+                自动计算当地最佳铺设朝向倾角，以及全年太阳轨迹
               </p>
             </Row>
           </Card>

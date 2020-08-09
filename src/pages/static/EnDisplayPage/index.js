@@ -6,7 +6,6 @@ import EnDisplayPageFooter from '../../../layouts/EnDisplayPageFooter/EnDisplayP
 import { Layout, Typography, Row, Col, Card, Statistic } from 'antd';
 import designDisplay from '../../../assets/design-display3.png';
 import pad from '../../../assets/pad.png';
-//import dash from '../../../assets/dash.jpeg';
 import elec from '../../../assets/elec.jpeg';
 import computer from '../../../assets/computer.jpeg';
 import pads from '../../../assets/2pads.jpeg';
@@ -33,9 +32,9 @@ const EnDisplayPage = () => (
         <Title level={3} type='secondary' style={{marginTop: 0}}>
           Immediate project report generation & quick rendering of single line diagram
           <br/>
-          to fast track solar design process 
+          to fast track solar design process
         </Title>
-        <img src={designDisplay} alt="designDisplay" width='70%'/>
+        <img src={designDisplay} alt="designDisplay" width='80%'/>
       </Row>
 
       <Row justify="center" className={styles.part}>
@@ -208,7 +207,7 @@ const EnDisplayPage = () => (
           </Col>
           <Col span={8}>
             <Statistic
-              title={<Title level={3}>Accumulated potential installation capacity</Title> }
+              title={<Title level={3}>Accumulated capacity</Title> }
               value={genMockNumber({base: 1430000, increase: 100})}
               valueStyle={{fontSize: 25, padding: '15px 0px'}}
               prefix={<ThunderboltOutlined />}

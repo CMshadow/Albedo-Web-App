@@ -9,8 +9,7 @@ const {Content} = Layout;
 const {Title} = Typography;
 const config = {
   source: 'https://albedo-tutorial.oss-cn-shanghai.aliyuncs.com/Albedo%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B.mp4',
-  width: "100%",
-  height: "500px",
+  height: "600px",
   autoplay: true,
   isLive: false,
   rePlay: false,
@@ -30,7 +29,9 @@ const VideoPage = () => {
         <Title level={4} type="secondary" className={styles.title2}>
           三分钟快速上手，带你玩转光伏设计
         </Title>
+        <br/>
         <Player config={config}/>
+        <br/>
       </Content>
       <DisplayPageFooter/>
     </Layout>
