@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateProjectAttributes } from '../../store/action/index'
 import { useHistory } from 'react-router-dom'
 import { saveProject } from '../Project/service'
+import { HorizonChart } from '../../components/ReportCharts/HorizonChart'
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;
@@ -209,6 +210,7 @@ const ParamsForm = () => {
         {genFormItems(gridKeys, 2)}
         <Divider>{t('report.paramsForm.wiring')}</Divider>
         {genFormItems(wiringKeys, 2)}
+        <HorizonChart/>
         <br/>
         <Row justify='center'>
           <Button
