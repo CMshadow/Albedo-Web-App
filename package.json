@@ -47,6 +47,7 @@
     "react-beforeunload": "^2.2.1",
     "react-contextmenu": "^2.14.0",
     "react-dom": "^16.13.1",
+    "react-flexbox-grid": "^2.1.2",
     "react-fontawesome": "^1.7.1",
     "react-helmet": "^6.1.0",
     "react-highlight-words": "^0.16.0",
