@@ -27,12 +27,12 @@ const DisplayPage = () => (
     <Content className={styles.content}>
     
       <Grid fluid>
-      <Row center="xs" sm={12}>
+      <Row center="xs" xs={12}>
         <Title level={1} type='primary'>
           智能化云端光伏设计
         </Title>
       </Row>
-      <Row center="xs" sm={12}>
+      <Row center="xs" xs={12}>
         <Title level={3} type='secondary' style={{marginTop: 0}}>
           极速生成报告、一键出图，简单高效的设计模式，开创光伏设计新维度
         </Title>
@@ -46,7 +46,7 @@ const DisplayPage = () => (
         <Row className={styles.section} gutter={12}>
           <Col sm={4}>
             <Row end='sm' align='middle' className={styles.padSentence}>
-              <p className={styles.highlightTxt}>小时</p>
+              <p className={styles.highlightTxt}>每小时</p>
               <p className={styles.regularTxt}>精度天气数据</p>
             </Row>
             <Row start='sm' align='middle' className={styles.padSentence}>

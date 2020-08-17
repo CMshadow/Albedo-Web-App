@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Layout, Menu, Row, Space } from 'antd';
+import { Button, Layout, Menu, Space,Row,Col } from 'antd';
+
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import logo from '../../assets/logo.png';
@@ -29,28 +30,30 @@ const DisplayPageHeader = () => {
 
   return(
     <Header className={headerClass}>
-      <Row>
-        <Row className={styles.logo} align='middle'>
+      <Row >
+        <Col className={styles.logo} align='middle' xs={6} justify = "start">
           <Link to="/cn"><img src={logo} alt="logo" height='45px'/></Link>
-        </Row>
-        <Menu className={styles.nav} mode="horizontal" selectedKeys={[navKey]} >
-          <Menu.Item key="home">
-            <Link to="/cn">产品介绍</Link>
-          </Menu.Item>
-          <Menu.Item key="tutorial">
-            <Link to="/cn/tutorial">视频教程</Link>
-          </Menu.Item>
-        </Menu>
-        <Row className={styles.right} justify='end' align='middle'>
+        </Col>
+        <Col xs={6} >
+          <Menu className={styles.nav} mode="horizontal" selectedKeys={[navKey]} >
+            <Menu.Item key="home">
+              <Link to="/cn">产品介绍</Link>
+            </Menu.Item>
+            <Menu.Item key="tutorial">
+              <Link to="/cn/tutorial">视频教程</Link>
+            </Menu.Item>
+          </Menu>
+        </Col>
+        <Col className={styles.right} justify='end' align='middle' xs={12}>
           {
             cognitoUser ?
             <Button type='primary'><Link to='/dashboard'>进入操作台</Link></Button> :
             <Space>
-              <Button type='primary'><Link to='/user/register'>免费注册账户</Link></Button>
-              <Button ><Link to='/user/login'>账户登录</Link></Button>
+              <Button type='primary'><Link to='/user/register'>免费注册</Link></Button>
+              <Button ><Link to='/user/login'>登录</Link></Button>
             </Space>
           }
-        </Row>
+        </Col>
       </Row>
     </Header>
   )
