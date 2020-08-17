@@ -33,7 +33,7 @@ const DisplayPageHeader = () => {
         <Row className={styles.logo} align='middle'>
           <Link to="/cn"><img src={logo} alt="logo" height='45px'/></Link>
         </Row>
-        <Menu className={styles.nav} mode="horizontal" selectedKeys={[navKey]}>
+        <Menu className={styles.nav} mode="horizontal" selectedKeys={[navKey]} >
           <Menu.Item key="home">
             <Link to="/cn">产品介绍</Link>
           </Menu.Item>
