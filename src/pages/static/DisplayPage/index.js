@@ -48,71 +48,72 @@ const DisplayPage = () => (
       </Row> */}
       
       <Grid fluid>
-      <Row center="xs" xs={12} className={styles.part}>
-        <Title level={2}>多项功能，统一整合</Title>
-        <Row className={styles.section} around = 'sm'>
-          <Col sm={3}>
-            <Row end='xs' align='middle' className={styles.padSentence}>
-              <p className={styles.highlightTxt}>每小时</p>
-              <p className={styles.regularTxt}>精度天气数据</p>
-            </Row>
-            <Row start='xs' align='middle' className={styles.padSentence}>
-              <p className={styles.highlightTxt}>自动化</p>
-              <p className={styles.regularTxt}>光伏阵列排布</p>
-            </Row>
-            <Row end='xs' align='middle' className={styles.padSentence}>
-              <p className={styles.highlightTxt}>系统产能</p>
-              <p className={styles.regularTxt}>计算及损耗分析</p>
-            </Row>
-          </Col>
-          <Col sm={3}>
-            <img src={pad} alt="designDisplay" width='100%'/>
-          </Col>
-
-          <Col sm={3}>
-            <Row start='xs' align='middle' className={styles.padSentence}>
-              <p className={styles.regularTxt}>系统设备</p>
-              <p className={styles.highlightTxt}>自动化</p>
-              <p className={styles.regularTxt}>统计</p>
-            </Row>
-            <Row end='xs' align='middle' className={styles.padSentence}>
-              <p className={styles.highlightTxt}>25年</p>
-              <p className={styles.regularTxt}>生命周期投资收益分析</p>
-            </Row>
-            <Row start='xs' align='middle' className={styles.padSentence}>
-              <p className={styles.highlightTxt}>一键</p>
-              <p className={styles.regularTxt}>生成系统电气主接线图</p>
-            </Row>
-          </Col>
+        <Row center="xs" className={styles.part}>
+          <Title level={2}>多项功能，统一整合</Title>
         </Row>
-      </Row>
-      </Grid>
-      
-      <Grid fluid>
-      <Row center="xs"  xs={12} className={styles.part}>
-        <Title level={2}>丰富强大的报告内核</Title>
-      </Row>
-      
-      <Row align='middle'>
-        <Col smOffset={1} sm={5} >
-          <img src={earth} alt="designDisplay" width='100%'/>
-        </Col>
-        <Col smOffset={1} sm={5}>
-          <Card bordered={false} hoverable className={styles.card}>
-            <Row>
-              <CloudOutlined className={styles.icon}/>
-            </Row>
-            <Row>
-              <Title level={3}>天气分析</Title>
-            </Row>
-            <Row>
-              <p className={styles.regularTxt}>
-                根据项目所在地经纬度，快速获取全年小时精度的天气数据。
-                自动计算当地最佳铺设朝向倾角，以及全年太阳轨迹
-              </p>
-            </Row>
-          </Card>
-        </Col>
+          <Row className={styles.section} around = 'sm' round='xs'>
+            <Col sm>
+              <Row end='xs' end = 'sm' align='middle' className={styles.padSentence}>
+                <p className={styles.highlightTxt}>每小时</p>
+                <p className={styles.regularTxt}>精度天气数据</p>
+              </Row>
+              <Row center='xs' start = 'sm' align='middle' className={styles.padSentence}>
+                <p className={styles.highlightTxt}>自动化</p>
+                <p className={styles.regularTxt}>光伏阵列排布</p>
+              </Row>
+              <Row end='xs'  align='middle' className={styles.padSentence}>
+                <p className={styles.highlightTxt}>系统产能</p>
+                <p className={styles.regularTxt}>计算及损耗分析</p>
+              </Row>
+            </Col>
+            <Col sm>
+              <img src={pad} alt="designDisplay" width='100%'/>
+            </Col>
+
+            <Col sm>
+              <Row start='xs' start='sm' align='middle' className={styles.padSentence}>
+                <p className={styles.regularTxt}>系统设备</p>
+                <p className={styles.highlightTxt}>自动化</p>
+                <p className={styles.regularTxt}>统计</p>
+              </Row>
+              <Row center='xs' end='sm' align='middle' className={styles.padSentence}>
+                <p className={styles.highlightTxt}>25年</p>
+                <p className={styles.regularTxt}>生命周期投资收益分析</p>
+              </Row>
+              <Row end='xs' start = 'sm' align='middle' className={styles.padSentence}>
+                <p className={styles.highlightTxt}>一键</p>
+                <p className={styles.regularTxt}>生成系统电气主接线图</p>
+              </Row>
+            </Col>
+          </Row>
+        
+        </Grid>
+        
+        <Grid fluid>
+        <Row center="xs"  xs={12} className={styles.part}>
+          <Title level={2}>丰富强大的报告内核</Title>
+        </Row>
+        
+        <Row align='middle'>
+          <Col smOffset={1} sm={5} >
+            <img src={earth} alt="designDisplay" width='100%'/>
+          </Col>
+          <Col smOffset={1} sm={5}>
+            <Card bordered={false} hoverable className={styles.card}>
+              <Row>
+                <CloudOutlined className={styles.icon}/>
+              </Row>
+              <Row>
+                <Title level={3}>天气分析</Title>
+              </Row>
+              <Row>
+                <p className={styles.regularTxt}>
+                  根据项目所在地经纬度，快速获取全年小时精度的天气数据。
+                  自动计算当地最佳铺设朝向倾角，以及全年太阳轨迹
+                </p>
+              </Row>
+            </Card>
+          </Col>
       </Row>
       
       <Row align='middle' className={styles.feature}>
