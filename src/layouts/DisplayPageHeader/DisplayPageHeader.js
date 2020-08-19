@@ -50,7 +50,7 @@ const DisplayPageHeader = () => {
             <Button type='primary'><Link to='/dashboard'>进入操作台</Link></Button> :
             <Space>
               <Button type='primary'><Link to='/user/register'>免费注册</Link></Button>
-              <Button ><Link to='/user/login'>登录</Link></Button>
+              <Button ><Link to='/user/login'>账户登录</Link></Button>
             </Space>
           }
         </Col>
