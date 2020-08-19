@@ -31,10 +31,10 @@ const DisplayPageHeader = () => {
   return(
     <Header className={headerClass}>
       <Row >
-        <Col className={styles.logo} align='middle' xs={6} justify = "start">
+        <Col className={styles.logo} align='middle' xs={6} sm={4}>
           <Link to="/cn"><img src={logo} alt="logo" height='45px'/></Link>
         </Col>
-        <Col xs={6} >
+        <Col xs={6} sm={8}>
           <Menu className={styles.nav} mode="horizontal" selectedKeys={[navKey]} >
             <Menu.Item key="home">
               <Link to="/cn">产品介绍</Link>
