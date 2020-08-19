@@ -1,7 +1,7 @@
 import React from 'react';
 import EnDisplayPageHeader from '../../../layouts/EnDisplayPageHeader/EnDisplayPageHeader';
 import EnDisplayPageFooter from '../../../layouts/EnDisplayPageFooter/EnDisplayPageFooter';
-
+import { Grid, Row, Col } from 'react-flexbox-grid';
 import {Layout, Typography} from 'antd';
 import Player from 'aliplayer-react';
 import * as styles from './EnVideoPage.module.scss';
@@ -25,13 +25,17 @@ const VideoPage = () => {
     <Layout className={styles.layout}>
       <EnDisplayPageHeader/>
       <Content className={styles.content}>
-        <Title className={styles.title1}>Albedo Quick Start Tutorial</Title>
-        <Title level={4} type="secondary" className={styles.title2}>
-          Master your design skills within 3 mintues and take it to a new level
-        </Title>
-        <br/>
-        <Player config={config}/>
-        <br/>
+      <Grid fluid>
+          <Row center="xs" xs={12}>
+            <Title className={styles.title1}>Albedo Quick Start Tutorial</Title>
+          </Row>
+          <Row center="xs" xs={12}>
+            <Title level={4} type="secondary" className={styles.title2}>
+              Master your design skills within 3 mintues and take it to a new level
+            </Title>  
+            <Player config={config}/>
+        </Row>
+      </Grid>
       </Content>
       <EnDisplayPageFooter/>
     </Layout>

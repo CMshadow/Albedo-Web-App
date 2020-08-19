@@ -1,7 +1,7 @@
 import React from 'react';
 import DisplayPageHeader from '../../../layouts/DisplayPageHeader/DisplayPageHeader';
 import DisplayPageFooter from '../../../layouts/DisplayPageFooter/DisplayPageFooter';
-
+import { Grid, Row, Col } from 'react-flexbox-grid';
 import {Layout, Typography} from 'antd';
 import Player from 'aliplayer-react';
 import * as styles from './VideoPage.module.scss';
@@ -25,13 +25,18 @@ const VideoPage = () => {
     <Layout className={styles.layout}>
       <DisplayPageHeader/>
       <Content className={styles.content}>
-        <Title className={styles.title1}>Albedo 快速上手教程</Title>
-        <Title level={4} type="secondary" className={styles.title2}>
-          三分钟快速上手，带你玩转光伏设计
-        </Title>
-        <br/>
-        <Player config={config}/>
-        <br/>
+        <Grid fluid>
+          <Row center="xs" xs={12}>
+            <Title level={2} className={styles.title1}>Albedo 快速上手教程</Title>
+          </Row>
+          <Row center="xs" xs={12}>
+            <Title level={4} type="secondary" className={styles.title2}>
+              三分钟快速上手，带你玩转光伏设计
+            </Title>
+            <Player config={config}/>
+          </Row>
+      </Grid>
+        
       </Content>
       <DisplayPageFooter/>
     </Layout>

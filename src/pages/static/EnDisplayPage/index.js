@@ -3,7 +3,8 @@ import * as styles from './index.module.scss';
 import BackToTop from '../../../components/BackToTop/BackToTop';
 import EnDisplayPageHeader from '../../../layouts/EnDisplayPageHeader/EnDisplayPageHeader'
 import EnDisplayPageFooter from '../../../layouts/EnDisplayPageFooter/EnDisplayPageFooter';
-import { Layout, Typography, Row, Col, Card, Statistic } from 'antd';
+import { Layout, Typography, Card, Statistic } from 'antd';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 import designDisplay from '../../../assets/design-display3.png';
 import pad from '../../../assets/pad.png';
 import elec from '../../../assets/elec.jpeg';
@@ -23,67 +24,73 @@ const EnDisplayPage = () => (
   <BackToTop/>
   <Layout className={styles.layout}>
     <EnDisplayPageHeader/>
-
     <Content className={styles.content}>
-      <Row justify="center">
-        <Title level={1} type='primary'>
-        Smart Solar Design on the Cloud
-        </Title>
-        <Title level={3} type='secondary' style={{marginTop: 0}}>
-          Immediate project report generation & quick rendering of single line diagram
-          <br/>
-          to fast track solar design process
-        </Title>
-        <img src={designDisplay} alt="designDisplay" width='80%'/>
-      </Row>
+      <Grid fluid>
+        <Row center="xs" xs={12}>
+          <Title type='primary'>
+          Smart Solar Design on the Cloud
+          </Title>
+        </Row>
+        <Row center="xs" xs={12}>
+          <Title level={3} type='secondary' style={{marginTop: 0}}>
+            Immediate project report generation & quick rendering of single line diagram
+            <br/>
+            to fast track solar design process
+          </Title>
+          <img src={designDisplay} alt="designDisplay" width='80%'/>
+        </Row>
+      </Grid>
 
-      <Row justify="center" className={styles.part}>
-        <Title level={2}>Design Feature All in One</Title>
-        <Row className={styles.section} gutter={12}>
-          <Col span={8}>
-            <Row justify='end' align='middle' className={styles.padSentence}>
+      <Grid fluid>
+        <Row center="xs" className={styles.part}>
+          <Title level={2}>Design Feature All in One</Title>
+        </Row>
+        <Row className={styles.section}  round='xs'>
+          <Col sm>
+            <Row center='xs' align='middle' className={styles.padSentence}>
               <p className={styles.highlightTxt}>Hourly </p>
               <p className={styles.regularTxt}> weather profile input</p>
             </Row>
-            <Row justify='start' align='middle' className={styles.padSentence}>
+            <Row center='xs' start = 'sm' align='middle' className={styles.padSentence}>
               <p className={styles.highlightTxt}>Automated </p>
               <p className={styles.regularTxt}>solar array wiring solution</p>
             </Row>
-            <Row justify='end' align='middle' className={styles.padSentence}>
+            <Row center='xs'  end='sm' align='middle' className={styles.padSentence}>
               <p className={styles.highlightTxt}>Advanced </p>
               <p className={styles.regularTxt}>energy loss & production analysis</p>
             </Row>
           </Col>
-          <Col span={8}>
+          <Col sm>
             <img src={pad} alt="designDisplay" width='100%'/>
           </Col>
-          <Col span={8}>
-            <Row justify='start' align='middle' className={styles.padSentence}>
+          <Col sm>
+            <Row center='xs' start='sm' align='middle' className={styles.padSentence}>
 
               <p className={styles.highlightTxt}>Detailed </p>
               <p className={styles.regularTxt}>statistic of project equipments</p>
             </Row>
-            <Row justify='end' align='middle' className={styles.padSentence}>
+            <Row center='xs' end='sm' align='middle' className={styles.padSentence}>
               <p className={styles.highlightTxt}>25-year</p>
               <p className={styles.regularTxt}>lifetime investment & cash flow</p>
             </Row>
-            <Row justify='start' align='middle' className={styles.padSentence}>
+            <Row center='xs' start = 'sm' align='middle' className={styles.padSentence}>
               <p className={styles.highlightTxt}>“One-click”</p>
               <p className={styles.regularTxt}>solution to the single line diagram</p>
             </Row>
           </Col>
         </Row>
-      </Row>
+      </Grid>
 
-      <Row justify="center" className={styles.part}>
+      <Grid fluid>
+      <Row center="xs"  xs={12} className={styles.part}>
         <Title level={2}>Powerful Software with Most Valued Report</Title>
       </Row>
 
       <Row align='middle'>
-        <Col offset={1} span={10}>
+        <Col smOffset={1} sm={5}>
           <img src={earth} alt="designDisplay" width='100%'/>
         </Col>
-        <Col offset={1} span={11}>
+        <Col smOffset={1} sm={5}>
           <Card bordered={false} hoverable className={styles.card}>
             <Row>
               <CloudOutlined className={styles.icon}/>
@@ -101,7 +108,7 @@ const EnDisplayPage = () => (
       </Row>
 
       <Row align='middle' className={styles.feature}>
-        <Col offset={1} span={11}>
+        <Col smOffset={1} sm={5}>
           <Card bordered={false} hoverable className={styles.card}>
             <Row>
               <ThunderboltOutlined className={styles.icon}/>
@@ -116,16 +123,16 @@ const EnDisplayPage = () => (
             </Row>
           </Card>
         </Col>
-        <Col offset={1} span={10}>
+        <Col smOffset={1} sm={5}>
           <img src={elec} alt="designDisplay" width='100%'/>
         </Col>
       </Row>
 
       <Row align='middle' className={styles.feature}>
-        <Col offset={1} span={10}>
+        <Col smOffset={1} sm={5}>
           <img src={cloud} alt="designDisplay" width='100%'/>
         </Col>
-        <Col offset={1} span={11}>
+        <Col smOffset={1} sm={5}>
           <Card bordered={false} hoverable className={styles.card}>
             <Row>
               <FallOutlined className={styles.icon}/>
@@ -143,7 +150,7 @@ const EnDisplayPage = () => (
       </Row>
 
       <Row align='middle' className={styles.feature}>
-        <Col offset={1} span={11}>
+        <Col smOffset={1} sm={5}>
           <Card bordered={false} hoverable className={styles.card}>
             <Row>
               <BarChartOutlined className={styles.icon}/>
@@ -158,16 +165,16 @@ const EnDisplayPage = () => (
             </Row>
           </Card>
         </Col>
-        <Col offset={1} span={10}>
+        <Col smOffset={1} sm={5}>
           <img src={multitasks} alt="designDisplay" width='100%'/>
         </Col>
       </Row>
 
       <Row align='middle' className={styles.feature}>
-        <Col offset={1} span={10}>
+        <Col smOffset={1} sm={5}>
           <img src={computer} alt="designDisplay" width='100%'/>
         </Col>
-        <Col offset={1} span={11}>
+        <Col smOffset={1} sm={5}>
           <Card bordered={false} hoverable className={styles.card}>
             <Row>
               <ClusterOutlined className={styles.icon}/>
@@ -183,13 +190,14 @@ const EnDisplayPage = () => (
           </Card>
         </Col>
       </Row>
-
-      <Row justify="center" className={styles.feature}>
-        <Row justify="center">
+      </Grid>
+      <Grid fluid>
+      {/* <Row justify="center" className={styles.feature}> */}
+        <Row center="sm" sm={8} className={styles.feature}>
           <Title level={2}>Grow with us, together, we shall “design” a renewable future!</Title>
         </Row>
         <Row className={styles.section}>
-          <Col span={8}>
+          <Col sm={4}>
             <Statistic
               title={<Title level={3}>Total users</Title> }
               value={genMockNumber({base: 203, increase: 5})}
@@ -197,7 +205,7 @@ const EnDisplayPage = () => (
               prefix={<UserOutlined />}
             />
           </Col>
-          <Col span={8}>
+          <Col sm={4}>
             <Statistic
               title={<Title level={3}>Project generated</Title> }
               value={genMockNumber({base: 765, increase: 10})}
@@ -205,7 +213,7 @@ const EnDisplayPage = () => (
               prefix={<BarChartOutlined />}
             />
           </Col>
-          <Col span={8}>
+          <Col sm={4}>
             <Statistic
               title={<Title level={3}>Accumulated capacity</Title> }
               value={genMockNumber({base: 1430000, increase: 100})}
@@ -215,13 +223,14 @@ const EnDisplayPage = () => (
             />
           </Col>
         </Row>
-      </Row>
-
+      {/* </Row> */}
+      </Grid>
+      <Grid fluid>
       <Row align='middle' className={styles.part}>
-        <Col offset={2} span={8}>
+        <Col smOffset={3} sm={3}>
           <img src={pads} alt="designDisplay" width='100%'/>
         </Col>
-        <Col offset={2} span={10}>
+        <Col osmOffset={1} sm={5}>
           <Card bordered={false} className={styles.card}>
             <Row>
               <Title level={3}>Contact Us</Title>
@@ -238,6 +247,7 @@ const EnDisplayPage = () => (
           </Card>
         </Col>
       </Row>
+      </Grid>
     </Content>
 
   <EnDisplayPageFooter/>
