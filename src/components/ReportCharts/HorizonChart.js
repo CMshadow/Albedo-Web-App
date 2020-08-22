@@ -12,13 +12,7 @@ export const HorizonChart = ({ buildingID }) => {
   const chart = useRef(null);
 
   const symbolSize = 20;
-  const [data, setdata] = useState([
-    [0, 0],
-    [5, 5],
-    [10, 10],
-    [15, 15],
-    [20, 20],
-  ])
+  const data = new Array(12).fill([]).map((val, index) => [(index + 1) * 30, 5])
 
   const option = {
     title: {
@@ -26,14 +20,13 @@ export const HorizonChart = ({ buildingID }) => {
     },
     tooltip: {
       triggerOn: "none",
-      formatter: function (params) {
-        return (
-          "X: " +
-          params.data[0].toFixed(2) +
-          "<br>Y: " +
-          params.data[1].toFixed(2)
-        );
-      },
+      position: 'left',
+      formatter: params => (
+        "X: " +
+        params.data[0].toFixed(2) +
+        "<br>Y: " +
+        params.data[1].toFixed(2)
+      )
     },
     grid: {},
     xAxis: {
@@ -56,7 +49,6 @@ export const HorizonChart = ({ buildingID }) => {
     },
     series: [
       {
-        id: "a",
         type: "line",
         smooth: true,
         symbolSize: symbolSize,
@@ -70,7 +62,7 @@ export const HorizonChart = ({ buildingID }) => {
       ref={chart}
       option={option}
       style={{ height: "600px", width: "100%" }}
-      onChartReady={instance => 
+      onChartReady={instance =>
         instance.setOption({
           graphic: data.map((item, index) => ({
             type: 'circle',
@@ -79,13 +71,25 @@ export const HorizonChart = ({ buildingID }) => {
             },
             position: instance.convertToPixel('grid', item),
             draggable: true,
+            invisible: true,
             z: 100,
             ondrag: e => {
-              const newData = [...data]
-              newData[index] = instance.convertFromPixel('grid', e.target.position)
-              console.log(data)
-              setdata(newData)
-            }
+              data[index] = [
+                data[index][0],
+                instance.convertFromPixel('grid', e.target.position)[1]
+              ]
+              instance.setOption({
+                series: [{ data: data }],
+                graphic: data.map(item => ({
+                  position: instance.convertToPixel('grid', item),
+                }))
+              });
+              instance.dispatchAction({type: 'showTip', seriesIndex: 0, dataIndex: index})
+            },
+            onmousemove: e =>
+              instance.dispatchAction({type: 'showTip', seriesIndex: 0, dataIndex: index}),
+            onmouseout: e =>
+              instance.dispatchAction({type: 'hideTip'})
           }))
         })
       }
