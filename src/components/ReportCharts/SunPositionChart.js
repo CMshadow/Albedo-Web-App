@@ -1,15 +1,40 @@
-import React from 'react'
-import { Card, Typography } from 'antd'
+import React, { useState } from 'react'
+import { Card, Typography, Row, Space, Select } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { titleStyle } from '../../styles.config'
 import ReactEcharts from "echarts-for-react";
-const Title = Typography.Title
+const { Title, Text } = Typography
+const { Option } = Select;
 
 export const SunPositionChart = ({buildingID}) => {
   const { t } = useTranslation()
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
+  const [selSpecIndex, setselSpecIndex] = useState(0)
+  const curBuilding = projectData.buildings.find(building =>
+    building.buildingID === buildingID
+  )
+
+  const stringifySetupMonthIrr = reportData[buildingID].setup_month_irr.map(JSON.stringify)
+  const uniqueSetupMonthIrr = [...new Set(stringifySetupMonthIrr)].map(JSON.parse)
+  const allSetup = uniqueSetupMonthIrr.map(setup => {
+    const setupIndex = stringifySetupMonthIrr.indexOf(JSON.stringify(setup))
+    return (
+      <Space>
+        {`${t('irrTable.tilt')}: ${curBuilding.data[setupIndex].pv_panel_parameters.tilt_angle}°`}
+        {`${t('irrTable.azimuth')}: ${curBuilding.data[setupIndex].pv_panel_parameters.azimuth}°`}
+      </Space>
+    )
+  })
+
+  let behindPVData = reportData[buildingID].setup_behindPV ?
+    reportData[buildingID].setup_behindPV.map(setupBehindPVData =>
+      setupBehindPVData.map((val, index) => [index, val])
+    ) : null
+
+  let horizonData = projectData.horizonData ? 
+  [[0, projectData.horizonData.slice(-1)[0][1]], ...JSON.parse(JSON.stringify(projectData.horizonData))] : null
 
   // 是否北半球
   const northHemisphere = projectData.projectLat > 0
@@ -42,13 +67,25 @@ export const SunPositionChart = ({buildingID}) => {
   )
   // 南半球需要将数据映射到-180°到180°范围
   if (!northHemisphere) {
+    // 映射每月数据
     monthlyData = monthlyData.map(monthData => {
       const firstHalf = monthData.slice(0, monthData.indexOf(monthData.find(val => val[0] > 180)))
       const secondHalf = monthData.slice(monthData.indexOf(monthData.find(val => val[0] > 180)), )
       secondHalf.forEach(val => val[0] = -(360 - val[0]))
-      // console.log(secondHalf.reverse().concat(firstHalf.reverse()))
       return secondHalf.reverse().concat(firstHalf.reverse())
     })
+    // 映射在板背后数据
+    behindPVData = behindPVData.map(behindPV => {
+      const firstHalf = behindPV.slice(0, behindPV.indexOf(behindPV.find(val => val[0] > 180)))
+      const secondHalf = behindPV.slice(behindPV.indexOf(behindPV.find(val => val[0] > 180)), )
+      secondHalf.forEach(val => val[0] = -(360 - val[0]))
+      return secondHalf.concat(firstHalf)
+    })
+    // 映射地平线数据
+    const firstHalf = horizonData.slice(0, horizonData.indexOf(horizonData.find(val => val[0] > 180)))
+    const secondHalf = horizonData.slice(horizonData.indexOf(horizonData.find(val => val[0] > 180)), )
+    secondHalf.forEach(val => val[0] = -(360 - val[0]))
+    horizonData = secondHalf.concat(firstHalf)
   }
 
   // 制造以小时为单位的数据
@@ -158,8 +195,7 @@ export const SunPositionChart = ({buildingID}) => {
       }),
       // 小时单位数据
       ...hourlyData.map((hourData, hourIndex) => {
-        const allZero = hourData.every(pair => pair[1] === 0)
-        const maxY = hourData.reduce((max, val) => val[1] > max ? val[1] : max, 0)
+        const maxY = hourData.reduce((max, val) => val[1] > max ? val[1] : max, -Infinity)
         const x = hourData.find(pair => pair[1] === maxY)[0]
         const setup = {
           data: hourData,
@@ -169,28 +205,80 @@ export const SunPositionChart = ({buildingID}) => {
           symbolSize: 5,
           itemStyle: {color: '#fa8c16'}
         }
-        // 数据不全为0时渲染标识
-        if (!allZero) {
-          setup.markPoint = {
-            data: [{
-              symbol: 'rect',
-              symbolSize: 1,
-              coord: [x, maxY],
-              value: t(`sunPosition.hour.${hourIndex}`),
-              name: t(`sunPosition.hour.${hourIndex}`),
-              label: {
-                position: markPointLabel(hourIndex),
-                offset: [0, -20],
-                fontSize: 14,
-                color: '#c41d7f',
-              }
-            }]
-          }
+        setup.markPoint = {
+          data: [{
+            symbol: 'rect',
+            symbolSize: 1,
+            coord: [x, maxY],
+            value: t(`sunPosition.hour.${hourIndex}`),
+            name: t(`sunPosition.hour.${hourIndex}`),
+            label: {
+              position: markPointLabel(hourIndex),
+              offset: [0, -20],
+              fontSize: 14,
+              color: '#c41d7f',
+            }
+          }]
         }
         return setup
       })
     ]
-}
+  }
+
+  // 3.1.0中新增
+  // 地平线数据
+  if (horizonData) {
+    option.series.push({
+      data: horizonData,
+      smooth: true,
+      type: 'line',
+      lineStyle: {color: '#8c8c8c', width: 2},
+      symbolSize: 0,
+      markPoint: {
+        data: [{
+          symbol: 'rect',
+          symbolSize: 1,
+          coord: horizonData[2],
+          value: t('sunPosition.horizon'),
+          name: t('sunPosition.horizon'),
+          label: {
+            position: 'top',
+            offset: [0, -10],
+            fontSize: 14,
+            color: '#595959',
+          }
+        }]
+      }
+    })
+  }
+  
+
+  // 3.1.0中新增
+  // 哪些角度太阳在板正面
+  if (behindPVData) {
+    option.series.push({
+      data: behindPVData[selSpecIndex],
+      smooth: true,
+      type: 'line',
+      lineStyle: {color: '#13c2c2', width: 2},
+      symbolSize: 0,
+      markPoint: {
+        data: [{
+          symbol: 'rect',
+          symbolSize: 1,
+          coord: behindPVData[selSpecIndex][20],
+          value: t('sunPosition.behindPV'),
+          name: t('sunPosition.behindPV'),
+          label: {
+            position: 'top',
+            offset: [0, 30],
+            fontSize: 14,
+            color: '#006d75',
+          }
+        }]
+      }
+    })
+  }
 
   return (
     <Card
@@ -201,6 +289,16 @@ export const SunPositionChart = ({buildingID}) => {
       }
       hoverable
     >
+      <Row justify='center'>
+        <Space>
+          <Text strong>{t('irrChart.selectspec')}</Text>
+          <Select defaultValue={selSpecIndex} onChange={val => setselSpecIndex(val)}>
+            {
+              allSetup.map((spec, index) => <Option key={index} value={index}>{spec}</Option>)
+            }
+          </Select>
+        </Space>
+      </Row>
       <ReactEcharts option={option} style={{height: '600px', width: '100%'}}/>
     </Card>
   )

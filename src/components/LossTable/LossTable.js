@@ -32,53 +32,59 @@ export const LossTable = ({ buildingID }) => {
       loss: t('lossTable.p_loss_temperature'),
       unit: '%',
       value: (reportData[buildingID].p_loss_temperature * 100).toFixed(2)
-    },{
+    },
+    {
       key: 5,
+      loss: t('lossTable.p_loss_far_side_shading'),
+      unit: '%',
+      value: (reportData[buildingID].p_loss_far_side_shading * 100).toFixed(2)
+    },{
+      key: 6,
       loss: t('lossTable.p_loss_degradation'),
       unit: '%',
       value: (reportData[buildingID].p_loss_degradation * 100).toFixed(2)
     },{
-      key: 6,
+      key: 7,
       loss: t('lossTable.p_loss_degradation_rest'),
       unit: '%',
       value: (reportData[buildingID].p_loss_degradation_rest * 100).toFixed(2)
     },{
-      key: 7,
+      key: 8,
       loss: t('lossTable.p_loss_connection'),
       unit: '%',
       value: (reportData[buildingID].p_loss_connection * 100).toFixed(2)
     },{
-      key: 8,
+      key: 9,
       loss: t('lossTable.p_loss_conversion'),
       unit: '%',
       value: (reportData[buildingID].p_loss_conversion * 100).toFixed(2)
     },{
-      key: 9,
+      key: 10,
       loss: t('lossTable.p_loss_transformer'),
       unit: '%',
       value: (100 - projectData.transformer_efficiency).toFixed(2)
     },{
-      key: 10,
+      key: 11,
       loss: t('lossTable.p_loss_dc_wiring'),
       unit: '%',
       value: (reportData[buildingID].p_loss_dc_wiring * 100).toFixed(2)
     },{
-      key: 11,
+      key: 12,
       loss: t('lossTable.p_loss_ac_wiring'),
       unit: '%',
       value: (reportData[buildingID].p_loss_ac_wiring * 100).toFixed(2)
     },{
-      key: 12,
+      key: 13,
       loss: t('lossTable.p_loss_combibox_wiring'),
       unit: '%',
       value: (reportData[buildingID].p_loss_combibox_wiring * 100).toFixed(2)
     },{
-      key: 13,
+      key: 14,
       loss: <Text strong>{t('lossTable.p_loss_system')}</Text>,
       unit: <Text strong>{'%'}</Text>,
       value: <Text strong>{(reportData[buildingID].p_loss_system * 100).toFixed(2)}</Text>
     },{
-      key: 14,
+      key: 15,
       loss: <Text strong>{t('lossTable.system_efficiency')}</Text>,
       unit: <Text strong>{'%'}</Text>,
       value: <Text strong>{(reportData[buildingID].system_efficiency * 100).toFixed(2)}</Text>
