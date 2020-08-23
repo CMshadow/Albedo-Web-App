@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet'
 import { Layout, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { getLanguage } from '../../utils/getLanguage'
 import DefaultFooter from '../Footer/DefaultFooter';
 import logo from '../../assets/logo.png';
 import SelectLang from '../../components/SelectLang/index';
@@ -25,9 +26,9 @@ const UserLayout = (props) => {
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.header}>
-              <Link to="/cn">
+              <a href={getLanguage() === 'zh-CN' ? 'https://albedowebdesign.com/' : '/cn'}>
                 <img alt="logo" className={styles.logo} src={logo} />
-              </Link>
+              </a>
             </div>
             <div>
               <Text type='warning'>{t('sider.edition')}</Text>
