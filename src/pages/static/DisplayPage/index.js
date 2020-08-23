@@ -28,17 +28,17 @@ const DisplayPage = () => (
     <Content className={styles.content}>
     
       <Grid fluid>
-      <Row center="xs" xs={12}>
-        <Title type='primary'>
-          智能化云端光伏设计
-        </Title>
-      </Row>
-      <Row center="xs" xs={12}>
-        <Title level={3} type='secondary' style={{marginTop: 0}}>
-          极速生成报告、一键出图，简单高效的设计模式，开创光伏设计新维度
-        </Title>
-        <img src={designDisplay} alt="designDisplay" width='80%'/>
-      </Row>
+        <Row center="xs" xs={12}>
+          <Title type='primary'>
+            智能化云端光伏设计
+          </Title>
+        </Row>
+        <Row center="xs" xs={12}>
+          <Title level={3} type='secondary' style={{marginTop: 0}}>
+            极速生成报告、一键出图，简单高效的设计模式，开创光伏设计新维度
+          </Title>
+          <img src={designDisplay} alt="designDisplay" width='80%'height='100%'/>
+        </Row>
       </Grid>
 
       
