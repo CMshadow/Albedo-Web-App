@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateProjectAttributes } from '../../store/action/index'
 import { useHistory } from 'react-router-dom'
 import { saveProject } from '../Project/service'
+import { HorizonChart } from '../../components/ReportCharts/HorizonChart'
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;
@@ -22,6 +23,10 @@ const ParamsForm = () => {
   const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
   const projectID = history.location.pathname.split('/')[2]
+
+  let horizonData = projectData.horizonData ? 
+    JSON.parse(JSON.stringify(projectData.horizonData)) : 
+    new Array(24).fill([]).map((val, index) => [(index + 1) * 15, 0])
 
   // 滑动输入条标识style
   const markStyle = {overflow: 'hidden', whiteSpace: 'nowrap'}
@@ -152,6 +157,8 @@ const ParamsForm = () => {
       {} :
       values[key]=Number(values[key])
     );
+    // 补上地平线数据
+    values.horizonData = horizonData
     // 更新redux中项目数据后更新后端的项目数据
     await dispatch(updateProjectAttributes(values))
 
@@ -209,6 +216,7 @@ const ParamsForm = () => {
         {genFormItems(gridKeys, 2)}
         <Divider>{t('report.paramsForm.wiring')}</Divider>
         {genFormItems(wiringKeys, 2)}
+        <HorizonChart data={horizonData}/>
         <br/>
         <Row justify='center'>
           <Button

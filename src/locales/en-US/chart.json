@@ -14,6 +14,7 @@
   "acDistributionChart.title": "Energy Production Histogram",
   "irrRadarChart.title": "Irradiance v.s. Azimuth under Fixed Tilts",
   "dynamicIrrChart.title": "PV Module Surface Irradiance",
+  "horizonChart.title": "Draw Horizon",
 
   "cashflowChart.year": "Year",
   "cashflowChart.gain": "Net Cash Flow",
@@ -42,6 +43,7 @@
 
   "lossChart.opt_irr": "Optimal Tilt & Azimuth",
   "lossChart.p_loss_tilt_azimuth": "Tilt & Azimuth",
+  "lossChart.p_loss_far_side_shading": "Far Side Shading",
   "lossChart.p_loss_mismatch": "Mismatch",
   "lossChart.p_loss_soiling": "Soiling",
   "lossChart.p_loss_eff_irradiance": "Effective Irradiance",
@@ -76,6 +78,8 @@
 
   "sunPosition.sunElev": "Sun Elevation",
   "sunPosition.sunAzi": "Sun Azimuth",
+  "sunPosition.horizon": "Horizon Outline",
+  "sunPosition.behindPV": "Behind the Plane",
   "sunPosition.day.21": "21",
   "sunPosition.month.1": "Jan",
   "sunPosition.month.2": "Feb",
@@ -115,5 +119,8 @@
   "acDistributionChart.dc": "System Power Output",
   "acDistributionChart.ac": "Total Production/Bin",
 
-  "irrRadarChart.selectTilt": "Select Two Tilts to Compare"
+  "irrRadarChart.selectTilt": "Select Two Tilts to Compare",
+
+  "horizonChart.elev": "Horizon Elevation",
+  "horizonChart.azi": "Horizon Azimuth"
 }

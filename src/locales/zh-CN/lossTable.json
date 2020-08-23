@@ -2,6 +2,7 @@
   "lossTable.title": "光伏发电系统损失表",
 
   "lossTable.p_loss_tilt_azimuth": "与最佳安装朝向倾角辐射量所成百分比",
+  "lossTable.p_loss_far_side_shading": "远方阴影损失",
   "lossTable.p_loss_mismatch": "光伏组件的匹配损失",
   "lossTable.p_loss_soiling": "表面灰尘遮挡损失",
   "lossTable.p_loss_eff_irradiance": "有效辐射损失",

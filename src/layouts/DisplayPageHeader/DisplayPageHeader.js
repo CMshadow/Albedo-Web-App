@@ -47,10 +47,10 @@ const DisplayPageHeader = () => {
         <Col className={styles.right} justify='end' align='middle' xs={12}>
           {
             cognitoUser ?
-            <Button type='primary'><Link to='/dashboard'>进入操作台</Link></Button> :
+            <Button type='primary' href='https://albedowebdesign-1302836232.cos-website.ap-shanghai.myqcloud.com/dashboard'>进入操作台</Button> :
             <Space>
-              <Button type='primary'><Link to='/user/register'>免费注册</Link></Button>
-              <Button ><Link to='/user/login'>账户登录</Link></Button>
+              <Button type='primary' href='https://albedowebdesign-1302836232.cos-website.ap-shanghai.myqcloud.com/user/register'>免费注册</Button>
+              <Button href='https://albedowebdesign-1302836232.cos-website.ap-shanghai.myqcloud.com/user/login'>账户登录</Button>
             </Space>
           }
         </Col>

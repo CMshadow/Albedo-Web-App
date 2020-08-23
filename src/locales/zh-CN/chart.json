@@ -14,6 +14,7 @@
   "acDistributionChart.title": "发电量分布直方图",
   "irrRadarChart.title": "固定倾角下朝向辐射关系图",
   "dynamicIrrChart.title": "光伏板面辐射值",
+  "horizonChart.title": "勾画地平线",
 
   "cashflowChart.year": "年份",
   "cashflowChart.gain": "净现金流量",
@@ -42,6 +43,7 @@
 
   "lossChart.opt_irr": "最优朝向倾角",
   "lossChart.p_loss_tilt_azimuth": "与最佳朝向倾角偏差",
+  "lossChart.p_loss_far_side_shading": "远方阴影损失",
   "lossChart.p_loss_mismatch": "光伏组件的匹配损失",
   "lossChart.p_loss_soiling": "表面灰尘遮挡损失",
   "lossChart.p_loss_eff_irradiance": "有效辐射损失",
@@ -76,6 +78,8 @@
 
   "sunPosition.sunElev": "太阳高度角",
   "sunPosition.sunAzi": "太阳方位角",
+  "sunPosition.horizon": "地平线轮廓",
+  "sunPosition.behindPV": "组件背面",
   "sunPosition.day.21": "21日",
   "sunPosition.month.1": "1月",
   "sunPosition.month.2": "2月",
@@ -115,5 +119,8 @@
   "acDistributionChart.dc": "系统发电功率",
   "acDistributionChart.ac": "总发电量",
 
-  "irrRadarChart.selectTilt": "选择两个倾角进行比较"
+  "irrRadarChart.selectTilt": "选择两个倾角进行比较",
+
+  "horizonChart.elev": "地平线高度角",
+  "horizonChart.azi": "地平线方位角"
 }

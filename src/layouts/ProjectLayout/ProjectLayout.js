@@ -168,7 +168,7 @@ const ProjectLayout = (props) => {
       setfetchLoading(false)
 
       if (
-        !projectData.optTilt || !projectData.optAzimuth ||
+        !(projectData.optTilt >= 0) || !(projectData.optAzimuth >= 0) ||
         !projectData.optPOA || !projectData.tiltAzimuthPOA ||
         projectData.tiltAzimuthPOA.length === 0
       ) {
