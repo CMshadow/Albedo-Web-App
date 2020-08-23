@@ -24,6 +24,10 @@ const ParamsForm = () => {
   const [form] = Form.useForm();
   const projectID = history.location.pathname.split('/')[2]
 
+  let horizonData = projectData.horizonData ? 
+    JSON.parse(JSON.stringify(projectData.horizonData)) : 
+    new Array(24).fill([]).map((val, index) => [(index + 1) * 15, 0])
+
   // 滑动输入条标识style
   const markStyle = {overflow: 'hidden', whiteSpace: 'nowrap'}
 
@@ -153,6 +157,8 @@ const ParamsForm = () => {
       {} :
       values[key]=Number(values[key])
     );
+    // 补上地平线数据
+    values.horizonData = horizonData
     // 更新redux中项目数据后更新后端的项目数据
     await dispatch(updateProjectAttributes(values))
 
@@ -210,7 +216,7 @@ const ParamsForm = () => {
         {genFormItems(gridKeys, 2)}
         <Divider>{t('report.paramsForm.wiring')}</Divider>
         {genFormItems(wiringKeys, 2)}
-        <HorizonChart/>
+        <HorizonChart data={horizonData}/>
         <br/>
         <Row justify='center'>
           <Button

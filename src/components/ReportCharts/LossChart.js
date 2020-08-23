@@ -21,6 +21,7 @@ export const LossChart = ({buildingID}) => {
 
   const keys = [
     ['opt_irr', 'irr'], ['p_loss_tilt_azimuth', 'irr'],
+    ['p_loss_far_side_shading', 'irr'],
     ['p_loss_soiling', 'irr'], ['p_loss_eff_irradiance', 'irr'],
     ['p_loss_temperature', 'dc'], ['p_loss_degradation', 'dc'],
     ['p_loss_degradation_rest', 'dc'], ['p_loss_connection', 'dc'],
@@ -124,16 +125,16 @@ export const LossChart = ({buildingID}) => {
         />
         <Annotation.Text
           top
-          position={[t('lossChart.p_loss_tilt_azimuth'), 0]}
+          position={[t('lossChart.p_loss_far_side_shading'), 0]}
           content={t('lossChart.irr')}
           style={lgTitleStyle}
           offsetX={-40}
-          offsetY={20}
+          offsetY={0}
         />
         <Annotation.Line
           top
-          start={['-9%', "28.5%"]}
-          end={['100%', "28.5%"]}
+          start={['-9%', "33.5%"]}
+          end={['100%', "33.5%"]}
           style={{
             stroke: '#595959',
             lineDash: [2, 2],
@@ -142,8 +143,8 @@ export const LossChart = ({buildingID}) => {
         />
         <Annotation.Line
           top
-          start={['-9%', "71.5%"]}
-          end={['100%', "71.5%"]}
+          start={['-9%', "73.5%"]}
+          end={['100%', "73.5%"]}
           style={{
             stroke: '#595959',
             lineDash: [2, 2],
