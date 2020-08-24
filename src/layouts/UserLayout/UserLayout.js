@@ -1,7 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet'
 import { Layout, Typography } from 'antd';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getLanguage } from '../../utils/getLanguage'
 import DefaultFooter from '../Footer/DefaultFooter';

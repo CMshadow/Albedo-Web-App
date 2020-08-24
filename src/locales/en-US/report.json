@@ -19,7 +19,11 @@
 
   "report.paramsForm.p_loss_soiling": "Soiling Loss (%)",
   "report.paramsForm.p_loss_connection": "Connection Loss (%)",
-  "report.paramsForm.p_loss_mismatch": "Mismatch Loss (%)",
+  "report.paramsForm.p_loss_mismatch_withinstring": "Module Mismatch Loss (%)",
+  "report.paramsForm.p_loss_mismatch_betweenstrings": "String Mismatch Loss (%)",
+  "report.paramsForm.p_loss_availability": "System Availability Loss (%)",
+  "report.paramsForm.celltemp_sandia": "Sandia Celltemp Model",
+  "report.paramsForm.celltemp_pvsyst": "PVsyst Celltemp Model",
   "report.paramsForm.loss_0": "No Loss",
   "report.paramsForm.loss_1": "1% Loss",
   "report.paramsForm.loss_5": "5% Loss",
@@ -36,7 +40,7 @@
 
   "report.paramsForm.p_loss_tilt_azimuth": "Irradiance Reduction at Tilt & Azimuth (%)",
   "report.paramsForm.p_loss_eff_irradiance": "Effective Irradiance Loss (%)",
-  "report.paramsForm.p_loss_temperature": "Temperature Loss (%)",
+  "report.paramsForm.p_loss_temperature": "Cell-Temperature Model",
   "report.paramsForm.year1Decay": "Light-induced Degradation (Year 1) (%)",
   "report.paramsForm.year2To25Decay": "Light-induced Degradation (Year 2-25) (%)",
   "report.paramsForm.p_loss_dc_wiring": "DC Wiring Loss (%)",

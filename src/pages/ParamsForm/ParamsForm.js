@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber } from 'antd';
+import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber, Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProjectAttributes } from '../../store/action/index'
@@ -9,10 +9,21 @@ import { HorizonChart } from '../../components/ReportCharts/HorizonChart'
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;
+const { Option, OptGroup } = Select
 
-const rowGutter = { xs: 8, sm: 16};
+const rowGutter = { xs: [8, 12], sm: [16, 12]};
 const labelCol = { span: 16, offset: 4 };
 const wrapperCol = { span: 16, offset: 4 };
+
+const modelDefaultParams = {
+  'sandia,glass/cell/glass,open-rack': {a: -3.47, b: -0.0594, dtc: 3},
+  'sandia,glass/cell/glass,insulated-back': {a: -2.98, b: -0.0471, dtc: 1},
+  'sandia,glass/cell/polymer-sheet,open-rack': {a: -3.56, b: -0.0750, dtc: 3},
+  'sandia,glass/cell/polymer-sheet,insulated-back': {a: -2.81, b: -0.0455, dtc: 0},
+  'sandia,polymer/thin-film/steel,open-rack': {a: -3.58, b: -0.113, dtc: 3},
+  'pvsyst,open-rack': {uc: 29, uv: 0, v: 1},
+  'pvsyst,insulated-back': {uc: 15, uv: 0, v: 1}
+}
 
 
 const ParamsForm = () => {
@@ -23,6 +34,10 @@ const ParamsForm = () => {
   const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
   const projectID = history.location.pathname.split('/')[2]
+
+  const [celltempParams, setcelltempParams] = useState({})
+  const [celltempModel, setcelltempModel] = useState('')
+  const [customParams, setcustomParams] = useState(false)
 
   let horizonData = projectData.horizonData ? 
     JSON.parse(JSON.stringify(projectData.horizonData)) : 
@@ -43,10 +58,18 @@ const ParamsForm = () => {
     1: {style: markStyle, label: t('report.paramsForm.loss_1')},
   };
 
-  // p_loss_mismatch标识
-  const pLossMismatchMarks = {
+  // p_loss_mismatch_withinstring标识
+  const pLossMismatchWithinStringMarks = {
     0: t('report.paramsForm.loss_0'),
     5: {style: markStyle, label: t('report.paramsForm.loss_5')},
+  };
+  // p_loss_unavailable标识
+  const pLossAvailabilityMarks = pLossMismatchWithinStringMarks
+
+  // p_loss_mismatch_betweenstrings标识
+  const pLossMismatchBetweenStringsMarks = {
+    0: t('report.paramsForm.loss_0'),
+    1: {style: markStyle, label: t('report.paramsForm.loss_1')},
   };
 
   // system_availability 和 transformer_efficiency标识
@@ -74,8 +97,12 @@ const ParamsForm = () => {
   ]
 
   const dcKeys = [
-    [['p_loss_connection', 0.01, 0, 1, pLossConnectionMarks], ['p_loss_mismatch', 0.1, 0, 5, pLossMismatchMarks]],
-    [['p_loss_temperature', 'disabled', 'disabled'], ['year1Decay', 'pv', 'pv']],
+    [['p_loss_connection', 0.01, 0, 1, pLossConnectionMarks]],
+    [
+      ['p_loss_mismatch_withinstring', 0.1, 0, 5, pLossMismatchWithinStringMarks],
+      ['p_loss_mismatch_betweenstrings', 0.1, 0, 1, pLossMismatchBetweenStringsMarks]
+    ],
+    [['p_loss_temperature', 'temp', 'temp'], ['year1Decay', 'pv', 'pv']],
     [['p_loss_dc_wiring', 'disabled', 'disabled'], ['year2To25Decay', 'pv', 'pv']]
   ]
 
@@ -84,7 +111,11 @@ const ParamsForm = () => {
   ]
 
   const gridKeys = [
-    [['transformer_efficiency', 'disabled', 100, transformerEfficiencyMarks], ['p_loss_ac_wiring', 'disabled', 'disabled']]
+    [
+      ['transformer_efficiency', 'disabled', 100, transformerEfficiencyMarks], 
+      ['p_loss_ac_wiring', 'disabled', 'disabled']
+    ],
+    [['p_loss_availability', 0.1, 0, 5, pLossAvailabilityMarks],]
   ]
 
   const wiringKeys = [
@@ -96,6 +127,46 @@ const ParamsForm = () => {
   const validateMessages = {
     required: t('form.required')
   };
+
+  const sandiaCelltempParamField = (
+    <Row gutter={rowGutter}>
+      <Col span={8}>
+        <Space size='middle'>
+          a: <InputNumber disabled={!customParams} value={celltempParams.a}/>
+        </Space>
+      </Col>
+      <Col span={8}>
+        <Space size='middle'>
+          b: <InputNumber disabled={!customParams} value={celltempParams.b}/>
+        </Space>
+      </Col>
+      <Col span={8}>
+        <Space size='middle'>
+          dtc: <InputNumber disabled={!customParams} value={celltempParams.dtc}/>
+        </Space>
+      </Col>
+    </Row>
+  )
+
+  const pvsystCelltempParamField = (
+    <Row gutter={rowGutter}>
+      <Col span={8}>
+        <Space size='middle'>
+          Uc: <InputNumber disabled={!customParams} value={celltempParams.uc}/>
+        </Space>
+      </Col>
+      <Col span={8}>
+        <Space size='middle'>
+          Uv: <InputNumber disabled={!customParams} value={celltempParams.uv}/>
+        </Space>
+      </Col>
+      <Col span={8}>
+        <Space size='middle'>
+          v: <InputNumber disabled={!customParams} value={celltempParams.v}/>
+        </Space>
+      </Col>
+    </Row>
+  )
 
   const genFormInputArea = (key, step, min, max, marks) => {
     switch(step) {
@@ -122,6 +193,96 @@ const ParamsForm = () => {
             parser={value => value.replace(`${min}`, '')}
           />
         )
+        case 'temp':
+          return (
+            <>
+              <Row gutter={rowGutter}>
+                <Select 
+                  onSelect={value => {
+                    const model = value.split(',')[0]
+                    const mode = value.split(',')[1]
+                    if (mode === 'custom') {
+                      setcelltempModel(model)
+                      setcustomParams(true)
+                      model === 'sandia' ? 
+                      setcelltempParams({a: 0, b: 0, dtc: 0}) :
+                      setcelltempParams({uc: 0, uv: 0, v: 0})
+                    } else {
+                      setcelltempModel(model)
+                      setcustomParams(false)
+                      setcelltempParams(modelDefaultParams[value])
+                    }
+                  }}
+                >
+                  <OptGroup label={t('report.paramsForm.celltemp_sandia')}>
+                    <Option 
+                      value='sandia,glass/cell/glass,open-rack' 
+                      title={`${t('PV.glass/cell/glass')}, ${t('report.paramsForm.mount.open-rack')}`}
+                    >
+                      {t('PV.glass/cell/glass')}, {t('report.paramsForm.mount.open-rack')}
+                    </Option>
+                    <Option 
+                      value='sandia,glass/cell/glass,insulated-back' 
+                      title={`${t('PV.glass/cell/glass')}, ${t('report.paramsForm.mount.insulated-back')}`}
+                    >
+                      {t('PV.glass/cell/glass')}, {t('report.paramsForm.mount.insulated-back')}
+                    </Option>
+                    <Option 
+                      value='sandia,glass/cell/polymer-sheet,open-rack' 
+                      title={`${t('PV.glass/cell/polymer-sheet')}, ${t('report.paramsForm.mount.open-rack')}`}
+                    >
+                      {t('PV.glass/cell/polymer-sheet')}, {t('report.paramsForm.mount.open-rack')}
+                    </Option>
+                    <Option 
+                      value='sandia,glass/cell/polymer-sheet,insulated-back' 
+                      title={`${t('PV.glass/cell/polymer-sheet')}, ${t('report.paramsForm.mount.insulated-back')}`}
+                    >
+                      {t('PV.glass/cell/polymer-sheet')}, {t('report.paramsForm.mount.insulated-back')}
+                    </Option>
+                    <Option 
+                      value='sandia,polymer/thin-film/steel,open-rack' 
+                      title={`${t('PV.polymer/thin-film/steel')}, ${t('report.paramsForm.mount.open-rack')}`}
+                    >
+                      {t('PV.polymer/thin-film/steel')}, {t('report.paramsForm.mount.open-rack')}
+                    </Option>
+                    <Option 
+                      value='sandia,custom' 
+                      title={t('report.paramsForm.custom')}
+                    >
+                      {t('report.paramsForm.custom')}
+                    </Option>
+                  </OptGroup>
+                  <OptGroup label={t('report.paramsForm.celltemp_pvsyst')}>
+                    <Option 
+                      value={'pvsyst,open-rack'}
+                      title={t('report.paramsForm.mount.open-rack')}
+                    >
+                      {t('report.paramsForm.mount.open-rack')}
+                    </Option>
+                    <Option 
+                      value={'pvsyst,insulated-back'}
+                      title={t('report.paramsForm.mount.insulated-back')}
+                    >
+                      {t('report.paramsForm.mount.insulated-back')}
+                    </Option>
+                    <Option 
+                      value='pvsyst,custom' 
+                      title={t('report.paramsForm.custom')}
+                    >
+                      {t('report.paramsForm.custom')}
+                    </Option>
+                  </OptGroup>
+                </Select>
+              </Row>
+              {
+                celltempModel ?
+                celltempModel === 'pvsyst' ? 
+                pvsystCelltempParamField : 
+                sandiaCelltempParamField :
+                null
+              }
+            </>
+          )  
       default:
         return <Slider marks={marks} step={step} min={min} max={max}/>
     }
@@ -177,17 +338,21 @@ const ParamsForm = () => {
   // 组间渲染后设置表单默认值
   useEffect(() => {
     if (projectData.p_loss_soiling >= 0) {
-      form.setFieldsValue(projectData)
+      const initValues = {...projectData}
+      form.setFieldsValue(initValues)
     } else {
       form.setFieldsValue({
         p_loss_soiling: 2,
         p_loss_connection: 0.5,
-        p_loss_mismatch: 2,
+        p_loss_mismatch_withinstring: 2,
+        p_loss_mismatch_betweenstrings: 0.5,
         transformer_efficiency: 100,
         system_availability: 100,
         Ub: 380,
         ACVolDropFac: 2,
-        DCVolDropFac: 1
+        DCVolDropFac: 1,
+        p_loss_availability: 1,
+        p_loss_temperature: 'glass/cell/glass,open-rack'
       })
     }
   }, [form, projectData])

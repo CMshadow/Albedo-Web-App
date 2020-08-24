@@ -34,8 +34,14 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
   const [dc_cable_len, setdc_cable_len] = useState({
     value: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
   })
-  const [spi, setspi] = useState({value: invSpec.spi || null})
-  const [pps, setpps] = useState({value: invSpec.pps || null})
+  const [spi, setspi] = useState({
+    value: invSpec.spi || null, 
+    msg: `${t('project.spec.string_per_inverter.help')}: ${inverterData.find(inv => inv.inverterID === invSpec.inverter_model.inverterID).strNum}`
+  })
+  const [pps, setpps] = useState({
+    value: invSpec.pps || null,
+    msg: `${t('project.spec.panels_per_string.help')}: ${Math.floor(inverterData.find(inv => inv.inverterID === invSpec.inverter_model.inverterID).vdcMax / selPV.voco)}`
+  })
 
   // 通用required项提示文本
   const validateMessages = {
@@ -68,20 +74,17 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
   // 自定义校验并联组串数是否符合逆变器规范
   const validateSpi = value => {
     // 数量与该逆变器规格不符
-    const selInvID = form.getFieldValue('inverterID')
-    if (selInvID) {
-      const selInv = inverterData.find(inv => inv.inverterID === selInvID)
-      if (value > selInv.strNum) {
-        return {
-          validateStatus: 'warning',
-          errorMsg: t('project.spec.error.over-max'),
-        }
+    const selInv = inverterData.find(inv => inv.inverterID === form.getFieldValue('inverterID'))
+    if (value > selInv.strNum) {
+      return {
+        validateStatus: 'warning',
+        msg: t('project.spec.error.over-max'),
       }
-    }
-    // 校验通过
-    return {
-      validateStatus: 'success',
-      errorMsg: null,
+    } else {
+      return {
+        validateStatus: 'success',
+        msg: `${t('project.spec.string_per_inverter.help')}: ${selInv.strNum}`
+      }
     }
   }
   // 自定义校验每串板数是否符合逆变器规范
@@ -224,7 +227,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
               label={t('project.spec.string_per_inverter')}
               rules={[{required: true}]}
               validateStatus={spi.validateStatus}
-              help={spi.errorMsg}
+              help={spi.msg}
             >
               <InputNumber
                 precision={0}

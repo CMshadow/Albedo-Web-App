@@ -23,9 +23,12 @@ export const LossChart = ({buildingID}) => {
     ['opt_irr', 'irr'], ['p_loss_tilt_azimuth', 'irr'],
     ['p_loss_far_side_shading', 'irr'],
     ['p_loss_soiling', 'irr'], ['p_loss_eff_irradiance', 'irr'],
+
     ['p_loss_temperature', 'dc'], ['p_loss_degradation', 'dc'],
     ['p_loss_degradation_rest', 'dc'], ['p_loss_connection', 'dc'],
-    ['p_loss_mismatch', 'dc'], ['p_loss_dc_wiring', 'dc'],
+    ['p_loss_mismatch_withinstring', 'dc'], ['p_loss_mismatch_betweenstrings', 'dc'], 
+    ['p_loss_dc_wiring', 'dc'],
+
     ['p_loss_conversion', 'ac'], ['p_loss_ac_wiring', 'ac'],
     ['p_loss_combibox_wiring', 'ac'], ['transformer_efficiency', 'ac']
   ]
@@ -117,11 +120,11 @@ export const LossChart = ({buildingID}) => {
         />
         <Annotation.Text
           top
-          position={[t('lossChart.p_loss_degradation_rest'), 0]}
+          position={[t('lossChart.p_loss_connection'), 0]}
           content={t('lossChart.dc')}
           style={lgTitleStyle}
           offsetX={-40}
-          offsetY={20}
+          offsetY={0}
         />
         <Annotation.Text
           top

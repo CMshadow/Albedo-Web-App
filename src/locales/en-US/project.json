@@ -10,6 +10,8 @@
   "project.create.address.hint": "Accurate address is not required, the address is only used for generating weather data",
   "project.create.validation.unfinished": "Verify Address",
   "project.create.validation.finished": "Address Verified",
+  "project.create.projectAltitude": "Project Altitude",
+  "project.create.projectAltitude.placeholder": "Project Altitude",
   "project.create.type": "Project Type",
   "project.type.domestic": "Residential",
   "project.type.commercial": "Commercial",

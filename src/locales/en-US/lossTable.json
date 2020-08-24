@@ -3,7 +3,8 @@
 
   "lossTable.p_loss_tilt_azimuth": "Percent Irradiance of Tilt & Azimuth from Optimal Orientation",
   "lossTable.p_loss_far_side_shading": "Far Side Shading Loss",
-  "lossTable.p_loss_mismatch": "Mismatch Loss",
+  "lossTable.p_loss_mismatch_withinstring": "Module Mismatch Loss",
+  "lossTable.p_loss_mismatch_betweenstrings": "String Mismatch Loss",
   "lossTable.p_loss_soiling": "Soiling Loss",
   "lossTable.p_loss_eff_irradiance": "Loss of Effective Irradiance",
   "lossTable.p_loss_temperature": "Temperature Loss",
