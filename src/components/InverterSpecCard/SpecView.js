@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next'
 import { Descriptions, Typography, Space } from 'antd'
 import { useSelector } from 'react-redux'
@@ -6,39 +6,85 @@ import { m2other } from '../../utils/unitConverter'
 const Item = Descriptions.Item
 const Text = Typography.Text
 
-export const SpecView = ({buildingID, specIndex, invIndex}) => {
+export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
   const { t } = useTranslation()
+  const [invSPILimit, setinvSPILimit] = useState([-Infinity, Infinity])
+  const [invPPSLimit, setinvPPSLimit] = useState([-Infinity, Infinity])
   const unit = useSelector(state => state.unit.unit)
   const buildings = useSelector(state => state.project.buildings)
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
-  const pvData = useSelector(state => state.pv.data).concat(
-    useSelector(state => state.pv.officialData)
-  )
 
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
   const spec = buildings[buildingIndex].data[specIndex].inverter_wiring[invIndex]
-  const selPV = pvData.find(pv =>
-    pv.pvID === buildings[buildingIndex].data[specIndex].pv_panel_parameters.pv_model.pvID
-  )
   const selInv = inverterData.find(inv =>
     inv.inverterID === spec.inverter_model.inverterID
   )
+  
+  // 根据给定的逆变器接线可选方案，生成SPI区间
+  const genSPILimits = (invLimits) => {
+    const minSPI = Object.keys(invLimits).reduce((minSPI, val) => 
+      val < minSPI ? val : minSPI, Infinity
+    )
+    const maxSPI = Object.keys(invLimits).reduce((maxSPI, val) => 
+      val > maxSPI ? val : maxSPI, -Infinity
+    )
+    return [minSPI, maxSPI]
+  }
 
+  // 根据给定的逆变器接线可选方案，和可给定的SPI,生成PPS区间
+  const genPPSLimits = (invLimits, spi=0) => {
+    if (spi in invLimits) {
+      const minPPS = invLimits[spi].reduce((minPPS, val) => 
+        val < minPPS ? val : minPPS, Infinity
+      )
+      const maxPPS = invLimits[spi].reduce((maxPPS, val) => 
+        val > maxPPS ? val : maxPPS, -Infinity
+      )
+      return [minPPS, maxPPS]
+    } else {
+      const minPPS = Object.keys(invLimits).reduce((minPPS, spi) => {
+        const loclMinPPS = invLimits[spi].reduce((min, val) => 
+          val < min ? val : min, Infinity
+        )
+        return loclMinPPS < minPPS ? loclMinPPS : minPPS
+      }, Infinity)
+      const maxPPS = Object.keys(invLimits).reduce((maxPPS, spi) => {
+        const loclMaxPPS = invLimits[spi].reduce((max, val) => 
+          val > max ? val : max, -Infinity
+        )
+        return loclMaxPPS > maxPPS ? loclMaxPPS : maxPPS
+      }, -Infinity)
+      return [minPPS, maxPPS]
+    }
+  }
+
+  // 比较spi与SPI区间，生成警告文本
   const checkSpiWarning = () => {
-    if (spec.string_per_inverter > selInv.strNum) {
+    if (spec.string_per_inverter > invSPILimit[1]) {
       return <Text type='warning'>{t('project.spec.error.over-max')}</Text>
+    } else if (spec.string_per_inverter < invSPILimit[0]) {
+      return <Text type='warning'>{t('project.spec.error.under-min')}</Text>
     }
     return null
   }
+  // 比较pps与PPS区间，生成警告文本
   const checkPpsWarning = () => {
-    if (spec.panels_per_string > Math.floor(selInv.vdcMax / selPV.voco)) {
+    if (spec.panels_per_string > invPPSLimit[1]) {
       return <Text type='warning'>{t('project.spec.error.over-max')}</Text>
+    } else if (spec.panels_per_string < invPPSLimit[0]) {
+      return <Text type='warning'>{t('project.spec.error.under-min')}</Text>
     }
     return null
   }
+
+  // initInvLimits准备好后计算SPI区间和PPS区间
+  useEffect(() => {
+    setinvSPILimit(genSPILimits(initInvLimits))
+    setinvPPSLimit(genPPSLimits(initInvLimits, spec.string_per_inverter))
+  }, [initInvLimits, spec.string_per_inverter])
 
   return (
     <Descriptions column={{ xl: 2, xxl: 3}}>

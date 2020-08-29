@@ -70,7 +70,7 @@
 
   "project.spec.serial": "Inverter serial",
   "project.spec.inverter": "Inverter model",
-  "project.spec.string_per_inverter": "Number of parallel strings",
+  "project.spec.string_per_inverter": "Number of parallel strings range",
   "project.spec.panels_per_string": "Number of PV modules in series",
   "project.spec.ac_cable_len": "AC cable length",
   "project.spec.ac_cable_len.hint": "Cable length from the inverter to the combiner box",
@@ -79,6 +79,7 @@
   "project.spec.dc_cable_len.error.only-number": "Cannot enter element other than number",
   "project.spec.dc_cable_len.error.spi-not-match": "Entered values does not match the number of parallel strings",
   "project.spec.error.over-max": "Exceeds the inverter limits",
+  "project.spec.error.under-min": "Under the inverter minimum requirement",
   "project.spec.total_panels": "Total PV module count",
 
   "project.autoInverter.too-small": "The inverter does not fit",
