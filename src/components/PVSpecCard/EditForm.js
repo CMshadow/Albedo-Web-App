@@ -237,7 +237,20 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     })
   }
 
-  console.log({ ...spec, pvID: spec.pv_model.pvID })
+  const genInitValues = (spec) => {
+    const init = {...spec, pvID:spec.pv_model.pvID}
+    if (spec.celltemp_model.split(',')[0] === 'sandia') {
+      init.a = spec.celltemp_vars[0]
+      init.b = spec.celltemp_vars[1]
+      init.dtc = spec.celltemp_vars[2]
+    } else {
+      init.uc = spec.celltemp_vars[0]
+      init.uv = spec.celltemp_vars[1]
+      init.v = spec.celltemp_vars[2]
+    }
+    return init
+  }
+
   return (
     <Spin spinning={autoInvLoading}>
       <Form
@@ -248,7 +261,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         scrollToFirstError
         validateMessages={validateMessages}
         onFinish={submitForm}
-        initialValues={{ ...spec, pvID: spec.pv_model.pvID }}
+        initialValues={genInitValues(spec)}
       >
         <Row gutter={12}>
           <Col span={22}>
@@ -326,12 +339,12 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
             </FormItem>
           </Col>
         </Row>
-        
+
         <Divider>
           {t('project.spec.celltemp-model')}
         </Divider>
         <CellTempModel form={form} pvID={pvID}/>
-        
+
         <Divider>
           <Tooltip title={t('project.spec.optional.tooltip')}>
             <Space>

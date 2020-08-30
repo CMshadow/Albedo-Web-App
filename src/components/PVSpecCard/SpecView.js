@@ -41,9 +41,9 @@ export const SpecView = ({buildingID, specIndex}) => {
       <Item label={t('project.spec.pvNum')}>{pvNum}</Item>
       <Item label={t('project.spec.celltemp-model')}>
         {
-          spec.celltemp_model && spec.celltemp_model.split(',')[0] === 'pvsyst' ?
-          t(`project.sepc.${spec.celltemp_model.split(',')[1]}`) :
-          `${t(`PV.${spec.celltemp_model.split(',')[1]}`)}, ${t(`PV.${spec.celltemp_model.split(',')[2]}`)}`
+          spec.celltemp_model.split(',')[0] === 'pvsyst' ?
+          `${spec.celltemp_model.split(',')[0]}, ${t(`project.spec.mount.${spec.celltemp_model.split(',')[1]}`)}` :
+          `${spec.celltemp_model.split(',')[0]}, ${t(`PV.${spec.celltemp_model.split(',')[1]}`)}, ${t(`project.spec.mount.${spec.celltemp_model.split(',')[2]}`)}`
         }
       </Item>
     </Descriptions>
