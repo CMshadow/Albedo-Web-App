@@ -2,41 +2,48 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Form, Input, Row, Col, Select, Button, Drawer, Divider, notification, Spin, Space, Descriptions, Tooltip, Table } from 'antd';
 import { TableOutlined } from '@ant-design/icons'
 import { editPVSpec } from '../../store/action/index'
 import { PVTableViewOnly } from '../PVTable/PVTableViewOnly'
 import { InverterTableViewOnly } from '../InverterTable/InverterTableViewOnly'
+import { CellTempModel } from '../../components/CellTempModel/CellTempModel'
 import { manualInverter } from '../../pages/Project/service'
 import { w2other } from '../../utils/unitConverter'
 const FormItem = Form.Item;
-const Item = Descriptions.Item
+const { Item } = Descriptions
 
 const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
 
 export const EditForm = ({buildingID, specIndex, setediting}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const [form] = Form.useForm()
-  const [showPVDrawer, setshowPVDrawer] = useState(false)
-  const [showInvDrawer, setshowInvDrawer] = useState(false)
-  const [tilt, settilt] = useState({value: null})
-  const [azimuth, setazimuth] = useState({value: null})
-  const [capacity, setcapacity] = useState(null)
-  const [autoInvLoading, setautoInvLoading] = useState(false)
-  const [autoInvPlan, setautoInvPlan] = useState({})
-  const pvData = useSelector(state => state.pv)
-  const inverterData = useSelector(state => state.inverter)
-  const projectID = useLocation().pathname.split('/')[2]
-  const [pvActiveData, setpvActiveData] = useState(pvData.data.concat(pvData.officialData))
-  const [invActiveData, setinvActiveData] = useState(inverterData.data.concat(inverterData.officialData))
+  const { projectID } = useParams()
 
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
+  const inverterData = useSelector(state => state.inverter.data).concat(
+    useSelector(state => state.inverter.officialData)
+  )
+  const [pvActiveData, setpvActiveData] = useState(pvData)
+  const [invActiveData, setinvActiveData] = useState(inverterData)
 
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
   const spec = buildings[buildingIndex].data[specIndex].pv_panel_parameters
+
+  const [form] = Form.useForm()
+  const [showPVDrawer, setshowPVDrawer] = useState(false)
+  const [showInvDrawer, setshowInvDrawer] = useState(false)
+  const [pvID, setpvID] = useState(spec ? spec.pv_model.pvID : null)
+  const [tilt, settilt] = useState({value: null})
+  const [azimuth, setazimuth] = useState({value: null})
+  const [capacity, setcapacity] = useState(null)
+  const [autoInvLoading, setautoInvLoading] = useState(false)
+  const [autoInvPlan, setautoInvPlan] = useState({})
 
   // 通用required项提示文本
   const validateMessages = {
@@ -59,11 +66,22 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   }
 
   const submitForm = (values) => {
+    const formatValues = {...values}
+    const model = formatValues.celltemp_model.split(',')[0]
+    if (model === 'sandia') {
+      formatValues.celltemp_vars = [values.a, values.b, values.dtc]
+      delete formatValues.a
+      delete formatValues.b
+      delete formatValues.dtc
+    } else {
+      formatValues.celltemp_vars = [values.uc, values.uv, values.v]
+      delete formatValues.uc
+      delete formatValues.uv
+      delete formatValues.v
+    }
     dispatch(editPVSpec({
-      buildingID, specIndex, ...values, invPlan: autoInvPlan,
-      pv_userID: pvData.data.concat(pvData.officialData).find(record =>
-        record.pvID === values.pvID
-      ).userID,
+      buildingID, specIndex, ...formatValues, invPlan: autoInvPlan,
+      pv_userID: pvData.find(record => record.pvID === formatValues.pvID).userID,
     }))
     setediting(false)
   }
@@ -114,13 +132,11 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
       setautoInvLoading(false)
       return
     }
-    const pvUserID = pvData.data.concat(pvData.officialData).find(pv => pv.pvID === pvID).userID
-    const pvPmax = pvData.data.concat(pvData.officialData).find(pv => pv.pvID === pvID).pmax
+    const pvUserID = pvData.find(pv => pv.pvID === pvID).userID
+    const pvPmax = pvData.find(pv => pv.pvID === pvID).pmax
     const ttlPV = Math.floor(capacity * 1000 / pvPmax)
-    const invUserID = inverterData.data.concat(inverterData.officialData)
-      .find(inv => inv.inverterID === inverterID).userID
-    const invName = inverterData.data.concat(inverterData.officialData)
-      .find(inv => inv.inverterID === inverterID).name
+    const invUserID = inverterData.find(inv => inv.inverterID === inverterID).userID
+    const invName = inverterData.find(inv => inv.inverterID === inverterID).name
     dispatch(manualInverter({
       projectID: projectID, invID: inverterID, invUserID: invUserID,
       pvID: pvID, pvUserID: pvUserID, ttlPV: ttlPV
@@ -221,7 +237,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     })
   }
 
-
+  console.log({ ...spec, pvID: spec.pv_model.pvID })
   return (
     <Spin spinning={autoInvLoading}>
       <Form
@@ -252,6 +268,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
                 filterOption={(value, option) =>
                   option.label.toLowerCase().includes(value.toLowerCase())
                 }
+                onChange={setpvID}
               />
             </FormItem>
           </Col>
@@ -309,6 +326,12 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
             </FormItem>
           </Col>
         </Row>
+        
+        <Divider>
+          {t('project.spec.celltemp-model')}
+        </Divider>
+        <CellTempModel form={form} pvID={pvID}/>
+        
         <Divider>
           <Tooltip title={t('project.spec.optional.tooltip')}>
             <Space>
@@ -393,7 +416,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         width='50vw'
       >
         <PVTableViewOnly
-          data={pvData.data.concat(pvData.officialData)}
+          data={pvData}
           activeData={pvActiveData}
           setactiveData={setpvActiveData}
         />
@@ -408,7 +431,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         width='50vw'
       >
         <InverterTableViewOnly
-          data={inverterData.data.concat(inverterData.officialData)}
+          data={inverterData}
           activeData={invActiveData}
           setactiveData={setinvActiveData}
         />

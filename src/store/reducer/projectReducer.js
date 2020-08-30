@@ -123,6 +123,8 @@ const editPVSpec = (state, action) => {
     .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   newBuildings[buildingIndex].data[action.specIndex].pv_panel_parameters = {
+    celltemp_model: action.celltemp_model,
+    celltemp_vars: action.celltemp_vars,
     tilt_angle: Number(action.tilt_angle),
     azimuth: Number(action.azimuth),
     mode: 'single',
