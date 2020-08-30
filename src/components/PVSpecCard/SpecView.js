@@ -39,6 +39,13 @@ export const SpecView = ({buildingID, specIndex}) => {
         {`${w2other(capacity).value} ${w2other(capacity).unit}`}
       </Item>
       <Item label={t('project.spec.pvNum')}>{pvNum}</Item>
+      <Item label={t('project.spec.celltemp-model')}>
+        {
+          spec.celltemp_model && spec.celltemp_model.split(',')[0] === 'pvsyst' ?
+          t(`project.sepc.${spec.celltemp_model.split(',')[1]}`) :
+          `${t(`PV.${spec.celltemp_model.split(',')[1]}`)}, ${t(`PV.${spec.celltemp_model.split(',')[2]}`)}`
+        }
+      </Item>
     </Descriptions>
   )
 }
