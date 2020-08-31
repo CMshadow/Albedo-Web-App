@@ -16,6 +16,7 @@
   "lossTable.p_loss_dc_wiring": "直流线损",
   "lossTable.p_loss_ac_wiring": "低压汇流线损",
   "lossTable.p_loss_combibox_wiring": "交流线损",
+  "lossTable.p_loss_availability": "不可利用率",
   "lossTable.p_loss_system": "发电系统总损失",
   "lossTable.system_efficiency": "发电系统总效率"
 }

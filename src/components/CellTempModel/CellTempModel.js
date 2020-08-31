@@ -7,12 +7,12 @@ const { Option, OptGroup } = Select
 
 const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
 
-export const CellTempModel = ({form, pvID}) => {
+export const CellTempModel = ({form, pvID, initModel}) => {
   const { t } = useTranslation()
   const pvData = useSelector(state => state.pv.data).concat(
     useSelector(state => state.pv.officialData)
   )
-  const [celltempModel, setcelltempModel] = useState('')
+  const [celltempModel, setcelltempModel] = useState(initModel ? initModel.split(',')[0] : '')
   const [customParams, setcustomParams] = useState(false)
   const pvModuleMaterial = pvID ? 
     pvData.find(pv => pv.pvID === pvID).moduleMaterial : ''

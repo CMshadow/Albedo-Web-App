@@ -239,14 +239,16 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
 
   const genInitValues = (spec) => {
     const init = {...spec, pvID:spec.pv_model.pvID}
-    if (spec.celltemp_model.split(',')[0] === 'sandia') {
-      init.a = spec.celltemp_vars[0]
-      init.b = spec.celltemp_vars[1]
-      init.dtc = spec.celltemp_vars[2]
-    } else {
-      init.uc = spec.celltemp_vars[0]
-      init.uv = spec.celltemp_vars[1]
-      init.v = spec.celltemp_vars[2]
+    if (spec.celltemp_model) {
+      if (spec.celltemp_model.split(',')[0] === 'sandia') {
+        init.a = spec.celltemp_vars[0]
+        init.b = spec.celltemp_vars[1]
+        init.dtc = spec.celltemp_vars[2]
+      } else {
+        init.uc = spec.celltemp_vars[0]
+        init.uv = spec.celltemp_vars[1]
+        init.v = spec.celltemp_vars[2]
+      }
     }
     return init
   }
@@ -343,7 +345,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         <Divider>
           {t('project.spec.celltemp-model')}
         </Divider>
-        <CellTempModel form={form} pvID={pvID}/>
+        <CellTempModel form={form} pvID={pvID} initModel={genInitValues(spec).celltemp_model}/>
 
         <Divider>
           <Tooltip title={t('project.spec.optional.tooltip')}>

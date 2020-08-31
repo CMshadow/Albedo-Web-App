@@ -206,7 +206,7 @@ const ParamsForm = () => {
         Ub: 380,
         ACVolDropFac: 2,
         DCVolDropFac: 1,
-        p_loss_availability: 1
+        p_loss_availability: 0.5
       })
     }
   }, [form, projectData])

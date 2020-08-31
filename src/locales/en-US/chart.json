@@ -58,6 +58,7 @@
   "lossChart.p_loss_ac_wiring": "AC Wiring (Inverter(s) to Combiner Box)",
   "lossChart.p_loss_combibox_wiring": "AC Wiring (Combiner Box to Meter)",
   "lossChart.transformer_efficiency": "Step-up Transformer Loss",
+  "lossChart.p_loss_availability": "System Availability Loss",
 
   "systemEfficiencyChart.name": "System Efficiency",
 

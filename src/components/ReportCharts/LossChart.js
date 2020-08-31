@@ -11,7 +11,7 @@ export const LossChart = ({buildingID}) => {
   const reportData = useSelector(state => state.report)
   const projectData = useSelector(state => state.project)
   const buildingReport = reportData[buildingID]
-
+  console.log(buildingReport.p_loss_avilability)
   const colorMap = {
     irr: 0,
     dc: 1,
@@ -30,7 +30,8 @@ export const LossChart = ({buildingID}) => {
     ['p_loss_dc_wiring', 'dc'],
 
     ['p_loss_conversion', 'ac'], ['p_loss_ac_wiring', 'ac'],
-    ['p_loss_combibox_wiring', 'ac'], ['transformer_efficiency', 'ac']
+    ['p_loss_combibox_wiring', 'ac'], ['transformer_efficiency', 'ac'],
+    ['p_loss_availability', 'ac']
   ]
   let systemStatus = 100
   const dataSource = []
@@ -136,8 +137,8 @@ export const LossChart = ({buildingID}) => {
         />
         <Annotation.Line
           top
-          start={['-9%', "33.5%"]}
-          end={['100%', "33.5%"]}
+          start={['-9%', "29.35%"]}
+          end={['100%', "29.35%"]}
           style={{
             stroke: '#595959',
             lineDash: [2, 2],
@@ -146,8 +147,8 @@ export const LossChart = ({buildingID}) => {
         />
         <Annotation.Line
           top
-          start={['-9%', "73.5%"]}
-          end={['100%', "73.5%"]}
+          start={['-9%', "70.6%"]}
+          end={['100%', "70.6%"]}
           style={{
             stroke: '#595959',
             lineDash: [2, 2],
