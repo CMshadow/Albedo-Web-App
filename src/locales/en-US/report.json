@@ -40,6 +40,7 @@
   "report.paramsForm.p_loss_eff_irradiance": "Effective Irradiance Loss (%)",
   "report.paramsForm.p_loss_temperature": "Temperature Loss (%)",
   "report.paramsForm.monthly_albedo": "Monthly Albedo",
+  "report.paramsForm.monthly_albedo.help": "Expand Settings",
   "report.paramsForm.year1Decay": "Light-induced Degradation (Year 1) (%)",
   "report.paramsForm.year2To25Decay": "Light-induced Degradation (Year 2-25) (%)",
   "report.paramsForm.p_loss_dc_wiring": "DC Wiring Loss (%)",

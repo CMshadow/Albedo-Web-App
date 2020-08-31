@@ -1,19 +1,39 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber } from 'antd';
+import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber, Collapse } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProjectAttributes } from '../../store/action/index'
 import { useHistory } from 'react-router-dom'
 import { saveProject } from '../Project/service'
 import { HorizonChart } from '../../components/ReportCharts/HorizonChart'
+import { MonthlyAlbedo } from '../../components/MonthlyAlbedo/MonthlyAlbedo'
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;
+const { Panel } = Collapse;
 
 const rowGutter = { xs: [8, 12], sm: [16, 12]};
 const labelCol = { span: 16, offset: 4 };
 const wrapperCol = { span: 16, offset: 4 };
 
+const genInitValues = (projectData) => {
+  const initValues ={
+    p_loss_soiling: 2,
+    p_loss_connection: 0.5,
+    p_loss_mismatch_withinstring: 2,
+    p_loss_mismatch_betweenstrings: 0.5,
+    transformer_efficiency: 100,
+    system_availability: 100,
+    Ub: 380,
+    ACVolDropFac: 2,
+    DCVolDropFac: 1,
+    p_loss_availability: 0.5
+  }
+  new Array(12).fill(0).map((_, index) => index + 1).forEach(month =>
+    initValues[`monthly_albedo-${month}`] = projectData.albedo
+  )
+  return initValues
+}
 
 const ParamsForm = () => {
   const { t } = useTranslation();
@@ -78,7 +98,7 @@ const ParamsForm = () => {
 
   const irrandianceKeys = [
     [['p_loss_soiling', 0.1, 0, 5, pLossSoilingMarks], ['p_loss_tilt_azimuth', 'disabled', 'disabled']],
-    [['p_loss_eff_irradiance', 'disabled', 'disabled']]
+    [['p_loss_eff_irradiance', 'disabled', 'disabled'], ['monthly_albedo', 'albedo', 'albedo']]
   ]
 
   const dcKeys = [
@@ -121,6 +141,8 @@ const ParamsForm = () => {
             {t(`report.paramsForm.${step}`)}
           </Text>
         )
+      case 'albedo':
+        return <MonthlyAlbedo/>
       case 'pv':
         return (
           <Space>
@@ -152,7 +174,7 @@ const ParamsForm = () => {
             name={key}
             label={ t(`report.paramsForm.${key}`) }
             rules={
-              step !== 'disabled' && step !== 'pv' ? [{required: true}] : null
+              step !== 'disabled' && step !== 'pv' && step !== 'albedo' ? [{required: true}] : null
             }
           >
             {
@@ -170,11 +192,17 @@ const ParamsForm = () => {
     // 去除values中所有undefined properties 并转换所有值为数字
     Object.keys(values).forEach(key =>
       values[key] === undefined ?
-      {} :
+      delete values[key] :
       values[key]=Number(values[key])
     );
     // 补上地平线数据
     values.horizonData = horizonData
+    // 处理每月albedo值
+    values.monthly_albedo = []
+    new Array(12).fill(0).map((_, index) => index + 1).forEach(month => {
+      values.monthly_albedo.push(values[`monthly_albedo-${month}`])
+      delete values[`monthly_albedo-${month}`]
+    })
     // 更新redux中项目数据后更新后端的项目数据
     await dispatch(updateProjectAttributes(values))
 
@@ -187,27 +215,18 @@ const ParamsForm = () => {
         history.replace(`/project/${projectID}/dashboard`)
       }
     })
-
   }
 
   // 组间渲染后设置表单默认值
   useEffect(() => {
     if (projectData.p_loss_soiling >= 0) {
       const initValues = {...projectData}
+      new Array(12).fill(0).map((_, index) => index + 1).forEach(month =>
+        initValues[`monthly_albedo-${month}`] = initValues.monthly_albedo[month - 1]
+      )
       form.setFieldsValue(initValues)
     } else {
-      form.setFieldsValue({
-        p_loss_soiling: 2,
-        p_loss_connection: 0.5,
-        p_loss_mismatch_withinstring: 2,
-        p_loss_mismatch_betweenstrings: 0.5,
-        transformer_efficiency: 100,
-        system_availability: 100,
-        Ub: 380,
-        ACVolDropFac: 2,
-        DCVolDropFac: 1,
-        p_loss_availability: 0.5
-      })
+      form.setFieldsValue(genInitValues(projectData))
     }
   }, [form, projectData])
 
