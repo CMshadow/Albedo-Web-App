@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux'
-import { Row, Col, Select, Space, InputNumber, Form } from 'antd'
+import { QuestionCircleOutlined } from '@ant-design/icons'
+import { Row, Col, Select, Space, InputNumber, Form, Tooltip } from 'antd'
 const FormItem = Form.Item;
 const { Option, OptGroup } = Select
 
@@ -31,18 +32,36 @@ export const CellTempModel = ({form, pvID, initModel}) => {
     <Row gutter={rowGutter}>
       <Space size='large'>
         <Space size='middle'>
-          <FormItem name='a' label='a' rules={[{required: true}]}>
+          <FormItem name='a' rules={[{required: true}]}
+            label={
+              <Tooltip title={t('project.spec.celltemp_a.help')}>
+                a <QuestionCircleOutlined />
+              </Tooltip>
+            }
+          >
             <InputNumber disabled={!customParams}/>
           </FormItem>
         </Space>
         <Space size='middle'>
-          <FormItem name='b' label='b' rules={[{required: true}]}>
+          <FormItem name='b' rules={[{required: true}]}
+            label={
+              <Tooltip title={t('project.spec.celltemp_b.help')}>
+                b <QuestionCircleOutlined />
+              </Tooltip>
+            }
+          >
             <InputNumber disabled={!customParams}/>
           </FormItem>
         </Space>
         <Space size='middle'>
-          <FormItem name='dtc' label='dtc' rules={[{required: true}]}>
-            <InputNumber disabled={!customParams}/>
+          <FormItem name='dtc' rules={[{required: true}]}
+            label={
+              <Tooltip title={t('project.spec.celltemp_dtc.help')}>
+                ΔT <QuestionCircleOutlined />
+              </Tooltip>
+            }
+          >
+            <InputNumber disabled={!customParams}/> ℃
           </FormItem>
         </Space>
       </Space>
@@ -53,18 +72,36 @@ export const CellTempModel = ({form, pvID, initModel}) => {
     <Row gutter={rowGutter}>
       <Space size='large'>
         <Space size='middle'>
-          <FormItem name='uc' label='Uc' rules={[{required: true}]}>
-            <InputNumber disabled={!customParams}/>
+          <FormItem name='uc' rules={[{required: true}]}
+            label={
+              <Tooltip title={t('project.spec.celltemp_uc.help')}>
+                Uc <QuestionCircleOutlined />
+              </Tooltip>
+            }
+          >
+            <InputNumber disabled={!customParams}/> W/㎡⋅k
           </FormItem>
         </Space>
         <Space size='middle'>
-          <FormItem name='uv' label='Uv' rules={[{required: true}]}>
-            <InputNumber disabled={!customParams}/>
+          <FormItem name='uv' rules={[{required: true}]}
+            label={
+              <Tooltip title={t('project.spec.celltemp_uv.help')}>
+                Uv <QuestionCircleOutlined />
+              </Tooltip>
+            }
+          >
+            <InputNumber disabled={!customParams}/> W/㎡⋅k / m/s
           </FormItem>
         </Space>
         <Space size='middle'>
-          <FormItem name='v' label='v' rules={[{required: true}]}>
-            <InputNumber disabled={!customParams}/>
+          <FormItem name='v' rules={[{required: true}]}
+            label={
+              <Tooltip title={t('project.spec.celltemp_v.help')}>
+                v <QuestionCircleOutlined />
+              </Tooltip>
+            }
+          >
+            <InputNumber disabled={!customParams}/> m/s
           </FormItem>
         </Space>
       </Space>
@@ -73,7 +110,7 @@ export const CellTempModel = ({form, pvID, initModel}) => {
 
   return (
     <Row gutter={rowGutter}>
-      <Col span={12}>
+      <Col span={8}>
         <FormItem
           name='celltemp_model'
           label={null}
@@ -162,7 +199,7 @@ export const CellTempModel = ({form, pvID, initModel}) => {
           </Select>
         </FormItem>
       </Col>
-      <Col span={12}>
+      <Col span={16}>
         {
           celltempModel === 'pvsyst' ? 
           pvsystCelltempParamField : 

@@ -143,7 +143,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
       setppsmsg(`${t('project.spec.error.under-min')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
       return {validateStatus: 'warning'}
     } else {
-      setppsmsg(`${t('project.spec.string_per_inverter.help')}: ${minPPS}-${maxPPS}`)
+      setppsmsg(`${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
       return {validateStatus: 'success'}
     }
   }
@@ -211,7 +211,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
 
       const [minPPS, maxPPS] = genPPSLimits(newinvLimits, spi)
       setinvPPSLimit([minPPS, maxPPS])
-      setppsmsg(`${t('project.spec.string_per_inverter.help')}: ${minPPS}-${maxPPS}`)
+      setppsmsg(`${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
       
       if (spi) onSPIChange(spi, minSPI, maxSPI, newinvLimits)
       if (pps) onPPSChange(pps, minPPS, maxPPS)
@@ -280,7 +280,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
         setppsmsg(`${t('project.spec.error.under-min')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
         return {validateStatus: 'warning'}
       } else {
-        setppsmsg(`${t('project.spec.string_per_inverter.help')}: ${minPPS}-${maxPPS}`)
+        setppsmsg(`${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
         return {validateStatus: 'success'}
       }
     }

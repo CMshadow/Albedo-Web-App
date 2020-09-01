@@ -21,7 +21,7 @@ const genInitValues = (projectData) => {
     p_loss_soiling: 2,
     p_loss_connection: 0.5,
     p_loss_mismatch_withinstring: 2,
-    p_loss_mismatch_betweenstrings: 0.5,
+    p_loss_mismatch_betweenstrings: 0.1,
     transformer_efficiency: 100,
     system_availability: 100,
     Ub: 380,

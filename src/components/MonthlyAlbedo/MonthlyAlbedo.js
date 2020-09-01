@@ -5,7 +5,7 @@ import * as styles from './MonthlyAlbedo.module.scss'
 const FormItem = Form.Item
 const { Panel } = Collapse
 
-const rowGutter = { xs: [8, 12], sm: [16, 12]};
+const rowGutter = { xs: [8, 12], sm: [16, 12]}
 
 export const MonthlyAlbedo = () => {
   const { t } = useTranslation()
@@ -18,17 +18,17 @@ export const MonthlyAlbedo = () => {
         forceRender
       >
         {
-          new Array(4).fill(0).map((_, index) => index).map(season => 
+          new Array(6).fill(0).map((_, index) => index).map(season => 
             <Row gutter={rowGutter} key={`season-${season}`}>
               {
-                new Array(3).fill(0).map((_, index) => (season * 3) + index + 1).map(month => 
-                  <Col span={8} key={`month-${month}`}>
+                new Array(2).fill(0).map((_, index) => (season * 2) + index + 1).map(month => 
+                  <Col span={12} key={`month-${month}`}>
                     <FormItem
                       name={`monthly_albedo-${month}`}
                       label={t(`sunPosition.month.${month}`)}
                       rules={[{required: true}]}
                       labelCol={{span: 6}}
-                      wrapperCol={{span: 12}}
+                      wrapperCol={{span: 18}}
                     >
                       <InputNumber min={0} max={1} step={0.05}/>
                     </FormItem>
