@@ -2,13 +2,14 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { Typography, Row } from 'antd'
+import { Grid} from 'react-flexbox-grid';
 const { Title, Paragraph, Text } = Typography;
 
 const Term = () => {
   const { t } = useTranslation()
 
   return (
-    <>
+    <Grid fluid>
       <Helmet>
         <meta charSet="utf-8" />
         <meta name="description" content={t('user.logo.welcome')}/>
@@ -568,7 +569,7 @@ const Term = () => {
           </Paragraph>
         </Typography>
       </Row>
-    </>
+    </Grid>
   )
 }
 
