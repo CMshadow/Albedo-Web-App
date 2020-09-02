@@ -30,7 +30,7 @@ const UserLayout = (props) => {
               </a>
             </div>
             <div>
-              <Text type='warning'>{t('sider.edition')}</Text>
+              <Text type='warning'>{t('sider.edition')}{process.env.REACT_APP_VERSION}</Text>
             </div>
             <div className={styles.desc}>
               <Text strong>{t('user.logo.welcome')}</Text>
