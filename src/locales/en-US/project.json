@@ -79,6 +79,7 @@
   "project.spec.celltemp_v.help": "Wind speed",
   "project.spec.model.sandia": "Sandia",
   "project.spec.model.pvsyst": "PVsyst",
+  "project.spec.mode.custom": "Custom",
   "project.spec.mount.open-rack": "Open Rack",
   "project.spec.mount.insulated-back": "Insulated Back",
   "project.spec.custom": "Custom",

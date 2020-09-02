@@ -79,6 +79,7 @@
   "project.spec.celltemp_v.help": "风速",
   "project.spec.model.sandia": "Sandia",
   "project.spec.model.pvsyst": "PVsyst",
+  "project.spec.mode.custom": "自定义",
   "project.spec.mount.open-rack": "双面散热",
   "project.spec.mount.insulated-back": "正面散热",
   "project.spec.custom": "自定义",
