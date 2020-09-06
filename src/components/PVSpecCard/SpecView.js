@@ -30,6 +30,28 @@ export const SpecView = ({buildingID, specIndex}) => {
     acc + obj.panels_per_string * obj.string_per_inverter, 0
   )
 
+  const genCelltempText = () => {
+    const model = spec.celltemp_model.split(',')[0]
+    const second = spec.celltemp_model.split(',')[1]
+    const modelText = t(`project.spec.model.${model}`)
+    let modeText
+    let mountText
+    if (second === 'custom') {
+      modeText = t(`project.spec.mode.${second}`)
+      mountText = null
+    } else {
+      if (model === 'pvsyst') {
+        modeText = null
+        mountText = t(`project.spec.mount.${second}`)
+      } else {
+        modeText = t(`PV.${second}`)
+        mountText = t(`project.spec.mount.${spec.celltemp_model.split(',')[2]}`)
+      }
+    }
+
+    return [modelText, modeText, mountText].filter(val => val).join(', ')
+  }
+
   return (
     <Descriptions bordered column={2}>
       <Item label={t('project.spec.pv')} span={2}>{pvName}</Item>
@@ -39,6 +61,9 @@ export const SpecView = ({buildingID, specIndex}) => {
         {`${w2other(capacity).value} ${w2other(capacity).unit}`}
       </Item>
       <Item label={t('project.spec.pvNum')}>{pvNum}</Item>
+      <Item label={t('project.spec.celltemp-model')}>
+        {genCelltempText()}
+      </Item>
     </Descriptions>
   )
 }

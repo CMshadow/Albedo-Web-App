@@ -1,20 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Form, Input, InputNumber, Row, Col, Select, Button, Drawer, Tooltip, Space } from 'antd';
+import { Form, Input, InputNumber, Row, Col, Select, Button, Drawer, Tooltip, Space, Spin } from 'antd';
 import { TableOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { editInverterSpec } from '../../store/action/index'
 import { InverterTableViewOnly } from '../InverterTable/InverterTableViewOnly'
 import { other2m } from '../../utils/unitConverter'
+import { inverterLimit } from '../../pages/Project/service'
 import * as styles from './EditForm.module.scss'
 const FormItem = Form.Item;
 
 const rowGutter = { md: 8, lg: 15, xl: 32 };
 
-export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}) => {
+export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled, initInvLimits}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
+  const { projectID } = useParams()
   const [form] = Form.useForm()
+  const [loading, setloading] = useState(false)
   const [showDrawer, setshowDrawer] = useState(false)
   const unit = useSelector(state => state.unit.unit)
   const pvData = useSelector(state => state.pv.data).concat(
@@ -26,16 +30,66 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
   const [invActiveData, setinvActiveData] = useState(inverterData)
 
   const buildings = useSelector(state => state.project.buildings)
-  const buildingIndex = buildings.map(building => building.buildingID)
-    .indexOf(buildingID)
+  const buildingIndex = buildings.map(building => building.buildingID).indexOf(buildingID)
   const specData = buildings[buildingIndex].data[specIndex]
   const selPV = pvData.find(pv => pv.pvID === specData.pv_panel_parameters.pv_model.pvID)
   const invSpec = specData.inverter_wiring[invIndex]
   const [dc_cable_len, setdc_cable_len] = useState({
     value: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
   })
-  const [spi, setspi] = useState({value: invSpec.spi || null})
-  const [pps, setpps] = useState({value: invSpec.pps || null})
+
+  // 根据给定的逆变器接线可选方案，生成SPI区间
+  const genSPILimits = (invLimits) => {
+    const minSPI = Object.keys(invLimits).reduce((minSPI, val) => 
+      val < minSPI ? val : minSPI, Infinity
+    )
+    const maxSPI = Object.keys(invLimits).reduce((maxSPI, val) => 
+      val > maxSPI ? val : maxSPI, -Infinity
+    )
+    return [minSPI, maxSPI]
+  }
+
+  // 根据给定的逆变器接线可选方案，和可给定的SPI,生成PPS区间
+  const genPPSLimits = (invLimits, spi=0) => {
+    if (spi in invLimits) {
+      const minPPS = invLimits[spi].reduce((minPPS, val) => 
+        val < minPPS ? val : minPPS, Infinity
+      )
+      const maxPPS = invLimits[spi].reduce((maxPPS, val) => 
+        val > maxPPS ? val : maxPPS, -Infinity
+      )
+      return [minPPS, maxPPS]
+    } else {
+      const minPPS = Object.keys(invLimits).reduce((minPPS, spi) => {
+        const loclMinPPS = invLimits[spi].reduce((min, val) => 
+          val < min ? val : min, Infinity
+        )
+        return loclMinPPS < minPPS ? loclMinPPS : minPPS
+      }, Infinity)
+      const maxPPS = Object.keys(invLimits).reduce((maxPPS, spi) => {
+        const loclMaxPPS = invLimits[spi].reduce((max, val) => 
+          val > max ? val : max, -Infinity
+        )
+        return loclMaxPPS > maxPPS ? loclMaxPPS : maxPPS
+      }, -Infinity)
+      return [minPPS, maxPPS]
+    }
+  }
+
+  // form中最新的逆变器可选方案限制
+  const [invLimits, setinvLimits] = useState({})
+  // 根据当前逆变器可选方案限制产生的SPI范围
+  const [invSPILimit, setinvSPILimit] = useState([-Infinity, Infinity])
+  // 根据当前逆变器可选方案限制产生的PPS范围
+  const [invPPSLimit, setinvPPSLimit] = useState([-Infinity, Infinity])
+  // 表中spi值
+  const [spi, setspi] = useState({value: invSpec.string_per_inverter || null})
+  // 表中pps值
+  const [pps, setpps] = useState({value: invSpec.panels_per_string || null})
+  // spi对应文本
+  const [spimsg, setspimsg] = useState(null)
+  // pps对应文本
+  const [ppsmsg, setppsmsg] = useState(null)
 
   // 通用required项提示文本
   const validateMessages = {
@@ -65,42 +119,32 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
       errorMsg: null,
     }
   }
-  // 自定义校验并联组串数是否符合逆变器规范
-  const validateSpi = value => {
-    // 数量与该逆变器规格不符
-    const selInvID = form.getFieldValue('inverterID')
-    if (selInvID) {
-      const selInv = inverterData.find(inv => inv.inverterID === selInvID)
-      if (value > selInv.strNum) {
-        return {
-          validateStatus: 'warning',
-          errorMsg: t('project.spec.error.over-max'),
-        }
-      }
-    }
-    // 校验通过
-    return {
-      validateStatus: 'success',
-      errorMsg: null,
+
+  // 自定义校验并联组串数是否符合逆变器规范并更新SPI对应文本
+  const validateSpi = (value, minSPI, maxSPI) => {
+    if (value > maxSPI) {
+      setspimsg(`${t('project.spec.error.over-max')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
+      return {validateStatus: 'warning'}
+    } else if (value < minSPI) {
+      setspimsg(`${t('project.spec.error.under-min')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
+      return {validateStatus: 'warning'}
+    } else {
+      setspimsg(`${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
+      return {validateStatus: 'success'}
     }
   }
-  // 自定义校验每串板数是否符合逆变器规范
-  const validatePps = value => {
-    // 数量与该逆变器规格不符
-    const selInvID = form.getFieldValue('inverterID')
-    if (selInvID) {
-      const selInv = inverterData.find(inv => inv.inverterID === selInvID)
-      if (value > Math.floor(selInv.vdcMax / selPV.voco)) {
-        return {
-          validateStatus: 'warning',
-          errorMsg: t('project.spec.error.over-max'),
-        }
-      }
-    }
-    // 校验通过
-    return {
-      validateStatus: 'success',
-      errorMsg: null,
+
+  // 自定义校验每串板数是否符合逆变器规范并更新PPS对应文本
+  const validatePps = (value, minPPS, maxPPS) => {
+    if (value > maxPPS) {
+      setppsmsg(`${t('project.spec.error.over-max')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
+      return {validateStatus: 'warning'}
+    } else if (value < minPPS) {
+      setppsmsg(`${t('project.spec.error.under-min')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
+      return {validateStatus: 'warning'}
+    } else {
+      setppsmsg(`${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
+      return {validateStatus: 'success'}
     }
   }
 
@@ -111,26 +155,67 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
       value: value.target.value
     });
   }
-  //并联组串数输入框改变回调
-  const onSpiChange = value => {
+
+  //并联组串数输入框改变回调，校验SPI，如果存在pps则同时校验PPS，否则只更新pps文本
+  const onSPIChange = (value, minSPI, maxSPI, limit=invLimits) => {
     setspi({
-      ...validateSpi(value),
+      ...validateSpi(value, minSPI, maxSPI),
       value: value
     })
+    if (value in limit) {
+      const newPPSLimit = genPPSLimits(limit, value)
+      setinvPPSLimit(newPPSLimit)
+      if (pps.value) {
+        onPPSChange(pps.value, newPPSLimit[0], newPPSLimit[1])
+      } else {
+        setppsmsg(`${t('project.spec.panels_per_string.help')}: ${newPPSLimit[0]}-${newPPSLimit[1]}`)
+      }
+    }
   }
-  //并联组串数输入框改变回调
-  const onPpsChange = value => {
+
+  //并联组串数输入框改变回调，校验PPS
+  const onPPSChange = (value, minPPS, maxPPS) => {
     setpps({
-      ...validatePps(value),
+      ...validatePps(value, minPPS, maxPPS),
       value: value
     })
   }
-  //选择逆变器改变回调
+
+  //选择逆变器改变回调，生成新invLimits并更新spi和pps文本，如果存在pps和spi则重新校验PPS和SPI并更新文本
   const onInverterIDChange = invID => {
-    const spi = form.getFieldValue('string_per_inverter')
-    const pps = form.getFieldValue('panels_per_string')
-    if (spi) onSpiChange(spi)
-    if (pps) onPpsChange(pps)
+    const selInv = inverterData.find(inv => inv.inverterID === invID)
+    setloading(true)
+    dispatch(inverterLimit({
+      projectID, 
+      invID: selInv.inverterID, 
+      invUserID: selInv.userID,
+      pvID: selPV.pvID,
+      pvUserID: selPV.userID
+    })).then(res => {
+      setloading(false)
+      const newinvLimits = {}
+      res.forEach(limit => 
+        limit.spi in newinvLimits ? 
+        newinvLimits[limit.spi].push(limit.pps) :
+        newinvLimits[limit.spi] = [limit.pps]
+      )
+      Object.keys(newinvLimits).forEach(key => newinvLimits[key].sort())
+      setinvLimits(newinvLimits)
+
+      const spi = form.getFieldValue('string_per_inverter')
+      const pps = form.getFieldValue('panels_per_string')
+
+      const [minSPI, maxSPI] = genSPILimits(newinvLimits)
+      setinvSPILimit([minSPI, maxSPI])
+      setspimsg(`${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
+
+      const [minPPS, maxPPS] = genPPSLimits(newinvLimits, spi)
+      setinvPPSLimit([minPPS, maxPPS])
+      setppsmsg(`${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
+      
+      if (spi) onSPIChange(spi, minSPI, maxSPI, newinvLimits)
+      if (pps) onPPSChange(pps, minPPS, maxPPS)
+    })
   }
 
   const handleOk = () => {
@@ -170,8 +255,57 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
     setediting(false)
   }
 
+  // initInvLimits准备好后初始化SPI，PPS值及文本
+  useEffect(() => {
+    const evalSPI = (value, minSPI, maxSPI) => {
+      // 数量与该逆变器规格不符
+      if (value > maxSPI) {
+        setspimsg(`${t('project.spec.error.over-max')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
+        return {validateStatus: 'warning'}
+      } else if (value < minSPI) {
+        setspimsg(`${t('project.spec.error.under-min')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
+        return {validateStatus: 'warning'}
+      } else {
+        setspimsg(`${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
+        return {validateStatus: 'success'}
+      }
+    }
+
+    const evalPPS = (value, minPPS, maxPPS) => {
+      // 数量与该逆变器规格不符
+      if (value > maxPPS) {
+        setppsmsg(`${t('project.spec.error.over-max')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
+        return {validateStatus: 'warning'}
+      } else if (value < minPPS) {
+        setppsmsg(`${t('project.spec.error.under-min')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
+        return {validateStatus: 'warning'}
+      } else {
+        setppsmsg(`${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
+        return {validateStatus: 'success'}
+      }
+    }
+
+    setinvLimits(initInvLimits)
+    if (invSpec.string_per_inverter) {
+      const initSPILimit = genSPILimits(initInvLimits)
+      setinvSPILimit(initSPILimit)
+      setspi({
+        ...evalSPI(invSpec.string_per_inverter, initSPILimit[0], initSPILimit[1]),
+        value: invSpec.string_per_inverter
+      })
+    }
+    if (invSpec.panels_per_string) {
+      const initPPSLimit = genPPSLimits(initInvLimits, invSpec.panels_per_string)
+      setinvPPSLimit(initPPSLimit)
+      setpps({
+        ...evalPPS(invSpec.panels_per_string, initPPSLimit[0], initPPSLimit[1]),
+        value: invSpec.panels_per_string
+      })
+    }
+  }, [initInvLimits, invSpec.panels_per_string, invSpec.string_per_inverter, t])
+
   return (
-    <div>
+    <Spin spinning={loading}>
       <Form
         colon={false}
         form={form}
@@ -224,14 +358,14 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
               label={t('project.spec.string_per_inverter')}
               rules={[{required: true}]}
               validateStatus={spi.validateStatus}
-              help={spi.errorMsg}
+              help={spimsg}
             >
               <InputNumber
                 precision={0}
                 min={1}
                 className={styles.inputNumber}
                 value={spi.value}
-                onChange={onSpiChange}
+                onChange={val => onSPIChange(val, invSPILimit[0], invSPILimit[1])}
                 disabled={disabled}
               />
             </FormItem>
@@ -242,14 +376,14 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
               label={t('project.spec.panels_per_string')}
               rules={[{required: true}]}
               validateStatus={pps.validateStatus}
-              help={pps.errorMsg}
+              help={ppsmsg}
             >
               <InputNumber
                 precision={0}
                 min={1}
                 className={styles.inputNumber}
                 value={pps.value}
-                onChange={onPpsChange}
+                onChange={val => onPPSChange(val, invPPSLimit[0], invPPSLimit[1])}
                 disabled={disabled}
               />
             </FormItem>
@@ -325,6 +459,6 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled}
           setactiveData={setinvActiveData}
         />
       </Drawer>
-    </div>
+    </Spin>
   )
 }

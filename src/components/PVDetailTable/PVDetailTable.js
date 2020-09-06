@@ -14,7 +14,7 @@ export const PVDetailTable = ({ pvID, count }) => {
     ['pmax', 'Wp'], ['voco', 'V'], ['isco', 'A'], ['vmpo', 'V'], ['impo', 'A'],
     ['betaVoco', '%/℃'], ['betaVmpo', '%/℃'], ['alphaIsc', '%/℃'],
     ['gammaPmax', '%/℃'], ['t', '℃'], ['tPrime', '℃'], ['tenYDecay', '%'],
-    ['twentyfiveYDecay', '%'], ['size', 'mm'], ['panelWeight', 'kg']
+    ['twentyfiveYDecay', '%'], ['size', 'mm'], ['panelWeight', 'kg'], ['moduleMaterial', '']
   ]
 
   const dataSource = KeysAndUnits.map(([key, unit], index) => {
@@ -24,10 +24,12 @@ export const PVDetailTable = ({ pvID, count }) => {
       paramName: t(`PV.${key}`),
       unit: unit,
     }
-    if (key !== 'size') {
-      data.param = pvSpec[key]
-    } else {
+    if (key === 'size') {
       data.param = `${pvSpec.panelLength} x ${pvSpec.panelWidth} x ${pvSpec.panelHeight}`
+    } else if (key === 'moduleMaterial') {
+      data.param = t(`PV.${pvSpec[key]}`)
+    } else {
+      data.param = pvSpec[key]
     }
     return data
   })

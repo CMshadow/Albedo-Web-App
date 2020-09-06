@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import { useBeforeunload } from 'react-beforeunload'
 import { Layout, Menu, Row, Button, Spin, Tooltip, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useHistory, useParams, Link, useLocation } from 'react-router-dom';
+import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
@@ -220,7 +220,7 @@ const ProjectLayout = (props) => {
             <img alt="logo" className={styles.logo} src={logo} />
             <div>
               <h1>{t('sider.company')}</h1>
-              <h4>{t('sider.edition')}</h4>
+              <h4>{t('sider.edition')}{process.env.REACT_APP_VERSION}</h4>
             </div>
           </Row>
           {

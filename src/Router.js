@@ -13,7 +13,6 @@ import BasicLayout from './layouts/BasicLayout/BasicLayout';
 import ProjectLayout from './layouts/ProjectLayout/ProjectLayout'
 import ProjectTable from './pages/ProjectTable/ProjectTable';
 import NotFound404 from './pages/404';
-import FakeParking from './components/FakeParking/FakeParking'
 import Term from './pages/static/Term'
 import Cookie from './pages/static/Cookie'
 import Privacy from './pages/static/Privacy'
@@ -36,7 +35,6 @@ const Router = () => {
       <Suspense fallback={<EmptyLayout/>} >
         <ScrollToTop />
         <Switch>
-          <Route path="/me" component={FakeParking} />
           <Route path="/user">
             <UserLayout>
               <Switch>

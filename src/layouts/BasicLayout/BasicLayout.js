@@ -46,7 +46,7 @@ const BasicLayout = (props) => {
             <img alt="logo" className={styles.logo} src={logo} />
             <div>
               <h1>{t('sider.company')}</h1>
-              <h4>{t('sider.edition')}</h4>
+              <h4>{t('sider.edition')}{process.env.REACT_APP_VERSION}</h4>
             </div>
           </Row>
           <Menu theme="dark" mode="inline" selectedKeys={[selectMenu]} onSelect={onSelect}>

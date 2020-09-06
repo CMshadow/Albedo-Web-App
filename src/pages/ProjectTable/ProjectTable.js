@@ -18,6 +18,7 @@ const ProjectTable = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [data, setdata] = useState([]);
+  const [activeData, setactiveData] = useState([])
   const [loading, setloading] = useState(false)
   const [showModal, setshowModal] = useState(false)
 
@@ -38,10 +39,10 @@ const ProjectTable = (props) => {
       title: t('project.create.title'),
       dataIndex: 'projectTitle',
       key: 'projectTitle',
-      sorter: (a, b) => a.projectTitle - b.projectTitle,
+      sorter: (a, b) => a.projectTitle.localeCompare(b.projectTitle),
       fixed: 'left',
       width: 250,
-      ...SearchString({colKey: 'projectTitle'}),
+      ...SearchString({colKey: 'projectTitle', data, setactiveData}),
       render: (val, record) => (
         <Link to={`/project/${record.projectID}/dashboard`}>
           {val}
@@ -53,7 +54,7 @@ const ProjectTable = (props) => {
       dataIndex: 'projectAddress',
       key: 'projectAddress',
       width: 250,
-      sorter: (a, b) => a.projectAddress - b.projectAddress,
+      sorter: (a, b) => a.projectAddress.localeCompare(b.projectAddress),
     },
     {
       title: t('project.createdAt'),
@@ -107,6 +108,7 @@ const ProjectTable = (props) => {
     setloading(true)
     dispatch(getProject()).then(data => {
       setdata(data)
+      setactiveData(data)
       setloading(false)
     })
   }
@@ -116,6 +118,7 @@ const ProjectTable = (props) => {
     setloading(true)
     dispatch(getProject()).then(data => {
       setdata(data)
+      setactiveData(data)
       setloading(false)
     })
   }, [dispatch])
@@ -138,17 +141,17 @@ const ProjectTable = (props) => {
       />
       <Table
         columns={tableCols}
-        dataSource={data}
+        dataSource={activeData}
         rowKey='projectID'
         loading={loading}
         pagination={{
           position: ['bottomCenter'],
-          total: data.length,
+          total: activeData.length,
           showTotal: total => `${total}` + t('table.totalCount'),
           defaultPageSize: 10,
           showSizeChanger: true
         }}
-        scroll={{ x: 'max-content', y: 'calc(100vh - 275px)' }}
+        scroll={{ x: 'max-content' }}
       />
       <CreateProjectModal showModal={showModal} setshowModal={setshowModal} />
     </Card>

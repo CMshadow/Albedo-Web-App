@@ -97,3 +97,32 @@ async (dispatch, getState) => {
     throw err
   })
 }
+
+export const inverterLimit = ({projectID, invID, invUserID, pvID, pvUserID}) => 
+async (dispatch, getState) =>{
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.get(
+    `/project/${session.idToken.payload.sub}/${projectID}/inverterlimit`,
+    {
+      params: {
+        inverterModel: {
+          inverterID: invID,
+          userID: invUserID
+        },
+        pvModel: {
+          pvID: pvID,
+          userID: pvUserID
+        }
+      },
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => res.data)
+  .catch(err => {
+    console.log(err)
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}

@@ -44,7 +44,8 @@
   "lossChart.opt_irr": "Optimal Tilt & Azimuth",
   "lossChart.p_loss_tilt_azimuth": "Tilt & Azimuth",
   "lossChart.p_loss_far_side_shading": "Far Side Shading",
-  "lossChart.p_loss_mismatch": "Mismatch",
+  "lossChart.p_loss_mismatch_withinstring": "Module Mismatch",
+  "lossChart.p_loss_mismatch_betweenstrings": "String Mismatch",
   "lossChart.p_loss_soiling": "Soiling",
   "lossChart.p_loss_eff_irradiance": "Effective Irradiance",
   "lossChart.p_loss_temperature": "Temperature",
@@ -57,6 +58,7 @@
   "lossChart.p_loss_ac_wiring": "AC Wiring (Inverter(s) to Combiner Box)",
   "lossChart.p_loss_combibox_wiring": "AC Wiring (Combiner Box to Meter)",
   "lossChart.transformer_efficiency": "Step-up Transformer Loss",
+  "lossChart.p_loss_availability": "System Availability Loss",
 
   "systemEfficiencyChart.name": "System Efficiency",
 

@@ -11,7 +11,7 @@ export const LossChart = ({buildingID}) => {
   const reportData = useSelector(state => state.report)
   const projectData = useSelector(state => state.project)
   const buildingReport = reportData[buildingID]
-
+  console.log(buildingReport.p_loss_avilability)
   const colorMap = {
     irr: 0,
     dc: 1,
@@ -23,11 +23,15 @@ export const LossChart = ({buildingID}) => {
     ['opt_irr', 'irr'], ['p_loss_tilt_azimuth', 'irr'],
     ['p_loss_far_side_shading', 'irr'],
     ['p_loss_soiling', 'irr'], ['p_loss_eff_irradiance', 'irr'],
+
     ['p_loss_temperature', 'dc'], ['p_loss_degradation', 'dc'],
     ['p_loss_degradation_rest', 'dc'], ['p_loss_connection', 'dc'],
-    ['p_loss_mismatch', 'dc'], ['p_loss_dc_wiring', 'dc'],
+    ['p_loss_mismatch_withinstring', 'dc'], ['p_loss_mismatch_betweenstrings', 'dc'], 
+    ['p_loss_dc_wiring', 'dc'],
+
     ['p_loss_conversion', 'ac'], ['p_loss_ac_wiring', 'ac'],
-    ['p_loss_combibox_wiring', 'ac'], ['transformer_efficiency', 'ac']
+    ['p_loss_combibox_wiring', 'ac'], ['transformer_efficiency', 'ac'],
+    ['p_loss_availability', 'ac']
   ]
   let systemStatus = 100
   const dataSource = []
@@ -117,11 +121,11 @@ export const LossChart = ({buildingID}) => {
         />
         <Annotation.Text
           top
-          position={[t('lossChart.p_loss_degradation_rest'), 0]}
+          position={[t('lossChart.p_loss_connection'), 0]}
           content={t('lossChart.dc')}
           style={lgTitleStyle}
           offsetX={-40}
-          offsetY={20}
+          offsetY={0}
         />
         <Annotation.Text
           top
@@ -133,8 +137,8 @@ export const LossChart = ({buildingID}) => {
         />
         <Annotation.Line
           top
-          start={['-9%', "33.5%"]}
-          end={['100%', "33.5%"]}
+          start={['-9%', "29.35%"]}
+          end={['100%', "29.35%"]}
           style={{
             stroke: '#595959',
             lineDash: [2, 2],
@@ -143,8 +147,8 @@ export const LossChart = ({buildingID}) => {
         />
         <Annotation.Line
           top
-          start={['-9%', "73.5%"]}
-          end={['100%', "73.5%"]}
+          start={['-9%', "70.6%"]}
+          end={['100%', "70.6%"]}
           style={{
             stroke: '#595959',
             lineDash: [2, 2],

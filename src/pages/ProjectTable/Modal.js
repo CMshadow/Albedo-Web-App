@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { amapGeocoder, googleGeocoder, googleRevGeocoder, getApiKey, createProject } from './service';
+import { amapGeocoder, googleGeocoder, getApiKey, createProject } from './service';
 import { Tabs, Form, Input, Select, Modal, Divider, Button, notification, Tooltip, Collapse, Slider } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { genFullName } from '../../utils/genFullName';
@@ -27,7 +27,8 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
-  const cognitoUser = useSelector(state => state.auth.cognitoUser);
+  const cognitoUser = useSelector(state => state.auth.cognitoUser)
+  const unit = useSelector(state => state.unit.unit)
   const [loading, setloading] = useState(false);
   const [validated, setvalidated] = useState(false);
   const [mapPos, setmapPos] = useState({lon: -117.843687, lat: 33.676542})
@@ -255,6 +256,9 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
             }
             placeholder={t('project.create.address.placeholder')}
           />
+        </FormItem>
+        <FormItem name='projectAltitude' label={t('project.create.projectAltitude')} rules={[{required: true}]}>
+          <Input placeholder={t('project.create.projectAltitude.placeholder')} suffix={unit}/>
         </FormItem>
         <FormItem name='projectType' label={t('project.create.type')} rules={[{required: true}]}>
           <Select>
