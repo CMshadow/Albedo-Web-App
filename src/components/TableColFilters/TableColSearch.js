@@ -7,8 +7,6 @@ import * as styles from './TabelColSearch.module.scss';
 import { getMin, getMax } from '../../utils/getObjectsMinMax';
 
 export const SearchString = ({colKey, data, onClick, setactiveData}) => {
-  console.log(colKey)
-  console.log(data)
   let searchInputRef;
   const { t } = useTranslation()
   const [searchedCol, setsearchedCol] = useState('')
