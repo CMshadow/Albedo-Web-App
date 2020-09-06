@@ -124,5 +124,9 @@
   "irrRadarChart.selectTilt": "Select Two Tilts to Compare",
 
   "horizonChart.elev": "Horizon Elevation",
-  "horizonChart.azi": "Horizon Azimuth"
+  "horizonChart.azi": "Horizon Azimuth",
+
+  "ivChart.current": "Current",
+  "ivChart.voltage": "Voltage",
+  "pvChart.power": "Power"
 }

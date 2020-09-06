@@ -61,7 +61,7 @@ const InverterTablePage = (props) => {
             setactiveData={setactiveMyData}
             setshowModal={setshowModal}
             seteditRecord={seteditRecord}
-            showActionCol
+            showEditBut
           />
           <InverterModal
             showModal={showModal}

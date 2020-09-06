@@ -124,5 +124,9 @@
   "irrRadarChart.selectTilt": "选择两个倾角进行比较",
 
   "horizonChart.elev": "地平线高度角",
-  "horizonChart.azi": "地平线方位角"
+  "horizonChart.azi": "地平线方位角",
+
+  "ivChart.current": " 电流",
+  "ivChart.voltage": "电压",
+  "pvChart.power": "功率"
 }

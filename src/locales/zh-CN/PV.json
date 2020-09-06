@@ -16,6 +16,9 @@
   "PVtable.table.isco": "短路电流",
   "PVtable.table.voco": "开路电压",
   "PVtable.table.moduleMaterial": "组件材质",
+  "PVtable.table.iv-pv-curve": "I-V & P-V 曲线",
+  "PVtable.table.iv-curve": "I-V 曲线 (STC)",
+  "PVtable.table.pv-curve": "P-V 曲线 (STC)",
 
   "PV.name": "光伏组件型号",
   "PV.note": "光伏组件备注",

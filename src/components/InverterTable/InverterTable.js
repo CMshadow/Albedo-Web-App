@@ -17,7 +17,7 @@ const colKeys = [
 ]
 
 export const InverterTable = ({
-  loading, data, activeData, setactiveData, setshowModal, seteditRecord, showActionCol=false
+  loading, data, activeData, setactiveData, setshowModal, seteditRecord, showEditBut=false
 }) => {
   const { t } = useTranslation();
   const [showDrawer, setshowDrawer] = useState(false)
@@ -64,7 +64,7 @@ export const InverterTable = ({
     ...SearchString({colKey: 'name', onClick: onClickName, data, setactiveData}),
   })
   // 生成表单操作列属性
-  if (showActionCol) {
+  if (showEditBut) {
     tableCols.push({
       title: t('table.action'),
       dataIndex: 'action',

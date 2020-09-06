@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Table, Divider, Button, Drawer } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { Table, Divider, Button, Drawer, Tooltip } from 'antd';
+import { EditOutlined, LineChartOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { SearchString, SearchRange } from '../TableColFilters/TableColSearch';
 import { PVDetailTable } from '../PVDetailTable/PVDetailTable'
 import { DeleteAction } from './Actions';
+import { IVModal } from './IVModal'
 
 // 表单中的数字columns和单位
 // 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
@@ -14,16 +15,25 @@ const colKeys = [
 ]
 
 export const PVTable = ({
-  loading, data, activeData, setactiveData, setshowModal, seteditRecord, showActionCol=false
+  loading, data, activeData, setactiveData, setshowModal, seteditRecord, showEditBut=false
 }) => {
   const { t } = useTranslation();
   const [showDrawer, setshowDrawer] = useState(false)
   const [viewPVID, setviewPVID] = useState(false)
+  const [viewPVUserID, setviewPVUserID] = useState(false)
+  const [showIVModal, setshowIVModal] = useState(false)
 
   // 点击组件名显示详细信息
   const onClickName = (pvID) => {
     setviewPVID(pvID)
     setshowDrawer(true)
+  }
+
+  // 点击IV曲线图标
+  const onClickIVCurve = (pvID, pv_userID) => {
+    setviewPVID(pvID)
+    setviewPVUserID(pv_userID)
+    setshowIVModal(true)
   }
 
   // 组件材质筛选选项
@@ -87,32 +97,45 @@ export const PVTable = ({
     width: 200
   })
   // 生成表单操作列属性
-  if (showActionCol) {
-    tableCols.push({
-      title: t('table.action'),
-      dataIndex: 'action',
-      key: 'action',
-      fixed: 'right',
-      width: 125,
-      render: (value, record) => (
-        <div>
+  tableCols.push({
+    title: t('table.action'),
+    dataIndex: 'action',
+    key: 'action',
+    fixed: 'right',
+    width: showEditBut ? 175 : 50,
+    render: (value, record) => (
+      <div>
+        <Tooltip title={t('PVtable.table.iv-curve')}>
           <Button
             type="link"
-            icon={<EditOutlined />}
-            onClick={() => {
-              seteditRecord(record)
-              setshowModal(true)
-            }}
+            icon={<LineChartOutlined />}
+            onClick={() => onClickIVCurve(record.pvID, record.userID)}
           />
-          <Divider type='vertical' />
-          <DeleteAction
-            record={record}
-            setactiveData={setactiveData}
-          />
-        </div>
-      ),
-    })
-  }
+        </Tooltip>
+        {
+          showEditBut ? (
+            <>
+              <Divider type='vertical' />
+              <Button
+                type="link"
+                icon={<EditOutlined />}
+                onClick={() => {
+                  seteditRecord(record)
+                  setshowModal(true)
+                }}
+              />
+              <Divider type='vertical' />
+              <DeleteAction
+                record={record}
+                setactiveData={setactiveData}
+              />
+            </>
+          ) :
+          null
+        }
+      </div>
+    )
+  })
 
   return (
     <>
@@ -140,6 +163,14 @@ export const PVTable = ({
       >
         <PVDetailTable pvID={viewPVID} />
       </Drawer>
+      <IVModal 
+        pvID={viewPVID} 
+        userID={viewPVUserID} 
+        show={showIVModal} 
+        setshow={setshowIVModal}
+        setpvID={setviewPVID}
+        setuserID={setviewPVUserID}
+      />
     </>
   )
 }

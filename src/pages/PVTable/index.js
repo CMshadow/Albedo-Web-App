@@ -60,7 +60,7 @@ const PVTablePage = (props) => {
             setactiveData={setactiveMyData}
             setshowModal={setshowModal}
             seteditRecord={seteditRecord}
-            showActionCol
+            showEditBut
           />
           <PVModal
             setactiveData={setactiveMyData}

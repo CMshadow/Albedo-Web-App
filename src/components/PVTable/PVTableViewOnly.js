@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Table, Drawer } from 'antd';
+import { Table, Drawer, Button, Tooltip } from 'antd';
+import { LineChartOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { SearchString, SearchRange } from '../TableColFilters/TableColSearch';
 import { PVDetailTable } from '../PVDetailTable/PVDetailTable'
+import { IVModal } from './IVModal'
 
 // 表单中的数字columns和单位
 // 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
@@ -15,11 +17,20 @@ export const PVTableViewOnly = ({data, activeData, setactiveData}) => {
   const { t } = useTranslation();
   const [showDrawer, setshowDrawer] = useState(false)
   const [viewPVID, setviewPVID] = useState(false)
+  const [viewPVUserID, setviewPVUserID] = useState(false)
+  const [showIVModal, setshowIVModal] = useState(false)
 
   // 点击组件名显示详细信息
   const onClickName = (pvID) => {
     setviewPVID(pvID)
     setshowDrawer(true)
+  }
+
+  // 点击IV曲线图标
+  const onClickIVCurve = (pvID, pv_userID) => {
+    setviewPVID(pvID)
+    setviewPVUserID(pv_userID)
+    setshowIVModal(true)
   }
 
   // 组件材质筛选选项
@@ -91,6 +102,23 @@ export const PVTableViewOnly = ({data, activeData, setactiveData}) => {
     onFilter: (value, record) => record.moduleMaterial.indexOf(value) === 0,
     width: 200
   })
+  // 生成表单操作列属性
+  tableCols.push({
+    title: t('table.action'),
+    dataIndex: 'action',
+    key: 'action',
+    fixed: 'right',
+    width: 50,
+    render: (value, record) => (
+      <Tooltip title={t('PVtable.table.iv-curve')}>
+        <Button
+          type="link"
+          icon={<LineChartOutlined />}
+          onClick={() => onClickIVCurve(record.pvID, record.userID)}
+        />
+      </Tooltip>
+    )
+  })
 
   return (
     <>
@@ -117,6 +145,14 @@ export const PVTableViewOnly = ({data, activeData, setactiveData}) => {
       >
         <PVDetailTable pvID={viewPVID} />
       </Drawer>
+      <IVModal 
+        pvID={viewPVID} 
+        userID={viewPVUserID} 
+        show={showIVModal} 
+        setshow={setshowIVModal} 
+        setpvID={setviewPVID}
+        setuserID={setviewPVUserID}
+      />
     </>
   )
 }
