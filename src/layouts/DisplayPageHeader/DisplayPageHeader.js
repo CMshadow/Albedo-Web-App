@@ -42,6 +42,9 @@ const DisplayPageHeader = () => {
             <Menu.Item key="tutorial">
               <Link to="/cn/tutorial">视频教程</Link>
             </Menu.Item>
+            <Menu.Item key="blog">
+              <Link to="/cn/blog">日志</Link>
+            </Menu.Item>
           </Menu>
         </Col>
         <Col className={styles.right} justify='end' align='middle' xs={12}>

@@ -13,6 +13,7 @@ import BasicLayout from './layouts/BasicLayout/BasicLayout';
 import ProjectLayout from './layouts/ProjectLayout/ProjectLayout'
 import ProjectTable from './pages/ProjectTable/ProjectTable';
 import NotFound404 from './pages/404';
+import Blog from './pages/Blog/blog';
 import Term from './pages/static/Term'
 import Cookie from './pages/static/Cookie'
 import Privacy from './pages/static/Privacy'
@@ -105,6 +106,7 @@ const Router = () => {
           </PrivateRoute>
           <Route path="/">
             <Switch>
+              <Route path="/cn/blog" component={Blog} />
               <Route path="/cn/tutorial" component={VideoPage} />
               <Route path="/en/tutorial" component={EnVideoPage} />
               <Route path="/cn" component={DisplayPage} />
