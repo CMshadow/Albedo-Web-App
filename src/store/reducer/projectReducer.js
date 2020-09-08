@@ -22,6 +22,7 @@ const updateProjectAttributes = (state, action) => {
   else {
     const newState = {...state, ...action.values}
     newState.buildings.forEach(building => building.reGenReport = true)
+    console.log(newState)
     return newState
   }
 }

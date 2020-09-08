@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 import { saveProject } from '../Project/service'
 import { HorizonChart } from '../../components/Charts/HorizonChart'
 import { MonthlyAlbedo } from '../../components/MonthlyAlbedo/MonthlyAlbedo'
+import { TransformerModel } from '../../components/TransformerModel/TransformerModel'
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;
@@ -22,7 +23,6 @@ const genInitValues = (projectData) => {
     p_loss_connection: 0.5,
     p_loss_mismatch_withinstring: 2,
     p_loss_mismatch_betweenstrings: 0.1,
-    transformer_efficiency: 100,
     system_availability: 100,
     Ub: 380,
     ACVolDropFac: 2,
@@ -40,6 +40,7 @@ const ParamsForm = () => {
   const history = useHistory()
   const dispatch = useDispatch();
   const projectData = useSelector(state => state.project)
+  console.log(projectData)
   const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
   const projectID = history.location.pathname.split('/')[2]
@@ -77,13 +78,6 @@ const ParamsForm = () => {
     1: {style: markStyle, label: t('report.paramsForm.loss_1')},
   };
 
-  // system_availability 和 transformer_efficiency标识
-  const systemAvailabilityMarks = {
-    0: t('report.paramsForm.availability_0'),
-    100: {style: markStyle, label: t('report.paramsForm.availability_100')},
-  };
-  const transformerEfficiencyMarks = systemAvailabilityMarks
-
   // ACVolDropFac标识
   const ACVolDropFacMarks = {
     0.1: t('report.paramsForm.drop_0.1'),
@@ -116,16 +110,11 @@ const ParamsForm = () => {
   ]
 
   const gridKeys = [
-    [
-      ['transformer_efficiency', 'disabled', 100, transformerEfficiencyMarks], 
-      ['p_loss_ac_wiring', 'disabled', 'disabled']
-    ],
-    [['p_loss_availability', 0.1, 0, 5, pLossAvailabilityMarks],]
+    [['p_loss_availability', 0.1, 0, 5, pLossAvailabilityMarks], ['p_loss_ac_wiring', 'disabled', 'disabled']]
   ]
 
   const wiringKeys = [
-    [['Ub', 'n', 'V'], ['ACVolDropFac', 0.05, 0.1, 5, ACVolDropFacMarks]],
-    [['DCVolDropFac', 0.05, 0.1, 2, DCVolDropFacMarks]]
+    [['ACVolDropFac', 0.05, 0.1, 5, ACVolDropFacMarks], ['DCVolDropFac', 0.05, 0.1, 2, DCVolDropFacMarks]]
   ]
 
   // 通用required项提示文本
@@ -150,16 +139,9 @@ const ParamsForm = () => {
               {t(`report.paramsForm.${step}`)}
             </Text>
             <Text>{t('report.paramsForm.or')}</Text>
-            <InputNumber min={0} max={50} placeholder={t('report.paramsForm.overwrite')} />%
+            <InputNumber min={0} max={5} placeholder={t('report.paramsForm.overwrite')} />%
           </Space>
         )
-      case 'n':
-        return (
-          <InputNumber
-            style={{width: '100%'}} min={0} formatter={value => `${value}${min}`}
-            parser={value => value.replace(`${min}`, '')}
-          />
-        ) 
       default:
         return <Slider marks={marks} step={step} min={min} max={max}/>
     }
@@ -189,12 +171,21 @@ const ParamsForm = () => {
   // 表单提交
   const submitForm = async (values) => {
     setloading(true)
-    // 去除values中所有undefined properties 并转换所有值为数字
-    Object.keys(values).forEach(key =>
-      values[key] === undefined ?
-      delete values[key] :
-      values[key]=Number(values[key])
-    );
+    // 去除values中所有undefined properties
+    Object.keys(values).forEach(key => {
+      if (values[key] === undefined) delete values[key]
+    })
+    // 特殊处理首年和次年后光致衰减
+    if ('year1Decay' in values) {
+      values['year1Decay'].length > 0 ?
+      values['year1Decay'] = Number(values['year1Decay']) :
+      delete values['year1Decay']
+    }
+    if ('year2To25Decay' in values) {
+      values['year2To25Decay'].length > 0 ?
+      values['year2To25Decay'] = Number(values['year2To25Decay']) :
+      delete values['year2To25Decay']
+    }
     // 补上地平线数据
     values.horizonData = horizonData
     // 处理每月albedo值
@@ -251,6 +242,13 @@ const ParamsForm = () => {
         <Divider>{t('report.paramsForm.ac')}</Divider>
         {genFormItems(acKeys, 2)}
         <Divider>{t('report.paramsForm.grid')}</Divider>
+        {
+          <Row gutter={rowGutter}>
+            <Col span={24}>
+              <TransformerModel form={form} initUb={projectData.Ub || null}/>
+            </Col>
+          </Row>
+        }
         {genFormItems(gridKeys, 2)}
         <Divider>{t('report.paramsForm.wiring')}</Divider>
         {genFormItems(wiringKeys, 2)}

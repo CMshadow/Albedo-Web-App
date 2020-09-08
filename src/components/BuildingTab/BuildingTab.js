@@ -76,18 +76,18 @@ export const BuildingTab = ({buildings, ...props}) => {
                 {...spec.pv_panel_parameters}
               />
             ))}
-          <Button
-            className={styles.addSpec}
-            block
-            type="dashed"
-            onClick={() => addSpec(building.buildingID)}
-          >
-            {t('project.add.spec.prefix')}
-            {building.buildingName}
-            {t('project.add.spec')}
-          </Button>
-        </TabPane>
-      ))}
+            <Button
+              className={styles.addSpec}
+              block
+              type="dashed"
+              onClick={() => addSpec(building.buildingID)}
+            >
+              {t('project.add.spec.prefix')}
+              {building.buildingName}
+              {t('project.add.spec')}
+            </Button>
+          </TabPane>
+        ))}
       </Tabs>
       <BuildingModal
         showModal={showModal}
