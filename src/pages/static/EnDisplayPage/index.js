@@ -37,7 +37,7 @@ const EnDisplayPage = () => (
             <br/>
             to fast track solar design process
           </Title>
-          <img src={designDisplay} alt="designDisplay" width='80%'/>
+          <img src={designDisplay} alt="designDisplay" width='80%'height='100%'/>
         </Row>
       </Grid>
 
