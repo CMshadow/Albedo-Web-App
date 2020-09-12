@@ -6,7 +6,6 @@ import DisplayPageFooter from '../../../layouts/DisplayPageFooter/DisplayPageFoo
 import { Layout, Typography, Card, Statistic } from 'antd';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import designDisplay from '../../../assets/design-display3.png';
-import test from '../../../assets/test.jpeg';
 import pad from '../../../assets/pad.png';
 import elec from '../../../assets/elec.jpeg';
 import computer from '../../../assets/computer.jpeg';
@@ -53,7 +52,7 @@ const DisplayPage = () => (
         </Row>
           <Row className={styles.section} around = 'sm' round='xs'>
             <Col sm>
-              <Row end='xs' end = 'sm' align='middle' className={styles.padSentence}>
+              <Row end='xs' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>每小时</p>
                 <p className={styles.regularTxt}>精度天气数据</p>
               </Row>
@@ -71,7 +70,7 @@ const DisplayPage = () => (
             </Col>
 
             <Col sm>
-              <Row start='xs' start='sm' align='middle' className={styles.padSentence}>
+              <Row start='xs' align='middle' className={styles.padSentence}>
                 <p className={styles.regularTxt}>系统设备</p>
                 <p className={styles.highlightTxt}>自动化</p>
                 <p className={styles.regularTxt}>统计</p>

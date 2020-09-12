@@ -8,7 +8,6 @@ const Text = Typography.Text
 
 export const LossTable = ({ buildingID }) => {
   const { t } = useTranslation()
-  const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
 
   const dataSource = [

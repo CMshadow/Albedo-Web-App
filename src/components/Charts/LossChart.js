@@ -11,7 +11,6 @@ export const LossChart = ({buildingID}) => {
   const reportData = useSelector(state => state.report)
   const projectData = useSelector(state => state.project)
   const buildingReport = reportData[buildingID]
-  console.log(buildingReport.p_loss_avilability)
   const colorMap = {
     irr: 0,
     dc: 1,

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux'
 import { QuestionCircleOutlined } from '@ant-design/icons'
-import { Row, Col, Select, Space, InputNumber, Form, Tooltip, Typography } from 'antd'
+import { Row, Col, Select, InputNumber, Form, Tooltip, Typography } from 'antd'
 const FormItem = Form.Item;
 const { Option, OptGroup } = Select
 const {Text} = Typography

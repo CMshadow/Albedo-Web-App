@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {v4 as uuidv4} from 'uuid';
-import {Rect, Group, Line, Text, Arrow, Circle, Ellipse} from 'react-konva';
-import {useSelector } from 'react-redux'
+import React from 'react';
+import { v4 as uuidv4} from 'uuid';
+import { Rect, Group, Line, Text, Arrow, Circle, Ellipse} from 'react-konva';
+import { useSelector } from 'react-redux'
 
 const SelfUseMeter = (props) => {
 
@@ -446,30 +446,6 @@ const SelfUseMeter = (props) => {
       fontFamily='Arial'
       fill='Black'
     ></Text>)
-  }
-  
-  const drawEllipsis = (position) => {
-    groupOfMeter.push(<Circle
-      key= {"Meter-Circle-" + uuidv4()}
-      x={accessPort[0] + unitWidth * 0.6}
-      y={accessPort[1] - unitHeight * 0.35} 
-      radius={2} 
-      fill="black"
-    ></Circle>)
-    groupOfMeter.push(<Circle
-      key= {"Meter-Circle-" + uuidv4()}
-      x={accessPort[0] + unitWidth * 0.6}
-      y={accessPort[1] - unitHeight * 0.35} 
-      radius={2} 
-      fill="black"
-    ></Circle>)
-    groupOfMeter.push(<Circle
-      key= {"Meter-Circle-" + uuidv4()}
-      x={accessPort[0] + unitWidth * 0.6}
-      y={accessPort[1] - unitHeight * 0.35} 
-      radius={2} 
-      fill="black"
-    ></Circle>)
   }
 
   return (

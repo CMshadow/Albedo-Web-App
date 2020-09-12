@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {v4 as uuidv4} from 'uuid';
 import { Rect, Line, Group } from 'react-konva';
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 
 const BackgroundGrids = (props) => {

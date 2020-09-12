@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { getLanguage } from './utils/getLanguage'
 import PrivateRoute from './components/PrivateRoute';

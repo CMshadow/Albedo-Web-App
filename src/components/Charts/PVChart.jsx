@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Chart, Axis, Tooltip, Line } from 'bizcharts';
+import { Chart, Axis, Line } from 'bizcharts';
 import { titleStyle } from '../../styles.config'
 
 export const PVChart = ({ dataSource }) => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber, Collapse } from 'antd';
+import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, InputNumber } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProjectAttributes } from '../../store/action/index'
@@ -11,7 +11,6 @@ import { TransformerModel } from '../../components/TransformerModel/TransformerM
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;
-const { Panel } = Collapse;
 
 const rowGutter = { xs: [8, 12], sm: [16, 12]};
 const labelCol = { span: 16, offset: 4 };
@@ -40,7 +39,6 @@ const ParamsForm = () => {
   const history = useHistory()
   const dispatch = useDispatch();
   const projectData = useSelector(state => state.project)
-  console.log(projectData)
   const [loading, setloading] = useState(false);
   const [form] = Form.useForm();
   const projectID = history.location.pathname.split('/')[2]

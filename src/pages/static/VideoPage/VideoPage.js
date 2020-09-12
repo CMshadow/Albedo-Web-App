@@ -1,7 +1,7 @@
 import React from 'react';
 import DisplayPageHeader from '../../../layouts/DisplayPageHeader/DisplayPageHeader';
 import DisplayPageFooter from '../../../layouts/DisplayPageFooter/DisplayPageFooter';
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import { Grid, Row } from 'react-flexbox-grid';
 import {Layout, Typography} from 'antd';
 import Player from 'aliplayer-react';
 import * as styles from './VideoPage.module.scss';

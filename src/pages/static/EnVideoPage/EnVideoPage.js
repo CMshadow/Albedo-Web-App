@@ -1,7 +1,7 @@
 import React from 'react';
 import EnDisplayPageHeader from '../../../layouts/EnDisplayPageHeader/EnDisplayPageHeader';
 import EnDisplayPageFooter from '../../../layouts/EnDisplayPageFooter/EnDisplayPageFooter';
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import { Grid, Row } from 'react-flexbox-grid';
 import {Layout, Typography} from 'antd';
 import Player from 'aliplayer-react';
 import * as styles from './EnVideoPage.module.scss';
