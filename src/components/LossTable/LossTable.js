@@ -68,7 +68,7 @@ export const LossTable = ({ buildingID }) => {
       key: 11,
       loss: t('lossTable.p_loss_transformer'),
       unit: '%',
-      value: (100 - projectData.transformer_efficiency).toFixed(2)
+      value: (reportData[buildingID].p_loss_transformer * 100).toFixed(2)
     },{
       key: 12,
       loss: t('lossTable.p_loss_dc_wiring'),

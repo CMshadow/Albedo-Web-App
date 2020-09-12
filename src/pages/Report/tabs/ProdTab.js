@@ -2,10 +2,10 @@ import React from 'react'
 import { Card, Row, Col } from 'antd'
 import { useSelector } from 'react-redux'
 import { ACPowerTable } from '../../../components/ACPowerTable/ACPowerTable'
-import { ACPowerChart } from '../../../components/ReportCharts/ACPowerChart'
-import { ProductionChart } from '../../../components/ReportCharts/ProductionChart'
-import { IrrVSProdChart } from '../../../components/ReportCharts/IrrVSProdChart'
-import { ACDistributionChart } from '../../../components/ReportCharts/ACDistributionChart'
+import { ACPowerChart } from '../../../components/Charts/ACPowerChart'
+import { ProductionChart } from '../../../components/Charts/ProductionChart'
+import { IrrVSProdChart } from '../../../components/Charts/IrrVSProdChart'
+import { ACDistributionChart } from '../../../components/Charts/ACDistributionChart'
 
 export const ProdTab = ({buildingID}) => {
   const reportData = useSelector(state => state.report)

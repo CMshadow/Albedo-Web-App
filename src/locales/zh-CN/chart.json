@@ -57,7 +57,6 @@
   "lossChart.p_loss_dc_wiring": "直流线损",
   "lossChart.p_loss_ac_wiring": "低压汇流线损",
   "lossChart.p_loss_combibox_wiring": "交流线损",
-  "lossChart.transformer_efficiency": "升压变压器损耗",
   "lossChart.p_loss_availability": "不可利用率",
 
   "systemEfficiencyChart.name": "系统效率",
@@ -124,5 +123,9 @@
   "irrRadarChart.selectTilt": "选择两个倾角进行比较",
 
   "horizonChart.elev": "地平线高度角",
-  "horizonChart.azi": "地平线方位角"
+  "horizonChart.azi": "地平线方位角",
+
+  "ivChart.current": " 电流",
+  "ivChart.voltage": "电压",
+  "pvChart.power": "功率"
 }

@@ -16,6 +16,9 @@
   "PVtable.table.isco": "Short Circuit Current",
   "PVtable.table.voco": "Open Circuit Voltage",
   "PVtable.table.moduleMaterial": "Module Frame Material",
+  "PVtable.table.iv-pv-curve": "I-V & P-V Curve",
+  "PVtable.table.iv-curve": "I-V Curve (STC)",
+  "PVtable.table.pv-curve": "P-V Curve (STC)",
 
   "PV.name": "Module Model",
   "PV.note": "Module Descriptionn",

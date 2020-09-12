@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Row, Col } from 'antd'
 import { GainTable } from '../../../components/GainTable/GainTable'
-import { CashFlowChart } from '../../../components/ReportCharts/CashFlowChart'
+import { CashFlowChart } from '../../../components/Charts/CashFlowChart'
 
 export const GainTab = ({buildingID}) => {
   return (

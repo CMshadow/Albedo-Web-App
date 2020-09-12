@@ -2,9 +2,9 @@ import React from 'react'
 import { Card, Row, Col } from 'antd'
 import { useSelector } from 'react-redux'
 import { LossTable } from '../../../components/LossTable/LossTable'
-import { LossChart } from '../../../components/ReportCharts/LossChart'
-import { SystemEfficiencyChart } from '../../../components/ReportCharts/SystemEfficiencyChart'
-import { MonthlySystemEffChart } from '../../../components/ReportCharts/MonthlySystemEffChart'
+import { LossChart } from '../../../components/Charts/LossChart'
+import { SystemEfficiencyChart } from '../../../components/Charts/SystemEfficiencyChart'
+import { MonthlySystemEffChart } from '../../../components/Charts/MonthlySystemEffChart'
 
 export const LossTab = ({buildingID}) => {
   const reportData = useSelector(state => state.report)

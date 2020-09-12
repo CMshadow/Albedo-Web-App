@@ -93,3 +93,22 @@ export const updatePV = ({pvID, values}) => async dispatch => {
     throw err
   })
 }
+
+export const getIVCurve = ({pvID, userID}) => async dispatch => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.get(
+    `/pv/ivcurve`,
+    {
+      params: {pvID: pvID, userID: userID},
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => res.data)
+  .catch(err => {
+    console.log(err)
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}

@@ -3,11 +3,11 @@ import { Card, Row, Col } from 'antd'
 import { useSelector } from 'react-redux'
 import { IrradianceTable } from '../../../components/IrradianceTable/IrradianceTable'
 import { WeatherAnalysisTable } from '../../../components/WeatherAnalysisTable/WeatherAnalysisTable'
-import { IrradianceChart } from '../../../components/ReportCharts/IrradianceChart'
-import { HeatMap } from '../../../components/ReportCharts/HeatMap'
-import { SunPositionChart } from '../../../components/ReportCharts/SunPositionChart'
-import { IrradianceRadarChart } from '../../../components/ReportCharts/IrradianceRadarChart'
-import { DynamicIrradianceChart } from '../../../components/ReportCharts/DynamicIrradianceChart'
+import { IrradianceChart } from '../../../components/Charts/IrradianceChart'
+import { HeatMap } from '../../../components/Charts/HeatMap'
+import { SunPositionChart } from '../../../components/Charts/SunPositionChart'
+import { IrradianceRadarChart } from '../../../components/Charts/IrradianceRadarChart'
+import { DynamicIrradianceChart } from '../../../components/Charts/DynamicIrradianceChart'
 
 export const IrrTab = ({buildingID}) => {
   const reportData = useSelector(state => state.report)

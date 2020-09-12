@@ -30,7 +30,7 @@ export const LossChart = ({buildingID}) => {
     ['p_loss_dc_wiring', 'dc'],
 
     ['p_loss_conversion', 'ac'], ['p_loss_ac_wiring', 'ac'],
-    ['p_loss_combibox_wiring', 'ac'], ['transformer_efficiency', 'ac'],
+    ['p_loss_combibox_wiring', 'ac'], ['p_loss_transformer', 'ac'],
     ['p_loss_availability', 'ac']
   ]
   let systemStatus = 100
@@ -40,7 +40,7 @@ export const LossChart = ({buildingID}) => {
       systemStatus - (100 - projectData[key]) || systemStatus
     dataSource.push({
       cat: t(`lossChart.${cat}`),
-      value: buildingReport[key] >= 0 ? buildingReport[key] * 100 : (100 - projectData[key]) || 0,
+      value: buildingReport[key] * 100 || 0,
       stage: 'loss',
       type: t(`lossChart.${key}`),
       color: colorMap.loss
