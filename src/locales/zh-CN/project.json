@@ -117,6 +117,7 @@
   "project.spec.combibox_name": "汇流箱名称",
   "project.spec.combibox_serial": "汇流箱编号",
   "project.spec.combibox_cable_len": "汇流箱输出线缆长度",
+  "project.spec.combibox_vac": "汇流箱输出电压",
   "project.spec.linked_inverter_serial_num": "关联逆变器",
   "project.spec.subAry": "子区域",
 

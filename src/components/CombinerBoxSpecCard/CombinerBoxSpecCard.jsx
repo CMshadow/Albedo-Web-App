@@ -28,7 +28,6 @@ export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, ...props}) => {
       className={styles.card}
       bodyStyle={{padding: '0px'}}
       loading={loading}
-      hoverable
       actions={[
         <Button
           disabled={editing}

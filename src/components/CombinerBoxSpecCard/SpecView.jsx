@@ -20,7 +20,7 @@ export const SpecView = ({buildingID, combiboxIndex, setediting, disabled}) => {
   }, [])
 
   return (
-    <Descriptions column={{ xl: 2, xxl: 3}}>
+    <Descriptions column={{ lg:2, xl: 3}}>
       <Item label={t('project.spec.combibox_name')} span={1}>
         {combiboxData.combibox_name}
       </Item>
@@ -31,7 +31,7 @@ export const SpecView = ({buildingID, combiboxIndex, setediting, disabled}) => {
         {combiboxData.combibox_cable_len} {unit}
       </Item>
       <Item label={t('project.spec.linked_inverter_serial_num')} span={3}>
-        {combiboxData.linked_inverter_serial_num}
+        {combiboxData.linked_inverter_serial_num.join(', ')}
       </Item>
     </Descriptions>
   )
