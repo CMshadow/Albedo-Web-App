@@ -93,6 +93,8 @@
 
   "project.spec.serial": "Inverter serial",
   "project.spec.inverter": "Inverter model",
+  "project.spec.inverter.vac-inconsistent": "Inverter's Vac is not consistent with existing inverters, this might affect report result",
+  "project.spec.inverter.vac-warning": "Inverters' Vac are not consistent",
   "project.spec.string_per_inverter": "Number of parallel strings range",
   "project.spec.string_per_inverter.help": "Parallel strings range",
   "project.spec.panels_per_string": "Number of PV modules in series",

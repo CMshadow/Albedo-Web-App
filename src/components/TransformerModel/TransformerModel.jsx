@@ -11,9 +11,7 @@ const {Text} = Typography
 const rowGutter = { xs: [8, 12], sm: [16, 12]}
 
 
-const min6Kor10K = 30
 const max6Kor10K = 2500
-const min35K = 3150
 const max35K = 31500
 
 const autoValue = (Ub, capacity, type) => {
@@ -66,12 +64,17 @@ export const TransformerModel = ({form, initUb}) => {
   const autoField = (t, c) => {
     const type = t || form.getFieldValue('transformer_type')
     const capacity = c || form.getFieldValue('transformer_capacity')
-    if (type && capacity) {
+    if (type && capacity >= 0) {
       const autoValues = autoValue(form.getFieldValue('Ub'), capacity, type)
       if (autoValues) {
         form.setFieldsValue({
           'transformer_no_load_loss': autoValues.no_load_loss,
           'transformer_short_circuit_loss': autoValues.short_circuit_loss
+        })
+      } else {
+        form.setFieldsValue({
+          'transformer_no_load_loss': null,
+          'transformer_short_circuit_loss': null
         })
       }
     }
@@ -151,7 +154,7 @@ export const TransformerModel = ({form, initUb}) => {
                   <FormItem name='transformer_capacity' rules={[{required: true}]} noStyle>
                     <InputNumber 
                       onChange={val => autoField(null, val)} 
-                      min={Ub <= 10000 ? min6Kor10K : min35K} 
+                      min={0} 
                       max={Ub <= 10000 ? max6Kor10K : max35K}
                     />
                   </FormItem>

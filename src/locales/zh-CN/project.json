@@ -93,6 +93,8 @@
 
   "project.spec.serial": "逆变器编号",
   "project.spec.inverter": "逆变器型号",
+  "project.spec.inverter.vac-inconsistent": "选用逆变器Vac与已有逆变器不符，将导致计算结果偏差",
+  "project.spec.inverter.vac-warning": "使用的逆变器Vac不一致",
   "project.spec.string_per_inverter": "并联组串数",
   "project.spec.string_per_inverter.help": "接入组串数区间",
   "project.spec.panels_per_string": "光伏组件数/组串",

@@ -22,6 +22,19 @@ export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
   const selInv = inverterData.find(inv =>
     inv.inverterID === spec.inverter_model.inverterID
   )
+
+  // 所有使用的逆变器的vac
+  const allVac = new Set(buildings.flatMap(building => 
+    building.data.flatMap(spec => 
+      spec.inverter_wiring.map(inverterSpec => 
+        inverterSpec.inverter_model.inverterID ?
+        inverterData.find(obj => 
+          obj.inverterID === inverterSpec.inverter_model.inverterID
+        ).vac :
+        null
+      ).filter(elem => elem !== null)
+    )
+  ))
   
   // 根据给定的逆变器接线可选方案，生成SPI区间
   const genSPILimits = (invLimits) => {
@@ -79,6 +92,9 @@ export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
     }
     return null
   }
+  // 如果所有逆变器vac不统一，生成警告文本
+  const checkVacWarning = () => allVac.size > 1 ? 
+    <Text type='warning'>{t('project.spec.inverter.vac-warning')}</Text>: null
 
   // initInvLimits准备好后计算SPI区间和PPS区间
   useEffect(() => {
@@ -89,7 +105,9 @@ export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
   return (
     <Descriptions column={{ xl: 2, xxl: 3}}>
       <Item label={t('project.spec.serial')} span={1}>{spec.inverter_serial_number}</Item>
-      <Item label={t('project.spec.inverter')} span={1}>{selInv.name}</Item>
+      <Item label={t('project.spec.inverter')} span={1}>
+        <Space>{selInv.name} {checkVacWarning()}</Space>
+      </Item>
       <Item label={t('project.spec.string_per_inverter')} span={1}>
         <Space>{spec.string_per_inverter} {checkSpiWarning()}</Space>
       </Item>
