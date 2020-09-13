@@ -131,6 +131,12 @@ const editPVSpec = (state, action) => {
     mode: 'single',
     pv_model: {pvID: action.pvID, userID: action.pv_userID}
   }
+  if ('ac_cable_avg_len' in action && 'dc_cable_avg_len' in action) {
+    newBuildings[buildingIndex].data[action.specIndex].pv_panel_parameters['ac_cable_avg_len'] = 
+      Number(action.ac_cable_avg_len)
+    newBuildings[buildingIndex].data[action.specIndex].pv_panel_parameters['dc_cable_avg_len'] = 
+      Number(action.dc_cable_avg_len)
+  }
   newBuildings[buildingIndex].reGenReport = true
   if (action.invPlan.plan) {
     newBuildings[buildingIndex].data[action.specIndex].inverter_wiring =
@@ -142,8 +148,8 @@ const editPVSpec = (state, action) => {
         inverterID: action.invPlan.inverterID,
         userID: action.invPlan.inverterUserID
       },
-      ac_cable_len: 0,
-      dc_cable_len: new Array(plan.spi).fill(0)
+      ac_cable_len: Number(action.ac_cable_avg_len) || 0,
+      dc_cable_len: new Array(plan.spi).fill(action.dc_cable_avg_len || 0)
     }))
   }
   return {
@@ -220,6 +226,66 @@ const deleteInverterSpec = (state, action) => {
   }
 }
 
+const addCombibox = (state, action) => {
+  const buildingIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].reGenReport = true
+
+  const newCombibox = {
+    combibox_name: null,
+    combibox_cable_len: newBuildings[buildingIndex].combibox_cable_len,
+    combibox_serial_num: 'combibox' in newBuildings[buildingIndex] ? 
+      `${newBuildings[buildingIndex].buildingName}-${newBuildings[buildingIndex].combibox.length + 1}` :
+      `${newBuildings[buildingIndex].buildingName}-1`,
+    linked_inverter_serial_num: []
+  }
+  if ('combibox' in newBuildings[buildingIndex]) {
+    newBuildings[buildingIndex].combibox.push(newCombibox)
+  } else {
+    newBuildings[buildingIndex].combibox = [newCombibox]
+  }
+  return {
+    ...state,
+    buildings: newBuildings
+  }
+}
+
+const editCombibox = (state, action) => {
+  const buildingIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].reGenReport = true
+
+  const newCombibox = {
+    combibox_name: action.combibox_name,
+    combibox_cable_len: action.combibox_cable_len,
+    combibox_serial_num: newBuildings[buildingIndex].combibox[action.combiboxIndex].combibox_serial_num,
+    linked_inverter_serial_num: action.linked_inverter_serial_num
+  }
+  newBuildings[buildingIndex].combibox[action.combiboxIndex] = newCombibox
+  return {
+    ...state,
+    buildings: newBuildings
+  }
+}
+
+const deleteCombibox = (state, action) => {
+  const buildingIndex = state.buildings.map(building => building.buildingID)
+    .indexOf(action.buildingID)
+  const newBuildings = [...state.buildings]
+  newBuildings[buildingIndex].reGenReport = true
+
+  newBuildings[buildingIndex].combibox.splice(action.combiboxIndex, 1)
+  newBuildings[buildingIndex].combibox.forEach((combibox, index) => 
+    combibox.combibox_serial_num = `${newBuildings[buildingIndex].buildingName}-${index + 1}`
+  )
+  return {
+    ...state,
+    buildings: newBuildings
+  }
+}
+
 const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_PROJECTDATA:
@@ -248,6 +314,12 @@ const reducer = (state=initialState, action) => {
       return editInverterSpec(state, action)
     case actionTypes.DELETE_INVERTER_SPEC:
       return deleteInverterSpec(state, action)
+    case actionTypes.ADD_COMBIBOX:
+      return addCombibox(state, action)
+    case actionTypes.EDIT_COMBIBOX:
+      return editCombibox(state, action)
+    case actionTypes.DELETE_COMBIBOX:
+      return deleteCombibox(state, action)
     default: return state;
   }
 };

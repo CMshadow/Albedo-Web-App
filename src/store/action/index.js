@@ -24,7 +24,10 @@ export {
   deletePVSpec,
   addInverterSpec,
   editInverterSpec,
-  deleteInverterSpec
+  deleteInverterSpec,
+  addCombibox,
+  editCombibox,
+  deleteCombibox
 } from './projectAction'
 
 export {

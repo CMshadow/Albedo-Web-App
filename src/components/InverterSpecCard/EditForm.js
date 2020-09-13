@@ -245,7 +245,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
       other2m(unit, Number(v))
     )
     // ac线缆长度m/ft到m的转换
-    values.ac_cable_len = other2m(unit, values.ac_cable_len)
+    values.ac_cable_len = other2m(unit, Number(values.ac_cable_len))
     dispatch(editInverterSpec({
       buildingID, specIndex, invIndex, ...values,
       inverter_userID: inverterData.find(
@@ -317,7 +317,12 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
         initialValues={{
           ...invSpec,
           inverterID: invSpec.inverter_model.inverterID,
-          dc_cable_len: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
+          ac_cable_len: 
+            invSpec.ac_cable_len >= 0 ?
+            invSpec.ac_cable_len : 
+            specData.pv_panel_parameters.ac_cable_avg_len,
+          dc_cable_len: 
+            invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
         }}
       >
         <Row gutter={12}>
@@ -365,7 +370,15 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
                 min={1}
                 className={styles.inputNumber}
                 value={spi.value}
-                onChange={val => onSPIChange(val, invSPILimit[0], invSPILimit[1])}
+                onChange={val => {
+                  onSPIChange(val, invSPILimit[0], invSPILimit[1])
+                  if (specData.pv_panel_parameters.dc_cable_avg_len) {
+                    form.setFieldsValue({
+                      'dc_cable_len': 
+                        new Array(val).fill(specData.pv_panel_parameters.dc_cable_avg_len).join(',')
+                    })
+                  }
+                }}
                 disabled={disabled}
               />
             </FormItem>
@@ -402,11 +415,9 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
               }
               rules={[{required: true}]}
             >
-              <InputNumber
-                formatter={value => `${value}${unit}`}
-                parser={value => value.replace(unit, '')}
-                precision={2}
-                min={0}
+              <Input
+                type='number'
+                addonAfter={unit}
                 className={styles.inputNumber}
                 disabled={disabled}
               />

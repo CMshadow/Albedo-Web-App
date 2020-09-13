@@ -7,7 +7,8 @@ const Item = Descriptions.Item
 
 export const SpecView = ({buildingID, specIndex}) => {
   const { t } = useTranslation()
-
+  const unit = useSelector(state => state.unit.unit)
+  const projectType = useSelector(state => state.project.projectType)
   const buildings = useSelector(state => state.project.buildings)
   const pvData = useSelector(state => state.pv.data).concat(
     useSelector(state => state.pv.officialData)
@@ -57,6 +58,17 @@ export const SpecView = ({buildingID, specIndex}) => {
       <Item label={t('project.spec.pv')} span={2}>{pvName}</Item>
       <Item label={t('project.spec.tilt_angle')}>{spec.tilt_angle}°</Item>
       <Item label={t('project.spec.azimuth')}>{spec.azimuth}°</Item>
+      {
+        projectType === 'domestic' ? null :
+        <>
+          <Item label={t('project.spec.ac_cable_avg_len')}>
+            {spec.ac_cable_avg_len}{unit}
+          </Item>
+          <Item label={t('project.spec.dc_cable_avg_len')}>
+            {spec.dc_cable_avg_len}{unit}
+          </Item>
+        </>
+      }
       <Item label={t('project.spec.capacity')}>
         {`${w2other(capacity).value} ${w2other(capacity).unit}`}
       </Item>

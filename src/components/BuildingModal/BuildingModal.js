@@ -8,6 +8,7 @@ const FormItem = Form.Item;
 
 export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecord}) => {
   const { t } = useTranslation()
+  const projectType = useSelector(state => state.project.projectType)
   const dispatch = useDispatch()
   const [form] = Form.useForm()
   const unit = useSelector(state => state.unit.unit)
@@ -54,12 +55,21 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
     form.setFieldsValue(editRecord || null)
   }, [editRecord, form])
 
+  const titleText = () =>
+    projectType === 'domestic' ? t('project.add.building') : t('project.add.unit')
+
+  const buildingNameText = () =>
+    projectType === 'domestic' ? t('project.add.buildingName') : t('project.add.unitName')
+
+  const combibox_cable_lenText = () =>
+    projectType === 'domestic' ? t('project.add.combibox_cable_len') : t('project.add.combibox_cable_avg_len')
+
   return (
     <Modal
       visible={showModal}
       onOk={handleOk}
       onCancel={handleCancel}
-      title={t('project.add.building')}
+      title={titleText()}
       afterClose={onClose}
     >
       <Form
@@ -73,14 +83,14 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
       >
         <FormItem
           name='buildingName'
-          label={t('project.add.buildingName')}
+          label={buildingNameText()}
           rules={[{required: true}]}
         >
           <Input />
         </FormItem>
         <FormItem
           name='combibox_cable_len'
-          label={t('project.add.combibox_cable_len')}
+          label={combibox_cable_lenText()}
           rules={[{required: true}]}
         >
           <InputNumber

@@ -105,3 +105,27 @@ export const deleteInverterSpec = ({buildingID, specIndex, invIndex}) =>
     invIndex: invIndex,
   })
 }
+
+export const addCombibox = (buildingID) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.ADD_COMBIBOX,
+    buildingID: buildingID
+  })
+}
+
+export const editCombibox = ({buildingID, combiboxIndex, ...values}) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.EDIT_COMBIBOX,
+    buildingID: buildingID,
+    combiboxIndex: combiboxIndex,
+    ...values
+  })
+}
+
+export const deleteCombibox = ({buildingID, combiboxIndex}) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.DELETE_COMBIBOX,
+    buildingID: buildingID,
+    combiboxIndex: combiboxIndex
+  })
+}

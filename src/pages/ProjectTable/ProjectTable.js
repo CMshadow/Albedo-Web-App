@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux';
-import { Button, Table, Divider, Card } from 'antd';
+import { Button, Table, Divider, Card, Tabs } from 'antd';
 import { DashboardTwoTone } from '@ant-design/icons';
 import { SyncOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +12,8 @@ import { DeleteAction } from './Actions';
 import { SearchString } from '../../components/TableColFilters/TableColSearch';
 import * as styles from './ProjectTable.module.scss';
 
+const { TabPane } = Tabs;
+
 
 const ProjectTable = (props) => {
   const { t } = useTranslation();
@@ -22,17 +24,6 @@ const ProjectTable = (props) => {
   const [loading, setloading] = useState(false)
   const [showModal, setshowModal] = useState(false)
 
-  // 项目类型筛选选项
-  const projectTypeFilters = [
-    {
-      text: t('project.type.domestic'),
-      value: 'domestic',
-    },
-    {
-      text: t('project.type.commercial'),
-      value: 'commercial',
-    }
-  ]
 
   const tableCols = [
     {
@@ -71,15 +62,6 @@ const ProjectTable = (props) => {
       sorter: (a, b) => a.updatedAt - b.updatedAt,
       width: 200,
       render: val => new Date(val * 1000).toLocaleString()
-    },
-    {
-      title: t('project.create.type'),
-      dataIndex: 'projectType',
-      key: 'projectType',
-      render: (value) => t(`project.type.${value}`),
-      filters: projectTypeFilters,
-      onFilter: (value, record) => record.projectType.indexOf(value) === 0,
-      width: 150
     },
     {
       title: t('table.action'),
@@ -123,6 +105,24 @@ const ProjectTable = (props) => {
     })
   }, [dispatch])
 
+  const genTable = (projectType) => {
+    const validData = activeData.filter(data => data.projectType === projectType)
+    return <Table
+      columns={tableCols}
+      dataSource={validData}
+      rowKey='projectID'
+      loading={loading}
+      pagination={{
+        position: ['bottomCenter'],
+        total: validData.length,
+        showTotal: total => `${total}` + t('table.totalCount'),
+        defaultPageSize: 10,
+        showSizeChanger: true
+      }}
+      scroll={{ x: 'max-content' }}
+    />
+  }
+
   return (
     <Card bodyStyle={{padding: '20px 12px'}}>
       <Button
@@ -139,20 +139,14 @@ const ProjectTable = (props) => {
         onClick={fetchData}
         icon={<SyncOutlined spin={loading}/>}
       />
-      <Table
-        columns={tableCols}
-        dataSource={activeData}
-        rowKey='projectID'
-        loading={loading}
-        pagination={{
-          position: ['bottomCenter'],
-          total: activeData.length,
-          showTotal: total => `${total}` + t('table.totalCount'),
-          defaultPageSize: 10,
-          showSizeChanger: true
-        }}
-        scroll={{ x: 'max-content' }}
-      />
+      <Tabs defaultActiveKey="1" centered>
+        <TabPane tab={t('project.type.domestic')} key="1">
+          {genTable('domestic')}
+        </TabPane>
+        <TabPane tab={t('project.type.commercial')} key="2">
+          {genTable('commercial')}
+        </TabPane>
+      </Tabs>
       <CreateProjectModal showModal={showModal} setshowModal={setshowModal} />
     </Card>
   )

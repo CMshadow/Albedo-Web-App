@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Tabs, Button, Space } from 'antd';
 import { SettingOutlined } from '@ant-design/icons'
 import * as styles from './BuildingTab.module.scss';
 import { BuildingModal } from '../../components/BuildingModal/BuildingModal'
-import { deleteBuilding, addPVSpec } from '../../store/action/index'
+import { deleteBuilding, addPVSpec, addCombibox } from '../../store/action/index'
 import { PVSpecCard } from '../../components/PVSpecCard/PVSpecCard'
+import { CombinerBoxSpecCard } from '../../components/CombinerBoxSpecCard/CombinerBoxSpecCard'
 
-const { TabPane } = Tabs;
+const { TabPane } = Tabs
 
 export const BuildingTab = ({buildings, ...props}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
+  const projectType = useSelector(state => state.project.projectType)
   const [showModal, setshowModal] = useState(false)
   const [editRecord, seteditRecord] = useState(null)
 
@@ -28,18 +30,26 @@ export const BuildingTab = ({buildings, ...props}) => {
     dispatch(addPVSpec(buildingID))
   }
 
+  const addCB = (buildingID) => {
+    dispatch(addCombibox(buildingID))
+  }
+
   const addBuildingButton = (
     <Button
       className={styles.addBuilding}
       onClick={() => setshowModal(true)}
       type="dashed"
     >
-      {t('project.add.building')}
+      {
+        projectType === 'domestic' ? 
+        t('project.add.building') :
+        t('project.add.unit')
+      }
     </Button>
   )
 
   return (
-    <div>
+    <>
       <Tabs
         type="editable-card"
         size='large'
@@ -64,28 +74,51 @@ export const BuildingTab = ({buildings, ...props}) => {
             }
             key={building.buildingID}
           >
-            {building.data.map((spec, specIndex) => (
-              <PVSpecCard
-                editing={
-                  spec.pv_panel_parameters.tilt_angle === null ?
-                  true : false
-                }
-                buildingID={building.buildingID}
-                specIndex={specIndex}
-                key={specIndex}
-                {...spec.pv_panel_parameters}
-              />
-            ))}
-            <Button
-              className={styles.addSpec}
-              block
-              type="dashed"
-              onClick={() => addSpec(building.buildingID)}
-            >
-              {t('project.add.spec.prefix')}
-              {building.buildingName}
-              {t('project.add.spec')}
-            </Button>
+            <Tabs defaultActiveKey="1" centered>
+              <TabPane tab={t('project.spec.sub-array')} key="1">
+                {building.data.map((spec, specIndex) => (
+                  <PVSpecCard
+                    buildingID={building.buildingID}
+                    specIndex={specIndex}
+                    key={specIndex}
+                    {...spec.pv_panel_parameters}
+                  />
+                ))}
+                <Button
+                  className={styles.addSpec}
+                  block
+                  type="dashed"
+                  onClick={() => addSpec(building.buildingID)}
+                >
+                  {t('project.add.spec.prefix')}
+                  {building.buildingName}
+                  {t('project.add.spec')}
+                </Button>
+              </TabPane>
+              {
+                projectType === 'domestic' ? null :
+                <TabPane tab={t('project.spec.combiner_box')} key="2">
+                  {
+                    building.combibox ? building.combibox.map((combibox, combiboxIndex) => 
+                      <CombinerBoxSpecCard 
+                        buildingID={building.buildingID}
+                        combiboxIndex={combiboxIndex}
+                        key={combiboxIndex}
+                        {...combibox}
+                      />
+                    ) : null
+                  }
+                  <Button
+                    className={styles.addSpec}
+                    block
+                    type="dashed"
+                    onClick={() => addCB(building.buildingID)}
+                  >
+                    {t('project.add.combibox')}
+                  </Button>
+                </TabPane>
+              }
+            </Tabs>
           </TabPane>
         ))}
       </Tabs>
@@ -95,6 +128,6 @@ export const BuildingTab = ({buildings, ...props}) => {
         editRecord={editRecord}
         seteditRecord={seteditRecord}
       />
-    </div>
+    </>
   )
 }

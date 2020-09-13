@@ -65,12 +65,6 @@ const Router = () => {
                 <PrivateRoute path="/project/:projectID/report/:buildingID">
                   <Report/>
                 </PrivateRoute>
-                <PrivateRoute path="/project/:projectID/pv">
-                  <PVTable/>
-                </PrivateRoute>
-                <PrivateRoute path="/project/:projectID/inverter">
-                  <InverterTable/>
-                </PrivateRoute>
                 <PrivateRoute path="/project/:projectID/singleLineDiagram/:buildingID">
                  <SLD/>
                 </PrivateRoute>
@@ -79,6 +73,16 @@ const Router = () => {
                 </PrivateRoute>
               </Switch>
             </ProjectLayout>
+          </PrivateRoute>
+          <PrivateRoute path="/pv">
+            <BasicLayout>
+              <PVTable/>
+            </BasicLayout>
+          </PrivateRoute>
+          <PrivateRoute path="/inverter">
+            <BasicLayout>
+              <InverterTable/>
+            </BasicLayout>
           </PrivateRoute>
           <PrivateRoute path='/modeling'>
             <ModelingLayout>

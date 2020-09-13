@@ -21,6 +21,9 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   const { t } = useTranslation()
   const { projectID } = useParams()
 
+  const unit = useSelector(state => state.unit.unit)
+  const projectType = useSelector(state => state.project.projectType)
+
   const pvData = useSelector(state => state.pv.data).concat(
     useSelector(state => state.pv.officialData)
   )
@@ -341,6 +344,45 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
             </FormItem>
           </Col>
         </Row>
+
+        <Divider>
+          {t('project.spec.avg-length')}
+        </Divider>
+        {
+          projectType === 'domestic' ? null :
+          <Row gutter={rowGutter}>
+            <Col span={12}>
+              <FormItem
+                name='ac_cable_avg_len'
+                label={
+                  <Tooltip title={t('project.spec.ac_cable_avg_len.hint')}>
+                    <Space>
+                      <QuestionCircleOutlined/>{t('project.spec.ac_cable_avg_len')}
+                    </Space>
+                  </Tooltip>
+                }
+                rules={[{required: true}]}
+              >
+                <Input addonAfter={unit} type='number'/>
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem
+                name='dc_cable_avg_len'
+                label={
+                  <Tooltip title={t(`project.spec.dc_cable_avg_len.hint`)}>
+                    <Space>
+                      <QuestionCircleOutlined/>{t('project.spec.dc_cable_avg_len')}
+                    </Space>
+                  </Tooltip>
+                }
+                rules={[{required: true}]}
+              >
+                <Input addonAfter={unit} type='number'/>
+              </FormItem>
+            </Col>
+          </Row>
+        }
 
         <Divider>
           {t('project.spec.celltemp-model')}

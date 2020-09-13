@@ -255,12 +255,6 @@ const ProjectLayout = (props) => {
                 >
                   {genSLDSubMen()}
                 </SubMenu>
-                <Menu.Item key="pv" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
-                  {t('sider.menu.pv')}
-                </Menu.Item>
-                <Menu.Item key="inverter" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
-                  {t('sider.menu.inverter')}
-                </Menu.Item>
               </Menu>
               <Button
                 block
