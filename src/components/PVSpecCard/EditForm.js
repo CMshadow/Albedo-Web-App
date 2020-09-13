@@ -45,6 +45,17 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   const [autoInvLoading, setautoInvLoading] = useState(false)
   const [autoInvPlan, setautoInvPlan] = useState({})
 
+  // 所有使用的逆变器的vac
+  const allVac = new Set(buildings.flatMap(building => 
+    building.data.flatMap(spec => 
+      spec.inverter_wiring.map(inverterSpec => 
+        inverterData.find(obj => 
+          obj.inverterID === inverterSpec.inverter_model.inverterID
+        ).vac
+      )
+    )
+  ))
+
   // 通用required项提示文本
   const validateMessages = {
     required: t('form.required')
@@ -253,6 +264,14 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     return init
   }
 
+  const getInvVac = () => {
+    if (form.getFieldValue('inverterID')) {
+      return inverterData.find(obj => obj.inverterID === form.getFieldValue('inverterID')).vac
+    } else {
+      return null
+    }
+  }
+
   return (
     <Spin spinning={autoInvLoading}>
       <Form
@@ -375,6 +394,16 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
             <FormItem
               name='inverterID'
               label={t('project.spec.inverter')}
+              help={
+                !getInvVac() || (allVac.has(getInvVac()) && allVac.size <= 1) ?
+                null :
+                t('project.spec.inverter.vac-inconsistent')
+              }
+              validateStatus={
+                !getInvVac() || (allVac.has(getInvVac()) && allVac.size <= 1) ?
+                null :
+                'warning'
+              }
             >
               <Select
                 showSearch

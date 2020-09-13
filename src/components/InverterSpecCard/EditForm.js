@@ -38,6 +38,19 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
     value: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
   })
 
+  // 所有使用的逆变器的vac
+  const allVac = new Set(buildings.flatMap(building => 
+    building.data.flatMap(spec => 
+      spec.inverter_wiring.map(inverterSpec => 
+        inverterSpec.inverter_model.inverterID ?
+        inverterData.find(obj => 
+          obj.inverterID === inverterSpec.inverter_model.inverterID
+        ).vac :
+        null
+      ).filter(elem => elem !== null)
+    )
+  ))
+
   // 根据给定的逆变器接线可选方案，生成SPI区间
   const genSPILimits = (invLimits) => {
     const minSPI = Object.keys(invLimits).reduce((minSPI, val) => 
@@ -255,6 +268,14 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
     setediting(false)
   }
 
+  const getInvVac = () => {
+    if (form.getFieldValue('inverterID')) {
+      return inverterData.find(obj => obj.inverterID === form.getFieldValue('inverterID')).vac
+    } else {
+      return null
+    }
+  }
+
   // initInvLimits准备好后初始化SPI，PPS值及文本
   useEffect(() => {
     const evalSPI = (value, minSPI, maxSPI) => {
@@ -326,6 +347,16 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
               name='inverterID'
               label={t('project.spec.inverter')}
               rules={[{required: true}]}
+              help={
+                !getInvVac() || (allVac.has(getInvVac()) && allVac.size <= 1) ?
+                null :
+                t('project.spec.inverter.vac-inconsistent')
+              }
+              validateStatus={
+                !getInvVac() || (allVac.has(getInvVac()) && allVac.size <= 1) ?
+                null :
+                'warning'
+              }
             >
               <Select
                 showSearch
