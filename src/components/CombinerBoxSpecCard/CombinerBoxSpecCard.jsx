@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Card, Button } from 'antd';
-import { EditTwoTone, DeleteOutlined } from '@ant-design/icons'
+import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons'
 import { EditForm } from './EditForm'
 import { SpecView } from './SpecView'
 import { deleteCombibox } from '../../store/action/index'
 import * as styles from './CombinerBoxSpecCard.module.scss';
 
-export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, ...props}) => {
+export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, disabled, seteditCombibox, ...props}) => {
   const dispatch = useDispatch()
-  const { projectID } = useParams()
   const [editing, setediting] = useState(true)
-  const [invLimits, setinvLimits] = useState({})
   const [loading, setloading] = useState(false)
-
-  const buildings = useSelector(state => state.project.buildings)
-  const buildingIndex = buildings.map(building => building.buildingID)
-    .indexOf(buildingID)
 
   useEffect(() => {
     if (props.combibox_name !== null) setediting(false)
@@ -30,21 +23,27 @@ export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, ...props}) => {
       loading={loading}
       actions={[
         <Button
-          disabled={editing}
+          disabled={editing || disabled}
           type='link'
           shape="circle"
-          icon={<EditTwoTone twoToneColor={editing ? '#bfbfbf' : '#1890ff'}/>}
-          onClick={() => setediting(true)}
+          icon={<EditTwoTone twoToneColor={editing || disabled ? '#bfbfbf' : '#1890ff'}/>}
+          onClick={() => {
+            setediting(true)
+            seteditCombibox(true)
+          }}
         />,
         <Button
-          // disabled={disabled}
           type='link'
           shape="circle"
           danger
-          icon={<DeleteOutlined />}
-          onClick={() =>
-            dispatch(deleteCombibox({buildingID, combiboxIndex}))
-          }
+          icon={<DeleteTwoTone twoToneColor='#f5222d'/>}
+          onClick={() => {
+            setloading(true)
+            setTimeout(() => {
+              dispatch(deleteCombibox({buildingID, combiboxIndex}))
+              setloading(false)
+            }, 500)
+          }}
         />,
       ]}
     >
@@ -52,14 +51,14 @@ export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, ...props}) => {
         {
           editing ?
           <EditForm
-            initInvLimits={invLimits}
             buildingID={buildingID}
             combiboxIndex={combiboxIndex}
-            setediting={setediting}
-            // disabled={disabled}
+            seteditingFalse={() => {
+              setediting(false)
+              seteditCombibox(false)
+            }}
           /> :
           <SpecView
-            initInvLimits={invLimits}
             buildingID={buildingID}
             combiboxIndex={combiboxIndex}
           />

@@ -17,6 +17,9 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [editing, setediting] = useState(true)
+  const [loading, setloading] = useState(false)
+  const [deleteLoading, setdeleteLoading] = useState(false)
+
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
@@ -31,7 +34,7 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
   }, [props.tilt_angle])
 
   return (
-    <Card className={styles.card} bodyStyle={{padding: '0px'}}>
+    <Card className={styles.card} bodyStyle={{padding: '0px'}} loading={deleteLoading}>
       <Row gutter={12} justify='center'>
         <Col {...mainSpan}>
           <div className={styles.content}>
@@ -57,7 +60,13 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
               shape="circle"
               danger
               icon={<DeleteOutlined />}
-              onClick={() => dispatch(deletePVSpec({buildingID, specIndex}))}
+              onClick={() => {
+                setdeleteLoading(true)
+                setTimeout(() => {
+                  dispatch(deletePVSpec({buildingID, specIndex}))
+                  setdeleteLoading(false)
+                }, 500)
+              }}
             />
           </Row>
         </Col>
@@ -86,9 +95,16 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
               <Button
                 className={styles.addSpec}
                 disabled={editing}
+                loading={loading}
                 block
                 type="dashed"
-                onClick={addSpec}
+                onClick={() => {
+                  setloading(true)
+                  setTimeout(() => {
+                    addSpec()
+                    setloading(false)
+                  }, 500);
+                }}
               >
                 {t('project.add.inverterSpec')}
               </Button>

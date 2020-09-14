@@ -104,7 +104,9 @@ export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
 
   return (
     <Descriptions column={{ xl: 2, xxl: 3}}>
-      <Item label={t('project.spec.serial')} span={1}>{spec.inverter_serial_number}</Item>
+      <Item label={t('project.spec.serial')} span={1}>
+        <Text style={{color: '#faad14'}}>{spec.inverter_serial_number}</Text>
+      </Item>
       <Item label={t('project.spec.inverter')} span={1}>
         <Space>{selInv.name} {checkVacWarning()}</Space>
       </Item>

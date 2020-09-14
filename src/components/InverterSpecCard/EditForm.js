@@ -353,14 +353,12 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
               label={t('project.spec.inverter')}
               rules={[{required: true}]}
               help={
-                !getInvVac() || (allVac.has(getInvVac()) && allVac.size <= 1) ?
-                null :
-                t('project.spec.inverter.vac-inconsistent')
+                allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1) ?
+                t('project.spec.inverter.vac-inconsistent') : null
               }
               validateStatus={
-                !getInvVac() || (allVac.has(getInvVac()) && allVac.size <= 1) ?
-                null :
-                'warning'
+                allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1) ?
+                'warning' : null
               }
             >
               <Select

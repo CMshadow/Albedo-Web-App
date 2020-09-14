@@ -17,6 +17,8 @@ export const BuildingTab = ({buildings, ...props}) => {
   const projectType = useSelector(state => state.project.projectType)
   const [showModal, setshowModal] = useState(false)
   const [editRecord, seteditRecord] = useState(null)
+  const [editCombibox, seteditCombibox] = useState(false)
+  const [loading, setloading] = useState(false)
 
   const deleteBuildingTab = (targetKey) => {
     dispatch(deleteBuilding(targetKey))
@@ -86,9 +88,16 @@ export const BuildingTab = ({buildings, ...props}) => {
                 ))}
                 <Button
                   className={styles.addSpec}
+                  loading={loading}
                   block
                   type="dashed"
-                  onClick={() => addSpec(building.buildingID)}
+                  onClick={() => {
+                    setloading(true)
+                      setTimeout(() => {
+                        addSpec(building.buildingID)
+                        setloading(false)
+                      }, 500)
+                  }}
                 >
                   {t('project.add.spec.prefix')}
                   {building.buildingName}
@@ -104,15 +113,25 @@ export const BuildingTab = ({buildings, ...props}) => {
                         buildingID={building.buildingID}
                         combiboxIndex={combiboxIndex}
                         key={combiboxIndex}
+                        disabled={editCombibox}
+                        seteditCombibox={seteditCombibox}
                         {...combibox}
                       />
                     ) : null
                   }
                   <Button
                     className={styles.addSpec}
+                    loading={loading}
                     block
                     type="dashed"
-                    onClick={() => addCB(building.buildingID)}
+                    onClick={() => {
+                      setloading(true)
+                      setTimeout(() => {
+                        seteditCombibox(true)
+                        addCB(building.buildingID)
+                        setloading(false)
+                      }, 500)
+                    }}
                   >
                     {t('project.add.combibox')}
                   </Button>
