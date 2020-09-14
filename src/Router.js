@@ -24,6 +24,7 @@ import EnVideoPage from './pages/static/EnVideoPage/EnVideoPage'
 const Report = lazy(() => import('./pages/Report/Report'))
 const ParamsForm = lazy(() => import('./pages/ParamsForm/ParamsForm'))
 const Dashboard = lazy(() => import('./pages/Project/Dashboard'))
+const PowerGrid = lazy(() => import('./pages/PowerGrid/PowerGrid'))
 const PVTable = lazy(() => import('./pages/PVTable/index'))
 const InverterTable = lazy(() => import('./pages/InverterTable/index'))
 const ModelingPage = lazy(() => import('./pages/Modeling/Modeling'))
@@ -58,6 +59,9 @@ const Router = () => {
               <Switch>
                 <PrivateRoute path='/project/:projectID/dashboard'>
                   <Dashboard/>
+                </PrivateRoute>
+                <PrivateRoute path='/project/:projectID/powergrid'>
+                  <PowerGrid/>
                 </PrivateRoute>
                 <PrivateRoute path="/project/:projectID/report/params">
                   <ParamsForm/>

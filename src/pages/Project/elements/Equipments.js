@@ -23,7 +23,7 @@ export const Equipments = ({loading, ...values}) => {
       tip={<Title level={4}>{t('project.loading.analyze')}</Title>}
       indicator={<LoadingOutlined className={styles.loadingIcon}/>}
     >
-      <Card loading={loading} title='配置光伏系统' headStyle={{textAlign: 'center'}}>
+      <Card loading={loading} title={t('project.dashboard.title')} headStyle={{textAlign: 'center'}}>
         {
           !values.buildings || values.buildings.length === 0 ?
           <Button

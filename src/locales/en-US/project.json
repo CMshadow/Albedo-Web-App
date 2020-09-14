@@ -46,7 +46,8 @@
 
   "project.success.deleteProject": "Project Successfully Deleted",
 
-  "project.title": "Setup PV System",
+  "project.dashboard.title": "System Setup",
+  "project.powergrid.title": "Transformers & Power Cabinet Setup",
   "project.add.building": "Add a Building",
   "project.add.unit": "Add a PV Array Unit",
   "project.add.buildingName": "Building Name",
@@ -129,5 +130,8 @@
   "autoInverter.confirm": "Confirm Auto Settings",
   "autoInverter.cancel": "Clear Auto Settings",
 
-  "project.loading.analyze": "Analyzing Meteonorm Weather Data..."
+  "project.loading.analyze": "Analyzing Meteonorm Weather Data...",
+
+  "project.transformer.title": "Transformer Setup",
+  "project.powerCabinet.title": "Power Cabinet Setup"
 }

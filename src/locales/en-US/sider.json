@@ -5,7 +5,8 @@
 
 
   "sider.menu.back-project": "Exit the project",
-  "sider.menu.projectDetail": "Project Info",
+  "sider.menu.projectDetail": "System Setup",
+  "sider.menu.commercial": "Transformer & Power Cabinet Setup",
   "sider.menu.reportParams": "Report Parameters",
   "sider.menu.report": "Open Report",
   "sider.menu.report.prefix": "Report of  ",

@@ -236,6 +236,9 @@ const ProjectLayout = (props) => {
                 <Menu.Item key='dashboard' className={styles.menuItem}>
                   {t('sider.menu.projectDetail')}
                 </Menu.Item>
+                <Menu.Item key='powergrid' className={styles.menuItem} >
+                  {t('sider.menu.commercial')}
+                </Menu.Item>
                 <Menu.Item key='report/params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
                   {t('sider.menu.reportParams')}
                 </Menu.Item>
