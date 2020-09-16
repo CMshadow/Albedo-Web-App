@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import DisplayPageHeader from '../../layouts/DisplayPageHeader/DisplayPageHeader';
 import DisplayPageFooter from '../../layouts/DisplayPageFooter/DisplayPageFooter';
 import {Layout, Typography} from 'antd';
@@ -10,28 +10,42 @@ import datas from './blog.json';
 const {Content} = Layout;
 const {Title} = Typography;
 
+export default class Blog extends Component {
+  
+  getBlog(){
+    axio
+        .get("all",{ responseType: 'json' })
+        .then(res=>{
+          console.log(res.data)
+          this.setState({blog:res.data})
+        }).catch((error)=>{console.log(error)})
+  }
+  componentDidMount(){
+    this.getBlog()
+  
+  }
+  
+  render(){
+    
+    return (
+      <Layout className={styles.layout}>
+        <DisplayPageHeader/>
+          <Content className={styles.content}>
+            <Grid fluid>
+              <Row center="xs" xs={12}>
+                <Title level={2} className={styles.title1}>Albedo 最新日志</Title>
+              </Row>
+              <div className={ styles.wrap }>
+                <BlogList dataSource={}/>
+              </div>
+             
+            </Grid>
+          </Content>
+        <DisplayPageFooter/>
+      </Layout>
+    )
+  }
 
-const Blog = () => {
-
-  return (
-    <Layout className={styles.layout}>
-      <DisplayPageHeader/>
-        <Content className={styles.content}>
-          <Grid fluid>
-            <Row center="xs" xs={12}>
-              <Title level={2} className={styles.title1}>Albedo 最新日志</Title>
-            </Row>
-            <div className={ styles.wrap }>
-              <BlogList dataSource={ datas.data } />
-            </div>
-           
-          </Grid>
-        </Content>
-
-
-      <DisplayPageFooter/>
-    </Layout>
-  )
+  
 };
 
-export default Blog;
