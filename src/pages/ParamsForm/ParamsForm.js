@@ -6,7 +6,7 @@ import { updateProjectAttributes } from '../../store/action/index'
 import { useHistory } from 'react-router-dom'
 import { saveProject } from '../Project/service'
 import { HorizonChart } from '../../components/Charts/HorizonChart'
-import { MonthlyAlbedo } from '../../components/MonthlyAlbedo/MonthlyAlbedo'
+import { MonthlyAlbedoModel } from '../../components/MonthlyAlbedoModel/MonthlyAlbedoModel'
 import { TransformerModel } from '../../components/TransformerModel/TransformerModel'
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
@@ -129,7 +129,7 @@ const ParamsForm = () => {
           </Text>
         )
       case 'albedo':
-        return <MonthlyAlbedo/>
+        return <MonthlyAlbedoModel/>
       case 'pv':
         return (
           <Space>

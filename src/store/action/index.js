@@ -27,7 +27,13 @@ export {
   deleteInverterSpec,
   addCombibox,
   editCombibox,
-  deleteCombibox
+  deleteCombibox,
+  addTransformer,
+  editTransformer,
+  deleteTransformer,
+  addPowercabinet,
+  editPowercabinet,
+  deletePowercabinet
 } from './projectAction'
 
 export {

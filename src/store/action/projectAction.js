@@ -129,3 +129,45 @@ export const deleteCombibox = ({buildingID, combiboxIndex}) => (dispatch, getSta
     combiboxIndex: combiboxIndex
   })
 }
+
+export const addTransformer = () => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.ADD_TRANSFORMER
+  })
+}
+
+export const editTransformer = ({transformerIndex, ...values}) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.EDIT_TRANSFORMER,
+    transformerIndex: transformerIndex,
+    ...values
+  })
+}
+
+export const deleteTransformer = (transformerIndex) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.DELETE_TRANSFORMER,
+    transformerIndex: transformerIndex
+  })
+}
+
+export const addPowercabinet = () => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.ADD_POWERCABINET
+  })
+}
+
+export const editPowercabinet = ({powercabinetIndex, ...values}) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.EDIT_POWERCABINET,
+    powercabinetIndex: powercabinetIndex,
+    ...values
+  })
+}
+
+export const deletePowercabinet = (powercabinetIndex) => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.DELETE_POWERCABINET,
+    powercabinetIndex: powercabinetIndex
+  })
+}

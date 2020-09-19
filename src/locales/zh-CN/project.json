@@ -58,6 +58,8 @@
   "project.add.spec.prefix": "为",
   "project.add.building.aggr": "所有房屋累计",
   "project.add.combibox": "添加汇流箱",
+  "project.add.transformer": "添加变压器",
+  "project.add.powercabinet": "添加并网柜",
   
   "project.spec.sub-array": "管理光伏子区域",
   "project.spec.combiner_box": "管理汇流箱",

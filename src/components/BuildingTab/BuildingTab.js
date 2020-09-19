@@ -6,8 +6,8 @@ import { SettingOutlined } from '@ant-design/icons'
 import * as styles from './BuildingTab.module.scss';
 import { BuildingModal } from '../../components/BuildingModal/BuildingModal'
 import { deleteBuilding, addPVSpec, addCombibox } from '../../store/action/index'
-import { PVSpecCard } from '../../components/PVSpecCard/PVSpecCard'
-import { CombinerBoxSpecCard } from '../../components/CombinerBoxSpecCard/CombinerBoxSpecCard'
+import { PVSpecCard } from '../../components/SpecCard/PVSpecCard/PVSpecCard'
+import { CombinerBoxSpecCard } from '../../components/SpecCard/CombinerBoxSpecCard/CombinerBoxSpecCard'
 
 const { TabPane } = Tabs
 

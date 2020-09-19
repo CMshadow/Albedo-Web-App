@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { CreateProjectModal } from './Modal';
 import { getProject } from './service';
 import { DeleteAction } from './Actions';
-import { SearchString } from '../../components/TableColFilters/TableColSearch';
+import { SearchString } from '../../components/Table/TableColFilters/TableColSearch';
 import * as styles from './ProjectTable.module.scss';
 
 const { TabPane } = Tabs;

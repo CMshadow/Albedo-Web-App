@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { InverterModal } from './Modal';
 import { getInverter } from './service';
-import { InverterTable } from '../../components/InverterTable/InverterTable'
-import { InverterTableViewOnly } from '../../components/InverterTable/InverterTableViewOnly'
+import { InverterTable } from '../../components/Table/InverterTable/InverterTable'
+import { InverterTableViewOnly } from '../../components/Table/InverterTable/InverterTableViewOnly'
 import { setInverterData } from '../../store/action/index'
 import * as styles from './index.module.scss';
 const { TabPane } = Tabs;

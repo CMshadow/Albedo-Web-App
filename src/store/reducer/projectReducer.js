@@ -349,6 +349,82 @@ const deleteCombibox = (state, action) => {
   }
 }
 
+const addTransformer = (state, action) => {
+  const newTransformers = state.transformers ? [...state.transformers] : []
+  const newTransformer = {
+    transformer_name: null,
+    transformer_cable_len: null,
+    transformer_serial_num: null,
+    transformer_vac: null,
+    linked_equipment_serial_num: {}
+  }
+  newTransformers.push(newTransformer)
+
+  return {
+    ...state,
+    transformers: newTransformers
+  }
+}
+
+const editTransformer = (state, action) => {
+  const newTransformers = state.transformers ? [...state.transformers] : []
+  const newTransformer = {
+    transformer_name: action.transformer_name,
+    transformer_cable_len: action.transformer_cable_len,
+    transformer_serial_num: action.transformer_serial_num,
+    transformer_vac: action.transformer_vac,
+    linked_equipment_serial_num: action.linked_equipment_serial_num
+  }
+  newTransformers.splice(action.transformerIndex, 1, newTransformer)
+
+  return {
+    ...state,
+    transformers: newTransformers
+  }
+}
+
+const deleteTransformer = (state, action) => {
+  const newTransformers = state.transformers ? [...state.transformers] : []
+  newTransformers.splice(action.transformerIndex, 1)
+
+  return {
+    ...state,
+    transformers: newTransformers
+  }
+}
+
+const addPowercabinet = (state, action) => {
+  const newPowercabinets = state.powercabinets ? [...state.powercabinets] : []
+  const newPowercabinet = {}
+  newPowercabinets.push(newPowercabinet)
+
+  return {
+    ...state,
+    powercabinets: newPowercabinets
+  }
+}
+
+const editPowercabinet = (state, action) => {
+  const newPowercabinets = state.powercabinets ? [...state.powercabinets] : []
+  const newPowercabinet = {}
+  newPowercabinets.splice(action.powercabinetIndex, 1, newPowercabinet)
+
+  return {
+    ...state,
+    powercabinets: newPowercabinets
+  }
+}
+
+const deletePowercabinet = (state, action) => {
+  const newPowercabinets = state.powercabinets ? [...state.powercabinets] : []
+  newPowercabinets.splice(action.powercabinetIndex, 1)
+
+  return {
+    ...state,
+    powercabinets: newPowercabinets
+  }
+}
+
 const reducer = (state=initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_PROJECTDATA:
@@ -383,6 +459,18 @@ const reducer = (state=initialState, action) => {
       return editCombibox(state, action)
     case actionTypes.DELETE_COMBIBOX:
       return deleteCombibox(state, action)
+    case actionTypes.ADD_TRANSFORMER:
+      return addTransformer(state, action)
+    case actionTypes.EDIT_TRANSFORMER:
+      return editTransformer(state, action)
+    case actionTypes.DELETE_TRANSFORMER:
+      return deleteTransformer(state, action)
+    case actionTypes.ADD_POWERCABINET:
+      return addPowercabinet(state, action)
+    case actionTypes.EDIT_POWERCABINET:
+      return editPowercabinet(state, action)
+    case actionTypes.DELETE_POWERCABINET:
+      return deletePowercabinet(state, action)
     default: return state;
   }
 };

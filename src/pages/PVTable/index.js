@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { PVModal } from './Modal';
 import { getPV } from './service';
-import { PVTable } from '../../components/PVTable/PVTable'
-import { PVTableViewOnly } from '../../components/PVTable/PVTableViewOnly'
+import { PVTable } from '../../components/Table/PVTable/PVTable'
+import { PVTableViewOnly } from '../../components/Table/PVTable/PVTableViewOnly'
 import { setPVData } from '../../store/action/index'
 import * as styles from './index.module.scss';
 const { TabPane } = Tabs;

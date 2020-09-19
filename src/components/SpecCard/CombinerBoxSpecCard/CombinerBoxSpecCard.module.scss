@@ -1,0 +1,13 @@
+@import '../../../styles/global.scss';
+
+.card{
+  width: 100%;
+  margin: 10px 0px;
+  border: 1px solid $primary-color;
+  padding: 5px 0px;
+
+  .content {
+    margin: 24px;
+  }
+
+}
