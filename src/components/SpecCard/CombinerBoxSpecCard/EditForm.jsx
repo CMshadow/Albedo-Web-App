@@ -73,7 +73,7 @@ export const EditForm = ({buildingID, combiboxIndex, seteditingFalse}) => {
       value: `${subAryIndex + 1}-${inv.inverter_serial_number}`,
       label: 
         <Tooltip title={inverterData.find(obj => obj.inverterID === inv.inverter_model.inverterID).name}>
-          {`${t('project.spec.subAry')}${subAryIndex + 1}-${inv.inverter_serial_number}`}
+          {`S${subAryIndex + 1}-${inv.inverter_serial_number}`}
         </Tooltip>,
       disabled: everyInvVac[subAryIndex][index] !== selVac || 
         otherCombiboxValues.includes(`${subAryIndex + 1}-${inv.inverter_serial_number}`)

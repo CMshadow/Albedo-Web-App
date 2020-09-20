@@ -7,13 +7,9 @@ import * as styles from './TransformerModel.module.scss'
 
 const FormItem = Form.Item;
 const { Option } = Select
-const {Text} = Typography
 
 const rowGutter = { md: 8, lg: 15, xl: 32 };
 
-
-const max6Kor10K = 2500
-const max35K = 31500
 
 const autoValue = (Ut, capacity, type) => {
   const cal = (defaultValues, type, prev_cap, next_cap, prop) => (

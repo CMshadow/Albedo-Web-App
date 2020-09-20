@@ -29,7 +29,9 @@ export const SpecView = ({buildingID, combiboxIndex}) => {
   return (
     <Descriptions column={{ lg:2, xl: 3}}>
       <Item label={t('project.spec.combibox_serial')} span={1}>
-        <Text style={{color: '#1890ff'}}>{combiboxData.combibox_serial_num}</Text>
+        <Text style={{color: '#1890ff'}}>
+          C{combiboxData.combibox_serial_num.split('-')[1]}
+        </Text>
       </Item>
       <Item label={t('project.spec.combibox_name')} span={1}>
         {combiboxData.combibox_name}

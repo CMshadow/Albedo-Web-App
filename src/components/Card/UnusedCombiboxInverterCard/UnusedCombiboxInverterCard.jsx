@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Collapse, Typography, Row } from 'antd'
+import { Card, Collapse, Typography, Row, Space } from 'antd'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import * as styles from './UnusedCombiboxInverterCard.module.scss'
@@ -47,20 +47,32 @@ export const UnusedCombiboxInverterCard = () => {
         {
           unusedCombiboxSerial.length > 0 ?
           <Row>
-            {t('project.spec.unlink_combibox_serial')}: 
-            <Text style={{color: '#69c0ff'}}>
-              {unusedCombiboxSerial.join(', ')}
-            </Text>
+            <Space>
+              {t('project.spec.unlink_combibox_serial')}:   
+              {
+                unusedCombiboxSerial.map(serial =>
+                  <Text style={{color: '#69c0ff'}}>
+                  {`C${serial.split('-')[1]}`}
+                  </Text>
+                )
+              }
+            </Space>
           </Row> :
           null
         }
         {
           unusedInverterSerial.length > 0 ?
           <Row>
-            {t('project.spec.unlink_inverter_serial')}: 
-            <Text style={{color: '#faad14'}}>
-              {unusedInverterSerial.join(', ')}
-            </Text>
+            <Space>
+              {t('project.spec.unlink_inverter_serial')}:
+              {
+                unusedInverterSerial.map(serial =>
+                  <Text style={{color: '#faad14'}}>
+                  {`S${serial.split('-').slice(-2,).join('-')}`}
+                  </Text>
+                )
+              }
+            </Space>
           </Row> :
           null
         }

@@ -18,10 +18,6 @@ export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
 
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
-  const buildingName = buildings.find(building => 
-    building.buildingID === buildingID
-  ).buildingName
-  const subArySerialNum = `${buildingName}-${specIndex + 1}`
   const spec = buildings[buildingIndex].data[specIndex].inverter_wiring[invIndex]
   const selInv = inverterData.find(inv =>
     inv.inverterID === spec.inverter_model.inverterID
@@ -110,7 +106,7 @@ export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
     <Descriptions column={{ xl: 2, xxl: 3}}>
       <Item label={t('project.spec.serial')} span={1}>
         <Text style={{color: '#faad14'}}>
-          {`${subArySerialNum}-${spec.inverter_serial_number}`}
+          {`S${specIndex + 1}-${spec.inverter_serial_number}`}
         </Text>
       </Item>
       <Item label={t('project.spec.inverter')} span={1}>

@@ -364,7 +364,13 @@ const addTransformer = (state, action) => {
     transformer_serial_num: null,
     transformer_vac: null,
     linked_combibox_serial_num: [],
-    linked_inverter_serial_num: []
+    linked_inverter_serial_num: [],
+    Ut: null,
+    transformer_capacity: null,
+    transformer_no_load_loss: null,
+    transformer_power: null,
+    transformer_short_circuit_loss: null,
+    transformer_type: null
   }
   newTransformers.push(newTransformer)
 
@@ -382,7 +388,13 @@ const editTransformer = (state, action) => {
     transformer_serial_num: action.transformer_serial_num,
     transformer_vac: action.transformer_vac,
     linked_combibox_serial_num: action.linked_combibox_serial_num,
-    linked_inverter_serial_num: action.linked_inverter_serial_num
+    linked_inverter_serial_num: action.linked_inverter_serial_num,
+    Ut: null,
+    transformer_capacity: null,
+    transformer_no_load_loss: null,
+    transformer_power: null,
+    transformer_short_circuit_loss: null,
+    transformer_type: null
   }
   newTransformers.splice(action.transformerIndex, 1, newTransformer)
 

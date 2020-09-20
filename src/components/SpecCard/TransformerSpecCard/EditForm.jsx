@@ -176,7 +176,26 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
   }
 
   const submitForm = (values) => {
+    values.linked_inverter_serial_num = []
+    buildings.forEach((building, buildingIndex) => {
+      values.linked_inverter_serial_num = [
+        ...values.linked_inverter_serial_num,
+        ...values[`linked_inverter_serial_num_${buildingIndex}`] || []
+      ]
+      delete values[`linked_inverter_serial_num_${buildingIndex}`]
+    })
+    values.linked_combibox_serial_num = []
+    buildings.forEach((building, buildingIndex) => {
+      values.linked_combibox_serial_num = [
+        ...values.linked_combibox_serial_num,
+        ...values[`linked_combibox_serial_num_${buildingIndex}`] || []
+      ]
+      delete values[`linked_combibox_serial_num_${buildingIndex}`]
+    })
+    values.transformer_cable_len = other2m(unit, Number(values.transformer_cable_len))
     console.log(values)
+    dispatch(editTransformer({transformerIndex, ...values}))
+    // seteditingFalse()
   }
 
   // 改变汇流箱vac后回调uncheck掉所有与新vac不符的选项

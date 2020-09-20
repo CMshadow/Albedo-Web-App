@@ -18,9 +18,6 @@ export const SpecView = ({buildingID, specIndex}) => {
 
   const buildingIndex = buildings.map(building => building.buildingID)
     .indexOf(buildingID)
-  const buildingName = buildings.find(building => 
-    building.buildingID === buildingID
-  ).buildingName
   const spec = buildings[buildingIndex].data[specIndex].pv_panel_parameters
 
   const pvIndex = pvData.map(record => record.pvID)
@@ -61,7 +58,7 @@ export const SpecView = ({buildingID, specIndex}) => {
   return (
     <Descriptions bordered column={2}>
       <Item label={t('project.spec.sub-array_serial_num')} span={2}>
-        <Text style={{color: '#faad14'}}>{`${buildingName}-${specIndex + 1}`}</Text>
+        <Text style={{color: '#faad14'}}>{`S${specIndex + 1}`}</Text>
       </Item>
       <Item label={t('project.spec.pv')} span={2}>{pvName}</Item>
       <Item label={t('project.spec.tilt_angle')}>{spec.tilt_angle}°</Item>
