@@ -42,7 +42,8 @@ const addBuilding = (state, action) => {
           buildingName: action.buildingName,
           combibox_cable_len: action.combibox_cable_len,
           reGenReport: true,
-          data:[]
+          data:[],
+          combibox: []
         }
       ]
     }
@@ -55,7 +56,8 @@ const addBuilding = (state, action) => {
           buildingName: action.buildingName,
           combibox_cable_len: action.combibox_cable_len,
           reGenReport: true,
-          data:[]
+          data:[],
+          combibox: []
         }
       ]
     }
@@ -70,6 +72,11 @@ const editBuilding = (state, action) => {
   buildingCopy.buildingName = action.buildingName
   buildingCopy.combibox_cable_len = action.combibox_cable_len
   buildingCopy.reGenReport = true
+  if ('combibox' in buildingCopy) {
+    buildingCopy.combibox.forEach((combibox, combiboxIndex) => 
+      combibox.combibox_serial_num = `${buildingCopy.buildingName}-${combiboxIndex + 1}`
+    )
+  }
   newBuildings.splice(spliceIndex, 1, buildingCopy)
   return {
     ...state,
@@ -149,7 +156,7 @@ const editPVSpec = (state, action) => {
         userID: action.invPlan.inverterUserID
       },
       ac_cable_len: Number(action.ac_cable_avg_len) || 0,
-      dc_cable_len: new Array(plan.spi).fill(action.dc_cable_avg_len || 0)
+      dc_cable_len: new Array(plan.spi).fill(Number(action.dc_cable_avg_len) || 0)
     }))
   }
 
@@ -356,7 +363,8 @@ const addTransformer = (state, action) => {
     transformer_cable_len: null,
     transformer_serial_num: null,
     transformer_vac: null,
-    linked_equipment_serial_num: {}
+    linked_combibox_serial_num: [],
+    linked_inverter_serial_num: []
   }
   newTransformers.push(newTransformer)
 
@@ -373,7 +381,8 @@ const editTransformer = (state, action) => {
     transformer_cable_len: action.transformer_cable_len,
     transformer_serial_num: action.transformer_serial_num,
     transformer_vac: action.transformer_vac,
-    linked_equipment_serial_num: action.linked_equipment_serial_num
+    linked_combibox_serial_num: action.linked_combibox_serial_num,
+    linked_inverter_serial_num: action.linked_inverter_serial_num
   }
   newTransformers.splice(action.transformerIndex, 1, newTransformer)
 

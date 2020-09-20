@@ -59,6 +59,7 @@ export const saveProject = (projectID) => async (dispatch, getState) => {
   const projectData = getState().project
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
+  console.log(projectData)
   return axios.put(
     `/project/${session.idToken.payload.sub}/${projectID}`,
     projectData,

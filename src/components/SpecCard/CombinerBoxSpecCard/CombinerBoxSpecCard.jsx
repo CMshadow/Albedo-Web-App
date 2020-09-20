@@ -13,8 +13,8 @@ export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, disabled, setedi
   const [loading, setloading] = useState(false)
 
   useEffect(() => {
-    if (props.combibox_name !== null) setediting(false)
-  }, [props.combibox_name])
+    if (props.combibox_vac !== null) setediting(false)
+  }, [props.combibox_vac])
 
   return (
     <Card

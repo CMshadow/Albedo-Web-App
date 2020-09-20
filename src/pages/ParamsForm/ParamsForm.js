@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom'
 import { saveProject } from '../Project/service'
 import { HorizonChart } from '../../components/Charts/HorizonChart'
 import { MonthlyAlbedoModel } from '../../components/MonthlyAlbedoModel/MonthlyAlbedoModel'
-import { TransformerModel } from '../../components/TransformerModel/TransformerModel'
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;
@@ -108,7 +107,8 @@ const ParamsForm = () => {
   ]
 
   const gridKeys = [
-    [['p_loss_availability', 0.1, 0, 5, pLossAvailabilityMarks], ['p_loss_ac_wiring', 'disabled', 'disabled']]
+    [['p_loss_availability', 0.1, 0, 5, pLossAvailabilityMarks]],
+    [['p_loss_ac_wiring', 'disabled', 'disabled'], ['p_loss_transformer', 'disabled', 'disabled']]
   ]
 
   const wiringKeys = [
@@ -240,13 +240,6 @@ const ParamsForm = () => {
         <Divider>{t('report.paramsForm.ac')}</Divider>
         {genFormItems(acKeys, 2)}
         <Divider>{t('report.paramsForm.grid')}</Divider>
-        {
-          <Row gutter={rowGutter}>
-            <Col span={24}>
-              <TransformerModel form={form} initUb={projectData.Ub || null}/>
-            </Col>
-          </Row>
-        }
         {genFormItems(gridKeys, 2)}
         <Divider>{t('report.paramsForm.wiring')}</Divider>
         {genFormItems(wiringKeys, 2)}

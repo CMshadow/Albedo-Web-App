@@ -4,17 +4,17 @@ import { Card, Button } from 'antd';
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons'
 import { EditForm } from './EditForm'
 import { SpecView } from './SpecView'
-import { deleteCombibox } from '../../store/action/index'
+import { deleteTransformer } from '../../../store/action/index'
 import * as styles from './TransformerSpecCard.module.scss';
 
-export const TransformerSpecCard = ({transformerIndex,  ...props}) => {
+export const TransformerSpecCard = ({transformerIndex, disabled, seteditTransformer, ...props}) => {
   const dispatch = useDispatch()
   const [editing, setediting] = useState(true)
   const [loading, setloading] = useState(false)
 
   useEffect(() => {
-    if (props.combibox_name !== null) setediting(false)
-  }, [props.combibox_name])
+    if (props.transformer_name !== null) setediting(false)
+  }, [props.transformer_name])
 
   return (
     <Card
@@ -29,7 +29,7 @@ export const TransformerSpecCard = ({transformerIndex,  ...props}) => {
           icon={<EditTwoTone twoToneColor={editing || disabled ? '#bfbfbf' : '#1890ff'}/>}
           onClick={() => {
             setediting(true)
-            seteditCombibox(true)
+            seteditTransformer(true)
           }}
         />,
         <Button
@@ -40,7 +40,7 @@ export const TransformerSpecCard = ({transformerIndex,  ...props}) => {
           onClick={() => {
             setloading(true)
             setTimeout(() => {
-              dispatch(deleteCombibox({buildingID, combiboxIndex}))
+              dispatch(deleteTransformer({transformerIndex}))
               setloading(false)
             }, 500)
           }}
@@ -51,16 +51,14 @@ export const TransformerSpecCard = ({transformerIndex,  ...props}) => {
         {
           editing ?
           <EditForm
-            buildingID={buildingID}
-            combiboxIndex={combiboxIndex}
+            transformerIndex={transformerIndex}
             seteditingFalse={() => {
               setediting(false)
-              seteditCombibox(false)
+              seteditTransformer(false)
             }}
           /> :
           <SpecView
-            buildingID={buildingID}
-            combiboxIndex={combiboxIndex}
+            transformerIndex={transformerIndex}
           />
         }
       </div>

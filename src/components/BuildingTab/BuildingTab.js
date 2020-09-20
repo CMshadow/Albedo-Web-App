@@ -108,7 +108,7 @@ export const BuildingTab = ({buildings, ...props}) => {
                 projectType === 'domestic' ? null :
                 <TabPane tab={t('project.spec.combiner_box')} key="2">
                   {
-                    building.combibox ? building.combibox.map((combibox, combiboxIndex) => 
+                    building.combibox.map((combibox, combiboxIndex) => 
                       <CombinerBoxSpecCard 
                         buildingID={building.buildingID}
                         combiboxIndex={combiboxIndex}
@@ -117,7 +117,7 @@ export const BuildingTab = ({buildings, ...props}) => {
                         seteditCombibox={seteditCombibox}
                         {...combibox}
                       />
-                    ) : null
+                    )
                   }
                   <Button
                     className={styles.addSpec}
