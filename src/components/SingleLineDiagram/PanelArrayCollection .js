@@ -1,6 +1,6 @@
 import React from 'react';
 import {v4 as uuidv4} from 'uuid';
-import { Rect, Line, Group, Text, Circle } from 'react-konva';
+import { Rect, Line, Group, Text } from 'react-konva';
 import { useDispatch } from 'react-redux'
 import { setPVDist, setInverterWidth, setResize } from '../../store/action/index';
 
@@ -14,7 +14,6 @@ const PanelArrayCollection = (props) => {
   const groupOfPancelsArray =[];
   const stringOfPanels = props.stringOfPanels;
   const panelsOfInverter = props.panelsOfInverter;
-  const moduleCount = stringOfPanels * panelsOfInverter;
   const pvTable = props.pvTable;
   
   let startX = startPosition[0];
