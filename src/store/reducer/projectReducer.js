@@ -360,15 +360,16 @@ const addTransformer = (state, action) => {
   const newTransformers = state.transformers ? [...state.transformers] : []
   const newTransformer = {
     transformer_name: null,
-    transformer_cable_len: null,
-    transformer_serial_num: null,
+    transformer_cable_len: 0,
+    transformer_serial_num: state.transformers.legnth + 1,
     transformer_vac: null,
     linked_combibox_serial_num: [],
     linked_inverter_serial_num: [],
     Ut: null,
     transformer_capacity: null,
+    transformer_linked_capacity: null,
     transformer_no_load_loss: null,
-    transformer_power: null,
+    transformer_power: 150,
     transformer_short_circuit_loss: null,
     transformer_type: null
   }
@@ -385,16 +386,17 @@ const editTransformer = (state, action) => {
   const newTransformer = {
     transformer_name: action.transformer_name,
     transformer_cable_len: action.transformer_cable_len,
-    transformer_serial_num: action.transformer_serial_num,
+    transformer_serial_num: action.transformerIndex + 1,
     transformer_vac: action.transformer_vac,
     linked_combibox_serial_num: action.linked_combibox_serial_num,
     linked_inverter_serial_num: action.linked_inverter_serial_num,
-    Ut: null,
-    transformer_capacity: null,
-    transformer_no_load_loss: null,
-    transformer_power: null,
-    transformer_short_circuit_loss: null,
-    transformer_type: null
+    Ut: action.Ut,
+    transformer_capacity: Number(action.transformer_capacity),
+    transformer_linked_capacity: action.transformer_linked_capacity,
+    transformer_no_load_loss: Number(action.transformer_no_load_loss),
+    transformer_power: Number(action.transformer_power),
+    transformer_short_circuit_loss: Number(action.transformer_short_circuit_loss),
+    transformer_type: action.transformer_type
   }
   newTransformers.splice(action.transformerIndex, 1, newTransformer)
 
@@ -407,6 +409,9 @@ const editTransformer = (state, action) => {
 const deleteTransformer = (state, action) => {
   const newTransformers = state.transformers ? [...state.transformers] : []
   newTransformers.splice(action.transformerIndex, 1)
+  newTransformers.forEach((transformer, index) => 
+    transformer.transformer_serial_num = index + 1
+  )
 
   return {
     ...state,

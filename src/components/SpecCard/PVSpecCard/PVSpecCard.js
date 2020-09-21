@@ -35,7 +35,7 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
 
   return (
     <Card className={styles.card} bodyStyle={{padding: '0px'}} loading={deleteLoading}>
-      <Row gutter={12} justify='center'>
+      <Row justify='center'>
         <Col {...mainSpan}>
           <div className={styles.content}>
             {

@@ -1,10 +1,17 @@
+@import '../../styles/global.scss';
+
 .addBuilding {
   width: 200px;
 }
 
-.addSpec {
+.addSpec, .addSpecCombibox {
   height: 100px;
   margin: 20px 0px;
+}
+
+.addSpec:hover {
+  color: $primary-color-2;
+  border-color: $primary-color-2;
 }
 
 .icon {

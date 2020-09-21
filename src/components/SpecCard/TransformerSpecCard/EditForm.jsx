@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip } from 'antd';
+import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Divider, Typography } from 'antd';
 import { TransformerModel } from '../../TransformerModel/TransformerModel'
 import { editTransformer } from '../../../store/action/index'
 import { other2m } from '../../../utils/unitConverter'
 import * as styles from './EditForm.module.scss'
 const FormItem = Form.Item;
 const { Panel } = Collapse;
+const { Text } = Typography
 
 const rowGutter = { md: 8, lg: 15, xl: 32 };
 
@@ -24,7 +25,8 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
     useSelector(state => state.inverter.officialData)
   )
   const [selVac, setselVac] = useState(transformerData.transformer_vac || null)
-  const [curCapacity, setcurCapacity] = useState(transformerData.transformer_capacity || 0)
+  const [curCapacity, setcurCapacity] = useState(transformerData.transformer_linked_capacity || 0)
+  const [formChanged, setformChanged] = useState(false)
 
   // 其他变压器连接的汇流箱值
   const usedConmbiboxSerial = allTransformers
@@ -99,7 +101,9 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
       value: combibox.combibox_serial_num,
       label: 
         <Tooltip title={combibox.combibox_name}>
-          {`C${combibox.combibox_serial_num.split('-')[1]}`}
+          <Text style={{color: '#1890ff'}}>
+            {`C${combibox.combibox_serial_num.split('-')[1]}`}
+          </Text>
         </Tooltip>,
       disabled: everyCombiboxVac[buildingIndex][combiboxIndex] !== selVac ||
         usedConmbiboxSerial.includes(combibox.combibox_serial_num)
@@ -110,12 +114,125 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
     unlinkedInverterSerial[buildingIndex].map((serial, serialIndex) => {
       return {
         value: serial,
-        label: `S${serial.split('-').slice(-2,).join('-')}`,
+        label: 
+          <Text style={{color: '#faad14'}}>
+            {`S${serial.split('-').slice(-2,).join('-')}`}
+          </Text>,
         disabled: everyInverterVac[buildingIndex][serialIndex] !== selVac ||
           usedInverterSerial.includes(serial)
       }
     })
   )
+
+  // 将当前变压器接的汇流箱/逆变器划分到每个光伏单元
+  const splitLinkedEquipmentSerial = (equipment) => {
+    const values = {}
+    transformerData[`linked_${equipment}_serial_num`].forEach(serial => {
+      const buildingName = serial.split('-')[0]
+      const buildingIndex = buildings.indexOf(
+        buildings.find(building => building.buildingName === buildingName)
+      )
+      if (buildingIndex in values) {
+        values[buildingIndex].push(serial)
+      } else {
+        values[buildingIndex] = [serial]
+      }
+    })
+    return values
+  }
+
+  // 判断一个光伏单元的checkall状态
+  const determineCheckAll = (curCBValues, CBOptions) => {
+    let status
+    if (curCBValues.length > 0) {
+      status = CBOptions
+        .filter(obj => !obj.disabled)
+        .map(obj => obj.value)
+        .every(val => curCBValues.includes(val))
+    } else {
+      status = false
+    }
+    return status
+  }
+
+  // 判断一个光伏单元的intermediate状态
+  const determineIntermediate = (curCBValues, CBOptions) => {
+    let status
+    if (curCBValues.length > 0) {
+      status = 
+        CBOptions
+          .filter(obj => !obj.disabled)
+          .map(obj => obj.value)
+          .some(val => curCBValues.includes(val)) 
+        && 
+        !CBOptions
+          .filter(obj => !obj.disabled)
+          .map(obj => obj.value)
+          .every(val => curCBValues.includes(val))
+    } else {
+      status = false
+    }
+    return status
+  }
+
+  // 初始化所有光伏单元的checkAll状态
+  const initCheckAll = () => {
+    const curCombiboxCBValues = splitLinkedEquipmentSerial('combibox')
+    const curInvCBValues = splitLinkedEquipmentSerial('inverter')
+    const initCheckAll = buildings.map((_, buildingIndex) => {
+      const combiboxCBOptions = createCombiboxCheckboxOptions(buildingIndex)
+      const invCBOptions = createInverterCheckboxOptions(buildingIndex)
+      return determineCheckAll(
+        [...(curCombiboxCBValues[buildingIndex] || []), ...(curInvCBValues[buildingIndex] || [])], 
+        [...combiboxCBOptions, ...invCBOptions]
+      )
+    })
+    return initCheckAll
+  }
+
+  // 初始化所有subAry的intermediate状态
+  const initIntermediate = () => {
+    const curCombiboxCBValues = splitLinkedEquipmentSerial('combibox')
+    const curInvCBValues = splitLinkedEquipmentSerial('inverter')
+    const initIntermediate = buildings.map((_, buildingIndex) => {
+      const combiboxCBOptions = createCombiboxCheckboxOptions(buildingIndex)
+      const invCBOptions = createInverterCheckboxOptions(buildingIndex)
+      return determineIntermediate(
+        [...(curCombiboxCBValues[buildingIndex] || []), ...(curInvCBValues[buildingIndex] || [])], 
+        [...combiboxCBOptions, ...invCBOptions]
+      )
+    })
+    return initIntermediate
+  }
+
+  const [checkAll, setcheckAll] = useState(initCheckAll())
+  const [intermediate, setintermediate] = useState(initIntermediate())
+
+  // 某个subAry种checkbox值变化后更新全部checkAll状态
+  const updateCheckAll = (buildingIndex, curCombiboxCBValues, curInvCBValues) => {
+    const combiboxCBValues = curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`)
+    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`)
+    const status = determineCheckAll(
+      [...combiboxCBValues, ...invCBValues],
+      [...createCombiboxCheckboxOptions(buildingIndex), ...createInverterCheckboxOptions(buildingIndex)]
+    )
+    const newCheckAll = [...checkAll]
+    newCheckAll[buildingIndex] = status
+    setcheckAll(newCheckAll)
+  }
+
+  // 某个subAry种checkbox值变化后更新全部intermediate状态
+  const updateIntermediate = (buildingIndex, curCombiboxCBValues, curInvCBValues) => {
+    const combiboxCBValues = curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`)
+    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`)
+    const status = determineIntermediate(
+      [...combiboxCBValues, ...invCBValues],
+      [...createCombiboxCheckboxOptions(buildingIndex), ...createInverterCheckboxOptions(buildingIndex)]
+    )
+    const newIntermediate = [...intermediate]
+    newIntermediate[buildingIndex] = status
+    setintermediate(newIntermediate)
+  }
 
   const calculateCapacity = (onChangbuildingIndex, linkedCombiboxSerial, linkedInverterSerial) => {
     const combiboxCapacity = buildings.map((building, buildingIndex) => {
@@ -193,9 +310,22 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
       delete values[`linked_combibox_serial_num_${buildingIndex}`]
     })
     values.transformer_cable_len = other2m(unit, Number(values.transformer_cable_len))
-    console.log(values)
     dispatch(editTransformer({transformerIndex, ...values}))
-    // seteditingFalse()
+    seteditingFalse()
+  }
+
+  // 生成表单默认值
+  const genInitValues = () => {
+    const initValues = {...transformerData}
+    const initInvCBValues = splitLinkedEquipmentSerial('inverter')
+    Object.keys(initInvCBValues).forEach((buildingIndex) => 
+      initValues[`linked_inverter_serial_num_${buildingIndex}`] = initInvCBValues[buildingIndex]
+    )
+    const initCombiboxCBValues = splitLinkedEquipmentSerial('combibox')
+    Object.keys(initCombiboxCBValues).forEach((buildingIndex) => 
+      initValues[`linked_combibox_serial_num_${buildingIndex}`] = initCombiboxCBValues[buildingIndex]
+    )
+    return initValues
   }
 
   // 改变汇流箱vac后回调uncheck掉所有与新vac不符的选项
@@ -215,7 +345,41 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
       })
       form.setFieldsValue({[inverterKey]: newInverterCBValues})
     })
+    setcheckAll(checkAll.map(_ => false))
+    setintermediate(intermediate.map(_ => false))
     calculateCapacity()
+  }
+
+  // 点击checkAll按钮后根据当前checkAll状态判定勾选所有可选项，或全部不勾选,并更新checkAll状态和intermediate状态
+  const checkUncheckAll = (buildingIndex) => {
+    const combiboxKey = `linked_combibox_serial_num_${buildingIndex}`
+    const combiboxCBoptions = createCombiboxCheckboxOptions(buildingIndex)
+    const invKey = `linked_inverter_serial_num_${buildingIndex}`
+    const invCBoptions = createInverterCheckboxOptions(buildingIndex)
+
+    let check = false
+    let newCombiboxCBValues
+    let newInvCBValues
+    if (!checkAll[buildingIndex]) {
+      newCombiboxCBValues = combiboxCBoptions.filter(obj => !obj.disabled).map(obj => obj.value)
+      newInvCBValues = invCBoptions.filter(obj => !obj.disabled).map(obj => obj.value)
+      const newcheckAll = [...checkAll]
+      newcheckAll[buildingIndex] = true
+      setcheckAll(newcheckAll)
+      check = true
+    } else {
+      newCombiboxCBValues = []
+      newInvCBValues = []
+      const newcheckAll = [...checkAll]
+      newcheckAll[buildingIndex] = false
+      setcheckAll(newcheckAll)
+    }
+    form.setFieldsValue({[combiboxKey]: newCombiboxCBValues})
+    form.setFieldsValue({[invKey]: newInvCBValues})
+    const newIntermediate = [...intermediate]
+    newIntermediate[buildingIndex] = false
+    setintermediate(newIntermediate)
+    return check
   }
 
   return (
@@ -227,7 +391,7 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
       scrollToFirstError
       validateMessages={validateMessages}
       onFinish={submitForm}
-      // initialValues={genInitValues()}
+      initialValues={genInitValues()}
     >
       <Row gutter={rowGutter}>
         <Col span={8}>
@@ -242,6 +406,7 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
                 value: val
               }))}
               onChange={val => {
+                setformChanged(true)
                 setselVac(val)
                 reInvalidateCheckbox(val)
               }}
@@ -269,54 +434,73 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
       </Row>
       
       <TransformerModel 
-        form={form} initUb={380} 
-        curCapacity={curCapacity} setcurCapacity={setcurCapacity}
+        form={form} 
+        transformerData={transformerData} 
+        curCapacity={curCapacity}
+        formChanged={formChanged}
+        setformChanged={setformChanged}
       />
 
       <Row gutter={rowGutter}>
         <Col span={24}>
-          <FormItem 
-            label={
-              <div style={{paddingTop: 12}}>
-                {t('project.spec.linked_combibox_inverter_serial_num')}
-              </div>
-            }
-          >
-            <Collapse ghost>
-            {
-              buildings.map((building, buildingIndex) => 
-                <Panel forceRender key={building.buildingID} header={building.buildingName}>
-                  {
-                    createCombiboxCheckboxOptions(buildingIndex).length > 0 ?
-                    <FormItem 
-                      name={`linked_combibox_serial_num_${buildingIndex}`}
-                      label={t('project.spec.linked_combibox_serial_num')}
-                    >
-                      <Checkbox.Group
-                        options={createCombiboxCheckboxOptions(buildingIndex)}
-                        onChange={vals => calculateCapacity(buildingIndex, vals, null)}
-                      />
-                    </FormItem> : 
-                    null
-                  }
-                  {
-                    createInverterCheckboxOptions(buildingIndex).length > 0 ?
-                    <FormItem 
-                      name={`linked_inverter_serial_num_${buildingIndex}`}
-                      label={t('project.spec.linked_inverter_serial_num')}
-                    >
-                      <Checkbox.Group
-                        options={createInverterCheckboxOptions(buildingIndex)}
-                        onChange={vals => calculateCapacity(buildingIndex, null, vals)}
-                      />
-                    </FormItem> :
-                    null
-                  }   
-                </Panel>
-              )
-            }
-            </Collapse>
-          </FormItem>
+          <Collapse ghost>
+          {
+            buildings.map((building, buildingIndex) => 
+              <Panel forceRender key={building.buildingID} header={building.buildingName}>
+                <Checkbox
+                  indeterminate={intermediate[buildingIndex]}
+                  onChange={() => {
+                    setformChanged(true)
+                    const check = checkUncheckAll(buildingIndex)
+                    check ? 
+                    calculateCapacity(buildingIndex, null, null) : 
+                    calculateCapacity(buildingIndex, [], [])
+                  }}
+                  checked={checkAll[buildingIndex]}
+                >
+                  {t('action.checkall')}
+                </Checkbox>
+                <Divider className={styles.divider}/>
+                {
+                  createCombiboxCheckboxOptions(buildingIndex).length > 0 ?
+                  <FormItem 
+                    name={`linked_combibox_serial_num_${buildingIndex}`}
+                    label={t('project.spec.linked_combibox_serial_num')}
+                  >
+                    <Checkbox.Group
+                      options={createCombiboxCheckboxOptions(buildingIndex)}
+                      onChange={vals => {
+                        setformChanged(true)
+                        calculateCapacity(buildingIndex, vals, null)
+                        updateCheckAll(buildingIndex, vals, null)
+                        updateIntermediate(buildingIndex, vals, null)
+                      }}
+                    />
+                  </FormItem> :
+                  null
+                }
+                {
+                  createInverterCheckboxOptions(buildingIndex).length > 0 ?
+                  <FormItem 
+                    name={`linked_inverter_serial_num_${buildingIndex}`}
+                    label={t('project.spec.linked_inverter_serial_num')}
+                  >
+                    <Checkbox.Group
+                      options={createInverterCheckboxOptions(buildingIndex)}
+                      onChange={vals => {
+                        setformChanged(true)
+                        calculateCapacity(buildingIndex, null, vals)
+                        updateCheckAll(buildingIndex, null, vals)
+                        updateIntermediate(buildingIndex, null, vals)
+                      }}
+                    />
+                  </FormItem> :
+                  null
+                }   
+              </Panel>
+            )
+          }
+          </Collapse>
         </Col>
       </Row>
       

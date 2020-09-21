@@ -16,7 +16,7 @@ const PowerGrid = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [loading, setloading] = useState(false)
-  const [editTransformer, seteditTransformer] = useState(false)
+  const [editingTransformer, seteditingTransformer] = useState(null)
   const projectTransformers = useSelector(state => state.project.transformers) || []
 
   return (
@@ -33,8 +33,8 @@ const PowerGrid = () => {
                     <TransformerSpecCard 
                       transformerIndex={transformerIndex}
                       key={transformerIndex}
-                      disabled={editTransformer}
-                      seteditTransformer={seteditTransformer}
+                      editingTransformer={editingTransformer}
+                      seteditingTransformer={seteditingTransformer}
                       {...transformer}
                     />
                   )
@@ -42,9 +42,11 @@ const PowerGrid = () => {
                 <Button
                   className={styles.addSpec}
                   loading={loading}
+                  disabled={editingTransformer !== null}
                   block
                   type="dashed"
                   onClick={() => {
+                    seteditingTransformer(projectTransformers.length)
                     setloading(true)
                     setTimeout(() => {
                       dispatch(addTransformer())

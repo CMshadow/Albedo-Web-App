@@ -1,4 +1,5 @@
 {
   "action.confirm": "确定",
-  "action.cancel": "取消"
+  "action.cancel": "取消",
+  "action.checkall": "全选"
 }

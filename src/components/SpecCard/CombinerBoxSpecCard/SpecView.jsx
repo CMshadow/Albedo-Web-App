@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next'
-import { Descriptions, Typography } from 'antd'
+import { Descriptions, Typography, Space } from 'antd'
 import { useSelector } from 'react-redux'
 import { m2other, w2other } from '../../../utils/unitConverter'
 const Item = Descriptions.Item
@@ -27,27 +27,35 @@ export const SpecView = ({buildingID, combiboxIndex}) => {
     }, 0)
 
   return (
-    <Descriptions column={{ lg:2, xl: 3}}>
-      <Item label={t('project.spec.combibox_serial')} span={1}>
-        <Text style={{color: '#1890ff'}}>
-          C{combiboxData.combibox_serial_num.split('-')[1]}
-        </Text>
-      </Item>
-      <Item label={t('project.spec.combibox_name')} span={1}>
-        {combiboxData.combibox_name}
-      </Item>
-      <Item label={t('project.spec.combibox_vac')} span={1}>
-        {combiboxData.combibox_vac} V
-      </Item>
-      <Item label={t('project.spec.capacity')} span={1}>
-        {`${w2other(capacity).value} ${w2other(capacity).unit}`}
-      </Item>
-      <Item label={t('project.spec.combibox_cable_len')} span={2}>
-        {m2other(unit, combiboxData.combibox_cable_len).toFixed(2)} {unit}
-      </Item>
-      <Item label={t('project.spec.linked_inverter_serial_num')} span={3}>
-        {combiboxData.linked_inverter_serial_num.join(', ')}
-      </Item>
-    </Descriptions>
+    <>
+      <Descriptions column={{ lg:2, xl: 3}} bordered style={{borderBottom: 0}}>
+        <Item label={t('project.spec.combibox_serial')} span={1}>
+          <Text style={{color: '#1890ff'}}>
+            C{combiboxData.combibox_serial_num.split('-')[1]}
+          </Text>
+        </Item>
+        <Item label={t('project.spec.combibox_name')} span={1}>
+          {combiboxData.combibox_name}
+        </Item>
+        <Item label={t('project.spec.combibox_vac')} span={1}>
+          {combiboxData.combibox_vac} V
+        </Item>
+        <Item label={t('project.spec.capacity')} span={1}>
+          {`${w2other(capacity).value} ${w2other(capacity).unit}`}
+        </Item>
+        <Item label={t('project.spec.combibox_cable_len')}>
+          {m2other(unit, combiboxData.combibox_cable_len).toFixed(2)} {unit}
+        </Item>
+        <Item label={t('project.spec.linked_inverter_serial_num')}>
+          <Space>
+          {
+            combiboxData.linked_inverter_serial_num.map(serial => 
+              <Text key={serial} style={{color: '#faad14'}}>{`S${serial}`}</Text>
+            )
+          }
+          </Space>
+        </Item>
+      </Descriptions>
+    </>
   )
 }

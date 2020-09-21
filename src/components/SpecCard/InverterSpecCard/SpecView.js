@@ -103,7 +103,7 @@ export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
   }, [initInvLimits, spec.string_per_inverter])
 
   return (
-    <Descriptions column={{ xl: 2, xxl: 3}}>
+    <Descriptions column={2}>
       <Item label={t('project.spec.serial')} span={1}>
         <Text style={{color: '#faad14'}}>
           {`S${specIndex + 1}-${spec.inverter_serial_number}`}
@@ -124,7 +124,7 @@ export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
       <Item label={t('project.spec.total_panels')} span={1}>
         {spec.string_per_inverter * spec.panels_per_string}
       </Item>
-      <Item label={t('project.spec.dc_cable_len')} span={3}>
+      <Item label={t('project.spec.dc_cable_len')} span={2}>
         {spec.dc_cable_len.map(v => `${m2other(unit, Number(v)).toFixed(2)} ${unit}`).join(', ')}
       </Item>
     </Descriptions>

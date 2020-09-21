@@ -19,8 +19,8 @@ export const UnusedCombiboxInverterCard = () => {
     const allUsedCombiboxSerial = allTransformers.flatMap(trans =>
       trans.linked_combibox_serial_num
     )
-    const unusedCombiboxSerial = allCombiboxSerial.filter(combibox => 
-      !allUsedCombiboxSerial.includes(combibox.combibox_serial_num)
+    const unusedCombiboxSerial = allCombiboxSerial.filter(serial => 
+      !allUsedCombiboxSerial.includes(serial)
     )
 
 
@@ -51,7 +51,7 @@ export const UnusedCombiboxInverterCard = () => {
               {t('project.spec.unlink_combibox_serial')}:   
               {
                 unusedCombiboxSerial.map(serial =>
-                  <Text style={{color: '#69c0ff'}}>
+                  <Text style={{color: '#69c0ff'}} key={serial}>
                   {`C${serial.split('-')[1]}`}
                   </Text>
                 )
@@ -67,7 +67,7 @@ export const UnusedCombiboxInverterCard = () => {
               {t('project.spec.unlink_inverter_serial')}:
               {
                 unusedInverterSerial.map(serial =>
-                  <Text style={{color: '#faad14'}}>
+                  <Text style={{color: '#faad14'}} key={serial}>
                   {`S${serial.split('-').slice(-2,).join('-')}`}
                   </Text>
                 )

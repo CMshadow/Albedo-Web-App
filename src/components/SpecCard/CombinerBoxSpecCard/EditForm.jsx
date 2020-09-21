@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Divider } from 'antd';
+import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Divider, Typography } from 'antd';
 import { editCombibox } from '../../../store/action/index'
 import { other2m } from '../../../utils/unitConverter'
 import * as styles from './EditForm.module.scss'
 const FormItem = Form.Item;
 const { Panel } = Collapse;
+const { Text } = Typography
 
 const rowGutter = { md: 8, lg: 15, xl: 32 };
 
@@ -73,7 +74,7 @@ export const EditForm = ({buildingID, combiboxIndex, seteditingFalse}) => {
       value: `${subAryIndex + 1}-${inv.inverter_serial_number}`,
       label: 
         <Tooltip title={inverterData.find(obj => obj.inverterID === inv.inverter_model.inverterID).name}>
-          {`S${subAryIndex + 1}-${inv.inverter_serial_number}`}
+          <Text style={{color: '#faad14'}}>{`S${subAryIndex + 1}-${inv.inverter_serial_number}`}</Text>
         </Tooltip>,
       disabled: everyInvVac[subAryIndex][index] !== selVac || 
         otherCombiboxValues.includes(`${subAryIndex + 1}-${inv.inverter_serial_number}`)
@@ -316,7 +317,7 @@ export const EditForm = ({buildingID, combiboxIndex, seteditingFalse}) => {
                     onChange={() => checkUncheckAll(subAryIndex, subAry.inverter_wiring)}
                     checked={checkAll[subAryIndex]}
                   >
-                    Check all
+                    {t('action.checkall')}
                   </Checkbox>
                   <Divider className={styles.divider}/>
                   <FormItem

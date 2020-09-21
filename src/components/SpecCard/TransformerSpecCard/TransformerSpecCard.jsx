@@ -7,7 +7,7 @@ import { SpecView } from './SpecView'
 import { deleteTransformer } from '../../../store/action/index'
 import * as styles from './TransformerSpecCard.module.scss';
 
-export const TransformerSpecCard = ({transformerIndex, disabled, seteditTransformer, ...props}) => {
+export const TransformerSpecCard = ({transformerIndex, editingTransformer, seteditingTransformer, ...props}) => {
   const dispatch = useDispatch()
   const [editing, setediting] = useState(true)
   const [loading, setloading] = useState(false)
@@ -19,29 +19,42 @@ export const TransformerSpecCard = ({transformerIndex, disabled, seteditTransfor
   return (
     <Card
       className={styles.card}
-      bodyStyle={{padding: '0px'}}
+      bodyStyle={{padding: 0}}
       loading={loading}
       actions={[
         <Button
-          disabled={editing || disabled}
+          disabled={editing || editingTransformer !== null}
           type='link'
           shape="circle"
-          icon={<EditTwoTone twoToneColor={editing || disabled ? '#bfbfbf' : '#1890ff'}/>}
+          icon={
+            <EditTwoTone 
+              twoToneColor={editing || editingTransformer !== null ? '#bfbfbf' : '#1890ff'}
+            />
+          }
           onClick={() => {
             setediting(true)
-            seteditTransformer(true)
+            seteditingTransformer(transformerIndex)
           }}
         />,
         <Button
           type='link'
           shape="circle"
           danger
-          icon={<DeleteTwoTone twoToneColor='#f5222d'/>}
+          icon={
+            <DeleteTwoTone 
+              twoToneColor={
+                editingTransformer !== null && editingTransformer !== transformerIndex ? 
+                '#bfbfbf' : '#f5222d'
+              }
+            />
+          }
+          disabled={editingTransformer !== null && editingTransformer !== transformerIndex}
           onClick={() => {
             setloading(true)
             setTimeout(() => {
-              dispatch(deleteTransformer({transformerIndex}))
               setloading(false)
+              seteditingTransformer(null)
+              dispatch(deleteTransformer(transformerIndex))
             }, 500)
           }}
         />,
@@ -54,7 +67,7 @@ export const TransformerSpecCard = ({transformerIndex, disabled, seteditTransfor
             transformerIndex={transformerIndex}
             seteditingFalse={() => {
               setediting(false)
-              seteditTransformer(false)
+              seteditingTransformer(null)
             }}
           /> :
           <SpecView

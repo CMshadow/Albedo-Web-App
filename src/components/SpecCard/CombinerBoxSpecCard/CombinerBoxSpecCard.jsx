@@ -7,7 +7,7 @@ import { SpecView } from './SpecView'
 import { deleteCombibox } from '../../../store/action/index'
 import * as styles from './CombinerBoxSpecCard.module.scss';
 
-export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, disabled, seteditCombibox, ...props}) => {
+export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, editingCombibox, seteditingCombibox, ...props}) => {
   const dispatch = useDispatch()
   const [editing, setediting] = useState(true)
   const [loading, setloading] = useState(false)
@@ -19,29 +19,38 @@ export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, disabled, setedi
   return (
     <Card
       className={styles.card}
-      bodyStyle={{padding: '0px'}}
+      bodyStyle={{padding: 0}}
       loading={loading}
       actions={[
         <Button
-          disabled={editing || disabled}
+          disabled={editing || editingCombibox !== null}
           type='link'
           shape="circle"
-          icon={<EditTwoTone twoToneColor={editing || disabled ? '#bfbfbf' : '#1890ff'}/>}
+          icon={<EditTwoTone twoToneColor={editing || editingCombibox !== null ? '#bfbfbf' : '#1890ff'}/>}
           onClick={() => {
             setediting(true)
-            seteditCombibox(true)
+            seteditingCombibox(combiboxIndex)
           }}
         />,
         <Button
           type='link'
           shape="circle"
           danger
-          icon={<DeleteTwoTone twoToneColor='#f5222d'/>}
+          icon={
+            <DeleteTwoTone 
+              twoToneColor={
+                editingCombibox !== null && editingCombibox !== combiboxIndex ? 
+                '#bfbfbf' : '#f5222d'
+              }
+            />
+          }
+          disabled={editingCombibox !== null && editingCombibox !== combiboxIndex}
           onClick={() => {
             setloading(true)
             setTimeout(() => {
-              dispatch(deleteCombibox({buildingID, combiboxIndex}))
+              seteditingCombibox(null)
               setloading(false)
+              dispatch(deleteCombibox({buildingID, combiboxIndex}))
             }, 500)
           }}
         />,
@@ -55,7 +64,7 @@ export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, disabled, setedi
             combiboxIndex={combiboxIndex}
             seteditingFalse={() => {
               setediting(false)
-              seteditCombibox(false)
+              seteditingCombibox(null)
             }}
           /> :
           <SpecView

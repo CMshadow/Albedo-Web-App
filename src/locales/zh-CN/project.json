@@ -135,6 +135,7 @@
   "project.spec.transformer.type": "变压器类型",
   "project.spec.transformer.type.oil-immersed": "油浸变",
   "project.spec.transformer.type.dry-type": "干式变",
+  "project.spec.transformer.linked-capacity": "当前关联设备容量",
   "project.spec.transformer.capacity": "额定容量, 关联汇流箱和逆变器后自动计算",
   "project.spec.transformer.power_loss": "变压器自身电能损耗",
   "project.spec.transformer.power_loss.no_load_loss": "空载损耗",
@@ -143,6 +144,9 @@
   "project.spec.transformer.consumption_loss.power": "自用电功率",
   "project.spec.linked_combibox_serial_num": "关联汇流箱",
   "project.spec.linked_combibox_inverter_serial_num": "关联汇流箱及逆变器",
+
+  "project.spec.transformer_serial_num": "变压器编号",
+  "project.spec.transformer_capacity": "变压器额定容量",
 
   "project.autoInverter.too-small": "逆变器规格与装机量不匹配",
   "project.autoInverter.too-small.detail": "当前装机容量小于逆变器最佳输入装机容量，考虑增大装机量或选用更小规格逆变器",

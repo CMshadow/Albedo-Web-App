@@ -1,4 +1,5 @@
 {
   "action.confirm": "Confirm",
-  "action.cancel": "Cancel"
+  "action.cancel": "Cancel",
+  "action.checkall": "Check All"
 }

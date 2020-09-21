@@ -17,7 +17,7 @@ export const BuildingTab = ({buildings, ...props}) => {
   const projectType = useSelector(state => state.project.projectType)
   const [showModal, setshowModal] = useState(false)
   const [editRecord, seteditRecord] = useState(null)
-  const [editCombibox, seteditCombibox] = useState(false)
+  const [editingCombibox, seteditingCombibox] = useState(null)
   const [loading, setloading] = useState(false)
 
   const deleteBuildingTab = (targetKey) => {
@@ -113,21 +113,22 @@ export const BuildingTab = ({buildings, ...props}) => {
                         buildingID={building.buildingID}
                         combiboxIndex={combiboxIndex}
                         key={combiboxIndex}
-                        disabled={editCombibox}
-                        seteditCombibox={seteditCombibox}
+                        editingCombibox={editingCombibox}
+                        seteditingCombibox={seteditingCombibox}
                         {...combibox}
                       />
                     )
                   }
                   <Button
-                    className={styles.addSpec}
+                    className={styles.addSpecCombibox}
                     loading={loading}
+                    disabled={editingCombibox !== null}
                     block
                     type="dashed"
                     onClick={() => {
                       setloading(true)
                       setTimeout(() => {
-                        seteditCombibox(true)
+                        seteditingCombibox(building.combibox.length)
                         addCB(building.buildingID)
                         setloading(false)
                       }, 500)
