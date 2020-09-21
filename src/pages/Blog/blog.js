@@ -6,25 +6,24 @@ import axio from './axios-blog';
 import * as styles from './blog.module.scss';
 import BlogList from '../../components/BlogList/BlogList';
 import { Grid, Row} from 'react-flexbox-grid';
-import datas from './blog.json';
 const {Content} = Layout;
 const {Title} = Typography;
 
 export default class Blog extends Component {
-  
+  state = {
+      blog:[]
+  }
   getBlog(){
     axio
         .get("all",{ responseType: 'json' })
         .then(res=>{
           console.log(res.data)
-          this.setState({blog:res.data})
+          this.setState({blog:[...res.data]})
         }).catch((error)=>{console.log(error)})
   }
   componentDidMount(){
-    this.getBlog()
-  
+    this.getBlog() 
   }
-  
   render(){
     
     return (
@@ -36,9 +35,8 @@ export default class Blog extends Component {
                 <Title level={2} className={styles.title1}>Albedo 最新日志</Title>
               </Row>
               <div className={ styles.wrap }>
-                <BlogList dataSource={}/>
-              </div>
-             
+                <BlogList dataSource={this.state.blog}/>
+              </div> 
             </Grid>
           </Content>
         <DisplayPageFooter/>

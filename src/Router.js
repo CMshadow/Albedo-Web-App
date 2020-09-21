@@ -100,9 +100,9 @@ const Router = () => {
           <Route path="/privacy">
             <Privacy />
           </Route>
-          <Route path="/cn/blog/:id">
-            <BlogDetail />
-          </Route>
+          <Route path="/cn/blog/:id" component={(routerProps) => <BlogDetail id={routerProps.match.params.id}/>}/>
+            {/* <BlogDetail props={':id'}/>
+          </Route> */}
           <PrivateRoute path='/dashboard'>
             <BasicLayout>
               <ProjectTable/>
