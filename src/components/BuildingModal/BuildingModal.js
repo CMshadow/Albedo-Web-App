@@ -3,7 +3,7 @@ import { Modal, Input, Form, InputNumber } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBuilding, editBuilding } from '../../store/action/index';
-import { other2m } from '../../utils/unitConverter'
+import { other2m, m2other } from '../../utils/unitConverter'
 const FormItem = Form.Item;
 
 export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecord}) => {
@@ -51,8 +51,10 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
 
   // 组件渲染后加载表单初始值
   useEffect(() => {
-    form.setFieldsValue(editRecord || null)
-  }, [editRecord, form])
+    const defaultValues = {...editRecord}
+    defaultValues.combibox_cable_len = m2other(unit, defaultValues.combibox_cable_len) || null
+    form.setFieldsValue(defaultValues || null)
+  }, [editRecord, form, unit])
 
   return (
     <Modal

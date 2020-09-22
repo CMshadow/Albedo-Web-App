@@ -13,3 +13,9 @@ export const setCognitoUserSession = (session) => (dispatch, getState) => {
     session: session
   })
 }
+
+export const setSignOut = () => (dispatch, getState) => {
+  return dispatch({
+    type: actionTypes.SET_SIGNOUT
+  })
+}

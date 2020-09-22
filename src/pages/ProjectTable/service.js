@@ -1,6 +1,6 @@
 import { Auth } from 'aws-amplify';
 import { notification } from 'antd';
-import { setCognitoUserSession } from '../../store/action/index';
+import { setCognitoUserSession, setSignOut } from '../../store/action/index';
 import axios from '../../axios.config';
 
 export const googleGeocoder = async ({address, key}) => {
@@ -32,68 +32,89 @@ export const amapRevGeocoder = async ({lon, lat, key}) => {
 }
 
 export const getApiKey = () => async dispatch => {
-  const session = await Auth.currentSession()
-  dispatch(setCognitoUserSession(session))
+  try {
+    const session = await Auth.currentSession()
+    dispatch(setCognitoUserSession(session))
 
-  return axios.get(
-    '/apikeysender',{headers: {'COG-TOKEN': session.idToken.jwtToken}}
-  )
-  .then(res => res.data)
-  .catch(err => {
-    console.log(err)
-    notification({message: err.response.data.message})
-    throw err
-  })
+    return axios.get(
+      '/apikeysender',{headers: {'COG-TOKEN': session.idToken.jwtToken}}
+    )
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err)
+      notification({message: err.response.data.message})
+      throw err
+    })
+  } catch(err) {
+    Auth.signOut()
+    dispatch(setSignOut())
+  }
 }
 
 export const createProject = (values) => async dispatch => {
-  const session = await Auth.currentSession()
-  dispatch(setCognitoUserSession(session))
+  try {
+    const session = await Auth.currentSession()
+    dispatch(setCognitoUserSession(session))
 
-  return axios.post(
-    `/project/${session.idToken.payload.sub}`,
-    values,
-    {headers: {'COG-TOKEN': session.idToken.jwtToken}}
-  )
-  .then(res => res.data)
-  .catch(err => {
-    console.log(err)
-    notification({message: err.response.data.message})
-    throw err
-  })
+    return axios.post(
+      `/project/${session.idToken.payload.sub}`,
+      values,
+      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+    )
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err)
+      notification({message: err.response.data.message})
+      throw err
+    })
+  } catch(err) {
+    Auth.signOut()
+    dispatch(setSignOut())
+  }
 }
 
 export const getProject = () => async dispatch => {
-  const session = await Auth.currentSession()
-  dispatch(setCognitoUserSession(session))
+  try {
+    const session = await Auth.currentSession()
 
-  return axios.get(
-    `/project/${session.idToken.payload.sub}`,
-    {headers: {'COG-TOKEN': session.idToken.jwtToken}}
-  )
-  .then(res => res.data)
-  .catch(err => {
-    console.log(err)
-    notification({message: err.response.data.message})
-    throw err
-  })
+    dispatch(setCognitoUserSession(session))
+
+    return axios.get(
+      `/project/${session.idToken.payload.sub}`,
+      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+    )
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err)
+      notification({message: err.response.data.message})
+      throw err
+    })
+  } catch(err) {
+    Auth.signOut()
+    dispatch(setSignOut())
+  }
 }
 
 export const deleteProject = ({projectID}) => async dispatch => {
-  const session = await Auth.currentSession()
-  dispatch(setCognitoUserSession(session))
+  try {
+    const session = await Auth.currentSession()
+    dispatch(setCognitoUserSession(session))
 
-  return axios.delete(
-    `/project/${session.idToken.payload.sub}`,
-    {
-      params: {projectID: projectID},
-      headers: {'COG-TOKEN': session.idToken.jwtToken}
-    }
-  )
-  .then(res => res.data)
-  .catch(err => {
-    console.log(err)
-    notification({message: err.response.data.message})
-    throw err
-  })
+    return axios.delete(
+      `/project/${session.idToken.payload.sub}`,
+      {
+        params: {projectID: projectID},
+        headers: {'COG-TOKEN': session.idToken.jwtToken}
+      }
+    )
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err)
+      notification({message: err.response.data.message})
+      throw err
+    })
+  } catch(err) {
+    Auth.signOut()
+    dispatch(setSignOut())
+  }
 }

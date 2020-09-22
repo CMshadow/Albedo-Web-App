@@ -97,7 +97,7 @@ const ProjectTable = (props) => {
             }}
           />
           <Divider type='vertical' />
-          <DeleteAction record={record} setdata={setdata} />
+          <DeleteAction record={record} setdata={setdata} setactiveData={setactiveData} setloading={setloading}/>
         </div>
       ),
     }
