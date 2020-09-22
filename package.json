@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@alicloud/pop-core": "^1.7.9",
+    "@ckeditor/ckeditor5-build-classic": "^22.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0",
     "@craco/craco": "^5.6.4",
     "@fortawesome/fontawesome-pro": "^5.13.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
