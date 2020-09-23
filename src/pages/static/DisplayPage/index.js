@@ -1,6 +1,6 @@
 import React from 'react';
 import * as styles from './index.module.scss';
-import BackToTop from '../../../components/BackToTop/BackToTop';
+import { Back2TopButton } from '../../../components/Back2TopButton/Back2TopButton';
 import DisplayPageHeader from '../../../layouts/DisplayPageHeader/DisplayPageHeader'
 import DisplayPageFooter from '../../../layouts/DisplayPageFooter/DisplayPageFooter';
 import { Layout, Typography, Card, Statistic } from 'antd';
@@ -21,7 +21,7 @@ const { Content } = Layout;
 
 const DisplayPage = () => (
   <>
-  <BackToTop/>
+  <Back2TopButton/>
   <Layout className={styles.layout}>
     <DisplayPageHeader/>
     <Content className={styles.content}>

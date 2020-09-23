@@ -13,10 +13,8 @@ const style = {
   fontSize: 40,
 };
 
-const backToTop = () => (
+export const Back2TopButton = () => (
   <BackTop>
     <VerticalAlignTopOutlined style={style}/>
   </BackTop>
 )
-
-export default backToTop;

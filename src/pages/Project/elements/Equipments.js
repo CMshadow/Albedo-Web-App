@@ -5,7 +5,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import * as styles from './Equipments.module.scss';
 import { BuildingTab } from '../../../components/BuildingTab/BuildingTab'
-import { BuildingModal } from '../../../components/BuildingModal/BuildingModal'
+import { BuildingModal } from '../../../components/BuildingTab/BuildingModal'
 const Title = Typography.Title
 
 export const Equipments = ({loading, ...values}) => {

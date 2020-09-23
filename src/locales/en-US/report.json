@@ -15,7 +15,6 @@
   "report.paramsForm.ac": "AC",
   "report.paramsForm.grid": "Grid",
   "report.paramsForm.system": "System Parameter",
-  "report.paramsForm.wiring": "Electrical",
 
   "report.paramsForm.p_loss_soiling": "Soiling Loss (%)",
   "report.paramsForm.p_loss_connection": "Connection Loss (%)",
@@ -47,9 +46,6 @@
   "report.paramsForm.p_loss_conversion": "Inverter Loss (%)",
   "report.paramsForm.p_loss_ac_wiring": "AC Wiring Loss (Inverter(s) to Combiner Box) (%)",
   "report.paramsForm.p_loss_transformer": "Transformer Loss (%)",
-
-  "report.paramsForm.ACVolDropFac": "Allowable AC Voltage Drop",
-  "report.paramsForm.DCVolDropFac": "Allowable DC Voltage Drop",
 
   "report.head.buildingName": "Building Name",
   "report.head.ttl_dc_power_capacity": "System Size",

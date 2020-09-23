@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Tabs, Button, Space } from 'antd';
 import { SettingOutlined } from '@ant-design/icons'
 import * as styles from './BuildingTab.module.scss';
-import { BuildingModal } from '../../components/BuildingModal/BuildingModal'
+import { BuildingModal } from './BuildingModal'
 import { deleteBuilding, addPVSpec, addCombibox } from '../../store/action/index'
 import { PVSpecCard } from '../../components/SpecCard/PVSpecCard/PVSpecCard'
 import { CombinerBoxSpecCard } from '../../components/SpecCard/CombinerBoxSpecCard/CombinerBoxSpecCard'

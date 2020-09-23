@@ -17,10 +17,13 @@ const { TabPane } = Tabs;
 
 const labelCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 5}};
 const wrapperCol = { xs: {span: 24}, sm: {span: 24}, md: {span: 15, offset: 1}};
+const markStyle = {overflow: 'hidden', whiteSpace: 'nowrap'}
 
 const initValues = {
   projectType: 'domestic',
-  albedo: 0.3
+  albedo: 0.3,
+  DCVolDropFac: 1,
+  ACVolDropFac: 2
 }
 
 export const CreateProjectModal = ({showModal, setshowModal, google}) => {
@@ -46,6 +49,18 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
     0.4: t('project.create.albedo.desert'),
     1: t('project.create.albedo.full')
   };
+
+  // ACVolDropFac标识
+  const ACVolDropFacMarks = {
+    0.1: t('report.paramsForm.drop_0.1'),
+    5:  {style: markStyle, label: t('report.paramsForm.drop_5')}
+  }
+
+  // DCVolDropFac标识
+  const DCVolDropFacMarks = {
+    0.1: t('report.paramsForm.drop_0.1'),
+    2: {style: markStyle, label: t('report.paramsForm.drop_2')}
+  }
 
   // 高德的地理编码解析
   const amapDecode = () => {
@@ -279,6 +294,20 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
               rules={[{required: true}]}
             >
               <Slider marks={albedoMarks} step={0.05} max={1}/>
+            </FormItem>
+            <FormItem
+              name='DCVolDropFac'
+              label={t('project.create.DCVolDropFac')}
+              rules={[{required: true}]}
+            >
+              <Slider marks={DCVolDropFacMarks} step={0.05} min={0.1} max={2}/>
+            </FormItem>
+            <FormItem
+              name='ACVolDropFac'
+              label={t('project.create.ACVolDropFac')}
+              rules={[{required: true}]}
+            >
+              <Slider marks={ACVolDropFacMarks} step={0.05} min={0.1} max={5}/>
             </FormItem>
           </Panel>
         </Collapse>

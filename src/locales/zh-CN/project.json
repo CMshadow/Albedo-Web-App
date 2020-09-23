@@ -24,6 +24,8 @@
   "project.create.albedo.urban": "城市",
   "project.create.albedo.desert": "沙漠",
   "project.create.albedo.full": "全反射",
+  "project.create.ACVolDropFac": "交流侧允许压降系数",
+  "project.create.DCVolDropFac": "直流侧允许压降系数",
 
   "project.error.invalid-address.amap": "高德地图无法验证该地址",
   "project.error.invalid-address.googlemap": "谷歌地图无法验证该地址",
