@@ -360,8 +360,8 @@ const addTransformer = (state, action) => {
   const newTransformers = state.transformers ? [...state.transformers] : []
   const newTransformer = {
     transformer_name: null,
-    transformer_cable_len: 0,
-    transformer_serial_num: state.transformers.legnth + 1,
+    transformer_cable_len: null,
+    transformer_serial_num: newTransformers.length + 1,
     transformer_vac: null,
     linked_combibox_serial_num: [],
     linked_inverter_serial_num: [],

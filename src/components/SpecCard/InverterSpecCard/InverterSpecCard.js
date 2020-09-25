@@ -9,7 +9,7 @@ import { deleteInverterSpec } from '../../../store/action/index'
 import { inverterLimit } from '../../../pages/Project/service'
 import * as styles from './InverterSpecCard.module.scss';
 
-export const InverterSpecCard = ({buildingID, specIndex, invIndex, disabled, ...props}) => {
+export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled, ...props}) => {
   const dispatch = useDispatch()
   const { projectID } = useParams()
   const [editing, setediting] = useState(true)
@@ -63,6 +63,7 @@ export const InverterSpecCard = ({buildingID, specIndex, invIndex, disabled, ...
 
   return (
     <Card
+      id={id}
       className={styles.card}
       bodyStyle={{padding: '0px'}}
       loading={loading}
@@ -84,8 +85,8 @@ export const InverterSpecCard = ({buildingID, specIndex, invIndex, disabled, ...
           onClick={() => {
             setloading(true)
             setTimeout(() => {
-              dispatch(deleteInverterSpec({buildingID, specIndex, invIndex}))
               setloading(false)
+              dispatch(deleteInverterSpec({buildingID, specIndex, invIndex}))
             }, 500)
           }}
         />,

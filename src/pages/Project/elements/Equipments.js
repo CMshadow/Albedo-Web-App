@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux'
 import { LoadingOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import * as styles from './Equipments.module.scss';
-import { BuildingTab } from '../../../components/BuildingTab/BuildingTab'
-import { BuildingModal } from '../../../components/BuildingTab/BuildingModal'
+import { BuildingsTab } from '../../../components/BuildingsTab/BuildingsTab'
+import { BuildingModal } from '../../../components/BuildingsTab/BuildingModal'
 const Title = Typography.Title
 
 export const Equipments = ({loading, ...values}) => {
@@ -34,7 +34,7 @@ export const Equipments = ({loading, ...values}) => {
           >
             {addBuildingText()}
           </Button> :
-          <BuildingTab {...values}/>
+          <BuildingsTab {...values}/>
         }
         <BuildingModal
           showModal={showModal}

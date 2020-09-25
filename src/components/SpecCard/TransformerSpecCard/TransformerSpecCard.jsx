@@ -7,7 +7,7 @@ import { SpecView } from './SpecView'
 import { deleteTransformer } from '../../../store/action/index'
 import * as styles from './TransformerSpecCard.module.scss';
 
-export const TransformerSpecCard = ({transformerIndex, editingTransformer, seteditingTransformer, ...props}) => {
+export const TransformerSpecCard = ({id, transformerIndex, editingTransformer, seteditingTransformer, ...props}) => {
   const dispatch = useDispatch()
   const [editing, setediting] = useState(true)
   const [loading, setloading] = useState(false)
@@ -18,6 +18,7 @@ export const TransformerSpecCard = ({transformerIndex, editingTransformer, seted
 
   return (
     <Card
+      id={id}
       className={styles.card}
       bodyStyle={{padding: 0}}
       loading={loading}

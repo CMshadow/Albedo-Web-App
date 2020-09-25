@@ -7,7 +7,7 @@ import { SpecView } from './SpecView'
 import { deleteCombibox } from '../../../store/action/index'
 import * as styles from './CombinerBoxSpecCard.module.scss';
 
-export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, editingCombibox, seteditingCombibox, ...props}) => {
+export const CombinerBoxSpecCard = ({id, buildingID, combiboxIndex, editingCombibox, seteditingCombibox, ...props}) => {
   const dispatch = useDispatch()
   const [editing, setediting] = useState(true)
   const [loading, setloading] = useState(false)
@@ -18,6 +18,7 @@ export const CombinerBoxSpecCard = ({buildingID, combiboxIndex, editingCombibox,
 
   return (
     <Card
+      id={id}
       className={styles.card}
       bodyStyle={{padding: 0}}
       loading={loading}

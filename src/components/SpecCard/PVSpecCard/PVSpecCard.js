@@ -8,12 +8,13 @@ import { SpecView } from './SpecView'
 import { InverterSpecCard } from '../InverterSpecCard/InverterSpecCard'
 import { addInverterSpec, deletePVSpec } from '../../../store/action/index'
 import * as styles from './PVSpecCard.module.scss';
+
 const { Panel } = Collapse;
 
 const mainSpan = {sm: 14, md: 18, lg: 21, xl: 22}
 const toolbarSpan = {sm: 10, md: 6, lg: 3, xl: 2}
 
-export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
+export const PVSpecCard = ({id, buildingID, specIndex, collapseActive, setcollapseActive, ...props}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [editing, setediting] = useState(true)
@@ -29,12 +30,22 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
     dispatch(addInverterSpec({buildingID, specIndex}))
   }
 
+  const collapseOnchange = (openKeys) => {
+    const newcollapseActive = [...collapseActive]
+    if (openKeys.length > 0) {
+      newcollapseActive[specIndex] = true
+    } else {
+      newcollapseActive[specIndex] = false
+    }
+    setcollapseActive(newcollapseActive)
+  }
+
   useEffect(() => {
     if (props.tilt_angle !== null) setediting(false)
   }, [props.tilt_angle])
 
   return (
-    <Card className={styles.card} bodyStyle={{padding: '0px'}} loading={deleteLoading}>
+    <Card id={id} className={styles.card} bodyStyle={{padding: '0px'}} loading={deleteLoading}>
       <Row justify='center'>
         <Col {...mainSpan}>
           <div className={styles.content}>
@@ -63,8 +74,11 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
               onClick={() => {
                 setdeleteLoading(true)
                 setTimeout(() => {
-                  dispatch(deletePVSpec({buildingID, specIndex}))
                   setdeleteLoading(false)
+                  const newcollapseActive = [...collapseActive]
+                  newcollapseActive.splice(specIndex, 1)
+                  setcollapseActive(newcollapseActive)
+                  dispatch(deletePVSpec({buildingID, specIndex}))
                 }, 500)
               }}
             />
@@ -74,7 +88,7 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
       {/* <Divider className={styles.sectionBreak}/> */}
       <Row gutter={12} justify='center'>
         <Col span={24}>
-          <Collapse bordered={false} className={styles.collapse}>
+          <Collapse bordered={false} className={styles.collapse} onChange={collapseOnchange}>
             <Panel
               className={styles.collapsePanel}
               header={<h4>{t('project.spec.inverters')}</h4>}
@@ -83,6 +97,7 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
               {
                 invsSpec.map((invSpec, invIndex) =>
                   <InverterSpecCard
+                    id={`inv${specIndex}${invSpec.inverter_serial_number}`}
                     key={invIndex}
                     buildingID={buildingID}
                     specIndex={specIndex}
@@ -103,6 +118,7 @@ export const PVSpecCard = ({buildingID, specIndex, ...props}) => {
                   setTimeout(() => {
                     addSpec()
                     setloading(false)
+                    document.getElementById(`inv${specIndex}${invsSpec.length-1}`).scrollIntoView(true)
                   }, 500);
                 }}
               >
