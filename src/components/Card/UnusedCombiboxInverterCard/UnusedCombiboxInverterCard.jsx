@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import * as styles from './UnusedCombiboxInverterCard.module.scss'
 
 const { Panel } = Collapse
-const { Text } = Typography
+const { Text, Paragraph } = Typography
 
 export const UnusedCombiboxInverterCard = () => {
   const { t } = useTranslation()
@@ -49,13 +49,11 @@ export const UnusedCombiboxInverterCard = () => {
           <Row>
             <Space>
               {t('project.spec.unlink_combibox_serial')}:   
-              {
-                unusedCombiboxSerial.map(serial =>
-                  <Text style={{color: '#69c0ff'}} key={serial}>
-                  {`C${serial.split('-')[1]}`}
-                  </Text>
-                )
-              }
+              <Paragraph className={styles.combiboxParagraph}>
+                {
+                  unusedCombiboxSerial.map(serial => `C${serial.split('-')[1]}`).join(' , ')
+                }
+              </Paragraph>
             </Space>
           </Row> :
           null
@@ -65,13 +63,13 @@ export const UnusedCombiboxInverterCard = () => {
           <Row>
             <Space>
               {t('project.spec.unlink_inverter_serial')}:
-              {
-                unusedInverterSerial.map(serial =>
-                  <Text style={{color: '#faad14'}} key={serial}>
-                  {`S${serial.split('-').slice(-2,).join('-')}`}
-                  </Text>
-                )
-              }
+              <Paragraph className={styles.inverterParagraph}>
+                {
+                  unusedInverterSerial.map(serial =>
+                    `S${serial.split('-').slice(-2,).join('-')}`
+                  ).join(' , ')
+                }
+              </Paragraph>
             </Space>
           </Row> :
           null
