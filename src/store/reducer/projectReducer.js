@@ -145,6 +145,7 @@ const editPVSpec = (state, action) => {
       Number(action.dc_cable_avg_len)
   }
   newBuildings[buildingIndex].reGenReport = true
+  // 如果带自动匹配逆变器结果，则直接给spec加入逆变器配置
   if (action.invPlan.plan) {
     newBuildings[buildingIndex].data[action.specIndex].inverter_wiring =
     action.invPlan.plan.map((plan, index) => ({
@@ -159,7 +160,7 @@ const editPVSpec = (state, action) => {
       dc_cable_len: new Array(plan.spi).fill(Number(action.dc_cable_avg_len) || 0)
     }))
   }
-
+  // 如果带自动匹配逆变器结果，并且spec已有combibox，则去除掉所有和这个spec上的逆变器（因为自动匹配逆变器结果会覆盖spec上现有逆变器）
   if (action.invPlan.plan && 'combibox' in newBuildings[buildingIndex]) {
     newBuildings[buildingIndex].combibox = newBuildings[buildingIndex].combibox
       .map(combibox => ({
@@ -168,9 +169,24 @@ const editPVSpec = (state, action) => {
           .filter(val => val.split('-')[0] - 1 !== action.specIndex)
       }))
   }
+  // 如果带自动匹配逆变器结果，并且项目中有变压器，则把变压器上所有和这个spec相关的逆变器去除（理由同上）
+  let newTransformers = state.transformers || []
+  if (action.invPlan.plan && 'transformers' in state) {
+    newTransformers = newTransformers.map(transformer => ({
+      ...transformer,
+      linked_inverter_serial_num: transformer.linked_inverter_serial_num
+        .filter(val => {
+          const buildingName = val.split('-')[0]
+          const specIndex = val.split('-')[1] - 1
+          const buildingID = newBuildings.find(building => building.buildingName === buildingName).buildingID
+          return !(buildingID === action.buildingID && specIndex === action.specIndex)
+        })
+    }))
+  }
 
   return {
     ...state,
+    transformers: newTransformers,
     buildings: newBuildings
   }
 }
@@ -181,7 +197,7 @@ const deletePVSpec = (state, action) => {
   const newBuildings = [...state.buildings]
   newBuildings[buildingIndex].reGenReport = true
   newBuildings[buildingIndex].data.splice(action.specIndex, 1)
-
+  // 如果房屋有汇流箱，把汇流箱中所有与spec有关的逆变器都删掉，并把所有specIndex后面的汇流箱编号中的specIndex前移一个数字
   if ('combibox' in newBuildings[buildingIndex]) {
     newBuildings[buildingIndex].combibox = newBuildings[buildingIndex].combibox
       .map(combibox => ({
@@ -198,9 +214,36 @@ const deletePVSpec = (state, action) => {
           })
       }))
   }
+  // 如果项目有变压器，把变压器中所有与spec有关的逆变器都删掉， 并把所有specIndex后面的汇流箱编号中的specIndex前移一个数字
+  let newTransformers = state.transformers || []
+  if ('transformers' in state) {
+    newTransformers = newTransformers.map(transformer => ({
+      ...transformer,
+      linked_inverter_serial_num: transformer.linked_inverter_serial_num
+        .filter(val => {
+          console.log(val)
+          const buildingName = val.split('-')[0]
+          const specIndex = val.split('-')[1] - 1
+          const buildingID = newBuildings.find(building => building.buildingName === buildingName).buildingID
+          return !(buildingID === action.buildingID && specIndex === action.specIndex)
+        })
+        .map(val => {
+          console.log(val)
+          const buildingName = val.split('-')[0]
+          const specIndex = val.split('-')[1] - 1
+          const buildingID = newBuildings.find(building => building.buildingName === buildingName).buildingID
+          if (buildingID === action.buildingID && specIndex > action.specIndex) {
+            return `${buildingName}-${specIndex}-${val.split('-')[2]}`
+          } else {
+            return val
+          }
+        })
+    }))
+  }
 
   return {
     ...state,
+    transformers: newTransformers,
     buildings: newBuildings
   }
 }

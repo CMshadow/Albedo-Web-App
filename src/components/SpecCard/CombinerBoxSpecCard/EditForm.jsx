@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Divider, Typography } from 'antd';
 import { editCombibox } from '../../../store/action/index'
 import { other2m } from '../../../utils/unitConverter'
-import * as styles from './EditForm.module.scss'
+import * as styles from './CombinerBoxSpecCard.module.scss'
 const FormItem = Form.Item;
 const { Panel } = Collapse;
 const { Text } = Typography

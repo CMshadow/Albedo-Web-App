@@ -5,7 +5,7 @@ import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Div
 import { TransformerModel } from '../../TransformerModel/TransformerModel'
 import { editTransformer } from '../../../store/action/index'
 import { other2m } from '../../../utils/unitConverter'
-import * as styles from './EditForm.module.scss'
+import * as styles from './TransformerSpecCard.module.scss'
 const FormItem = Form.Item;
 const { Panel } = Collapse;
 const { Text } = Typography

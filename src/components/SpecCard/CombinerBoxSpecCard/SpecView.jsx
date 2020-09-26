@@ -1,10 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next'
-import { Descriptions, Typography, Space } from 'antd'
+import { Descriptions, Typography } from 'antd'
 import { useSelector } from 'react-redux'
 import { m2other, w2other } from '../../../utils/unitConverter'
+import * as styles from './CombinerBoxSpecCard.module.scss'
 const Item = Descriptions.Item
-const { Text } = Typography
+const { Text, Paragraph } = Typography
 
 export const SpecView = ({buildingID, combiboxIndex}) => {
   const { t } = useTranslation()
@@ -30,7 +31,7 @@ export const SpecView = ({buildingID, combiboxIndex}) => {
     <>
       <Descriptions column={{ lg:2, xl: 3}} bordered style={{borderBottom: 0}}>
         <Item label={t('project.spec.combibox_serial')} span={1}>
-          <Text style={{color: '#1890ff'}}>
+          <Text className={styles.serial}>
             C{combiboxData.combibox_serial_num.split('-')[1]}
           </Text>
         </Item>
@@ -47,13 +48,11 @@ export const SpecView = ({buildingID, combiboxIndex}) => {
           {m2other(unit, combiboxData.combibox_cable_len).toFixed(2)} {unit}
         </Item>
         <Item label={t('project.spec.linked_inverter_serial_num')}>
-          <Space>
+          <Paragraph className={styles.linkedInverterParagraph}>
           {
-            combiboxData.linked_inverter_serial_num.map(serial => 
-              <Text key={serial} style={{color: '#faad14'}}>{`S${serial}`}</Text>
-            )
+            combiboxData.linked_inverter_serial_num.map(serial => `S${serial}`).join(' , ')
           }
-          </Space>
+          </Paragraph>
         </Item>
       </Descriptions>
     </>
