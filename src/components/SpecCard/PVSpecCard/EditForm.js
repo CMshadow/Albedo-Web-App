@@ -8,7 +8,7 @@ import { TableOutlined } from '@ant-design/icons'
 import { editPVSpec } from '../../../store/action/index'
 import { PVTableViewOnly } from '../../Table/PVTable/PVTableViewOnly'
 import { InverterTableViewOnly } from '../../Table/InverterTable/InverterTableViewOnly'
-import { CellTempModel } from '../../CellTempModel/CellTempModel'
+import { CellTempModel } from '../../Model/CellTempModel/CellTempModel'
 import { manualInverter } from '../../../pages/Project/service'
 import { w2other } from '../../../utils/unitConverter'
 const FormItem = Form.Item;

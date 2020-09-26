@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Divider, Typography } from 'antd';
-import { TransformerModel } from '../../TransformerModel/TransformerModel'
+import { TransformerModel } from '../../Model/TransformerModel/TransformerModel'
 import { editTransformer } from '../../../store/action/index'
 import { other2m } from '../../../utils/unitConverter'
 import * as styles from './TransformerSpecCard.module.scss'

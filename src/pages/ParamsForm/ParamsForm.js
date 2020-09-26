@@ -6,7 +6,7 @@ import { updateProjectAttributes } from '../../store/action/index'
 import { useHistory } from 'react-router-dom'
 import { saveProject } from '../Project/service'
 import { HorizonChart } from '../../components/Charts/HorizonChart'
-import { MonthlyAlbedoModel } from '../../components/MonthlyAlbedoModel/MonthlyAlbedoModel'
+import { MonthlyAlbedoModel } from '../../components/Model/MonthlyAlbedoModel/MonthlyAlbedoModel'
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;
