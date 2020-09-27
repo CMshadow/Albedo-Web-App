@@ -15,13 +15,9 @@ let finance = new Finance();
 const EditableRow = ({ index, ...props }) => {
   const { t } = useTranslation()
   const [form] = Form.useForm();
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
 
   return (
-    <Form form={form} component={false} validateMessages={validateMessages}>
+    <Form form={form} component={false}>
       <EditableContext.Provider value={form}>
         <tr {...props} />
       </EditableContext.Provider>

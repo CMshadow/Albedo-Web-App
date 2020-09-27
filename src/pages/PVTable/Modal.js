@@ -96,11 +96,6 @@ export const PVModal = ({showModal, setactiveData, setshowModal, editRecord, set
     </Row>
   )
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
-
   // modal被关闭后回调
   const onClose = () => {
     form.resetFields();
@@ -182,7 +177,6 @@ export const PVModal = ({showModal, setactiveData, setshowModal, editRecord, set
         className={styles.form}
         name="add-PV"
         scrollToFirstError
-        validateMessages={validateMessages}
         labelCol={labelCol}
         wrapperCol={wrapperCol}
         onFinish={submitForm}

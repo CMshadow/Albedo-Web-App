@@ -59,11 +59,6 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     )
   ))
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
-
   const handleOk = () => {
     if (tilt.validateStatus === 'error' || azimuth.validateStatus === 'error') {
       return
@@ -283,7 +278,6 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
         hideRequiredMark
         name="newSpec"
         scrollToFirstError
-        validateMessages={validateMessages}
         onFinish={submitForm}
         initialValues={genInitValues(spec)}
       >

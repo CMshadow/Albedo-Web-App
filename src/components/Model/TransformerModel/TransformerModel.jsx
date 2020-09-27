@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next';
 import { QuestionCircleOutlined } from '@ant-design/icons'
-import { Row, Col, Select, Form, Tooltip, Input, Divider, Spin, Slider, InputNumber, Space } from 'antd'
+import { Row, Col, Select, Form, Tooltip, Input, Divider, Spin, Slider } from 'antd'
 import { transDefaultValue6Kor10K, transDefaultValue35K } from './defaultValues'
 import { wiringOptions, wiringChoice } from '../../../pages/Project/service'
 
@@ -225,7 +225,8 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
           <FormItem
             name='transformer_cable_len'
             label={t('project.spec.transformer_cable_len')}
-            rules={[{required: true}]}
+            normalize={val => val ? Number(val) : val}
+            rules={[{required: true, type: 'number', min: 0}]}
           >
             <Input 
               type='number' addonAfter={unit} 
@@ -248,7 +249,8 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
                 S<sub>e</sub> <QuestionCircleOutlined />  
               </Tooltip>
             }
-            rules={[{required: true}]}
+            normalize={val => val ? Number(val) : val}
+            rules={[{required: true, type: 'number', min: 0}]}
           >
             <Input 
               type='number' 
@@ -269,7 +271,8 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
                 ΔP<sub>0</sub> <QuestionCircleOutlined />  
               </Tooltip>
             }
-            rules={[{required: true}]}
+            normalize={val => val ? Number(val) : val}
+            rules={[{required: true, type: 'number', min: 0}]}
           >
             <Input type='number' addonAfter='W'/>
           </FormItem>
@@ -283,7 +286,8 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
                 P<sub>k</sub> <QuestionCircleOutlined />  
               </Tooltip>
             }
-            rules={[{required: true}]}
+            normalize={val => val ? Number(val) : val}
+            rules={[{required: true, type: 'number', min: 0}]}
           >
             <Input type='number' addonAfter='W'/>
           </FormItem>
@@ -300,7 +304,8 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
                 S<sub>c</sub> <QuestionCircleOutlined />
               </Tooltip>
             }
-            rules={[{required: true}]} 
+            normalize={val => val ? Number(val) : val}
+            rules={[{required: true, type: 'number', min: 0}]}
           >
             <Input type='number' addonAfter='W' />
           </FormItem>

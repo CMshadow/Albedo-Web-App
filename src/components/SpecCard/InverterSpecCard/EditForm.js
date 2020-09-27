@@ -104,11 +104,6 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
   // pps对应文本
   const [ppsmsg, setppsmsg] = useState(null)
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
-
   // 自定义校验组串线缆长度输入是否符合规范
   const validateDCCableLen = value => {
     // 含非数字
@@ -333,7 +328,6 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
         hideRequiredMark
         name="newSpec"
         scrollToFirstError
-        validateMessages={validateMessages}
         onFinish={submitForm}
         initialValues={{
           ...invSpec,
@@ -442,7 +436,8 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
                   </Space>
                 </Tooltip>
               }
-              rules={[{required: true}]}
+              normalize={val => val ? Number(val) : val}
+              rules={[{required: true, type: 'number', min: 0}]}
             >
               <Input
                 type='number'

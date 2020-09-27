@@ -52,9 +52,7 @@ const PowerGrid = () => {
                     setTimeout(() => {
                       dispatch(addTransformer())
                       setloading(false)
-                      if (projectTransformers.length > 0) {
-                        document.getElementById(`trans${projectTransformers.length - 1}`).scrollIntoView(true)
-                      }
+                      document.getElementById(`trans${projectTransformers.length}`).scrollIntoView(false)
                     }, 500)
                   }}
                 >

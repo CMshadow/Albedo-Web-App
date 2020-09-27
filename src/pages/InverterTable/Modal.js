@@ -135,11 +135,6 @@ export const InverterModal = ({showModal, setshowModal, setactiveData, editRecor
     </Row>
   )
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
-
   // modal被关闭后回调
   const onClose = () => {
     form.resetFields();
@@ -228,7 +223,6 @@ export const InverterModal = ({showModal, setshowModal, setactiveData, editRecor
         className={styles.form}
         name="Inverter"
         scrollToFirstError
-        validateMessages={validateMessages}
         labelCol={labelCol}
         wrapperCol={wrapperCol}
         onFinish={submitForm}

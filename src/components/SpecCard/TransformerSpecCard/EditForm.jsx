@@ -276,11 +276,6 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
     setcurCapacity(combiboxCapacity + inverterCapacity)
   }
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
-
   const handleOk = () => {
     // 验证表单，如果通过提交表单
     form.validateFields()
@@ -311,6 +306,9 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
       delete values[`linked_combibox_serial_num_${buildingIndex}`]
     })
     values.transformer_cable_len = other2m(unit, Number(values.transformer_cable_len))
+    if (values.transformer_wir_num > 1) {
+      values.transformer_wir_choice = `${values.transformer_wir_num} (${values.transformer_wir_choice})`
+    }
     dispatch(editTransformer({transformerIndex, ...values}))
     seteditingFalse()
   }
@@ -400,7 +398,6 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
       hideRequiredMark
       name="transformerSpec"
       scrollToFirstError
-      validateMessages={validateMessages}
       onFinish={submitForm}
       initialValues={genInitValues()}
     >

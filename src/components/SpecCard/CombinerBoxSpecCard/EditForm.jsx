@@ -158,11 +158,6 @@ export const EditForm = ({buildingID, combiboxIndex, seteditingFalse}) => {
     setintermediate(newintermediate)
   }
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
-
   const handleOk = () => {
     // 验证表单，如果通过提交表单
     form.validateFields()
@@ -252,7 +247,6 @@ export const EditForm = ({buildingID, combiboxIndex, seteditingFalse}) => {
       hideRequiredMark
       name="combiboxSpec"
       scrollToFirstError
-      validateMessages={validateMessages}
       onFinish={submitForm}
       initialValues={genInitValues()}
     >
@@ -288,7 +282,8 @@ export const EditForm = ({buildingID, combiboxIndex, seteditingFalse}) => {
           <FormItem
             name='combibox_cable_len'
             label={t('project.spec.combibox_cable_len')}
-            rules={[{required: true}]}
+            normalize={val => val ? Number(val) : val}
+            rules={[{required: true, type: 'number', min: 0}]}
           >
             <Input type='number' addonAfter={unit}/>
           </FormItem>

@@ -13,11 +13,6 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
   const [form] = Form.useForm()
   const unit = useSelector(state => state.unit.unit)
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
-
   // modal被关闭后回调
   const onClose = () => {
     form.resetFields();
@@ -78,7 +73,6 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
         hideRequiredMark
         name="buildingName"
         scrollToFirstError
-        validateMessages={validateMessages}
         onFinish={submitForm}
       >
         <FormItem
@@ -91,15 +85,10 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
         <FormItem
           name='combibox_cable_len'
           label={combibox_cable_lenText()}
-          rules={[{required: true}]}
+          normalize={val => val ? Number(val) : val}
+          rules={[{required: true, type: 'number', min: 0}]}
         >
-          <InputNumber
-            formatter={value => `${value}${unit}`}
-            parser={value => value.replace(unit, '')}
-            precision={2}
-            min={0}
-            style={{width: '100%'}}
-          />
+          <Input type='number' addonAfter={unit}/>
         </FormItem>
       </Form>
     </Modal>

@@ -118,7 +118,7 @@ export const PVSpecCard = ({id, buildingID, specIndex, collapseActive, setcollap
                   setTimeout(() => {
                     addSpec()
                     setloading(false)
-                    document.getElementById(`inv${specIndex}${invsSpec.length-1}`).scrollIntoView(true)
+                    document.getElementById(`inv${specIndex}${invsSpec.length}`).scrollIntoView()
                   }, 500);
                 }}
               >

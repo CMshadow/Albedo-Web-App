@@ -34,11 +34,6 @@ const EmailSupport = () => {
   const [custFileList, setcustFileList] = useState([])
   const [imageURL, setimageURL] = useState(null)
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
-
   const turnOnTriggerHandler = () => {
     setEmailFormTriger(true);
   }
@@ -128,11 +123,7 @@ const EmailSupport = () => {
         maskStyle={{...maskstyle}}
         onCancel={turnOffTriggerHandler}
       >
-        <Form {...layout}
-          name="EmailSupportForm"
-          onFinish={sendEmail}
-          validateMessages={validateMessages}
-        >
+        <Form {...layout} name="EmailSupportForm" onFinish={sendEmail}>
           <Title level={4} className={classes.formTitle}>
             {t('techsupport.contactus')}
           </Title>

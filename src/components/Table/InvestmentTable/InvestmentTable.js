@@ -12,16 +12,10 @@ const Title = Typography.Title
 const Text = Typography.Text
 
 const EditableRow = ({ index, ...props }) => {
-  const { t } = useTranslation()
   const [form] = Form.useForm();
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required'),
-    min: t('form.min.0')
-  };
 
   return (
-    <Form form={form} component={false} validateMessages={validateMessages} >
+    <Form form={form} component={false} >
       <EditableContext.Provider value={form}>
         <tr {...props} />
       </EditableContext.Provider>

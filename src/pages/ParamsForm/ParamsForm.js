@@ -99,11 +99,6 @@ const ParamsForm = () => {
     [['p_loss_ac_wiring', 'disabled', 'disabled'], ['p_loss_transformer', 'disabled', 'disabled']]
   ]
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
-
   const genFormInputArea = (key, step, min, max, marks) => {
     switch(step) {
       case 'disabled':
@@ -209,7 +204,6 @@ const ParamsForm = () => {
         form={form}
         name="report-params"
         scrollToFirstError
-        validateMessages={validateMessages}
         labelAlign='left'
         labelCol={labelCol}
         wrapperCol={wrapperCol}

@@ -124,7 +124,8 @@ export const SingleBuildingTab = ({building}) => {
                     seteditingCombibox(building.combibox.length)
                     addCB(building.buildingID)
                     setloading(false)
-                    document.getElementById(`combibox${building.combibox.length - 1}`).scrollIntoView(true)
+
+                    document.getElementById(`combibox${building.combibox.length-1}`).scrollIntoView()
                   }, 500)
                 }}
               >

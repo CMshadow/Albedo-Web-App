@@ -121,11 +121,6 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
     else googleDecode()
   }
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
-
   // modal取消键onclick
   const handleCancel = () => {
     setshowModal(false);
@@ -241,7 +236,6 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
         labelCol={labelCol}
         wrapperCol={wrapperCol}
         hideRequiredMark
-        validateMessages={validateMessages}
         onFinish={submitForm}
       >
         <FormItem name='projectTitle' label={t('project.create.title')} rules={[{required: true}]}>
