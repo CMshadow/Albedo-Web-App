@@ -127,3 +127,50 @@ async (dispatch, getState) =>{
     throw err
   })
 }
+
+export const wiringOptions = ({type, ...values}) => async (dispatch, getState) => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.get(
+    `/wiringoptions`,
+    {
+      params: {
+        type: type,
+        ut: values.Ut
+      },
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => res.data)
+  .catch(err => {
+    console.log(err)
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}
+
+export const wiringChoice = ({type, ...values}) => async (dispatch, getState) => {
+  const session = await Auth.currentSession()
+  dispatch(setCognitoUserSession(session))
+
+  return axios.get(
+    `/wiringchoice`,
+    {
+      params: {
+        type: type,
+        ut: values.Ut,
+        se: values.Se,
+        transformercablelen: values.TransformerCableLen,
+        allowacvoldropfac: values.allowACVolDropFac
+      },
+      headers: {'COG-TOKEN': session.idToken.jwtToken}
+    }
+  )
+  .then(res => res.data)
+  .catch(err => {
+    console.log(err)
+    notification.error({message: err.response.data.message})
+    throw err
+  })
+}

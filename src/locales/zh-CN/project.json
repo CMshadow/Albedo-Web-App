@@ -146,6 +146,9 @@
   "project.spec.transformer.consumption_loss.power": "自用电功率",
   "project.spec.linked_combibox_serial_num": "关联汇流箱",
   "project.spec.linked_combibox_inverter_serial_num": "关联汇流箱及逆变器",
+  "project.spec.transformer.wiring_option": "输出线缆选型",
+  "project.spec.transformer.ACVolDropFac": "变压器压降系数",
+  "project.spec.transformer.transformer_wir_choice": "输出线缆",
 
   "project.spec.transformer_serial_num": "变压器编号",
   "project.spec.transformer_capacity": "变压器额定容量",

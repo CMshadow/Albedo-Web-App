@@ -18,6 +18,7 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
   const [form] = Form.useForm()
   const unit = useSelector(state => state.unit.unit)
 
+  const projectACVolDropFac = useSelector(state => state.project.ACVolDropFac)
   const buildings = useSelector(state => state.project.buildings)
   const allTransformers = useSelector(state => state.project.transformers)
   const transformerData = allTransformers[transformerIndex]
@@ -317,6 +318,7 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
   // 生成表单默认值
   const genInitValues = () => {
     const initValues = {...transformerData}
+    initValues.transformer_ACVolDropFac = transformerData.transformer_ACVolDropFac || projectACVolDropFac
     const initInvCBValues = splitLinkedEquipmentSerial('inverter')
     Object.keys(initInvCBValues).forEach((buildingIndex) => 
       initValues[`linked_inverter_serial_num_${buildingIndex}`] = initInvCBValues[buildingIndex]
@@ -423,12 +425,15 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
           </FormItem>
         </Col>
         <Col span={8}>
-          <FormItem
-            name='transformer_cable_len'
-            label={t('project.spec.transformer_cable_len')}
-            rules={[{required: true}]}
+          <FormItem 
+            name='transformer_linked_capacity'
+            label={t('project.spec.transformer.linked-capacity')}
           >
-            <Input type='number' addonAfter={unit}/>
+            <Input 
+              type='number' 
+              disabled
+              addonAfter='kVA'
+            />
           </FormItem>
         </Col>
       </Row>
@@ -439,71 +444,71 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
         curCapacity={curCapacity}
         formChanged={formChanged}
         setformChanged={setformChanged}
-      />
+      >
+        <Row gutter={rowGutter}>
+          <Col span={24}>
+            <Collapse ghost>
+            {
+              buildings.map((building, buildingIndex) => 
+                <Panel forceRender key={building.buildingID} header={building.buildingName}>
+                  <Checkbox
+                    indeterminate={intermediate[buildingIndex]}
+                    onChange={() => {
+                      setformChanged(true)
+                      const check = checkUncheckAll(buildingIndex)
+                      check ? 
+                      calculateCapacity(buildingIndex, null, null) : 
+                      calculateCapacity(buildingIndex, [], [])
+                    }}
+                    checked={checkAll[buildingIndex]}
+                  >
+                    {t('action.checkall')}
+                  </Checkbox>
+                  <Divider className={styles.divider}/>
+                  {
+                    createCombiboxCheckboxOptions(buildingIndex).length > 0 ?
+                    <FormItem 
+                      name={`linked_combibox_serial_num_${buildingIndex}`}
+                      label={t('project.spec.linked_combibox_serial_num')}
+                    >
+                      <Checkbox.Group
+                        options={createCombiboxCheckboxOptions(buildingIndex)}
+                        onChange={vals => {
+                          setformChanged(true)
+                          calculateCapacity(buildingIndex, vals, null)
+                          updateCheckAll(buildingIndex, vals, null)
+                          updateIntermediate(buildingIndex, vals, null)
+                        }}
+                      />
+                    </FormItem> :
+                    null
+                  }
+                  {
+                    createInverterCheckboxOptions(buildingIndex).length > 0 ?
+                    <FormItem 
+                      name={`linked_inverter_serial_num_${buildingIndex}`}
+                      label={t('project.spec.linked_inverter_serial_num')}
+                    >
+                      <Checkbox.Group
+                        options={createInverterCheckboxOptions(buildingIndex)}
+                        onChange={vals => {
+                          setformChanged(true)
+                          calculateCapacity(buildingIndex, null, vals)
+                          updateCheckAll(buildingIndex, null, vals)
+                          updateIntermediate(buildingIndex, null, vals)
+                        }}
+                      />
+                    </FormItem> :
+                    null
+                  }   
+                </Panel>
+              )
+            }
+            </Collapse>
+          </Col>
+        </Row>
+      </TransformerModel>
 
-      <Row gutter={rowGutter}>
-        <Col span={24}>
-          <Collapse ghost>
-          {
-            buildings.map((building, buildingIndex) => 
-              <Panel forceRender key={building.buildingID} header={building.buildingName}>
-                <Checkbox
-                  indeterminate={intermediate[buildingIndex]}
-                  onChange={() => {
-                    setformChanged(true)
-                    const check = checkUncheckAll(buildingIndex)
-                    check ? 
-                    calculateCapacity(buildingIndex, null, null) : 
-                    calculateCapacity(buildingIndex, [], [])
-                  }}
-                  checked={checkAll[buildingIndex]}
-                >
-                  {t('action.checkall')}
-                </Checkbox>
-                <Divider className={styles.divider}/>
-                {
-                  createCombiboxCheckboxOptions(buildingIndex).length > 0 ?
-                  <FormItem 
-                    name={`linked_combibox_serial_num_${buildingIndex}`}
-                    label={t('project.spec.linked_combibox_serial_num')}
-                  >
-                    <Checkbox.Group
-                      options={createCombiboxCheckboxOptions(buildingIndex)}
-                      onChange={vals => {
-                        setformChanged(true)
-                        calculateCapacity(buildingIndex, vals, null)
-                        updateCheckAll(buildingIndex, vals, null)
-                        updateIntermediate(buildingIndex, vals, null)
-                      }}
-                    />
-                  </FormItem> :
-                  null
-                }
-                {
-                  createInverterCheckboxOptions(buildingIndex).length > 0 ?
-                  <FormItem 
-                    name={`linked_inverter_serial_num_${buildingIndex}`}
-                    label={t('project.spec.linked_inverter_serial_num')}
-                  >
-                    <Checkbox.Group
-                      options={createInverterCheckboxOptions(buildingIndex)}
-                      onChange={vals => {
-                        setformChanged(true)
-                        calculateCapacity(buildingIndex, null, vals)
-                        updateCheckAll(buildingIndex, null, vals)
-                        updateIntermediate(buildingIndex, null, vals)
-                      }}
-                    />
-                  </FormItem> :
-                  null
-                }   
-              </Panel>
-            )
-          }
-          </Collapse>
-        </Col>
-      </Row>
-      
       <Row align='middle' justify='center'>
         <FormItem className={styles.submitBut}>
           <Button type='primary' onClick={handleOk}>

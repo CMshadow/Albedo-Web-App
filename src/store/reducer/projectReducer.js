@@ -500,7 +500,8 @@ const addTransformer = (state, action) => {
     transformer_no_load_loss: null,
     transformer_power: 150,
     transformer_short_circuit_loss: null,
-    transformer_type: null
+    transformer_type: null,
+    transformer_wir_choice: null
   }
   newTransformers.push(newTransformer)
 
@@ -525,7 +526,9 @@ const editTransformer = (state, action) => {
     transformer_no_load_loss: Number(action.transformer_no_load_loss),
     transformer_power: Number(action.transformer_power),
     transformer_short_circuit_loss: Number(action.transformer_short_circuit_loss),
-    transformer_type: action.transformer_type
+    transformer_type: action.transformer_type,
+    transformer_ACVolDropFac: action.transformer_ACVolDropFac,
+    transformer_wir_choice: action.transformer_wir_choice
   }
   newTransformers.splice(action.transformerIndex, 1, newTransformer)
 

@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next';
 import { QuestionCircleOutlined } from '@ant-design/icons'
-import { Row, Col, Select, Form, Tooltip, Input, Divider } from 'antd'
+import { Row, Col, Select, Form, Tooltip, Input, Divider, Spin, Slider } from 'antd'
 import { transDefaultValue6Kor10K, transDefaultValue35K } from './defaultValues'
+import { wiringOptions, wiringChoice } from '../../../pages/Project/service'
 
 const FormItem = Form.Item;
 const { Option } = Select
-
+const markStyle = {overflow: 'hidden', whiteSpace: 'nowrap'}
 const rowGutter = { md: 8, lg: 15, xl: 32 };
 
 // 给定Ut和当前关联设备容量，在国标中查找最接近的变压器容量
@@ -75,9 +77,19 @@ const autoValue = (Ut, capacity, type) => {
 }
 
 
-export const TransformerModel = ({form, transformerData, curCapacity, formChanged, setformChanged}) => {
+export const TransformerModel = ({children, form, transformerData, curCapacity, formChanged, setformChanged}) => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
   const [disableDryType, setdisableDryType] = useState(false)
+  const [loading, setloading] = useState(false)
+  const [options, setoptions] = useState(false)
+  const unit = useSelector(state => state.unit.unit)
+
+  // ACVolDropFac标识
+  const ACVolDropFacMarks = {
+    0.1: t('report.paramsForm.drop_0.1'),
+    5:  {style: markStyle, label: t('report.paramsForm.drop_5')}
+  }
 
   // 如果提供有Ut, 变压器类型和变压器容量，自动更新 transformer_no_load_loss和transformer_short_circuit_loss
   // 否则清空
@@ -100,6 +112,23 @@ export const TransformerModel = ({form, transformerData, curCapacity, formChange
     }
   }, [form])
 
+  const autoWiringChoice = useCallback((ut=null, capacity=null, cableLen=null, ACVolDropFac=null) => {
+    const Ut = ut || form.getFieldValue('Ut')
+    const Se = capacity || Number(form.getFieldValue('transformer_capacity'))
+    const TransformerCableLen = cableLen || Number(form.getFieldValue('transformer_cable_len'))
+    const allowACVolDropFac = ACVolDropFac ? ACVolDropFac / 100 : form.getFieldValue('transformer_ACVolDropFac') / 100
+    console.log(Ut, Se, TransformerCableLen, allowACVolDropFac)
+    if ( Ut && Se > 0 && TransformerCableLen && allowACVolDropFac) {
+      setloading(true)
+      dispatch(wiringChoice({type: 'transformer', Ut, Se, TransformerCableLen, allowACVolDropFac}))
+      .then(res => {
+        setloading(false)
+        form.setFieldsValue({'transformer_wir_choice': res.transformer_wir_choice})
+      })
+      .catch(err => setloading(false))
+    }
+  }, [dispatch, form])
+
   // Ut改变回调，同时会自动更新变压器容量值和变压器类型，并自动计算no_load_loss值和short_circuit_loss
   const onChangeUt = (val) => {
     setformChanged(true)
@@ -112,6 +141,18 @@ export const TransformerModel = ({form, transformerData, curCapacity, formChange
       autoField(null, nearestCapacity(val, curCapacity))
       setdisableDryType(false)
     }
+    setloading(true)
+    dispatch(wiringOptions({type: 'transformer', Ut: val}))
+    .then(res => {
+      setloading(false)
+      setoptions(res.map(val => ({label: val, value: val})))
+      autoWiringChoice(val)
+    })
+    .catch(err => setloading(false))
+  }
+
+  const onSliderChange = val => {
+    autoWiringChoice(null, null, null, val)
   }
 
   // 当给入的当前关联设备容量变化时，如果存在Ut就会自动更新变压器容量值，transformer_no_load_loss和transformer_short_circuit_loss
@@ -121,11 +162,23 @@ export const TransformerModel = ({form, transformerData, curCapacity, formChange
         const nearestCap = nearestCapacity(form.getFieldValue('Ut'), curCapacity)
         form.setFieldsValue({'transformer_capacity': nearestCap})
         autoField(null, nearestCap)
+        autoWiringChoice(null, nearestCap)
       }
       form.setFieldsValue({'transformer_linked_capacity': Number(curCapacity.toFixed(2))})
     }
+  }, [autoField, autoWiringChoice, curCapacity, form, formChanged, transformerData.transformer_linked_capacity])
 
-  }, [autoField, curCapacity, form, formChanged, transformerData.transformer_linked_capacity])
+  useEffect(() => {
+    if (form.getFieldValue('Ut')) {
+      setloading(true)
+      dispatch(wiringOptions({type: 'transformer', Ut: form.getFieldValue('Ut')}))
+      .then(res => {
+        setloading(false)
+        setoptions(res.map(val => ({label: val, value: val})))
+      })
+      .catch(err => setloading(false))
+    }
+  }, [dispatch, form])
 
   return (
     <>
@@ -162,18 +215,21 @@ export const TransformerModel = ({form, transformerData, curCapacity, formChange
         </Col>
 
         <Col span={8}>
-          <FormItem 
-            name='transformer_linked_capacity'
-            label={t('project.spec.transformer.linked-capacity')}
+          <FormItem
+            name='transformer_cable_len'
+            label={t('project.spec.transformer_cable_len')}
+            rules={[{required: true}]}
           >
             <Input 
-              type='number' 
-              disabled
-              addonAfter='kVA'
+              type='number' addonAfter={unit} 
+              onChange={val => autoWiringChoice(null, null, Number(val.target.value))}
             />
           </FormItem>
         </Col>
       </Row>
+      
+      <Divider>{t('project.spec.linked_combibox_inverter_serial_num')}</Divider>
+      {children}
 
       <Divider>{t('project.spec.transformer.power_loss')}</Divider>
       <Row gutter={rowGutter}>
@@ -189,7 +245,10 @@ export const TransformerModel = ({form, transformerData, curCapacity, formChange
           >
             <Input 
               type='number' 
-              onChange={val => autoField(null, Number(val.target.value))}
+              onChange={val => {
+                autoField(null, Number(val.target.value))
+                autoWiringChoice(null, Number(val.target.value))
+              }}
               addonAfter='kVA'
             />
           </FormItem>
@@ -241,7 +300,33 @@ export const TransformerModel = ({form, transformerData, curCapacity, formChange
         </Col>
       </Row>
 
-      <Divider>{t('project.spec.linked_combibox_inverter_serial_num')}</Divider>
+      <Spin spinning={loading}>
+        <Divider>{t('project.spec.transformer.wiring_option')}</Divider>
+        <Row gutter={rowGutter}>
+          <Col span={8} offset={2}>
+            <FormItem
+              name='transformer_ACVolDropFac'
+              label={t('project.spec.transformer.ACVolDropFac')}
+              labelCol={{span: 24}}
+              wrapperCol={{span: 24}}
+            >
+              <Slider marks={ACVolDropFacMarks} step={0.05} min={0.1} max={5} onAfterChange={onSliderChange}/>
+            </FormItem>
+          </Col>
+
+          <Col span={8} offset={3}>
+            <FormItem
+              name='transformer_wir_choice'
+              label={t('project.spec.transformer.transformer_wir_choice')}
+              rules={[{required: true}]}
+              labelCol={{span: 24}}
+              wrapperCol={{span: 24}}
+            >
+              <Select options={options}/>
+            </FormItem>
+          </Col>
+        </Row>
+      </Spin>
     </>
   )
 }
