@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next';
 import { QuestionCircleOutlined } from '@ant-design/icons'
-import { Row, Col, Select, Form, Tooltip, Input, Divider, Spin, Slider } from 'antd'
+import { Row, Col, Select, Form, Tooltip, Input, Divider, Spin, Slider, InputNumber, Space } from 'antd'
 import { transDefaultValue6Kor10K, transDefaultValue35K } from './defaultValues'
 import { wiringOptions, wiringChoice } from '../../../pages/Project/service'
 
@@ -117,13 +117,20 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
     const Se = capacity || Number(form.getFieldValue('transformer_capacity'))
     const TransformerCableLen = cableLen || Number(form.getFieldValue('transformer_cable_len'))
     const allowACVolDropFac = ACVolDropFac ? ACVolDropFac / 100 : form.getFieldValue('transformer_ACVolDropFac') / 100
-    console.log(Ut, Se, TransformerCableLen, allowACVolDropFac)
+
     if ( Ut && Se > 0 && TransformerCableLen && allowACVolDropFac) {
       setloading(true)
       dispatch(wiringChoice({type: 'transformer', Ut, Se, TransformerCableLen, allowACVolDropFac}))
       .then(res => {
+        const chunk = res.transformer_wir_choice.split('(')
+        if (chunk.length > 1) {
+          form.setFieldsValue({'transformer_wir_num': Number(chunk[0].trim())})
+          form.setFieldsValue({'transformer_wir_choice': chunk[1].split(')')[0].trim()})
+        } else {
+          form.setFieldsValue({'transformer_wir_num': 1})
+          form.setFieldsValue({'transformer_wir_choice': res.transformer_wir_choice})
+        }
         setloading(false)
-        form.setFieldsValue({'transformer_wir_choice': res.transformer_wir_choice})
       })
       .catch(err => setloading(false))
     }
@@ -314,15 +321,32 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
             </FormItem>
           </Col>
 
-          <Col span={8} offset={3}>
-            <FormItem
-              name='transformer_wir_choice'
+          <Col span={10} offset={3}>
+            <FormItem 
               label={t('project.spec.transformer.transformer_wir_choice')}
-              rules={[{required: true}]}
               labelCol={{span: 24}}
               wrapperCol={{span: 24}}
             >
-              <Select options={options}/>
+              <Row gutter={rowGutter} align='top'>
+                <Col span={8}>
+                  <FormItem
+                    name='transformer_wir_num'
+                    label=''
+                    rules={[{required: true, type: 'number', min: 1, transform: val => Number(val)}]}
+                  >
+                    <Input type='number' addonAfter={t('project.spec.transformer.transformer_wir_num')}/>
+                  </FormItem>
+                </Col>
+                <Col span={16}>
+                  <FormItem
+                    name='transformer_wir_choice'
+                    rules={[{required: true}]}
+                    wrapperCol={{span: 24}}
+                  >
+                    <Select options={options}/>
+                  </FormItem>
+                </Col>
+              </Row>
             </FormItem>
           </Col>
         </Row>

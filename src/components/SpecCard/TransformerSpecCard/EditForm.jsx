@@ -327,6 +327,15 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
     Object.keys(initCombiboxCBValues).forEach((buildingIndex) => 
       initValues[`linked_combibox_serial_num_${buildingIndex}`] = initCombiboxCBValues[buildingIndex]
     )
+    if (transformerData.transformer_wir_choice) {
+      if (transformerData.transformer_wir_choice.includes('(')) {
+        const chunk = transformerData.transformer_wir_choice.split('(')
+        initValues.transformer_wir_num = Number(chunk[0].trim())
+        initValues.transformer_wir_choice = chunk[1].split(')')[0].trim()
+      } else {
+        initValues.transformer_wir_num = 1
+      }
+    }
     return initValues
   }
 
