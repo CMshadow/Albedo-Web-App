@@ -29,7 +29,7 @@ export const SpecView = ({buildingID, combiboxIndex}) => {
 
   return (
     <>
-      <Descriptions column={{ lg:2, xl: 3}} bordered style={{borderBottom: 0}}>
+      <Descriptions column={3} bordered layout='vertical' style={{borderBottom: 0}}>
         <Item label={t('project.spec.combibox_serial')} span={1}>
           <Text className={styles.serial}>
             C{combiboxData.combibox_serial_num.split('-')[1]}
@@ -44,10 +44,10 @@ export const SpecView = ({buildingID, combiboxIndex}) => {
         <Item label={t('project.spec.capacity')} span={1}>
           {`${w2other(capacity).value} ${w2other(capacity).unit}`}
         </Item>
-        <Item label={t('project.spec.combibox_cable_len')}>
+        <Item label={t('project.spec.combibox_cable_len')} span={2}>
           {m2other(unit, combiboxData.combibox_cable_len).toFixed(2)} {unit}
         </Item>
-        <Item label={t('project.spec.linked_inverter_serial_num')}>
+        <Item label={t('project.spec.linked_inverter_serial_num')} span={3}>
           <Paragraph className={styles.linkedInverterParagraph}>
           {
             combiboxData.linked_inverter_serial_num.map(serial => `S${serial}`).join(' , ')

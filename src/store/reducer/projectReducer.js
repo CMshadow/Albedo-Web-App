@@ -553,9 +553,17 @@ const deleteTransformer = (state, action) => {
 
 const addPowercabinet = (state, action) => {
   const newPowercabinets = state.powercabinets ? [...state.powercabinets] : []
-  const newPowercabinet = {}
+  const newPowercabinet = {
+    powercabinet_name: null,
+    powercabinet_serial_num: newPowercabinets.length + 1,
+    linked_transformer_serial_num: [],
+    linked_combibox_serial_num: [],
+    linked_inverter_serial_num: [],
+    Ub: null,
+    powercabinet_linked_capacity: null,
+  }
   newPowercabinets.push(newPowercabinet)
-
+  console.log('hello')
   return {
     ...state,
     powercabinets: newPowercabinets

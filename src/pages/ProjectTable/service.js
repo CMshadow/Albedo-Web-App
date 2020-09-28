@@ -49,7 +49,7 @@ export const getApiKey = () => async dispatch => {
 export const createProject = (values) => async dispatch => {
   const session = await Auth.currentSession()
   dispatch(setCognitoUserSession(session))
-
+  console.log(values)
   return axios.post(
     `/project/${session.idToken.payload.sub}`,
     values,

@@ -154,6 +154,11 @@
   "project.spec.transformer_serial_num": "变压器编号",
   "project.spec.transformer_capacity": "变压器额定容量",
 
+  "project.spec.powercabinet.Ub": "上网电压",
+  "project.spec.powercabinet.powercabinet_name": "并网柜名称",
+  "project.spec.powercabinet.linked-capacity": "当前关联设备容量",
+  "project.spec.linked_transformer_serial_num": "关联变压器",
+
   "project.autoInverter.too-small": "逆变器规格与装机量不匹配",
   "project.autoInverter.too-small.detail": "当前装机容量小于逆变器最佳输入装机容量，考虑增大装机量或选用更小规格逆变器",
   "project.autoInverter.no-fit": "组件与逆变器不匹配，请选用其他型号",

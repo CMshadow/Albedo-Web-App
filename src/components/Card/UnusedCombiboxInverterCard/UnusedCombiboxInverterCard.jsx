@@ -5,7 +5,35 @@ import { useTranslation } from 'react-i18next'
 import * as styles from './UnusedCombiboxInverterCard.module.scss'
 
 const { Panel } = Collapse
-const { Text, Paragraph } = Typography
+const { Paragraph } = Typography
+
+export const findUnusedCombiboxSerial = (allTransformers, building) => {
+  const allCombiboxSerial = building.combibox.map(combibox => 
+    combibox.combibox_serial_num
+  )
+  const allUsedCombiboxSerial = allTransformers.flatMap(trans =>
+    trans.linked_combibox_serial_num
+  )
+  return allCombiboxSerial.filter(serial => !allUsedCombiboxSerial.includes(serial))
+}
+
+export const findUnusedInverterSerial = (allTransformers, building) => {
+  const allInverterSerial = building.data.flatMap((spec, specIndex) =>
+    spec.inverter_wiring.map(inverter => 
+      `${building.buildingName}-${specIndex + 1}-${inverter.inverter_serial_number}`
+    )
+  )
+  const allUsedInverterSerial = allTransformers.flatMap(trans =>
+    trans.linked_inverter_serial_num
+  ).concat(
+    building.combibox ? 
+    building.combibox.flatMap(combibox => 
+      combibox.linked_inverter_serial_num.map(serial => `${building.buildingName}-${serial}`)
+    ) :
+    []
+  )
+  return allInverterSerial.filter(serial => !allUsedInverterSerial.includes(serial))
+}
 
 export const UnusedCombiboxInverterCard = () => {
   const { t } = useTranslation()
@@ -13,34 +41,8 @@ export const UnusedCombiboxInverterCard = () => {
   const allTransformers = projectData.transformers || []
   
   const genUnusedCombiboxInverter = (building) => {
-    const allCombiboxSerial = building.combibox.map(combibox => 
-      combibox.combibox_serial_num
-    )
-    const allUsedCombiboxSerial = allTransformers.flatMap(trans =>
-      trans.linked_combibox_serial_num
-    )
-    const unusedCombiboxSerial = allCombiboxSerial.filter(serial => 
-      !allUsedCombiboxSerial.includes(serial)
-    )
-
-
-    const allInverterSerial = building.data.flatMap((spec, specIndex) =>
-      spec.inverter_wiring.map(inverter => 
-        `${building.buildingName}-${specIndex + 1}-${inverter.inverter_serial_number}`
-      )
-    )
-    const allUsedInverterSerial = allTransformers.flatMap(trans =>
-      trans.linked_inverter_serial_num
-    ).concat(
-      building.combibox ? 
-      building.combibox.flatMap(combibox => 
-        combibox.linked_inverter_serial_num.map(serial => `${building.buildingName}-${serial}`)
-      ) :
-      []
-    )
-    const unusedInverterSerial = allInverterSerial.filter(serial => 
-      !allUsedInverterSerial.includes(serial)
-    )
+    const unusedCombiboxSerial = findUnusedCombiboxSerial(allTransformers, building)
+    const unusedInverterSerial = findUnusedInverterSerial(allTransformers, building)
 
     return (
       <>
