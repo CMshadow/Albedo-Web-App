@@ -155,6 +155,7 @@
   "project.spec.transformer_capacity": "变压器额定容量",
 
   "project.spec.powercabinet.Ub": "上网电压",
+  "project.spec.powercabinet.powercabinet_serial_num": "并网柜编号",
   "project.spec.powercabinet.powercabinet_name": "并网柜名称",
   "project.spec.powercabinet.linked-capacity": "当前关联设备容量",
   "project.spec.linked_transformer_serial_num": "关联变压器",

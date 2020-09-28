@@ -563,7 +563,7 @@ const addPowercabinet = (state, action) => {
     powercabinet_linked_capacity: null,
   }
   newPowercabinets.push(newPowercabinet)
-  console.log('hello')
+
   return {
     ...state,
     powercabinets: newPowercabinets
@@ -572,7 +572,15 @@ const addPowercabinet = (state, action) => {
 
 const editPowercabinet = (state, action) => {
   const newPowercabinets = state.powercabinets ? [...state.powercabinets] : []
-  const newPowercabinet = {}
+  const newPowercabinet = {
+    powercabinet_name: action.powercabinet_name,
+    powercabinet_serial_num: action.powercabinetIndex + 1,
+    linked_transformer_serial_num: action.linked_transformer_serial_num,
+    linked_combibox_serial_num: action.linked_combibox_serial_num,
+    linked_inverter_serial_num: action.linked_inverter_serial_num,
+    Ub: action.Ub,
+    powercabinet_linked_capacity: action.powercabinet_linked_capacity,
+  }
   newPowercabinets.splice(action.powercabinetIndex, 1, newPowercabinet)
 
   return {

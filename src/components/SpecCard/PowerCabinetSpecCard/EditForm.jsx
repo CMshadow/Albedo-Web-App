@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Divider, Typography } from 'antd';
 import { findUnusedCombiboxSerial, findUnusedInverterSerial } from '../../Card/UnusedCombiboxInverterCard/UnusedCombiboxInverterCard'
 import { editPowercabinet } from '../../../store/action/index'
-import { other2m } from '../../../utils/unitConverter'
 import * as styles from './PowerCabinetSpecCard.module.scss'
 const FormItem = Form.Item;
 const { Panel } = Collapse;
@@ -16,7 +15,6 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [form] = Form.useForm()
-  const unit = useSelector(state => state.unit.unit)
 
   const buildings = useSelector(state => state.project.buildings)
   const allTransformers = useSelector(state => state.project.transformers)
@@ -26,7 +24,6 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
     useSelector(state => state.inverter.officialData)
   )
   const [selUb, setselUb] = useState(powercabinetData.Ub || null)
-  const [curCapacity, setcurCapacity] = useState(powercabinetData.powercabinet_linked_capacity || 0)
 
   // 其他并网柜连接的变压器值
   const usedTransformerSerial = allPowercabinets
@@ -140,7 +137,7 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
   // 判断一个光伏单元的checkall状态
   const determineCheckAll = (curCBValues, CBOptions) => {
     let status
-    if (curCBValues.length > 0) {
+    if (curCBValues && curCBValues.length > 0) {
       status = CBOptions
         .filter(obj => !obj.disabled)
         .map(obj => obj.value)
@@ -154,7 +151,7 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
   // 判断一个光伏单元的intermediate状态
   const determineIntermediate = (curCBValues, CBOptions) => {
     let status
-    if (curCBValues.length > 0) {
+    if (curCBValues && curCBValues.length > 0) {
       status = 
         CBOptions
           .filter(obj => !obj.disabled)
@@ -218,8 +215,8 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
 
   // 某个subAry种checkbox值变化后更新全部checkAll状态
   const updateCheckAll = (buildingIndex, curCombiboxCBValues, curInvCBValues) => {
-    const combiboxCBValues = curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`)
-    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`)
+    const combiboxCBValues = curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`) || []
+    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
     const status = determineCheckAll(
       [...combiboxCBValues, ...invCBValues],
       [...createCombiboxCheckboxOptions(buildingIndex), ...createInverterCheckboxOptions(buildingIndex)]
@@ -230,15 +227,15 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
   }
   // 更新变压器checkAll状态
   const updateTransformerCheckAll = (curTransformerCBValues) => {
-    const transformerCBValues = curTransformerCBValues || form.getFieldValue('linked_transformer_serial_num')
+    const transformerCBValues = curTransformerCBValues || form.getFieldValue('linked_transformer_serial_num') || []
     const newTransformerCheckAll = determineCheckAll(transformerCBValues, createTransformerCheckboxOptions())
     settransCheckAll(newTransformerCheckAll)
   }
 
   // 某个subAry种checkbox值变化后更新全部intermediate状态
   const updateIntermediate = (buildingIndex, curCombiboxCBValues, curInvCBValues) => {
-    const combiboxCBValues = curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`)
-    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`)
+    const combiboxCBValues = curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`) || []
+    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
     const status = determineIntermediate(
       [...combiboxCBValues, ...invCBValues],
       [...createCombiboxCheckboxOptions(buildingIndex), ...createInverterCheckboxOptions(buildingIndex)]
@@ -249,7 +246,7 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
   }
   // 更新变压器intermediate状态
   const updateTransformerIntermediate = (curTransformerCBValues) => {
-    const transformerCBValues = curTransformerCBValues || form.getFieldValue('linked_transformer_serial_num')
+    const transformerCBValues = curTransformerCBValues || form.getFieldValue('linked_transformer_serial_num') || []
     const newTransformerCheckAll = determineIntermediate(transformerCBValues, createTransformerCheckboxOptions())
     settransIntermediate(newTransformerCheckAll)
   }
@@ -267,8 +264,24 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
   }
 
   const submitForm = (values) => {
-    console.log(values)
-    // seteditingFalse()
+    values.linked_inverter_serial_num = []
+    buildings.forEach((building, buildingIndex) => {
+      values.linked_inverter_serial_num = [
+        ...values.linked_inverter_serial_num,
+        ...values[`linked_inverter_serial_num_${buildingIndex}`] || []
+      ]
+      delete values[`linked_inverter_serial_num_${buildingIndex}`]
+    })
+    values.linked_combibox_serial_num = []
+    buildings.forEach((building, buildingIndex) => {
+      values.linked_combibox_serial_num = [
+        ...values.linked_combibox_serial_num,
+        ...values[`linked_combibox_serial_num_${buildingIndex}`] || []
+      ]
+      delete values[`linked_combibox_serial_num_${buildingIndex}`]
+    })
+    dispatch(editPowercabinet({powercabinetIndex, ...values}))
+    seteditingFalse()
   }
 
   // 生成表单默认值
@@ -285,8 +298,56 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
     return initValues
   }
 
-  const calculateCapacity = () => {
-    // allTransformers.map()
+  const calculateCapacity = (linkedTransformerSerial, onChangbuildingIndex, linkedCombiboxSerial, linkedInverterSerial) => {
+    const transformerSerial = 
+      linkedTransformerSerial || form.getFieldValue(`linked_transformer_serial_num`) || []
+    const transformerCapacity = transformerSerial.reduce((acc, serial) => {
+      return acc + allTransformers.find(trans => 
+        trans.transformer_serial_num === serial
+      ).transformer_capacity
+    }, 0)
+
+    const combiboxCapacity = buildings.map((building, buildingIndex) => {
+      let combiboxSerial
+      if (buildingIndex === onChangbuildingIndex && linkedCombiboxSerial) {
+        combiboxSerial = linkedCombiboxSerial
+      } else {
+        combiboxSerial = form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`) || []
+      }
+      return combiboxSerial.reduce((acc, serial) => 
+        acc + building.combibox.find(combibox => 
+          combibox.combibox_serial_num === serial
+        ).linked_inverter_serial_num.reduce((acc2, invSerial) => {
+          const specIndex = invSerial.split('-')[0] - 1
+          const invIndex = invSerial.split('-')[1] - 1
+          const findInv = building.data[specIndex].inverter_wiring[invIndex]
+          return acc2 + inverterData.find(obj => 
+            obj.inverterID === findInv.inverter_model.inverterID
+          ).paco
+        }, 0)
+      , 0)
+    }).reduce((acc, val) => acc + val, 0)
+
+    const inverterCapacity = buildings.map((building, buildingIndex) => {
+      let inverterSerial
+      if (buildingIndex === onChangbuildingIndex && linkedInverterSerial) {
+        inverterSerial = linkedInverterSerial
+      } else {
+        inverterSerial = form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
+      }
+      return inverterSerial.reduce((acc, serial) => {
+        const specIndex = serial.split('-')[1] - 1
+        const invIndex = serial.split('-')[2] - 1
+        const findInv = building.data[specIndex].inverter_wiring[invIndex]
+        return acc + inverterData.find(obj => 
+          obj.inverterID === findInv.inverter_model.inverterID
+        ).paco
+      }, 0)
+    }).reduce((acc, val) => acc + val, 0)
+
+    form.setFieldsValue({
+      'powercabinet_linked_capacity': transformerCapacity + combiboxCapacity + inverterCapacity
+    })
   }
 
   // 改变并网柜Ub后回调uncheck掉所有与新Ub不符的选项
@@ -309,7 +370,6 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
       })
       setcheckAll(checkAll.map(_ => false))
       setintermediate(intermediate.map(_ => false))
-      calculateCapacity()
     } else {
       const curTransformerCBValues = form.getFieldValue('linked_transformer_serial_num') || []
       const newTransformerCBValues = curTransformerCBValues.filter(serial => {
@@ -320,8 +380,8 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
       form.setFieldsValue({'linked_transformer_serial_num': newTransformerCBValues})
       settransCheckAll(false)
       settransIntermediate(false)
-      calculateCapacity()
     }
+    calculateCapacity()
   }
 
   // 点击汇流箱和逆变器checkAll按钮后根据当前checkAll状态判定勾选所有可选项，或全部不勾选,并更新checkAll状态和intermediate状态
@@ -384,7 +444,7 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
       name="powercabinateSpec"
       scrollToFirstError
       onFinish={submitForm}
-      // initialValues={genInitValues()}
+      initialValues={genInitValues()}
     >
       <Row gutter={rowGutter}>
         <Col span={8}>
@@ -420,7 +480,6 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
             label={t('project.spec.powercabinet.linked-capacity')}
           >
             <Input 
-              value={curCapacity}
               type='number' 
               disabled
               addonAfter='kVA'
@@ -436,15 +495,12 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
 
             <>
               <Checkbox
-                // indeterminate={intermediate[buildingIndex]}
-                // onChange={() => {
-                //   setformChanged(true)
-                //   const check = checkUncheckAll(buildingIndex)
-                //   check ? 
-                //   calculateCapacity(buildingIndex, null, null) : 
-                //   calculateCapacity(buildingIndex, [], [])
-                // }}
-                // checked={checkAll[buildingIndex]}
+                indeterminate={transIntermediate}
+                onChange={() => {
+                  const check = transformerCheckUncheckAll()
+                  check ? calculateCapacity() : calculateCapacity([])
+                }}
+                checked={transCheckAll}
               >
                 {t('action.checkall')}
               </Checkbox>
@@ -455,11 +511,11 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
               >
                 <Checkbox.Group
                   options={createTransformerCheckboxOptions()}
-                  // onChange={vals => {
-                  //   setformChanged(true)
-                  //   updateCheckAll(buildingIndex, vals, null)
-                  //   updateIntermediate(buildingIndex, vals, null)
-                  // }}
+                  onChange={vals => {
+                    calculateCapacity(vals)
+                    updateTransformerCheckAll(vals)
+                    updateTransformerIntermediate(vals)
+                  }}
                 />
               </FormItem>
             </> :
@@ -469,14 +525,14 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
               buildings.map((building, buildingIndex) => 
                 <Panel forceRender key={building.buildingID} header={building.buildingName}>
                   <Checkbox
-                    // indeterminate={intermediate[buildingIndex]}
-                    // onChange={() => {
-                    //   const check = checkUncheckAll(buildingIndex)
-                    //   check ? 
-                    //   calculateCapacity(buildingIndex, null, null) : 
-                    //   calculateCapacity(buildingIndex, [], [])
-                    // }}
-                    // checked={checkAll[buildingIndex]}
+                    indeterminate={intermediate[buildingIndex]}
+                    onChange={() => {
+                      const check = checkUncheckAll(buildingIndex)
+                      check ? 
+                      calculateCapacity(null, buildingIndex, null, null) :
+                      calculateCapacity(null, buildingIndex, [], []) 
+                    }}
+                    checked={checkAll[buildingIndex]}
                   >
                     {t('action.checkall')}
                   </Checkbox>
@@ -489,12 +545,11 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
                     >
                       <Checkbox.Group
                         options={createCombiboxCheckboxOptions(buildingIndex)}
-                        // onChange={vals => {
-                        //   setformChanged(true)
-                        //   calculateCapacity(buildingIndex, vals, null)
-                        //   updateCheckAll(buildingIndex, vals, null)
-                        //   updateIntermediate(buildingIndex, vals, null)
-                        // }}
+                        onChange={vals => {
+                          calculateCapacity(null, buildingIndex, vals, null)
+                          updateCheckAll(buildingIndex, vals, null)
+                          updateIntermediate(buildingIndex, vals, null)
+                        }}
                       />
                     </FormItem> :
                     null
@@ -507,12 +562,11 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
                     >
                       <Checkbox.Group
                         options={createInverterCheckboxOptions(buildingIndex)}
-                        // onChange={vals => {
-                        //   setformChanged(true)
-                        //   calculateCapacity(buildingIndex, null, vals)
-                        //   updateCheckAll(buildingIndex, null, vals)
-                        //   updateIntermediate(buildingIndex, null, vals)
-                        // }}
+                        onChange={vals => {
+                          calculateCapacity(null, buildingIndex, null, vals)
+                          updateCheckAll(buildingIndex, null, vals)
+                          updateIntermediate(buildingIndex, null, vals)
+                        }}
                       />
                     </FormItem> :
                     null
