@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Tabs, Button, Space, Row, Col, Anchor } from 'antd';
+import { Tabs, Button, Space } from 'antd';
 import { SettingOutlined } from '@ant-design/icons'
 import * as styles from './BuildingsTab.module.scss';
 import { BuildingModal } from './BuildingModal'
 import { SingleBuildingTab } from './SingleBuildingTab'
-import { deleteBuilding, addPVSpec, addCombibox } from '../../store/action/index'
-import { PVSpecCard } from '../SpecCard/PVSpecCard/PVSpecCard'
-import { CombinerBoxSpecCard } from '../SpecCard/CombinerBoxSpecCard/CombinerBoxSpecCard'
+import { deleteBuilding } from '../../store/action/index'
 
 const { TabPane } = Tabs
-const { Link } = Anchor
-const rowGutter = [12, 12]
 
 export const BuildingsTab = ({buildings, ...props}) => {
   const dispatch = useDispatch()
@@ -20,8 +16,6 @@ export const BuildingsTab = ({buildings, ...props}) => {
   const projectType = useSelector(state => state.project.projectType)
   const [showModal, setshowModal] = useState(false)
   const [editRecord, seteditRecord] = useState(null)
-  const [editingCombibox, seteditingCombibox] = useState(null)
-  const [loading, setloading] = useState(false)
 
   const deleteBuildingTab = (targetKey) => {
     dispatch(deleteBuilding(targetKey))
@@ -29,14 +23,6 @@ export const BuildingsTab = ({buildings, ...props}) => {
 
   const onEdit = (targetKey, action) => {
     if (action === 'remove') deleteBuildingTab(targetKey)
-  }
-
-  const addSpec = (buildingID) => {
-    dispatch(addPVSpec(buildingID))
-  }
-
-  const addCB = (buildingID) => {
-    dispatch(addCombibox(buildingID))
   }
 
   const addBuildingButton = (

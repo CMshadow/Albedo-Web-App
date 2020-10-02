@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Card, Button } from 'antd';
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons'
@@ -9,12 +9,8 @@ import * as styles from './CombinerBoxSpecCard.module.scss';
 
 export const CombinerBoxSpecCard = ({id, buildingID, combiboxIndex, editingCombibox, seteditingCombibox, ...props}) => {
   const dispatch = useDispatch()
-  const [editing, setediting] = useState(true)
+  const [editing, setediting] = useState(props.combibox_vac === null)
   const [loading, setloading] = useState(false)
-
-  useEffect(() => {
-    if (props.combibox_vac !== null) setediting(false)
-  }, [props.combibox_vac])
 
   return (
     <Card

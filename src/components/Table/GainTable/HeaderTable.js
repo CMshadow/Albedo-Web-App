@@ -9,7 +9,6 @@ const EditableContext = React.createContext();
 
 
 const EditableRow = ({ index, ...props }) => {
-  const { t } = useTranslation()
   const [form] = Form.useForm();
 
   return (

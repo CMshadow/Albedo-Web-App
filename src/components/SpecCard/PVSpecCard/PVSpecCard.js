@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Card, Row, Col, Divider, Button, Collapse } from 'antd';
@@ -17,7 +17,7 @@ const toolbarSpan = {sm: 10, md: 6, lg: 3, xl: 2}
 export const PVSpecCard = ({id, buildingID, specIndex, collapseActive, setcollapseActive, ...props}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const [editing, setediting] = useState(true)
+  const [editing, setediting] = useState(props.tilt_angle === null)
   const [loading, setloading] = useState(false)
   const [deleteLoading, setdeleteLoading] = useState(false)
 
@@ -39,10 +39,6 @@ export const PVSpecCard = ({id, buildingID, specIndex, collapseActive, setcollap
     }
     setcollapseActive(newcollapseActive)
   }
-
-  useEffect(() => {
-    if (props.tilt_angle !== null) setediting(false)
-  }, [props.tilt_angle])
 
   return (
     <Card id={id} className={styles.card} bodyStyle={{padding: '0px'}} loading={deleteLoading}>

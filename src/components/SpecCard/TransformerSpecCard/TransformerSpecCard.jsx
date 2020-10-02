@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Card, Button } from 'antd';
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons'
@@ -9,12 +9,8 @@ import * as styles from './TransformerSpecCard.module.scss';
 
 export const TransformerSpecCard = ({id, transformerIndex, editingTransformer, seteditingTransformer, ...props}) => {
   const dispatch = useDispatch()
-  const [editing, setediting] = useState(true)
+  const [editing, setediting] = useState(props.transformer_name === null)
   const [loading, setloading] = useState(false)
-
-  useEffect(() => {
-    if (props.transformer_name !== null) setediting(false)
-  }, [props.transformer_name])
 
   return (
     <Card

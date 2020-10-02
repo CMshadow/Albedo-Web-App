@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Modal, Input, Form, InputNumber } from 'antd';
+import { Modal, Input, Form } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBuilding, editBuilding } from '../../store/action/index';
@@ -61,6 +61,7 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
 
   return (
     <Modal
+      forceRender
       visible={showModal}
       onOk={handleOk}
       onCancel={handleCancel}

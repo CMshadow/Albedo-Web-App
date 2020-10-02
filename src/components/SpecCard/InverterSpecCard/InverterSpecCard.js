@@ -12,7 +12,7 @@ import * as styles from './InverterSpecCard.module.scss';
 export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled, ...props}) => {
   const dispatch = useDispatch()
   const { projectID } = useParams()
-  const [editing, setediting] = useState(true)
+  const [editing, setediting] = useState(props.panels_per_string === null)
   const [invLimits, setinvLimits] = useState({})
   const [loading, setloading] = useState(false)
 
@@ -32,10 +32,6 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
   const selInv = invSpec.inverter_model.inverterID ? 
     inverterData.find(inv => inv.inverterID === invSpec.inverter_model.inverterID) :
     null
-
-  useEffect(() => {
-    if (props.panels_per_string !== null) setediting(false)
-  }, [props.panels_per_string])
 
   useEffect(() => {
     // 如果选择了逆变器计算该逆变器配合使用组件的可选接线方案

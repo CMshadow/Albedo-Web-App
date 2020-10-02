@@ -47,12 +47,12 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
   // 每个光伏单元中没有接入变压器的汇流箱serial, 光伏单元index为key, [完整汇流箱serial]为value
   const unlinkedCombiboxSerial = {}
   buildings.forEach((building, buildingIndex) => {
-    unlinkedCombiboxSerial[buildingIndex] = findUnusedCombiboxSerial(allTransformers, building)
+    unlinkedCombiboxSerial[buildingIndex] = findUnusedCombiboxSerial(allTransformers, allPowercabinets, building)
   })
   // 每个光伏单元中没有接入变压器的逆变器serial, 光伏单元index为key, [完整逆变器serial]为value
   const unlinkedInverterSerial = {}
   buildings.forEach((building, buildingIndex) => {
-    unlinkedInverterSerial[buildingIndex] = findUnusedInverterSerial(allTransformers, building)
+    unlinkedInverterSerial[buildingIndex] = findUnusedInverterSerial(allTransformers, allPowercabinets, building)
   })
 
   // 每个光伏单元下每个汇流箱的vac，光伏单元index为key, [vac]为value

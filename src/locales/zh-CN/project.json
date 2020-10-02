@@ -128,6 +128,7 @@
   "project.spec.subAry": "子区域",
 
   "project.spec.unusedEquipments": "未连接设备清单",
+  "project.spec.unlink_transformer_serial": "未连接变压器编号",
   "project.spec.unlink_combibox_serial": "未连接汇流箱编号",
   "project.spec.unlink_inverter_serial": "未连接逆变器编号",
   "project.spec.transformer_vac": "变压器输入电压",

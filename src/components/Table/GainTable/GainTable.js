@@ -13,7 +13,6 @@ const Text = Typography.Text
 let finance = new Finance();
 
 const EditableRow = ({ index, ...props }) => {
-  const { t } = useTranslation()
   const [form] = Form.useForm();
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Card, Button } from 'antd';
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons'
@@ -9,12 +9,8 @@ import * as styles from './PowerCabinetSpecCard.module.scss';
 
 export const PowerCabinetSpecCard = ({id, powercabinetIndex, editingPowercabinet, seteditingPowercabinet, ...props}) => {
   const dispatch = useDispatch()
-  const [editing, setediting] = useState(true)
+  const [editing, setediting] = useState(props.powercabinet_name === null)
   const [loading, setloading] = useState(false)
-
-  useEffect(() => {
-    if (props.powercabinet_name !== null) setediting(false)
-  }, [props.powercabinet_name])
 
   return (
     <Card

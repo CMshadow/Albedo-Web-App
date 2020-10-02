@@ -16,7 +16,6 @@ import NotFound404 from './pages/404';
 import Term from './pages/static/Term'
 import Cookie from './pages/static/Cookie'
 import Privacy from './pages/static/Privacy'
-import ModelingLayout from './layouts/Modeling/ModelingLayout/ModelingLayout'
 import DisplayPage from './pages/static/DisplayPage/index'
 import EnDisplayPage from './pages/static/EnDisplayPage/index'
 import VideoPage from './pages/static/VideoPage/VideoPage'
@@ -27,7 +26,6 @@ const Dashboard = lazy(() => import('./pages/Project/Dashboard'))
 const PowerGrid = lazy(() => import('./pages/PowerGrid/PowerGrid'))
 const PVTable = lazy(() => import('./pages/PVTable/index'))
 const InverterTable = lazy(() => import('./pages/InverterTable/index'))
-const ModelingPage = lazy(() => import('./pages/Modeling/Modeling'))
 const SLD = lazy(() => import('./pages/SingleLineDiagram/index'))
 
 const Router = () => {
@@ -87,15 +85,6 @@ const Router = () => {
             <BasicLayout>
               <InverterTable/>
             </BasicLayout>
-          </PrivateRoute>
-          <PrivateRoute path='/modeling'>
-            <ModelingLayout>
-              <Switch>
-                <PrivateRoute path='/modeling/:projectID'>
-                  <ModelingPage/>
-                </PrivateRoute>
-              </Switch>
-            </ModelingLayout>
           </PrivateRoute>
           <Route path="/terms">
             <Term />

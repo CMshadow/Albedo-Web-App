@@ -27,8 +27,11 @@ const AntdConfig = (props) => {
         number: '必填数字'
       },
       number: {
+        // eslint-disable-next-line no-template-curly-in-string
         min: '不能小于${min}',
+        // eslint-disable-next-line no-template-curly-in-string
         max: '不能大于${max}',
+        // eslint-disable-next-line no-template-curly-in-string
         range: '必须在${min}到${max}区间内',
       }
     },
@@ -38,8 +41,11 @@ const AntdConfig = (props) => {
         number: 'number is required'
       },
       number: {
+        // eslint-disable-next-line no-template-curly-in-string
         min: 'cannot be less than ${min}',
+        // eslint-disable-next-line no-template-curly-in-string
         max: 'cannot be greater than ${max}',
+        // eslint-disable-next-line no-template-curly-in-string
         range: 'must be between ${min} and ${max}',
       }
     }
