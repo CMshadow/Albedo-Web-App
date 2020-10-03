@@ -100,7 +100,25 @@ const deleteBuilding = (state, action) => {
         }),
       linked_combibox_serial_num: transformer.linked_combibox_serial_num
         .filter(val => {
-          console.log(val)
+          const buildingName = val.split('-')[0]
+          const buildingID = newBuildings.find(building => building.buildingName === buildingName).buildingID
+          return !(buildingID === action.buildingID)
+        })
+    }))
+  }
+  // 如果项目有并网柜，把并网柜中所有与房屋有关的逆变器汇流箱都删掉
+  let newPowercabinets = state.powercabinets || []
+  if ('powercabinets' in state) {
+    newPowercabinets = newPowercabinets.map(powercabinet => ({
+      ...powercabinet,
+      linked_inverter_serial_num: powercabinet.linked_inverter_serial_num
+        .filter(val => {
+          const buildingName = val.split('-')[0]
+          const buildingID = newBuildings.find(building => building.buildingName === buildingName).buildingID
+          return !(buildingID === action.buildingID)
+        }),
+      linked_combibox_serial_num: powercabinet.linked_combibox_serial_num
+        .filter(val => {
           const buildingName = val.split('-')[0]
           const buildingID = newBuildings.find(building => building.buildingName === buildingName).buildingID
           return !(buildingID === action.buildingID)
@@ -112,6 +130,7 @@ const deleteBuilding = (state, action) => {
   return {
     ...state,
     transformers: newTransformers,
+    powercabinets: newPowercabinets,
     buildings: newBuildings
   }
 }
@@ -204,10 +223,25 @@ const editPVSpec = (state, action) => {
         })
     }))
   }
+  // 如果带自动匹配逆变器结果，并且项目中有并网柜，则把并网柜上所有和这个spec相关的逆变器去除（理由同上）
+  let newPowercabinets = state.powercabinets || []
+  if (action.invPlan.plan && 'powercabinets' in state) {
+    newPowercabinets = newPowercabinets.map(powercabinet => ({
+      ...powercabinet,
+      linked_inverter_serial_num: powercabinet.linked_inverter_serial_num
+        .filter(val => {
+          const buildingName = val.split('-')[0]
+          const specIndex = val.split('-')[1] - 1
+          const buildingID = newBuildings.find(building => building.buildingName === buildingName).buildingID
+          return !(buildingID === action.buildingID && specIndex === action.specIndex)
+        })
+    }))
+  }
 
   return {
     ...state,
     transformers: newTransformers,
+    powercabinets: newPowercabinets,
     buildings: newBuildings
   }
 }
@@ -259,10 +293,35 @@ const deletePVSpec = (state, action) => {
         })
     }))
   }
+  // 如果项目有并网柜，把并网柜中所有与spec有关的逆变器都删掉， 并把所有specIndex后面的汇流箱编号中的specIndex前移一个数字
+  let newPowercabinets = state.powercabinets || []
+  if ('powercabinets' in state) {
+    newPowercabinets = newPowercabinets.map(powercabinet => ({
+      ...powercabinet,
+      linked_inverter_serial_num: powercabinet.linked_inverter_serial_num
+        .filter(val => {
+          const buildingName = val.split('-')[0]
+          const specIndex = val.split('-')[1] - 1
+          const buildingID = newBuildings.find(building => building.buildingName === buildingName).buildingID
+          return !(buildingID === action.buildingID && specIndex === action.specIndex)
+        })
+        .map(val => {
+          const buildingName = val.split('-')[0]
+          const specIndex = val.split('-')[1] - 1
+          const buildingID = newBuildings.find(building => building.buildingName === buildingName).buildingID
+          if (buildingID === action.buildingID && specIndex > action.specIndex) {
+            return `${buildingName}-${specIndex}-${val.split('-')[2]}`
+          } else {
+            return val
+          }
+        })
+    }))
+  }
 
   return {
     ...state,
     transformers: newTransformers,
+    powercabinets: newPowercabinets,
     buildings: newBuildings
   }
 }
@@ -321,10 +380,21 @@ const editInverterSpec = (state, action) => {
       )
     }))
   }
+  // 如果更改了逆变器型号并且项目有并网柜，把并网柜中关联的该逆变器去除
+  let newPowercabinets = state.powercabinets || []
+  if (action.inverterID !== oldInverterID && 'powercabinets' in state) {
+    newPowercabinets = newPowercabinets.map(powercabinet => ({
+      ...powercabinet,
+      linked_inverter_serial_num: powercabinet.linked_inverter_serial_num.filter(val => 
+        val !== `${newBuildings[buildingIndex].buildingName}-${action.specIndex + 1}-${action.invIndex + 1}`
+      )
+    }))
+  }
 
   return {
     ...state,
     transformers: newTransformers,
+    powercabinets: newPowercabinets,
     buildings: newBuildings
   }
 }
@@ -381,10 +451,32 @@ const deleteInverterSpec = (state, action) => {
       })
     }))
   }
+  // 如果项目有并网柜，把并网柜中关联的该逆变器去除，并把后续逆变器编号往前减一位
+  let newPowercabinets = state.powercabinets || []
+  if ('powercabinets' in state) {
+    newPowercabinets = newPowercabinets.map(powercabinet => ({
+      ...powercabinet,
+      linked_inverter_serial_num: powercabinet.linked_inverter_serial_num
+      .filter(val => 
+        val !== `${newBuildings[buildingIndex].buildingName}-${action.specIndex + 1}-${action.invIndex + 1}`
+      )
+      .map(val => {
+        const buildingName = val.split('-')[0]
+        const specIndex = val.split('-')[1] - 1
+        const invIndex = val.split('-')[2] - 1
+        if (buildingName === newBuildings[buildingIndex].buildingName && specIndex === action.specIndex) {
+          return invIndex >= action.invIndex ? `${buildingName}-${specIndex + 1}-${invIndex}` : val
+        } else {
+          return val
+        }
+      })
+    }))
+  }
 
   return {
     ...state,
     transformers: newTransformers,
+    powercabinets: newPowercabinets,
     buildings: newBuildings
   }
 }
@@ -430,7 +522,7 @@ const editCombibox = (state, action) => {
     linked_inverter_serial_num: action.linked_inverter_serial_num
   }
   newBuildings[buildingIndex].combibox[action.combiboxIndex] = newCombibox
-  // 如果更改了逆变器型号并且项目有变压器，把变压器中关联的该逆变器去除
+  // 如果更改了汇流箱VAC并且项目有变压器，把变压器中关联的该汇流箱去除
   let newTransformers = state.transformers || []
   if (action.combibox_vac !== oldVac && 'transformers' in state) {
     newTransformers = newTransformers.map(transformer => ({
@@ -440,10 +532,21 @@ const editCombibox = (state, action) => {
       )
     }))
   }
+  // 如果更改了汇流箱vac(vac > 400)并且项目有并网柜，把并网柜中关联的该汇流箱去除
+  let newPowercabinets = state.powercabinets || []
+  if (action.combibox_vac > 400 && 'powercabinets' in state) {
+    newPowercabinets = newPowercabinets.map(powercabinet => ({
+      ...powercabinet,
+      linked_combibox_serial_num: powercabinet.linked_combibox_serial_num.filter(val => 
+        val !== `${newBuildings[buildingIndex].buildingName}-${action.combiboxIndex + 1}`
+      )
+    }))
+  }
 
   return {
     ...state,
     transformers: newTransformers,
+    powercabinets: newPowercabinets,
     buildings: newBuildings
   }
 }
@@ -478,9 +581,31 @@ const deleteCombibox = (state, action) => {
       })
     }))
   }
+  // 如果项目有并网柜，把并网柜中关联的该汇流箱去除，并把同房屋上后续汇流箱编号往前减一位
+  let newPowercabinets = state.powercabinets || []
+  if ('powercabinets' in state) {
+    newPowercabinets = newPowercabinets.map(powercabinet => ({
+      ...powercabinet,
+      linked_combibox_serial_num: powercabinet.linked_combibox_serial_num
+      .filter(val => 
+        val !== `${newBuildings[buildingIndex].buildingName}-${action.combiboxIndex + 1}`
+      )
+      .map(val => {
+        const buildingName = val.split('-')[0]
+        const combiboxIndex = val.split('-')[1] - 1
+        if (buildingName === newBuildings[buildingIndex].buildingName) {
+          return combiboxIndex >= action.combiboxIndex ? `${buildingName}-${combiboxIndex}` : val
+        } else {
+          return val
+        }
+      })
+    }))
+  }
+
   return {
     ...state,
     transformers: newTransformers,
+    powercabinets: newPowercabinets,
     buildings: newBuildings
   }
 }
@@ -512,6 +637,7 @@ const addTransformer = (state, action) => {
 }
 
 const editTransformer = (state, action) => {
+  const oldUt = state.transformers[action.transformerIndex].Ut
   const newTransformers = state.transformers ? [...state.transformers] : []
   const newTransformer = {
     transformer_name: action.transformer_name,
@@ -531,10 +657,21 @@ const editTransformer = (state, action) => {
     transformer_wir_choice: action.transformer_wir_choice
   }
   newTransformers.splice(action.transformerIndex, 1, newTransformer)
+  // 如果更改了变压器Ut并且项目有并网柜，把并网柜中关联的该变压器去除
+  let newPowercabinets = state.powercabinets || []
+  if (action.Ut !== oldUt && 'powercabinets' in state) {
+    newPowercabinets = newPowercabinets.map(powercabinet => ({
+      ...powercabinet,
+      linked_transformer_serial_num: powercabinet.linked_transformer_serial_num.filter(val => 
+        val !== `${action.transformerIndex + 1}`
+      )
+    }))
+  }
 
   return {
     ...state,
-    transformers: newTransformers
+    transformers: newTransformers,
+    powercabinets: newPowercabinets,
   }
 }
 
@@ -544,10 +681,27 @@ const deleteTransformer = (state, action) => {
   newTransformers.forEach((transformer, index) => 
     transformer.transformer_serial_num = index + 1
   )
+  // 如果项目有并网柜，把并网柜中关联的该变压器去除，并把同房屋上后续变压器编号往前减一位
+  let newPowercabinets = state.powercabinets || []
+  if ('powercabinets' in state) {
+    newPowercabinets = newPowercabinets.map(powercabinet => ({
+      ...powercabinet,
+      linked_transformer_serial_num: powercabinet.linked_transformer_serial_num
+      .filter(val => val !== `${action.transformerIndex + 1}`)
+      .map(val => {
+        if (val > action.transformerIndex) {
+          return val - 1
+        } else {
+          return val
+        }
+      })
+    }))
+  }
 
   return {
     ...state,
-    transformers: newTransformers
+    transformers: newTransformers,
+    powercabinets: newPowercabinets
   }
 }
 

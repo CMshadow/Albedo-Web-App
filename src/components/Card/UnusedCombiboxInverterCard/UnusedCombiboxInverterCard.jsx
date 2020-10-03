@@ -11,11 +11,9 @@ export const findUnusedTransformerSerial = (allPowercabinets, allTransformers) =
   const allTranformerSerial = allTransformers.map(transformer =>
     transformer.transformer_serial_num
   )
-  console.log(allTranformerSerial)
   const allUsedTransformerSerial = allPowercabinets.flatMap(powercabinet =>
     powercabinet.linked_transformer_serial_num
   )
-  console.log(allUsedTransformerSerial)
   return allTranformerSerial.filter(serial => !allUsedTransformerSerial.includes(serial))
 }
 
