@@ -69,6 +69,7 @@ export const PVSpecCard = ({id, buildingID, specIndex, collapseActive, setcollap
               icon={<DeleteOutlined />}
               onClick={() => {
                 setdeleteLoading(true)
+                setediting(false)
                 setTimeout(() => {
                   setdeleteLoading(false)
                   const newcollapseActive = [...collapseActive]

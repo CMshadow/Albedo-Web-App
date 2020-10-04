@@ -22,7 +22,7 @@ export const SpecView = ({buildingID, specIndex}) => {
 
   const pvIndex = pvData.map(record => record.pvID)
     .indexOf(spec.pv_model.pvID)
-  const pvName = pvData[pvIndex].name
+  const pvName = pvIndex >= 0 ? pvData[pvIndex].name : ''
 
   const capacity = buildings[buildingIndex].data[specIndex].inverter_wiring
   .reduce((acc, obj) =>
@@ -34,8 +34,8 @@ export const SpecView = ({buildingID, specIndex}) => {
   )
 
   const genCelltempText = () => {
-    const model = spec.celltemp_model.split(',')[0]
-    const second = spec.celltemp_model.split(',')[1]
+    const model = spec.celltemp_model ? spec.celltemp_model.split(',')[0] : ''
+    const second = spec.celltemp_model ? spec.celltemp_model.split(',')[1] : ''
     const modelText = t(`project.spec.model.${model}`)
     let modeText
     let mountText
@@ -46,7 +46,8 @@ export const SpecView = ({buildingID, specIndex}) => {
       if (model === 'pvsyst') {
         modeText = null
         mountText = t(`project.spec.mount.${second}`)
-      } else {
+      } 
+      if (model === 'sandia') {
         modeText = t(`PV.${second}`)
         mountText = t(`project.spec.mount.${spec.celltemp_model.split(',')[2]}`)
       }

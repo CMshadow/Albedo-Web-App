@@ -44,8 +44,9 @@ export const CombinerBoxSpecCard = ({id, buildingID, combiboxIndex, editingCombi
           disabled={editingCombibox !== null && editingCombibox !== combiboxIndex}
           onClick={() => {
             setloading(true)
-            setTimeout(() => {
-              seteditingCombibox(null)
+            setediting(false)
+            seteditingCombibox(null)
+            setTimeout(() => { 
               setloading(false)
               dispatch(deleteCombibox({buildingID, combiboxIndex}))
             }, 500)

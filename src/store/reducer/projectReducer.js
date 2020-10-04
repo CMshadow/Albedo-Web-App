@@ -729,9 +729,9 @@ const editPowercabinet = (state, action) => {
   const newPowercabinet = {
     powercabinet_name: action.powercabinet_name,
     powercabinet_serial_num: action.powercabinetIndex + 1,
-    linked_transformer_serial_num: action.linked_transformer_serial_num,
-    linked_combibox_serial_num: action.linked_combibox_serial_num,
-    linked_inverter_serial_num: action.linked_inverter_serial_num,
+    linked_transformer_serial_num: action.linked_transformer_serial_num || [],
+    linked_combibox_serial_num: action.linked_combibox_serial_num || [],
+    linked_inverter_serial_num: action.linked_inverter_serial_num || [],
     Ub: action.Ub,
     powercabinet_linked_capacity: action.powercabinet_linked_capacity,
   }

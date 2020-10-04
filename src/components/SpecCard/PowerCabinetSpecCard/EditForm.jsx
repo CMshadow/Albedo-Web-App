@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Divider, Typography } from 'antd';
-import { findUnusedCombiboxSerial, findUnusedInverterSerial } from '../../Card/UnusedCombiboxInverterCard/UnusedCombiboxInverterCard'
 import { editPowercabinet } from '../../../store/action/index'
 import * as styles from './PowerCabinetSpecCard.module.scss'
 const FormItem = Form.Item;
@@ -10,6 +9,40 @@ const { Panel } = Collapse;
 const { Text } = Typography
 
 const rowGutter = { md: 8, lg: 15, xl: 32 };
+
+const findUnusedCombiboxSerial = (powercabinetIndex, allTransformers, allPowercabinets, building) => {
+  const allCombiboxSerial = building.combibox.map(combibox => 
+    combibox.combibox_serial_num
+  )
+  const allUsedCombiboxSerial = allTransformers.flatMap(trans =>
+    trans.linked_combibox_serial_num
+  ).concat(
+    allPowercabinets.filter((_, index) => index !== powercabinetIndex)
+    .flatMap(powercabinet => powercabinet.linked_combibox_serial_num)
+  )
+  return allCombiboxSerial.filter(serial => !allUsedCombiboxSerial.includes(serial))
+}
+
+const findUnusedInverterSerial = (powercabinetIndex, allTransformers, allPowercabinets, building) => {
+  const allInverterSerial = building.data.flatMap((spec, specIndex) =>
+    spec.inverter_wiring.map(inverter => 
+      `${building.buildingName}-${specIndex + 1}-${inverter.inverter_serial_number}`
+    )
+  )
+  const allUsedInverterSerial = allTransformers.flatMap(trans =>
+    trans.linked_inverter_serial_num
+  ).concat(
+    building.combibox ? 
+    building.combibox.flatMap(combibox => 
+      combibox.linked_inverter_serial_num.map(serial => `${building.buildingName}-${serial}`)
+    ) :
+    []
+  ).concat(
+    allPowercabinets.filter((_, index) => index !== powercabinetIndex)
+    .flatMap(powercabinet => powercabinet.linked_inverter_serial_num)
+  )
+  return allInverterSerial.filter(serial => !allUsedInverterSerial.includes(serial))
+}
 
 export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
   const dispatch = useDispatch()
@@ -47,12 +80,16 @@ export const EditForm = ({powercabinetIndex, seteditingFalse}) => {
   // 每个光伏单元中没有接入变压器的汇流箱serial, 光伏单元index为key, [完整汇流箱serial]为value
   const unlinkedCombiboxSerial = {}
   buildings.forEach((building, buildingIndex) => {
-    unlinkedCombiboxSerial[buildingIndex] = findUnusedCombiboxSerial(allTransformers, allPowercabinets, building)
+    unlinkedCombiboxSerial[buildingIndex] = findUnusedCombiboxSerial(
+      powercabinetIndex, allTransformers, allPowercabinets, building
+    )
   })
   // 每个光伏单元中没有接入变压器的逆变器serial, 光伏单元index为key, [完整逆变器serial]为value
   const unlinkedInverterSerial = {}
   buildings.forEach((building, buildingIndex) => {
-    unlinkedInverterSerial[buildingIndex] = findUnusedInverterSerial(allTransformers, allPowercabinets, building)
+    unlinkedInverterSerial[buildingIndex] = findUnusedInverterSerial(
+      powercabinetIndex, allTransformers, allPowercabinets, building
+    )
   })
 
   // 每个光伏单元下每个汇流箱的vac，光伏单元index为key, [vac]为value

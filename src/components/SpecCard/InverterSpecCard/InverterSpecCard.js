@@ -80,6 +80,7 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
           icon={<DeleteOutlined />}
           onClick={() => {
             setloading(true)
+            setediting(false)
             setTimeout(() => {
               setloading(false)
               dispatch(deleteInverterSpec({buildingID, specIndex, invIndex}))

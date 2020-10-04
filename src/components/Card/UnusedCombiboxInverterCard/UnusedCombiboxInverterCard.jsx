@@ -7,7 +7,7 @@ import * as styles from './UnusedCombiboxInverterCard.module.scss'
 const { Panel } = Collapse
 const { Paragraph } = Typography
 
-export const findUnusedTransformerSerial = (allPowercabinets, allTransformers) => {
+const findUnusedTransformerSerial = (allPowercabinets, allTransformers) => {
   const allTranformerSerial = allTransformers.map(transformer =>
     transformer.transformer_serial_num
   )
@@ -17,7 +17,7 @@ export const findUnusedTransformerSerial = (allPowercabinets, allTransformers) =
   return allTranformerSerial.filter(serial => !allUsedTransformerSerial.includes(serial))
 }
 
-export const findUnusedCombiboxSerial = (allTransformers, allPowercabinets, building) => {
+const findUnusedCombiboxSerial = (allTransformers, allPowercabinets, building) => {
   const allCombiboxSerial = building.combibox.map(combibox => 
     combibox.combibox_serial_num
   )
@@ -29,7 +29,7 @@ export const findUnusedCombiboxSerial = (allTransformers, allPowercabinets, buil
   return allCombiboxSerial.filter(serial => !allUsedCombiboxSerial.includes(serial))
 }
 
-export const findUnusedInverterSerial = (allTransformers, allPowercabinets, building) => {
+const findUnusedInverterSerial = (allTransformers, allPowercabinets, building) => {
   const allInverterSerial = building.data.flatMap((spec, specIndex) =>
     spec.inverter_wiring.map(inverter => 
       `${building.buildingName}-${specIndex + 1}-${inverter.inverter_serial_number}`

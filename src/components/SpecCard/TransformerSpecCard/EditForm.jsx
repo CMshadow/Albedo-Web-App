@@ -20,6 +20,7 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
 
   const projectACVolDropFac = useSelector(state => state.project.ACVolDropFac)
   const buildings = useSelector(state => state.project.buildings)
+  const allPowercabinets = useSelector(state => state.project.powercabinets)
   const allTransformers = useSelector(state => state.project.transformers)
   const transformerData = allTransformers[transformerIndex]
   const inverterData = useSelector(state => state.inverter.data).concat(
@@ -29,14 +30,18 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
   const [curCapacity, setcurCapacity] = useState(transformerData.transformer_linked_capacity || 0)
   const [formChanged, setformChanged] = useState(false)
 
-  // 其他变压器连接的汇流箱值
+  // 其他所有设备连接的汇流箱值
   const usedCombiboxSerial = allTransformers
     .filter((trans, index) => index !== transformerIndex)
-    .flatMap(transformer => transformer.linked_combibox_serial_num)
-  // 其他变压器连接的逆变器值
+    .flatMap(transformer => transformer.linked_combibox_serial_num).concat(
+      allPowercabinets.flatMap(powercabinet => powercabinet.linked_combibox_serial_num)
+    )
+  // 其他所有设备连接的逆变器值
   const usedInverterSerial = allTransformers
     .filter((trans, index) => index !== transformerIndex)
-    .flatMap(transformer => transformer.linked_inverter_serial_num)
+    .flatMap(transformer => transformer.linked_inverter_serial_num).concat(
+      allPowercabinets.flatMap(powercabinet => powercabinet.linked_inverter_serial_num)
+    )
 
   // 所有光伏单元下所有汇流箱的vac
   const allCombiboxVac = new Set(buildings.flatMap(building => 

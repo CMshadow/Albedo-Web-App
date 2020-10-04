@@ -48,9 +48,10 @@ export const PowerCabinetSpecCard = ({id, powercabinetIndex, editingPowercabinet
           disabled={editingPowercabinet !== null && editingPowercabinet !== powercabinetIndex}
           onClick={() => {
             setloading(true)
+            setediting(false)
+            seteditingPowercabinet(null)
             setTimeout(() => {
               setloading(false)
-              seteditingPowercabinet(null)
               dispatch(deletePowercabinet(editingPowercabinet))
             }, 500)
           }}

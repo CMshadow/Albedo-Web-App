@@ -48,9 +48,10 @@ export const TransformerSpecCard = ({id, transformerIndex, editingTransformer, s
           disabled={editingTransformer !== null && editingTransformer !== transformerIndex}
           onClick={() => {
             setloading(true)
+            setediting(false)
+            seteditingTransformer(null)
             setTimeout(() => {
               setloading(false)
-              seteditingTransformer(null)
               dispatch(deleteTransformer(transformerIndex))
             }, 500)
           }}

@@ -19,16 +19,32 @@ export const EditForm = ({buildingID, combiboxIndex, seteditingFalse}) => {
 
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID).indexOf(buildingID)
+  const buildingName = buildings[buildingIndex].buildingName
+  const allPowercabinets = useSelector(state => state.project.powercabinets)
+  const allTransformers = useSelector(state => state.project.transformers)
   const combiboxData = buildings[buildingIndex].combibox[combiboxIndex]
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
   const [selVac, setselVac] = useState(combiboxData.combibox_vac || null)
 
-  // 其他汇流箱连接的逆变器值
+  // 其他所有设备连接的逆变器值
   const otherCombiboxValues = buildings[buildingIndex].combibox
     .filter((combibox, index) => index !== combiboxIndex)
-    .flatMap(combibox => combibox.linked_inverter_serial_num)
+    .flatMap(combibox => combibox.linked_inverter_serial_num).concat(
+      allTransformers.flatMap(transformer => 
+        transformer.linked_inverter_serial_num.filter(serial => 
+          serial.split('-')[0] === buildingName
+        ).map(serial => serial.split('-').slice(1,).join('-'))
+      )
+    ).concat(
+      allPowercabinets.flatMap(powercabinet => 
+        powercabinet.linked_inverter_serial_num.filter(serial => 
+          serial.split('-')[0] === buildingName
+        ).map(serial => serial.split('-').slice(1,).join('-'))
+      )
+    )
+  console.log(otherCombiboxValues)
 
   // 这个光伏单元下所有使用的逆变器的vac
   const allVac = new Set(buildings[buildingIndex].data.flatMap(spec => 

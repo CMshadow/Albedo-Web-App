@@ -21,7 +21,7 @@ export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
   const spec = buildings[buildingIndex].data[specIndex].inverter_wiring[invIndex]
   const selInv = inverterData.find(inv =>
     inv.inverterID === spec.inverter_model.inverterID
-  )
+  ) || {}
 
   // 所有使用的逆变器的vac
   const allVac = new Set(buildings.flatMap(building => 
