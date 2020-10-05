@@ -25,7 +25,6 @@ export default class Blog extends Component {
     this.getBlog() 
   }
   render(){
-    
     return (
       <Layout className={styles.layout}>
         <DisplayPageHeader/>

@@ -14,6 +14,7 @@ import ProjectLayout from './layouts/ProjectLayout/ProjectLayout'
 import ProjectTable from './pages/ProjectTable/ProjectTable';
 import NotFound404 from './pages/404';
 import Blog from './pages/Blog/blog';
+import PostBlog from './pages/PostBlog/PostBlog';
 import BlogDetail from './pages/BlogDetail/BlogDetail';
 import Term from './pages/static/Term'
 import Cookie from './pages/static/Cookie'
@@ -112,6 +113,7 @@ const Router = () => {
             <Switch>
               <Route path="/cn/blog" component={Blog} />
               <Route path="/cn/tutorial" component={VideoPage} />
+              <Route path="/cn/postblog" component={PostBlog} />
               <Route path="/en/tutorial" component={EnVideoPage} />
               <Route path="/cn" component={DisplayPage} />
               <Route path="/en" component={EnDisplayPage} />

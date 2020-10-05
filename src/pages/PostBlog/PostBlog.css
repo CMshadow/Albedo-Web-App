@@ -1,0 +1,13 @@
+.PostBlog{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    margin:2em;
+}
+
+.editor{
+    margin:2em;
+    
+}
+.ck-editor__editable_inline {
+    min-height: 400px;
+}

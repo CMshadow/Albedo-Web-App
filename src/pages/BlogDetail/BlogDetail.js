@@ -7,7 +7,7 @@ import * as styles from './BlogDetail.module.scss';
 import { Grid, Row} from 'react-flexbox-grid';
 import Page from './page';
 const {Content} = Layout;
-const {Title} = Typography;
+
 
 export default class BlogDetail extends Component {
   state = {
