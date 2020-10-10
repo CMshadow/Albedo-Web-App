@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Descriptions, Card, Typography, Button } from 'antd';
-import { CloudDownloadOutlined } from '@ant-design/icons'
+import { CloudDownloadOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
 import { MoneyText } from '../../utils/genMoneyText'
 import { downloadReportCSV } from '../../pages/Report/service'
@@ -18,6 +18,7 @@ export const ReportHeadDescription = ({buildingID}) => {
   const reportData = useSelector(state => state.report)
   const curBuildingReport = reportData[buildingID]
   const buildingName = projectData.buildings.find(building => building.buildingID === buildingID).buildingName
+  const [csvLoading, setcsvLoading] = useState(false)
 
   let ttl_investment = null
   if (curBuildingReport.ttl_investment) {
@@ -59,8 +60,16 @@ export const ReportHeadDescription = ({buildingID}) => {
           {ttl_investment}
         </Item>
         <Item label={t('report.head.download_csv')}>
-          <Button size='small' shape='circle' type='link' icon={<CloudDownloadOutlined />}
-            onClick={() => dispatch(downloadReportCSV({projectID, buildingID})).then(url => window.open(url, "_blank"))}
+          <Button 
+            size='small' shape='circle' type='link' 
+            icon={csvLoading ? <LoadingOutlined /> : <CloudDownloadOutlined />}
+            onClick={() => {
+              setcsvLoading(true)
+              dispatch(downloadReportCSV({projectID, buildingID})).then(url => {
+                setcsvLoading(false)
+                window.open(url, "_blank")
+              })
+            }}
           />
         </Item>
       </Descriptions>
