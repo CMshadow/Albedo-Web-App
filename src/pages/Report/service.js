@@ -175,3 +175,23 @@ export const deleteIrradianceData = ({projectID}) => async dispatch => {
     dispatch(setSignOut())
   }
 }
+
+export const downloadReportCSV = ({projectID, buildingID}) => async dispatch => {
+  try {
+    const session = await Auth.currentSession()
+    dispatch(setCognitoUserSession(session))
+
+    return axios.get(
+      `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/csv`,
+      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+    )
+    .then(res => res.data)
+    .catch(err => {
+      notification.error({message: err.response.data.message})
+      throw err
+    })
+  } catch(err) {
+    Auth.signOut()
+    dispatch(setSignOut())
+  }
+}

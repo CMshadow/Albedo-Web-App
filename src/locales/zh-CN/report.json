@@ -65,5 +65,6 @@
   "report.head.year_AC_power": "首年发电量",
   "report.head.system_efficiency": "系统效率",
   "report.head.kWh_over_kWp": "首年有效发电小时数",
-  "report.head.ttl_investment": "项目总投资"
+  "report.head.ttl_investment": "项目总投资",
+  "report.head.download_csv": "下载数据"
 }
