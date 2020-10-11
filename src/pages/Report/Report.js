@@ -85,7 +85,9 @@ const Report = () => {
       })
     } else {
       console.log('hello')
-      if (curBuilding.reGenReport) {
+      if (
+        buildingID === 'overview' && projectD.reGenReport
+      ) {
         dispatch(saveProject(projectID))
         .then(res => {
           dispatch(genReport({projectID, buildingID: buildingID}))
@@ -103,7 +105,7 @@ const Report = () => {
         setloading(false)
       }
     }
-  },[buildingID, dispatch, history])
+  },[buildingID, dispatch, history, projectData.p_loss_soiling, projectID])
 
   return (
     <Spin indicator={<LoadingOutlined spin />} size='large' spinning={loading}>
