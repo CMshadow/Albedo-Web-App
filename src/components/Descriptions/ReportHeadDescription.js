@@ -12,7 +12,6 @@ export const ReportHeadDescription = ({buildingID}) => {
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
   const curBuildingReport = reportData[buildingID]
-  const buildingName = projectData.buildings.find(building => building.buildingID === buildingID).buildingName
 
   let ttl_investment = null
   if (curBuildingReport.ttl_investment) {
@@ -35,9 +34,13 @@ export const ReportHeadDescription = ({buildingID}) => {
         <Item label={t('project.descriptions.projectAddress')}>
           {projectData.projectAddress}
         </Item>
-        <Item label={t('report.head.buildingName')}>
-          {buildingName}
-        </Item>
+        {
+          buildingID !== 'overview' ? 
+          <Item label={t('report.head.buildingName')}>
+            {projectData.buildings.find(building => building.buildingID === buildingID).buildingName}
+          </Item> :
+          null
+        }
         <Item label={t('report.head.ttl_dc_power_capacity')}>
           {`${curBuildingReport.ttl_dc_power_capacity.value.toFixed(2)} ${curBuildingReport.ttl_dc_power_capacity.unit}`}
         </Item>

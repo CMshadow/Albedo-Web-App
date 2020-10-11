@@ -21,6 +21,7 @@ const updateProjectAttributes = (state, action) => {
   }
   else {
     const newState = {...state, ...action.values}
+    newState.reGenReport = true
     newState.buildings.forEach(building => building.reGenReport = true)
     return newState
   }
@@ -34,6 +35,7 @@ const addBuilding = (state, action) => {
   if (state.buildings) {
     return {
       ...state,
+      reGenReport: true,
       buildings: [
         ...state.buildings,
         {
@@ -49,6 +51,7 @@ const addBuilding = (state, action) => {
   } else {
     return {
       ...state,
+      reGenReport: true,
       buildings: [
         {
           buildingID: uuidv1(),
@@ -79,6 +82,7 @@ const editBuilding = (state, action) => {
   newBuildings.splice(spliceIndex, 1, buildingCopy)
   return {
     ...state,
+    reGenReport: true,
     buildings: newBuildings
   }
 }
@@ -129,6 +133,7 @@ const deleteBuilding = (state, action) => {
   newBuildings.splice(spliceIndex, 1)
   return {
     ...state,
+    reGenReport: true,
     transformers: newTransformers,
     powercabinets: newPowercabinets,
     buildings: newBuildings
@@ -136,13 +141,17 @@ const deleteBuilding = (state, action) => {
 }
 
 const setBuildingReGenReport = (state, action) => {
-  const buildingIndex = state.buildings.map(building => building.buildingID)
+  if (action.buildingID !== 'overview') {
+    const buildingIndex = state.buildings.map(building => building.buildingID)
     .indexOf(action.buildingID)
-  const newBuildings = [...state.buildings]
-  newBuildings[buildingIndex].reGenReport = action.reGenReport
-  return {
-    ...state,
-    buildings: newBuildings
+    const newBuildings = [...state.buildings]
+    newBuildings[buildingIndex].reGenReport = action.reGenReport
+    return {
+      ...state,
+      buildings: newBuildings
+    }
+  } else {
+    return {...state, reGenReport: true}
   }
 }
 
@@ -162,6 +171,7 @@ const addPVSpec = (state, action) => {
   })
   return {
     ...state,
+    reGenReport: true,
     buildings: newBuildings
   }
 }
@@ -240,6 +250,7 @@ const editPVSpec = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     transformers: newTransformers,
     powercabinets: newPowercabinets,
     buildings: newBuildings
@@ -320,6 +331,7 @@ const deletePVSpec = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     transformers: newTransformers,
     powercabinets: newPowercabinets,
     buildings: newBuildings
@@ -340,6 +352,7 @@ const addInverterSpec = (state, action) => {
   })
   return {
     ...state,
+    reGenReport: true,
     buildings: newBuildings
   }
 }
@@ -393,6 +406,7 @@ const editInverterSpec = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     transformers: newTransformers,
     powercabinets: newPowercabinets,
     buildings: newBuildings
@@ -475,6 +489,7 @@ const deleteInverterSpec = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     transformers: newTransformers,
     powercabinets: newPowercabinets,
     buildings: newBuildings
@@ -503,6 +518,7 @@ const addCombibox = (state, action) => {
   }
   return {
     ...state,
+    reGenReport: true,
     buildings: newBuildings
   }
 }
@@ -545,6 +561,7 @@ const editCombibox = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     transformers: newTransformers,
     powercabinets: newPowercabinets,
     buildings: newBuildings
@@ -604,6 +621,7 @@ const deleteCombibox = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     transformers: newTransformers,
     powercabinets: newPowercabinets,
     buildings: newBuildings
@@ -632,6 +650,7 @@ const addTransformer = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     transformers: newTransformers
   }
 }
@@ -670,6 +689,7 @@ const editTransformer = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     transformers: newTransformers,
     powercabinets: newPowercabinets,
   }
@@ -700,6 +720,7 @@ const deleteTransformer = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     transformers: newTransformers,
     powercabinets: newPowercabinets
   }
@@ -720,6 +741,7 @@ const addPowercabinet = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     powercabinets: newPowercabinets
   }
 }
@@ -739,6 +761,7 @@ const editPowercabinet = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     powercabinets: newPowercabinets
   }
 }
@@ -749,6 +772,7 @@ const deletePowercabinet = (state, action) => {
 
   return {
     ...state,
+    reGenReport: true,
     powercabinets: newPowercabinets
   }
 }

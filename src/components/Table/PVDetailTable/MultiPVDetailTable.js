@@ -20,12 +20,8 @@ export const MultiPVDetailTable = ({ buildingID }) => {
   const pvData = useSelector(state => state.pv.data).concat(
     useSelector(state => state.pv.officialData)
   )
-  const buildingData = projectData.buildings.find(building =>
-    building.buildingID === buildingID
-  )
 
-  // 统计每种用到的组件id及数量
-  const pvCount = buildingData.data.map(spec => ({
+  const genPVCount = (buildingData) => buildingData.data.map(spec => ({
     pvID: pvData.find(pv =>
       pv.pvID === spec.pv_panel_parameters.pv_model.pvID
     ).pvID,
@@ -34,6 +30,11 @@ export const MultiPVDetailTable = ({ buildingID }) => {
       return acc
     }, 0)
   }))
+
+  // 统计每种用到的组件id及数量
+  const pvCount = buildingID === 'overview' ?
+    projectData.buildings.flatMap(building => genPVCount(building)) :
+    genPVCount(projectData.buildings.find(building => building.buildingID === buildingID))
   const uniquePVCount = reduceUnique(pvCount)
   const dataSource = Object.keys(uniquePVCount)
 

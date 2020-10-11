@@ -20,12 +20,8 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
-  const buildingData = projectData.buildings.find(building =>
-    building.buildingID === buildingID
-  )
 
-  // 统计每种用到的逆变器id及数量
-  const inverterCount = buildingData.data.flatMap(spec =>
+  const genInverterCount = buildingData => buildingData.data.flatMap(spec =>
     spec.inverter_wiring.map(inverterSpec => ({
       inverterID: inverterData.find(inverter =>
         inverter.inverterID === inverterSpec.inverter_model.inverterID
@@ -33,6 +29,11 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
       count: 1
     }))
   )
+
+  // 统计每种用到的逆变器id及数量
+  const inverterCount = buildingID === 'overview' ?
+    projectData.buildings.flatMap(building => genInverterCount(building)) :
+    genInverterCount(projectData.buildings.find(building => building.buildingID === buildingID))
   const uniqueInverterCount = reduceUnique(inverterCount)
   const dataSource = Object.keys(uniqueInverterCount)
 

@@ -30,7 +30,7 @@ export const LossChart = ({buildingID}) => {
 
     ['p_loss_conversion', 'ac'], ['p_loss_ac_wiring', 'ac'],
     ['p_loss_combibox_wiring', 'ac'], ['p_loss_transformer', 'ac'],
-    ['p_loss_availability', 'ac']
+    ['p_loss_transformer_wiring', 'ac'], ['p_loss_availability', 'ac']
   ]
   let systemStatus = 100
   const dataSource = []
@@ -116,7 +116,7 @@ export const LossChart = ({buildingID}) => {
           content={t('lossChart.ac')}
           style={lgTitleStyle}
           offsetX={-40}
-          offsetY={20}
+          offsetY={40}
         />
         <Annotation.Text
           top
@@ -136,8 +136,8 @@ export const LossChart = ({buildingID}) => {
         />
         <Annotation.Line
           top
-          start={['-9%', "29.35%"]}
-          end={['100%', "29.35%"]}
+          start={['-9%', "27.75%"]}
+          end={['100%', "27.75%"]}
           style={{
             stroke: '#595959',
             lineDash: [2, 2],
@@ -146,8 +146,8 @@ export const LossChart = ({buildingID}) => {
         />
         <Annotation.Line
           top
-          start={['-9%', "70.6%"]}
-          end={['100%', "70.6%"]}
+          start={['-9%', "66.75%"]}
+          end={['100%', "66.75%"]}
           style={{
             stroke: '#595959',
             lineDash: [2, 2],

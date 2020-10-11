@@ -85,16 +85,21 @@ export const LossTable = ({ buildingID }) => {
       value: (reportData[buildingID].p_loss_combibox_wiring * 100).toFixed(2)
     },{
       key: 15,
+      loss: t('lossTable.p_loss_transformer_wiring'),
+      unit: '%',
+      value: (reportData[buildingID].p_loss_transformer_wiring * 100).toFixed(2)
+    },{
+      key: 16,
       loss: t('lossTable.p_loss_availability'),
       unit: '%',
       value: (reportData[buildingID].p_loss_availability * 100).toFixed(2)
     },{
-      key: 16,
+      key: 17,
       loss: <Text strong>{t('lossTable.p_loss_system')}</Text>,
       unit: <Text strong>{'%'}</Text>,
       value: <Text strong>{(reportData[buildingID].p_loss_system * 100).toFixed(2)}</Text>
     },{
-      key: 17,
+      key: 18,
       loss: <Text strong>{t('lossTable.system_efficiency')}</Text>,
       unit: <Text strong>{'%'}</Text>,
       value: <Text strong>{(reportData[buildingID].system_efficiency * 100).toFixed(2)}</Text>

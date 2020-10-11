@@ -31,7 +31,7 @@ const Report = () => {
   const [menuKey, setmenuKey] = useState('1')
   const curBuilding = projectData.buildings.find(building =>
     building.buildingID === buildingID
-  )
+  ) || projectData
 
   let component
   switch (menuKey) {
@@ -84,6 +84,7 @@ const Report = () => {
         state: { buildingID: buildingID }
       })
     } else {
+      console.log('hello')
       if (curBuilding.reGenReport) {
         dispatch(saveProject(projectID))
         .then(res => {
@@ -102,7 +103,7 @@ const Report = () => {
         setloading(false)
       }
     }
-  },[buildingID, curBuilding, dispatch, history, projectData.p_loss_soiling, projectID])
+  },[buildingID, dispatch, history])
 
   return (
     <Spin indicator={<LoadingOutlined spin />} size='large' spinning={loading}>
@@ -129,7 +130,11 @@ const Report = () => {
                   <Menu.Item key="2">{t('report.acPowerTable')}</Menu.Item>
                   <Menu.Item key="3">{t('report.lossTable')}</Menu.Item>
                   <Menu.Item key="4">{t('report.investmentTable')}</Menu.Item>
-                  <Menu.Item key="5">{t('report.gainTable')}</Menu.Item>
+                  {
+                    buildingID !== 'overview' ?
+                    <Menu.Item key="5">{t('report.gainTable')}</Menu.Item> :
+                    null
+                  }
                   <Menu.Item key="6">{t('report.pvDetail')}</Menu.Item>
                   <Menu.Item key="7">{t('report.inverterDetail')}</Menu.Item>
                   <Menu.Item key="8">{t('report.emissionReduction')}</Menu.Item>

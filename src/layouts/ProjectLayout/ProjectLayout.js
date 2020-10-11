@@ -120,7 +120,7 @@ const ProjectLayout = (props) => {
     </>
 
   const commercialMenu = 
-    <Menu.Item key={`report/`} disabled={!usedAllEquipments(projectData)}>
+    <Menu.Item key={`report/overview`} disabled={!usedAllEquipments(projectData)}>
       <Tooltip title={!usedAllEquipments(projectData) ? t('sider.report.disabled-commercial') : null}>
         {t('sider.menu.report')}
       </Tooltip>
@@ -191,7 +191,12 @@ const ProjectLayout = (props) => {
         .then(res =>
           dispatch(setReportData({buildingID: building.buildingID, data: res}))
         )
-      })
+      }).concat([
+        dispatch(getReport({projectID, buildingID: 'overview'}))
+        .then(res =>
+          dispatch(setReportData({buildingID: 'overview', data: res}))
+        )
+      ])
       await Promise.all(getReportPromises)
       setfetchLoading(false)
 

@@ -55,8 +55,9 @@
   "lossChart.p_loss_conversion": "逆变器损失",
   "lossChart.p_loss_transformer": "升压变压器损耗",
   "lossChart.p_loss_dc_wiring": "直流线损",
-  "lossChart.p_loss_ac_wiring": "低压汇流线损",
-  "lossChart.p_loss_combibox_wiring": "交流线损",
+  "lossChart.p_loss_ac_wiring": "逆变器出口电缆线损",
+  "lossChart.p_loss_combibox_wiring": "汇流箱出口电缆线损",
+  "lossChart.p_loss_transformer_wiring": "变压器出口电缆线损",
   "lossChart.p_loss_availability": "不可利用率",
 
   "systemEfficiencyChart.name": "系统效率",
