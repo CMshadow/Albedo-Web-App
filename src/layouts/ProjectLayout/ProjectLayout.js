@@ -14,6 +14,7 @@ import { getProject, saveProject, globalOptTiltAzimuth, allTiltAzimuthPOA } from
 import { getPV, getOfficialPV } from '../../pages/PVTable/service'
 import { getInverter, getOfficialInverter } from '../../pages/InverterTable/service'
 import { saveReport, getReport } from '../../pages/Report/service'
+import { usedAllEquipments } from '../../utils/checkUnusedEquipments'
 import { setProjectData, setReportData, setPVData, setOfficialPVData, setInverterData, setOfficialInverterData, updateProjectAttributes, releaseProjectData } from '../../store/action/index';
 
 import * as styles from './ProjectLayout.module.scss';
@@ -97,6 +98,33 @@ const ProjectLayout = (props) => {
       )
     })
   }
+
+  const domesticMenu = 
+    <>
+      <SubMenu
+        disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
+        key='report'
+        className={styles.menuItem}
+        title={t('sider.menu.report')}
+      >
+        {genReportSubMenu()}
+      </SubMenu>
+      <SubMenu
+        disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
+        key='singleLineDiag'
+        className={styles.menuItem}
+        title={t('sider.menu.singleLineDiagram')}
+      >
+        {genSLDSubMen()}
+      </SubMenu>
+    </>
+
+  const commercialMenu = 
+    <Menu.Item key={`report/`} disabled={!usedAllEquipments(projectData)}>
+      <Tooltip title={!usedAllEquipments(projectData) ? t('sider.report.disabled-commercial') : null}>
+        {t('sider.menu.report')}
+      </Tooltip>
+    </Menu.Item>
 
   const saveProjectClick = () => {
     setsaveLoading(true)
@@ -211,7 +239,7 @@ const ProjectLayout = (props) => {
       <Helmet>
         <meta charSet="utf-8" />
         <meta name="description" content={t('user.logo.welcome')}/>
-        <title>{`${projectData.projectTitle || ''} - ${t('sider.company')}`}</title>
+        <title>{`${projectData.projectTitle || 'Loading'} - ${t('sider.company')}`}</title>
       </Helmet>
       <Layout>
         <EmailSupport />
@@ -239,25 +267,13 @@ const ProjectLayout = (props) => {
                 <Menu.Item key='powergrid' className={styles.menuItem} >
                   {t('sider.menu.commercial')}
                 </Menu.Item>
-                <Menu.Item key='report/params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+                <Menu.Item key='params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
                   {t('sider.menu.reportParams')}
                 </Menu.Item>
-                <SubMenu
-                  disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
-                  key='report'
-                  className={styles.menuItem}
-                  title={t('sider.menu.report')}
-                >
-                  {genReportSubMenu()}
-                </SubMenu>
-                <SubMenu
-                  disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
-                  key='singleLineDiag'
-                  className={styles.menuItem}
-                  title={t('sider.menu.singleLineDiagram')}
-                >
-                  {genSLDSubMen()}
-                </SubMenu>
+                {
+                  projectData.projectType === 'domestic' ?
+                  domesticMenu : commercialMenu
+                }
               </Menu>
               <Button
                 block

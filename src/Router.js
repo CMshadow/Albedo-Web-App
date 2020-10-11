@@ -61,7 +61,7 @@ const Router = () => {
                 <PrivateRoute path='/project/:projectID/powergrid'>
                   <PowerGrid/>
                 </PrivateRoute>
-                <PrivateRoute path="/project/:projectID/report/params">
+                <PrivateRoute path="/project/:projectID/params">
                   <ParamsForm/>
                 </PrivateRoute>
                 <PrivateRoute path="/project/:projectID/report/:buildingID">

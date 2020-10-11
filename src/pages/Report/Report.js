@@ -80,7 +80,7 @@ const Report = () => {
       projectData.p_loss_soiling === null
     ) {
       history.push({
-        pathname: `/project/${projectID}/report/params`,
+        pathname: `/project/${projectID}/params`,
         state: { buildingID: buildingID }
       })
     } else {
