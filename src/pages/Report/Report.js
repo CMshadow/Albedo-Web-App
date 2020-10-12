@@ -29,9 +29,6 @@ const Report = () => {
   const reportData = useSelector(state => state.report)
   const [loading, setloading] = useState(true)
   const [menuKey, setmenuKey] = useState('1')
-  const curBuilding = projectData.buildings.find(building =>
-    building.buildingID === buildingID
-  ) || projectData
 
   let component
   switch (menuKey) {
@@ -86,7 +83,8 @@ const Report = () => {
     } else {
       console.log('hello')
       if (
-        buildingID === 'overview' && projectD.reGenReport
+        (buildingID === 'overview' && projectData.reGenReport) ||
+        (buildingID !== 'overview' && projectData.buildings.find(b => b.buildingID === buildingID).reGenReport)
       ) {
         dispatch(saveProject(projectID))
         .then(res => {
@@ -105,7 +103,7 @@ const Report = () => {
         setloading(false)
       }
     }
-  },[buildingID, dispatch, history, projectData.p_loss_soiling, projectID])
+  },[buildingID, dispatch, history, projectData.buildings, projectData.p_loss_soiling, projectData.reGenReport, projectID])
 
   return (
     <Spin indicator={<LoadingOutlined spin />} size='large' spinning={loading}>
