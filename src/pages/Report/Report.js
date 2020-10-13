@@ -81,13 +81,13 @@ const Report = () => {
         state: { buildingID: buildingID }
       })
     } else {
-      console.log('hello')
       if (
         (buildingID === 'overview' && projectData.reGenReport) ||
         (buildingID !== 'overview' && projectData.buildings.find(b => b.buildingID === buildingID).reGenReport)
       ) {
         dispatch(saveProject(projectID))
         .then(res => {
+          console.log('genreport')
           dispatch(genReport({projectID, buildingID: buildingID}))
           .then(res => {
             dispatch(setReportData({buildingID: buildingID, data: res}))

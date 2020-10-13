@@ -151,7 +151,7 @@ const setBuildingReGenReport = (state, action) => {
       buildings: newBuildings
     }
   } else {
-    return {...state, reGenReport: true}
+    return {...state, reGenReport: action.reGenReport}
   }
 }
 
