@@ -41,18 +41,20 @@ export const InverterModal = ({showModal, setshowModal, setactiveData, editRecor
     [['vdcMin', 'n', 'V'], ['vdcMax', 'n', 'V']],
     [['vdco', 'n', 'V'], ['vac', 'n', 'V']],
     [['vmpptMin', 'n', 'V'], ['vmpptMax', 'n', 'V']],
-    [['paco', 'n', 'kWp'], ['pdco', 'n', 'kWp']],
+    [['paco', 'n', 'kWp'], ['pacMax', 'n', 'kVA']],
+    [['pdco', 'n', 'kWp'], ['pnt', 'n', 'W']],
     [['vso', 'n', 'V'], ['pso', 'n', 'kWp']],
     [['pdcMax', 'n', 'kWp'], ['idcMax', 'n', 'A']],
-    [['iacMax', 'n', 'A'], ['pnt', 'n', 'W']],
+    [['iacMax', 'n', 'A'], ['nominalPwrFac', 'n', 'cosφ']],
     [['mpptNum', 'n', ''], ['mpptIdcMax', 'n', 'A']],
     [['strNum', 'n', ''], ['strIdcMax', 'n', 'A']],
+
     [['inverterEffcy', 'n', '%'], ['nationEffcy', 'n', '%']],
     [['acFreqMin', 'n', 'Hz'], ['acFreqMax', 'n', 'Hz']],
-    [['nominalPwrFac', 'n', 'cosφ'], ['THDi', 'n', '%']],
     [['workingTempMin', 'n', '℃'], ['workingTempMax', 'n', '℃']],
     [['protectLvl', 's', ''], ['commProtocal', 's', '']],
-    [['workingAltMax', 'n', 'm'], ['radiator', 'c', ['forcedConvection', 'naturalConvection']]]
+    [['workingAltMax', 'n', 'm'], ['THDi', 'n', '%']],
+    [['radiator', 'c', ['forcedConvection', 'naturalConvection']]]
   ]
   // Inverter表单勾选信息[key，类型，可选项]
   const formBoolKeys = [

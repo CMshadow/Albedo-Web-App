@@ -36,6 +36,7 @@
   "Inverter.vmpptMin": "Vmpptmin: MPPT电压最小值",
   "Inverter.vmpptMax": "Vmpptmax: MPPT电压最大值",
   "Inverter.paco": "Paco: 交流额定功率",
+  "Inverter.pacMax": "PacMax: 交流视在功率",
   "Inverter.pdco": "Pdco: 额定输入功率",
   "Inverter.pdcMax": "Pdcmax: 最大直流功率",
   "Inverter.idcMax": "Idcmax: 最大直流输入电流",
