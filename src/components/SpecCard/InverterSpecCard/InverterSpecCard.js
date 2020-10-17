@@ -47,9 +47,9 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
         setloading(false)
         const invLimits = {}
         res.forEach(limit => 
-          limit.spi in invLimits ? 
-          invLimits[limit.spi].push(limit.pps) :
-          invLimits[limit.spi] = [limit.pps]
+          limit.pps in invLimits ? 
+          invLimits[limit.pps].push(limit.spi) :
+          invLimits[limit.pps] = [limit.spi]
         )
         Object.keys(invLimits).forEach(key => invLimits[key].sort())
         setinvLimits(invLimits)

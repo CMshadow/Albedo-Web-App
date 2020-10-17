@@ -85,44 +85,47 @@ export const PVSpecCard = ({id, buildingID, specIndex, collapseActive, setcollap
       {/* <Divider className={styles.sectionBreak}/> */}
       <Row gutter={12} justify='center'>
         <Col span={24}>
-          <Collapse bordered={false} className={styles.collapse} onChange={collapseOnchange}>
-            <Panel
-              className={styles.collapsePanel}
-              header={<h4>{t('project.spec.inverters')}</h4>}
-              key="1"
-            >
-              {
-                invsSpec.map((invSpec, invIndex) =>
-                  <InverterSpecCard
-                    id={`inv${specIndex}${invSpec.inverter_serial_number}`}
-                    key={invIndex}
-                    buildingID={buildingID}
-                    specIndex={specIndex}
-                    invIndex={invIndex}
-                    disabled={editing}
-                    {...invSpec}
-                  />
-                )
-              }
-              <Button
-                className={styles.addSpec}
-                disabled={editing}
-                loading={loading}
-                block
-                type="dashed"
-                onClick={() => {
-                  setloading(true)
-                  setTimeout(() => {
-                    addSpec()
-                    setloading(false)
-                    document.getElementById(`inv${specIndex}${invsSpec.length}`).scrollIntoView()
-                  }, 500);
-                }}
+          {
+            editing ? null :
+            <Collapse bordered={false} className={styles.collapse} onChange={collapseOnchange}>
+              <Panel
+                className={styles.collapsePanel}
+                header={<h4 style={{margin: 0}}>{t('project.spec.inverters')}</h4>}
+                key="1"
               >
-                {t('project.add.inverterSpec')}
-              </Button>
-            </Panel>
-          </Collapse>
+                {
+                  invsSpec.map((invSpec, invIndex) =>
+                    <InverterSpecCard
+                      id={`inv${specIndex}${invSpec.inverter_serial_number}`}
+                      key={invIndex}
+                      buildingID={buildingID}
+                      specIndex={specIndex}
+                      invIndex={invIndex}
+                      disabled={editing}
+                      {...invSpec}
+                    />
+                  )
+                }
+                <Button
+                  className={styles.addSpec}
+                  disabled={editing}
+                  loading={loading}
+                  block
+                  type="dashed"
+                  onClick={() => {
+                    setloading(true)
+                    setTimeout(() => {
+                      addSpec()
+                      setloading(false)
+                      document.getElementById(`inv${specIndex}${invsSpec.length}`).scrollIntoView()
+                    }, 500);
+                  }}
+                >
+                  {t('project.add.inverterSpec')}
+                </Button>
+              </Panel>
+            </Collapse>
+          }
         </Col>
       </Row>
     </Card>

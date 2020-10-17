@@ -103,6 +103,7 @@
   "project.spec.inverter.vac-warning": "使用的逆变器Vac不一致",
   "project.spec.string_per_inverter": "并联组串数",
   "project.spec.string_per_inverter.help": "接入组串数区间",
+  "project.spec.string_per_inverter.out-of-range": "超出逆变器限制无法计算接入组串数区间",
   "project.spec.panels_per_string": "光伏组件数/组串",
   "project.spec.panels_per_string.help": "最大接入组串数",
   "project.spec.ac_cable_len": "逆变器至汇流箱电缆长度",
@@ -119,6 +120,8 @@
   "project.spec.error.under-min": "低于逆变器要求",
   "project.spec.total_panels": "光伏组件总数",
   "project.spec.avg-length": "电缆长度配置",
+  "project.spec.dcoveracratio-actual": "当前超配系数",
+  "project.spec.dcoveracratio-max": "最大超配系数",
 
   "project.spec.combibox_name": "汇流箱型号",
   "project.spec.combibox_serial": "汇流箱编号",

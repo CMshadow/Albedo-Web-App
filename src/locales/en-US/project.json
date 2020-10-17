@@ -24,6 +24,8 @@
   "project.create.albedo.urban": "Urban",
   "project.create.albedo.desert": "Desert",
   "project.create.albedo.full": "All Reflection",
+  "project.create.ACVolDropFac": "交流侧允许压降系数",
+  "project.create.DCVolDropFac": "直流侧允许压降系数",
 
   "project.error.invalid-address.amap": "AMap cannot verify the address",
   "project.error.invalid-address.googlemap": "Google Map cannot verify the address",
@@ -58,6 +60,8 @@
   "project.add.spec.prefix": "Add PV sub-array for  ",
   "project.add.building.aggr": "Aggregated",
   "project.add.combibox": "Add combiner box",
+  "project.add.transformer": "添加变压器",
+  "project.add.powercabinet": "添加并网柜",
 
   "project.spec.sub-array": "Manage PV sub-array",
   "project.spec.combiner_box": "Manage combiner box",
@@ -70,6 +74,7 @@
   "project.spec.capacity": "DC Capacity",
   "project.spec.pvNum": "Number of PV Modules",
   "project.spec.pv": "PV Module",
+  "project.spec.sub-array_serial_num": "光伏子区域编号",
   "project.spec.inverters": "Manage Inverter Settings",
   "project.add.inverterSpec": "Add a Inverter",
 
@@ -98,6 +103,7 @@
   "project.spec.inverter.vac-warning": "Inverters' Vac are not consistent",
   "project.spec.string_per_inverter": "Number of parallel strings range",
   "project.spec.string_per_inverter.help": "Parallel strings range",
+  "project.spec.string_per_inverter.out-of-range": "超出逆变器限制无法计算接入组串数区间",
   "project.spec.panels_per_string": "Number of PV modules in series",
   "project.spec.panels_per_string.help": "PV models in series range",
   "project.spec.ac_cable_len": "AC cable length",
@@ -114,6 +120,9 @@
   "project.spec.error.under-min": "Under the inverter minimum requirement",
   "project.spec.total_panels": "Total PV module count",
   "project.spec.avg-length": "Cable Length Settings",
+  "project.spec.dcoveracratio-actual": "当前超配系数",
+  "project.spec.dcoveracratio-max": "最大超配系数",
+
   "project.spec.transformer.Ut": "Transformer Output Voltage",
   "project.spec.transformer.power_loss": "Transformer Self Power Loss",
   "project.spec.transformer.power_loss.type": "Type",
