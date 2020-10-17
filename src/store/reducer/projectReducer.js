@@ -1,5 +1,4 @@
 import * as actionTypes from '../action/actionTypes';
-import { v1 as uuidv1 } from 'uuid';
 
 const initialState = {};
 
@@ -39,7 +38,7 @@ const addBuilding = (state, action) => {
       buildings: [
         ...state.buildings,
         {
-          buildingID: uuidv1(),
+          buildingID: action.buildingID,
           buildingName: action.buildingName,
           combibox_cable_len: action.combibox_cable_len,
           reGenReport: true,
@@ -54,7 +53,7 @@ const addBuilding = (state, action) => {
       reGenReport: true,
       buildings: [
         {
-          buildingID: uuidv1(),
+          buildingID: action.buildingID,
           buildingName: action.buildingName,
           combibox_cable_len: action.combibox_cable_len,
           reGenReport: true,

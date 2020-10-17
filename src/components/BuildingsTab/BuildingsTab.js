@@ -16,13 +16,20 @@ export const BuildingsTab = ({buildings, ...props}) => {
   const projectType = useSelector(state => state.project.projectType)
   const [showModal, setshowModal] = useState(false)
   const [editRecord, seteditRecord] = useState(null)
+  const [activeKey, setactiveKey] = useState(buildings.length > 0 ? buildings[0].buildingID : null)
 
   const deleteBuildingTab = (targetKey) => {
     dispatch(deleteBuilding(targetKey))
   }
 
   const onEdit = (targetKey, action) => {
-    if (action === 'remove') deleteBuildingTab(targetKey)
+    if (action === 'remove') {
+      const keyIndex = buildings.indexOf(buildings.find(b => b.buildingID === targetKey))
+      const newActiveKeyIndex = 
+        keyIndex === buildings.length - 1 ? keyIndex - 1 : keyIndex + 1
+      setactiveKey(buildings.length === 1 ? null : buildings[newActiveKeyIndex].buildingID)
+      deleteBuildingTab(targetKey)
+    }
   }
 
   const addBuildingButton = (
@@ -44,10 +51,12 @@ export const BuildingsTab = ({buildings, ...props}) => {
       <Tabs
         type="editable-card"
         size='large'
+        activeKey={activeKey}
         tabBarGutter={12}
         hideAdd={true}
         tabBarExtraContent={addBuildingButton}
         onEdit={onEdit}
+        onChange={key => setactiveKey(key)}
       >
         {buildings.map(building => (
           <TabPane
@@ -74,6 +83,7 @@ export const BuildingsTab = ({buildings, ...props}) => {
         setshowModal={setshowModal}
         editRecord={editRecord}
         seteditRecord={seteditRecord}
+        setactiveKey={setactiveKey}
       />
     </>
   )

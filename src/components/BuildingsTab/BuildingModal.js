@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { Modal, Input, Form } from 'antd';
+import { v1 as uuidv1 } from 'uuid';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBuilding, editBuilding } from '../../store/action/index';
 import { other2m } from '../../utils/unitConverter'
 const FormItem = Form.Item;
 
-export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecord}) => {
+export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecord, setactiveKey}) => {
   const { t } = useTranslation()
   const projectType = useSelector(state => state.project.projectType)
   const dispatch = useDispatch()
@@ -37,11 +38,15 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
 
   const submitForm = (values) => {
     values.combibox_cable_len = other2m(unit, values.combibox_cable_len)
+    let buildingID
     if (editRecord) {
+      buildingID = editRecord.buildingID
       dispatch(editBuilding({buildingID: editRecord.buildingID, ...values}))
     } else {
-      dispatch(addBuilding(values, t))
+      buildingID = uuidv1()
+      dispatch(addBuilding({buildingID: buildingID, ...values}))
     }
+    setactiveKey(buildingID)
     setshowModal(false)
   }
 

@@ -31,7 +31,11 @@ export const SpecView = ({transformerIndex}) => {
           {transformerData.Ut} V
         </Item>
         <Item label={t('project.spec.transformer_cable_len')} span={1}>
-          {m2other(unit, transformerData.transformer_cable_len).toFixed(2)} {unit}
+          {
+            transformerData.transformer_cable_len ?
+            m2other(unit, transformerData.transformer_cable_len).toFixed(2) :
+            null
+          } {unit}
         </Item>
         <Item label={t('project.spec.transformer.type')} span={1}>
           {t(`project.spec.transformer.type.${transformerData.transformer_type}`)}
