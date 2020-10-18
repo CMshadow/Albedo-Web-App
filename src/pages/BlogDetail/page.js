@@ -1,17 +1,24 @@
 import React from 'react';
-import {Layout} from 'antd';
-import reactHtmlParser from 'react-html-parser'
+import reactHtmlParser from 'react-html-parser';
+import {Layout, Typography} from 'antd';
+import styles from './page.module.scss';
+const {Title} = Typography;
+const {Content} = Layout;
 export default ({ dataSource }) =>{
     return( 
     <Layout>
             {
                  dataSource.map(item=>     
                     <div key={item.id}>
-                           
-                        <img alt='cover' src={ item.cover } />
-                            
-                        <h1>{item.title}</h1>
-                        <p align="justify" line-height='2'>{reactHtmlParser(item.content) }</p>                                              
+                        <Layout className={styles.layout}>
+                                <div className={styles.wrapper}>
+                                        <div class="intrinsic-aspect-ratio-container"><img alt='cover' className={styles.img} src={ item.cover } /></div>
+                                </div>
+                                <Content className={styles.content}>
+                                        <Title level={2} className={styles.title1}>{item.title}</Title>
+                                        <p className={styles.p}>{reactHtmlParser(item.content) }</p>
+                                </Content>  
+                        </Layout>                                               
                     </div>)
             }
     </Layout>)
