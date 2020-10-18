@@ -7,11 +7,11 @@ export default ({ dataSource }) =>{
             {
                  dataSource.map(item=>     
                     <div key={item.id}>
-                            <div >
-                                <img alt='cover' src={ item.cover } />
-                            </div>
-                            {/* {document.body.outerHTML=item.content}  */}
-                            <div>{reactHtmlParser(item.content) }</div>                                              
+                           
+                        <img alt='cover' src={ item.cover } />
+                            
+                        <h1>{item.title}</h1>
+                        <p align="justify" line-height='2'>{reactHtmlParser(item.content) }</p>                                              
                     </div>)
             }
     </Layout>)
