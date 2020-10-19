@@ -12,10 +12,16 @@ const Title = Typography.Title
 const Text = Typography.Text
 
 const EditableRow = ({ index, ...props }) => {
+  const { t } = useTranslation()
   const [form] = Form.useForm();
+  // 通用required项提示文本
+  const validateMessages = {
+    required: t('form.required'),
+    min: t('form.min.0')
+  };
 
   return (
-    <Form form={form} component={false} >
+    <Form form={form} component={false} validateMessages={validateMessages} >
       <EditableContext.Provider value={form}>
         <tr {...props} />
       </EditableContext.Provider>
@@ -109,95 +115,48 @@ export const InvestmentTable = ({ buildingID }) => {
   )
   const reportData = useSelector(state => state.report)
 
-  const genPVCount = buildingData => 
-    buildingData.data.map(spec => ({
-      name: pvData.find(pv =>
-        pv.pvID === spec.pv_panel_parameters.pv_model.pvID
-      ).name,
-      count: spec.inverter_wiring.reduce((acc, val) => {
-        acc += val.string_per_inverter * val.panels_per_string
-        return acc
-      }, 0)
-    }))
-
-  const genInvCount = buildingData => 
-    buildingData.data.flatMap(spec =>
-      spec.inverter_wiring.map(inverterSpec => ({
-        name: inverterData.find(inverter =>
-          inverter.inverterID === inverterSpec.inverter_model.inverterID
-        ).name,
-        count: 1
-      }))
-    )
-
-    // 统计每种用到的组件型号及数量
-  const pvCount = buildingID === 'overview' ?
-    projectData.buildings.flatMap(building => genPVCount(building)) :
-    genPVCount(projectData.buildings.find(b => b.buildingID === buildingID))
+  const buildingData = projectData.buildings.find(building =>
+    building.buildingID === buildingID
+  )
+  // 统计每种用到的组件型号及数量
+  const pvCount = buildingData.data.map(spec => ({
+    name: pvData.find(pv =>
+      pv.pvID === spec.pv_panel_parameters.pv_model.pvID
+    ).name,
+    count: spec.inverter_wiring.reduce((acc, val) => {
+      acc += val.string_per_inverter * val.panels_per_string
+      return acc
+    }, 0)
+  }))
   const uniquePVCountJSON = JSON.stringify(reduceUnique(pvCount))
-  
   // 统计每种用到的逆变器型号及数量
-  const inverterCount = buildingID === 'overview' ?
-    projectData.buildings.flatMap(building => genInvCount(building)) :
-    genInvCount(projectData.buildings.find(b => b.buildingID === buildingID))
+  const inverterCount = buildingData.data.flatMap(spec =>
+    spec.inverter_wiring.map(inverterSpec => ({
+      name: inverterData.find(inverter =>
+        inverter.inverterID === inverterSpec.inverter_model.inverterID
+      ).name,
+      count: 1
+    }))
+  )
   const uniqueInverterCountJSON = JSON.stringify(reduceUnique(inverterCount))
-  
   // 统计每种用到的DC线型号及线长
-  const DCLength = buildingID === 'overview' ?
-    projectData.buildings.flatMap((building, buildingIndex) => building.data.flatMap((spec, specIndex) =>
-      spec.inverter_wiring.flatMap((inverterSpec, inverterSpecIndex) =>
-        inverterSpec.dc_cable_len.map((len, lenIndex) => ({
-          name: `${reportData[buildingID].setup_dc_wir_choice[buildingIndex][specIndex][inverterSpecIndex][lenIndex]} (DC)`,
-          count: len
-        }))
-      )
-    )) :
-    projectData.buildings.find(b => b.buildingID === buildingID).data.flatMap((spec, specIndex) =>
-      spec.inverter_wiring.flatMap((inverterSpec, inverterSpecIndex) =>
-        inverterSpec.dc_cable_len.map((len, lenIndex) => ({
-          name: `${reportData[buildingID].setup_dc_wir_choice[specIndex][inverterSpecIndex][lenIndex]} (DC)`,
-          count: len
-        }))
-      )
+  const DCLength = buildingData.data.flatMap((spec, specIndex) =>
+    spec.inverter_wiring.flatMap((inverterSpec, inverterSpecIndex) =>
+      inverterSpec.dc_cable_len.map((len, lenIndex) => ({
+        name: `${reportData[buildingID].setup_dc_wir_choice[specIndex][inverterSpecIndex][lenIndex]} (DC)`,
+        count: len
+      }))
     )
+  )
   const uniqueDCLengthJSON = JSON.stringify(reduceUnique(DCLength))
-
-  // 统计每种用到的逆变器出口AC线型号及线长
-  const InvACLength = buildingID === 'overview' ?
-    projectData.buildings.flatMap((building, buildingIndex) => building.data.flatMap((spec, specIndex) =>
-      spec.inverter_wiring.flatMap((inverterSpec, inverterSpecIndex) => ({
-        name: `${reportData[buildingID].setup_ac_wir_choice[buildingIndex][specIndex][inverterSpecIndex]} (AC)`,
-        count: inverterSpec.ac_cable_len
-      }))
-    )) :
-    projectData.buildings.find(b => b.buildingID === buildingID).data.flatMap((spec, specIndex) =>
-      spec.inverter_wiring.flatMap((inverterSpec, inverterSpecIndex) => ({
-        name: `${reportData[buildingID].setup_ac_wir_choice[specIndex][inverterSpecIndex]} (AC)`,
-        count: inverterSpec.ac_cable_len
-      }))
-    )
-  const uniqueInvACLengthJSON = JSON.stringify(reduceUnique(InvACLength))
-
-  const CombiboxACLength = buildingID === 'overview' ?
-    projectData.buildings.flatMap((building, buildingIndex) => 
-      building.combibox.map((combibox, combiboxIndex) => ({
-        name: `${reportData[buildingID].combibox_wir_choice[buildingIndex][combiboxIndex]} (AC)`,
-        count: combibox.combibox_cable_len
-      }))
-    ) : 
-    null
-  const uniqueCombiboxACLengthJSON = 
-    CombiboxACLength ? JSON.stringify(reduceUnique(CombiboxACLength)) : ''
-
-  const TransformerACLength = buildingID === 'overview' ?
-    projectData.transformers.map(transformer => ({
-      name: `${transformer.transformer_wir_choice} (AC)`,
-      count: transformer.transformer_cable_len
-    })) : 
-    null
-  const uniqueTransformerACLengthJSON = 
-    TransformerACLength ? JSON.stringify(reduceUnique(TransformerACLength)) : ''
-
+  // 统计每种用到的AC线型号及线长
+  const ACLength = buildingData.data.flatMap((spec, specIndex) =>
+    spec.inverter_wiring.flatMap((inverterSpec, inverterSpecIndex) => ({
+      name: `${reportData[buildingID].setup_ac_wir_choice[specIndex][inverterSpecIndex]} (AC)`,
+      count: inverterSpec.ac_cable_len
+    }))
+  )
+  const uniqueACLengthJSON = JSON.stringify(reduceUnique(ACLength))
   // 项目DC装机量单位W
   const DCCapacityInW = other2w(
     reportData[buildingID].ttl_dc_power_capacity.value,
@@ -211,9 +170,7 @@ export const InvestmentTable = ({ buildingID }) => {
     const uniquePVCount = JSON.parse(uniquePVCountJSON)
     const uniqueInverterCount = JSON.parse(uniqueInverterCountJSON)
     const uniqueDCLength = JSON.parse(uniqueDCLengthJSON)
-    const uniqueInvACLength = JSON.parse(uniqueInvACLengthJSON)
-    const uniqueCombiboxACLength = JSON.parse(uniqueCombiboxACLengthJSON)
-    const uniqueTransformerACLength = JSON.parse(uniqueTransformerACLengthJSON)
+    const uniqueACLength = JSON.parse(uniqueACLengthJSON)
 
     const ds = reportData[buildingID].investment.length > 0 ?
       reportData[buildingID].investment :
@@ -300,57 +257,33 @@ export const InvestmentTable = ({ buildingID }) => {
           series: 9,
           name: t('investment.name.ac_wiring'),
         },
-        ...Object.keys(uniqueInvACLength).map((ACwir, index) => ({
+        ...Object.keys(uniqueACLength).map((ACwir, index) => ({
           key: `1.4.${index + 1}`,
           description: ACwir,
           unit: t(`investment.unit.price/${unit}`),
-          quantity: uniqueInvACLength[ACwir],
+          quantity: uniqueACLength[ACwir],
           unitPriceEditable: true
         })),{
           key: 10,
           series: 10,
           name: t('investment.name.combibox_wiring'),
-        },
-        ...Object.keys(uniqueCombiboxACLength).map((ACwir, index) => ({
-          key: `1.5.${index + 1}`,
-          description: ACwir,
+          description: reportData[buildingID] ?
+            `${reportData[buildingID].combibox_wir_choice} (AC)` :
+            null,
           unit: t(`investment.unit.price/${unit}`),
-          quantity: uniqueCombiboxACLength[ACwir],
+          quantity: buildingData.combibox_cable_len,
           unitPriceEditable: true
-        })),{
+        },{
           key: 11,
           series: 11,
-          name: t('investment.name.transformer_wiring'),
-        },
-        ...Object.keys(uniqueTransformerACLength).map((ACwir, index) => ({
-          key: `1.6.${index + 1}`,
-          description: ACwir,
-          unit: t(`investment.unit.price/${unit}`),
-          quantity: uniqueTransformerACLength[ACwir],
-          unitPriceEditable: true
-        })),
-        // {
-        //   key: 10,
-        //   series: 10,
-        //   name: t('investment.name.combibox_wiring'),
-        //   description: reportData[buildingID] ?
-        //     `${reportData[buildingID].combibox_wir_choice} (AC)` :
-        //     null,
-        //   unit: t(`investment.unit.price/${unit}`),
-        //   quantity: buildingData.combibox_cable_len,
-        //   unitPriceEditable: true
-        // },
-        {
-          key: 12,
-          series: 12,
           name: t('investment.name.rooftop'),
           description: t('investment.description.rooftop'),
           unit: t('investment.unit.price/xiang'),
           quantity: 1,
           unitPriceEditable: true
         },{
-          key: 13,
-          series: 13,
+          key: 12,
+          series: 12,
           name: t('investment.name.other'),
           description: t('investment.description.other'),
           unit: t('investment.unit.price/xiang'),
@@ -359,10 +292,10 @@ export const InvestmentTable = ({ buildingID }) => {
         }
       ]
       setdataSource(ds)
-  }, [DCCapacityInW, buildingID, reportData, t, uniqueCombiboxACLengthJSON, uniqueDCLengthJSON, uniqueInvACLengthJSON, uniqueInverterCountJSON, uniquePVCountJSON, unit])
+  }, [DCCapacityInW, buildingData.combibox_cable_len, buildingID, reportData, t, uniqueACLengthJSON, uniqueDCLengthJSON, uniqueInverterCountJSON, uniquePVCountJSON, unit])
 
   // 需要整行合并单元格的row keys
-  const disabledRowKeys = [0, 1, 3, 8, 9, 10, 11]
+  const disabledRowKeys = [0, 1, 3, 8, 9]
   // 需要字体加粗的row keys
   const strongRowKeys = [0]
   // 生成表格列格式
@@ -407,8 +340,7 @@ export const InvestmentTable = ({ buildingID }) => {
       render: (text, row, index) => {
         const dcReg = /1\.3./
         const acReg = /1\.4./
-        const combiboxReg = /1\.5./
-        const transformerReg = /1\.6./
+        const combiboxReg = /10/
         if (disabledRowKeys.includes(row.key)) {
           return {
             children: text,
@@ -419,10 +351,7 @@ export const InvestmentTable = ({ buildingID }) => {
           const newText = w2other(text)
           return `${newText.value} ${newText.unit}`
         }
-        if (
-          dcReg.test(row.key) || acReg.test(row.key) ||
-          combiboxReg.test(row.key) || transformerReg.test(row.key)
-        ) {
+        if (dcReg.test(row.key) || acReg.test(row.key) || combiboxReg.test(row.key)) {
           return `${m2other(unit, text).toFixed(2)} ${unit}`
         }
         return text

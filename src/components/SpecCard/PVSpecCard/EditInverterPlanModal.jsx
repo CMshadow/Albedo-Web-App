@@ -55,7 +55,10 @@ export const EditInverterPlanModal = ({
       title={t('project.autoInverter.edit.title')}
       visible={showModal}
       onOk={() => form.submit()}
-      onCancel={() => setshowModal(false)}
+      onCancel={() => {
+        setshowModal(false)
+        setautoInvPlan({})
+      }}
       okButtonProps={{disabled: !curN1 || !curN2}}
       okText={t('project.autoInverter.use')}
       cancelText={t('project.autoInverter.notuse')}

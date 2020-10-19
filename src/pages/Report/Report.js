@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useHistory, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { InvestTab } from './tabs/InvestTab'
+import { CommercialEquipmentsTab } from './tabs/CommercialEquipmentsTab'
 import { GainTab } from './tabs/GainTab'
 import { ProdTab } from './tabs/ProdTab'
 import { LossTab } from './tabs/LossTab'
@@ -32,6 +33,9 @@ const Report = () => {
 
   let component
   switch (menuKey) {
+    case '9':
+      component = <CommercialEquipmentsTab/>
+      break
     case '8':
       component = (
         <Card bordered={false}>
@@ -129,10 +133,19 @@ const Report = () => {
                   <Menu.Item key="1">{t('report.irrTable')}</Menu.Item>
                   <Menu.Item key="2">{t('report.acPowerTable')}</Menu.Item>
                   <Menu.Item key="3">{t('report.lossTable')}</Menu.Item>
-                  <Menu.Item key="4">{t('report.investmentTable')}</Menu.Item>
+                  {
+                    buildingID !== 'overview' ?
+                    <Menu.Item key="4">{t('report.investmentTable')}</Menu.Item> :
+                    null
+                  }
                   {
                     buildingID !== 'overview' ?
                     <Menu.Item key="5">{t('report.gainTable')}</Menu.Item> :
+                    null
+                  }
+                  {
+                    buildingID === 'overview' ?
+                    <Menu.Item key="9">{t('report.commercialEquipmentTable')}</Menu.Item> :
                     null
                   }
                   <Menu.Item key="6">{t('report.pvDetail')}</Menu.Item>

@@ -31,10 +31,10 @@ export const genSPILimits = (invLimits, pps=null) => {
 // 根据给定的逆变器接线可选方案，和可给定的SPI,生成PPS区间
 export const genPPSLimits = (invLimits) => {
   const minPPS = Object.keys(invLimits).reduce((minPPS, val) => 
-    val < minPPS ? val : minPPS, Infinity
+    Number(val) < minPPS ? Number(val) : minPPS, Infinity
   )
   const maxPPS = Object.keys(invLimits).reduce((maxPPS, val) => 
-    val > maxPPS ? val : maxPPS, -Infinity
+    Number(val) > maxPPS ? Number(val) : maxPPS, -Infinity
   )
   return [Number(minPPS), Number(maxPPS)]
 }
