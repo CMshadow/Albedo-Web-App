@@ -44,7 +44,6 @@ export const EditForm = ({buildingID, combiboxIndex, seteditingFalse}) => {
         ).map(serial => serial.split('-').slice(1,).join('-'))
       )
     )
-  console.log(otherCombiboxValues)
 
   // 这个光伏单元下所有使用的逆变器的vac
   const allVac = new Set(buildings[buildingIndex].data.flatMap(spec => 

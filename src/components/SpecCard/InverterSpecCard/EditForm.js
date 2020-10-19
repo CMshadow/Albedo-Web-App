@@ -199,7 +199,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
     })).then(res => {
       setloading(false)
       const newinvLimits = {}
-      res.forEach(limit => 
+      res.inverterPlans.forEach(limit => 
         limit.pps in newinvLimits ? 
         newinvLimits[limit.pps].push(limit.spi) :
         newinvLimits[limit.pps] = [limit.spi]

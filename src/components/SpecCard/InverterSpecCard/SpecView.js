@@ -95,8 +95,8 @@ export const SpecView = ({buildingID, specIndex, invIndex, initInvLimits}) => {
         {spec.string_per_inverter * spec.panels_per_string}
       </Item>
       <Item label={`${t('project.spec.dcoveracratio-actual')} / ${t('project.spec.dcoveracratio-max')}`} span={2}>
-        {selPV.pmax * spec.panels_per_string * spec.string_per_inverter / selInv.paco_sandia} / 
-        {selInv.pdcMax_sandia / selInv.paco_sandia}
+        {(selPV.pmax * spec.panels_per_string * spec.string_per_inverter / selInv.paco_sandia).toFixed(2)} / 
+        {(selInv.pdcMax_sandia / selInv.paco_sandia).toFixed(2)}
       </Item>
       <Item label={t('project.spec.dc_cable_len')} span={2}>
       {

@@ -46,7 +46,7 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
       buildingID = uuidv1()
       dispatch(addBuilding({buildingID: buildingID, ...values}))
     }
-    setactiveKey(buildingID)
+    if (setactiveKey) setactiveKey(buildingID)
     setshowModal(false)
   }
 

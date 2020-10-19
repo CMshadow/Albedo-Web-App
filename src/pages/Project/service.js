@@ -162,7 +162,8 @@ export const wiringChoice = ({type, ...values}) => async (dispatch, getState) =>
         ut: values.Ut,
         se: values.Se,
         transformercablelen: values.TransformerCableLen,
-        allowacvoldropfac: values.allowACVolDropFac
+        allowacvoldropfac: values.allowACVolDropFac,
+        ib: values.Ib
       },
       headers: {'COG-TOKEN': session.idToken.jwtToken}
     }

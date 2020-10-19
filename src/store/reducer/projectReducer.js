@@ -643,6 +643,7 @@ const addTransformer = (state, action) => {
     transformer_power: 150,
     transformer_short_circuit_loss: null,
     transformer_type: null,
+    transformer_high_voltage_cable_Ib: 31.5,
     transformer_wir_choice: null
   }
   newTransformers.push(newTransformer)
@@ -672,6 +673,7 @@ const editTransformer = (state, action) => {
     transformer_short_circuit_loss: Number(action.transformer_short_circuit_loss),
     transformer_type: action.transformer_type,
     transformer_ACVolDropFac: action.transformer_ACVolDropFac,
+    transformer_high_voltage_cable_Ib: action.transformer_high_voltage_cable_Ib,
     transformer_wir_choice: action.transformer_wir_choice
   }
   newTransformers.splice(action.transformerIndex, 1, newTransformer)

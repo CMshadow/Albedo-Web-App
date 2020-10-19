@@ -46,7 +46,7 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
       })).then(res => {
         setloading(false)
         const invLimits = {}
-        res.forEach(limit => 
+        res.inverterPlans.forEach(limit => 
           limit.pps in invLimits ? 
           invLimits[limit.pps].push(limit.spi) :
           invLimits[limit.pps] = [limit.spi]

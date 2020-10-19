@@ -112,15 +112,16 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
     }
   }, [form])
 
-  const autoWiringChoice = useCallback((ut=null, capacity=null, cableLen=null, ACVolDropFac=null) => {
+  const autoWiringChoice = useCallback((ut=null, capacity=null, cableLen=null, ACVolDropFac=null, cableIb=null) => {
     const Ut = ut || form.getFieldValue('Ut')
     const Se = capacity || Number(form.getFieldValue('transformer_capacity'))
     const TransformerCableLen = cableLen || Number(form.getFieldValue('transformer_cable_len'))
     const allowACVolDropFac = ACVolDropFac ? ACVolDropFac / 100 : form.getFieldValue('transformer_ACVolDropFac') / 100
+    const Ib = cableIb || form.getFieldValue('transformer_high_voltage_cable_Ib')
 
-    if ( Ut && Se > 0 && TransformerCableLen && allowACVolDropFac) {
+    if ( Ut && Se > 0 && TransformerCableLen && allowACVolDropFac && Ib) {
       setloading(true)
-      dispatch(wiringChoice({type: 'transformer', Ut, Se, TransformerCableLen, allowACVolDropFac}))
+      dispatch(wiringChoice({type: 'transformer', Ut: Ut / 1000, Se, TransformerCableLen, allowACVolDropFac, Ib}))
       .then(res => {
         const chunk = res.transformer_wir_choice.split('(')
         if (chunk.length > 1) {
@@ -327,11 +328,27 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
           </Col>
 
           <Col span={10} offset={3}>
-            <FormItem 
-              label={t('project.spec.transformer.transformer_wir_choice')}
+            <FormItem
+              name='transformer_high_voltage_cable_Ib'
+              label={t('project.spec.transformer.transformer_high_voltage_cable_Ib')}
+              rules={[{required: true}]}
               labelCol={{span: 24}}
               wrapperCol={{span: 24}}
             >
+              <Select 
+                options={[
+                  {label: '25 kA', value: 25}, 
+                  {label: '31.5 kA', value: 31.5}, 
+                  {label: '40 kA', value: 40}
+                ]}
+                onChange={val => autoWiringChoice(null, null, null, null, val)}
+              />
+            </FormItem>
+          </Col>
+        </Row>
+        <Row gutter={rowGutter}>
+          <Col offset={6} span={12}>
+            <FormItem label={t('project.spec.transformer.transformer_wir_choice')}>
               <Row gutter={rowGutter} align='top'>
                 <Col span={8}>
                   <FormItem
