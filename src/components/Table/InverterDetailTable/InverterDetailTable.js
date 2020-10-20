@@ -13,8 +13,8 @@ export const InverterDetailTable = ({ inverterID, count }) => {
 
   const KeysAndUnits = [
     ['vdcMax', 'V'], ['vdco', 'V'], ['vdcMin', 'V'], ['vac', 'V'],
-    ['vmpptMin', 'V'], ['vmpptMax', 'V'], ['pdcMax', 'kWp'], ['paco', 'kWp'],
-    ['inverterEffcy', '%'], ['nationEffcy', '%'], ['mpptNum', '/'],
+    ['vmpptMin', 'V'], ['vmpptMax', 'V'], ['pdcMax', 'kWp'],['pacMax', 'kVA'],
+    ['paco', 'kWp'], ['inverterEffcy', '%'], ['nationEffcy', '%'], ['mpptNum', '/'],
     ['mpptStrNum', '/'], ['acFreqMin', 'Hz'], ['acFreqMax', 'Hz'],
     ['idcMax', 'A'], ['iacMax', 'A'], ['nominalPwrFac', 'cosφ'],
     ['pnt', 'W'], ['THDi', '%'], ['grdTrblDetect', 'check'],

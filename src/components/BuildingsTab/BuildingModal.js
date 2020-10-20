@@ -77,7 +77,7 @@ export const BuildingModal = ({showModal, setshowModal, editRecord, seteditRecor
         colon={false}
         form={form}
         hideRequiredMark
-        name="buildingName"
+        name={uuidv1()}
         scrollToFirstError
         onFinish={submitForm}
       >

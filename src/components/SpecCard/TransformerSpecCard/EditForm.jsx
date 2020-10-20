@@ -257,7 +257,7 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
           const findInv = building.data[specIndex].inverter_wiring[invIndex]
           return acc2 + inverterData.find(obj => 
             obj.inverterID === findInv.inverter_model.inverterID
-          ).paco
+          ).pacMax
         }, 0)
       , 0)
     }).reduce((acc, val) => acc + val, 0)
@@ -275,7 +275,7 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
         const findInv = building.data[specIndex].inverter_wiring[invIndex]
         return acc + inverterData.find(obj => 
           obj.inverterID === findInv.inverter_model.inverterID
-        ).paco
+        ).pacMax
       }, 0)
     }).reduce((acc, val) => acc + val, 0)
     setcurCapacity(combiboxCapacity + inverterCapacity)
