@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { Row, Col, Modal, Form, Divider, InputNumber, Descriptions } from 'antd'
+import ChangeHighlight from "react-change-highlight"
+import { Row, Col, Modal, Form, Divider, InputNumber, Descriptions, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { w2other } from '../../../utils/unitConverter'
-import * as styles from './EditInverterPlanModal.module.scss'
+
+const { Text } = Typography
+
+const pass = <Text strong style={{color: '#52c41a'}}>满足</Text>
+const fail = <Text strong style={{color: '#ff4d4f'}}>不满足</Text>
 
 export const EditInverterPlanModal = ({
   pvID, showModal, setshowModal, setautoInvPlan, capacity, N1, autoPlan
@@ -22,6 +27,15 @@ export const EditInverterPlanModal = ({
 
   const [curN1, setcurN1] = useState(null)
   const [curN2, setcurN2] = useState(null)
+  const actualCapRef = useRef()
+  const invNumRef = useRef()
+  const pvNumRef = useRef()
+  const unusedNumRef = useRef()
+  const N1RatioRef = useRef()
+  const N2Ref = useRef()
+  const invReqRef = useRef()
+  const invNeedRef = useRef()
+  const invRatioRef = useRef()
 
   const submitForm = (values => {
     const numInv = genNumInv()
@@ -87,32 +101,48 @@ export const EditInverterPlanModal = ({
                 <Divider>实际装机量</Divider>
                 <Descriptions bordered size='small' column={5} layout='vertical'>
                   <Descriptions.Item label={'实际直流装机容量'} span={1}>
-                    {
-                      curN1 && curN2 ? 
-                      `${w2other(genActualCapacity()).value} ${w2other(genActualCapacity()).unit}` :
-                      '-'
-                    }
+                    <ChangeHighlight>
+                      <div ref={actualCapRef}>
+                      {
+                        curN1 && curN2 ? 
+                        `${w2other(genActualCapacity()).value} ${w2other(genActualCapacity()).unit}` :
+                        '-'
+                      }
+                      </div>
+                    </ChangeHighlight>
                   </Descriptions.Item>
                   <Descriptions.Item label={'逆变器数量'} span={1}>
-                  {
-                    curN1 && curN2 ? 
-                    genNumInv() : 
-                    '-'
-                  }
-                </Descriptions.Item>
+                    <ChangeHighlight>
+                      <div ref={invNumRef}>
+                      {
+                        curN1 && curN2 ? 
+                        genNumInv() : 
+                        '-'
+                      }
+                      </div>
+                    </ChangeHighlight>
+                  </Descriptions.Item>
                   <Descriptions.Item label={'实际接入组件数量'} span={2}>
-                    {
-                      curN1 && curN2 ? 
-                      curN1 * curN2 * genNumInv() : 
-                      '-'
-                    }
+                    <ChangeHighlight>
+                      <div ref={pvNumRef}>
+                      {
+                        curN1 && curN2 ? 
+                        curN1 * curN2 * genNumInv() : 
+                        '-'
+                      }
+                      </div>
+                    </ChangeHighlight>
                   </Descriptions.Item>
                   <Descriptions.Item label={'未接入组件数量'} span={1}>
-                    {
-                      curN1 && curN2 ? 
-                      Math.floor(capacity * 1000 / selPV.pmax) - curN1 * curN2 * genNumInv() : 
-                      '-'
-                    }
+                    <ChangeHighlight>
+                      <div ref={unusedNumRef}>
+                      {
+                        curN1 && curN2 ? 
+                        Math.floor(capacity * 1000 / selPV.pmax) - curN1 * curN2 * genNumInv() : 
+                        '-'
+                      }
+                      </div>
+                    </ChangeHighlight>
                   </Descriptions.Item>
                 </Descriptions>
               </Col>
@@ -129,11 +159,15 @@ export const EditInverterPlanModal = ({
                     {N1.N1Min ? N1.N1Min.toFixed(2) : '-'} ≤ N1 ≤ {N1.N1vmpptMax ? N1.N1vmpptMax.toFixed(2) : '-'}
                   </Descriptions.Item>
                   <Descriptions.Item label={'最大超配系数限制'} span={1}>
-                    {
-                      curN2 && selInv ?
-                      `N1 ≤ ${(selInv.pdcMax * 1000 / (curN2 * selPV.pmax)).toFixed(2)}` :
-                      '-'
-                    }
+                    <ChangeHighlight>
+                      <div ref={N1RatioRef}>
+                      {
+                        curN2 && selInv ?
+                        `N1 ≤ ${(selInv.pdcMax * 1000 / (curN2 * selPV.pmax)).toFixed(2)}` :
+                        '-'
+                      }
+                      </div>
+                    </ChangeHighlight>
                   </Descriptions.Item>
                   <Descriptions.Item label={'N1取值范围'} span={1}>
                     {`
@@ -149,11 +183,15 @@ export const EditInverterPlanModal = ({
                 <Divider>并联组串数N2</Divider>
                 <Descriptions bordered size='small' column={1} layout='vertical'>
                   <Descriptions.Item label={'最大直流功率限制'} span={1}>
-                  {
-                    curN1 && selInv ?
-                    `N2 ≤ ${(selInv.pdcMax / curN1 / selPV.pmax * 1000).toFixed(2)}` :
-                    '-'
-                  }
+                    <ChangeHighlight>
+                      <div ref={N2Ref}>
+                      {
+                        curN1 && selInv ?
+                        `N2 ≤ ${(selInv.pdcMax / curN1 / selPV.pmax * 1000).toFixed(2)}` :
+                        '-'
+                      }
+                      </div>
+                    </ChangeHighlight>
                   </Descriptions.Item>
                 </Descriptions>
               </Col>
@@ -162,18 +200,26 @@ export const EditInverterPlanModal = ({
             <Divider>逆变器</Divider>
             <Descriptions bordered size='small' column={4} layout='vertical'>
               <Descriptions.Item label={'逆变器数量(计算值)'} span={1}>
-                {
-                  curN1 && curN2 ? 
-                  (capacity * 1000 / curN2 / selPV.pmax / curN1).toFixed(2) : 
-                  '-'
-                }
+                <ChangeHighlight>
+                  <div ref={invReqRef}>
+                  {
+                    curN1 && curN2 ? 
+                    (capacity * 1000 / curN2 / selPV.pmax / curN1).toFixed(2) : 
+                    '-'
+                  }
+                  </div>
+                </ChangeHighlight>
               </Descriptions.Item>
               <Descriptions.Item label={'逆变器数量(设计值)'} span={1}>
-                {
-                  curN1 && curN2 ? 
-                  genNumInv() : 
-                  '-'
-                }
+                <ChangeHighlight>
+                  <div ref={invNeedRef}>
+                  {
+                    curN1 && curN2 ? 
+                    genNumInv() : 
+                    '-'
+                  }
+                  </div>
+                </ChangeHighlight>
               </Descriptions.Item>
               <Descriptions.Item label={'逆变器最大允许超配系数'} span={1}>
                 {
@@ -183,11 +229,15 @@ export const EditInverterPlanModal = ({
                 }
               </Descriptions.Item>
               <Descriptions.Item label={'逆变器实际超配系数'} span={1}>
-                {
-                  curN1 && curN2 ? 
-                  ActualDCOverACRatio().toFixed(2) : 
-                  '-'
-                }
+                <ChangeHighlight>
+                  <div ref={invRatioRef}>
+                  {
+                    curN1 && curN2 ? 
+                    ActualDCOverACRatio().toFixed(2) : 
+                    '-'
+                  }
+                  </div>
+                </ChangeHighlight>
               </Descriptions.Item>
             </Descriptions>
 
@@ -196,19 +246,19 @@ export const EditInverterPlanModal = ({
               <Descriptions.Item label={'逆变器额定直流输入电压核算'} span={1}>
                 {
                   curN1 && selInv && (curN1 * selPV.vmpo < selInv.vdcMax) ? 
-                  '满足' : '不满足'
+                  pass : fail
                 }
               </Descriptions.Item>
               <Descriptions.Item label={'逆变器实际超配系数核算'} span={1}>
                 {
                   curN1 && curN2 && selInv && ActualDCOverACRatio() <= AllowDCOverAcRatio() ? 
-                  '满足' : '不满足'
+                  pass : fail
                 }
               </Descriptions.Item>
               <Descriptions.Item label={'N1按逆变器最大超配系数核算'} span={1}>
                 {
                   curN1 && curN2 && selInv && curN1 <= selInv.pdcMax * 1000 / (curN2 * selPV.pmax) ?
-                  '满足' : '不满足'
+                  pass : fail
                 }
               </Descriptions.Item>
             </Descriptions>
@@ -222,12 +272,15 @@ export const EditInverterPlanModal = ({
               scrollToFirstError
               hideRequiredMark
               onFinish={submitForm}
+              labelCol={{span: 6}}
+              wrapperCol={{span: 18}}
+              labelAlign='left'
             >
-                <Form.Item label='N1' name='N1' rules={[{required: true}]}>
-                  <InputNumber min={0} precision={0} value={curN1} onChange={val => setcurN1(val)}/>
+                <Form.Item label='N1' name='N1' rules={[{required: true}]} validateStatus="warning">
+                  <InputNumber style={{width: '100%'}} min={0} precision={0} value={curN1} onChange={val => setcurN1(val)}/>
                 </Form.Item>
-                <Form.Item label='N2' name='N2' rules={[{required: true}]}>
-                  <InputNumber min={0} precision={0} value={curN2} onChange={val => setcurN2(val)}/>
+                <Form.Item label='N2' name='N2' rules={[{required: true}]} validateStatus="warning">
+                  <InputNumber style={{width: '100%'}} min={0} precision={0} value={curN2} onChange={val => setcurN2(val)}/>
                 </Form.Item>
             </Form>
           </Col>

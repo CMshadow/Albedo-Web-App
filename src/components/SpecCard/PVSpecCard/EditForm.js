@@ -446,10 +446,12 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
               name='inverterID'
               label={t('project.spec.inverter')}
               help={
+                projectType === 'commercial' ? null :
                 allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1) ?
                 t('project.spec.inverter.vac-inconsistent') : null
               }
               validateStatus={
+                projectType === 'commercial' ? null :
                 allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1) ?
                 'warning' : null
               }
