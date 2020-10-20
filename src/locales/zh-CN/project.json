@@ -152,7 +152,7 @@
   "project.spec.linked_combibox_inverter_serial_num": "关联汇流箱及逆变器",
   "project.spec.transformer.wiring_option": "输出电缆选型",
   "project.spec.transformer.ACVolDropFac": "允许压降系数",
-  "project.spec.transformer.transformer_high_voltage_cable_Ib": "厂用电源短路电流",
+  "project.spec.transformer.transformer_high_voltage_cable_Ib": "短路热稳定电流",
   "project.spec.transformer.transformer_wir_num": "根",
   "project.spec.transformer.transformer_wir_choice": "输出电缆",
 
