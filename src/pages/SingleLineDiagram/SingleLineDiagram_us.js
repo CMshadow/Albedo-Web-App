@@ -20,8 +20,8 @@ const { TabPane } = Tabs;
 const SingleLineDiagUS = () => {
   const { buildingID } = useParams();
 
-  const [stageWidth,setStageWidth] = useState(window.innerWidth);
-  const [stageHeight, setStageHeight] = useState(window.innerHeight);
+  const stageWidth = window.innerWidth;
+  const stageHeight = window.innerHeight;
 
   const userPV = useSelector(state => state.pv.data);
   const officialPV = useSelector(state => state.pv.officialData);

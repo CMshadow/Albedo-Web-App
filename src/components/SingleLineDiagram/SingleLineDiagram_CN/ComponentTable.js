@@ -1,6 +1,6 @@
 import React from 'react'
 import {v4 as uuidv4} from 'uuid'
-import {Rect, Line, Group, Text, Circle} from "react-konva"
+import {Rect, Line, Group, Text} from "react-konva"
 import {useSelector, useDispatch } from 'react-redux'
 import {setDiagramHeight} from '../../../store/action/index'
 
@@ -13,7 +13,6 @@ const ComponentTable = (props) => {
   const numOfRoofTop = new Set(allPVArray.map( index => index.inverter_serial_number[0])).size
 
   const numOfpvArray = allPVArray.length
-  const numOfInverter = props.numOfInv
   const boundaryWidth = width * 0.8 > 800 ? width * 0.8: 800
   const boundaryHeight = numOfpvArray > 0 ? 
     (numOfpvArray + numOfRoofTop) * 40 + 50 + boundaryWidth * 0.04 : 

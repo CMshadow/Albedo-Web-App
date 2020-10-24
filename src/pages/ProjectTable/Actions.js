@@ -8,11 +8,12 @@ import { deleteProject, getProject as getAllProject } from './service';
 import { deleteReport, deleteProductionData, deleteIrradianceData } from '../Report/service'
 
 // Project列表中触发删除一个Project
-export const DeleteAction = ({record, setdata}) => {
+export const DeleteAction = ({record, setdata, setactiveData, setloading}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const onDelete = () => {
+    setloading(true)
     dispatch(getProject({projectID: record.projectID}))
     .then(async res => {
       await dispatch(deleteProductionData({projectID: record.projectID}))
@@ -25,6 +26,8 @@ export const DeleteAction = ({record, setdata}) => {
         message.success(t('project.success.deleteProject'))
         dispatch(getAllProject()).then(data => {
           setdata(data)
+          setactiveData(data)
+          setloading(false)
         })
       })
     })

@@ -240,6 +240,7 @@ const DiagramBoundary = (props) => {
     ></Text>)
 
     groupOfBoundary.push(<Image 
+      key = {"Bounday-Image-"+uuidv4()}
       x={startX + iconWidth * 0.9}
       y={startY + iconHeight * 0.95}
       width={-iconWidth * 0.2}

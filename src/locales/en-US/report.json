@@ -53,5 +53,6 @@
   "report.head.year_AC_power": "First Year Production",
   "report.head.system_efficiency": "System Efficiency",
   "report.head.kWh_over_kWp": "First Year kWh/kWp",
-  "report.head.ttl_investment": "Project Investment"
+  "report.head.ttl_investment": "Project Investment",
+  "report.head.download_csv": "Download Original Data"
 }

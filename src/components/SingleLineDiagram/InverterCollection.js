@@ -1,6 +1,6 @@
 import React from 'react';
 import {v4 as uuidv4} from 'uuid';
-import {Rect, Line, Group, Text, Circle, Label, Tag} from 'react-konva';
+import {Rect, Line, Group, Text, Circle} from 'react-konva';
 import {useDispatch, useSelector } from 'react-redux'
 import { InverterDataExport } from '../../store/action/index'
 

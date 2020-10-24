@@ -1,6 +1,6 @@
 import React from 'react';
 import {v4 as uuidv4} from 'uuid';
-import {Rect, Line, Group, Text, Circle} from 'react-konva';
+import {Rect, Line, Group, Text} from 'react-konva';
 import {useDispatch, useSelector } from 'react-redux'
 import { setWidth } from '../../store/action/index'
 
