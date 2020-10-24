@@ -41,6 +41,7 @@ export const IrrVSProdChart = ({buildingID}) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Chart
         scale={scale}

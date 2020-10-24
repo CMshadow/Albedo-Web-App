@@ -106,11 +106,16 @@ export const IrradianceTable = ({ buildingID }) => {
     <Card
       title={
         <Title className={styles.cardTitle} level={4}>
-          {t('irrTable.title')}
+          {
+            buildingID === 'overview' ?
+            t('irrTable.title.commercial') :
+            t('irrTable.title.domestic')
+          }
         </Title>
       }
       headStyle={{textAlign: 'center'}}
       hoverable
+      className={styles.card}
     >
       <Table
         bordered

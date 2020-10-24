@@ -136,6 +136,7 @@ export const LossTable = ({ buildingID }) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Table
         bordered

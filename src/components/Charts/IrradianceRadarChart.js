@@ -76,6 +76,7 @@ export const IrradianceRadarChart = ({buildingID}) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Row justify='center'>
         <Space size='large'>

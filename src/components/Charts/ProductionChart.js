@@ -96,6 +96,7 @@ export const ProductionChart = ({buildingID}) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Row justify='center'>
         <Space>

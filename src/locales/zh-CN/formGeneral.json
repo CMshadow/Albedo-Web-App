@@ -1,3 +1,5 @@
 {
-  "form.confirm": "确认"
+  "form.confirm": "确认",
+  "form.pass": "满足",
+  "form.fail": "不满足"
 }

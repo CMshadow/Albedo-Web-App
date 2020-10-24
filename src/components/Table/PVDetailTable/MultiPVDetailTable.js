@@ -64,7 +64,7 @@ export const MultiPVDetailTable = ({ buildingID }) => {
         dataSource={dataSource}
         renderItem={pvID => (
           <List.Item>
-            <Card hoverable bodyStyle={{padding: '5px'}} bordered={false}>
+            <Card hoverable bodyStyle={{padding: '5px'}} bordered={false} style={{cursor: 'unset'}}>
               <PVDetailTable pvID={pvID} count={uniquePVCount[pvID]}/>
             </Card>
           </List.Item>

@@ -297,6 +297,7 @@ export const SunPositionChart = ({buildingID}) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Row justify='center'>
         <Space>

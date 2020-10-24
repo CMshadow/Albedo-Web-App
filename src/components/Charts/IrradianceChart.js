@@ -68,8 +68,8 @@ export const IrradianceChart = ({buildingID}) => {
           {t('irrChart.title')}
         </Title>
       }
-      // bordered={false}
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Row justify='center'>
         <Space>

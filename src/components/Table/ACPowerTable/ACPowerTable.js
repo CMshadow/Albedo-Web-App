@@ -99,6 +99,7 @@ export const ACPowerTable = ({ buildingID }) => {
         </Title>
       }
       hoverable
+      className={styles.card}
     >
       <Table
         bordered

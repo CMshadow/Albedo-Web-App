@@ -1,5 +1,9 @@
 @import '../../../styles/global.scss';
 
+.card {
+  cursor: unset;
+}
+
 .ant-table-title {
   padding: 0px !important;
   border: 0px !important;

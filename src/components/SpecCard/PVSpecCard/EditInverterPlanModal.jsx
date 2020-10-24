@@ -7,9 +7,6 @@ import { w2other } from '../../../utils/unitConverter'
 
 const { Text } = Typography
 
-const pass = <Text strong style={{color: '#52c41a'}}>满足</Text>
-const fail = <Text strong style={{color: '#ff4d4f'}}>不满足</Text>
-
 export const EditInverterPlanModal = ({
   pvID, showModal, setshowModal, setautoInvPlan, capacity, N1, autoPlan
 }) => {
@@ -36,6 +33,9 @@ export const EditInverterPlanModal = ({
   const invReqRef = useRef()
   const invNeedRef = useRef()
   const invRatioRef = useRef()
+
+  const pass = <Text strong style={{color: '#52c41a'}}>{t('form.pass')}</Text>
+  const fail = <Text strong style={{color: '#ff4d4f'}}>{t('form.fail')}</Text>
 
   const submitForm = (values => {
     const numInv = genNumInv()
@@ -86,7 +86,7 @@ export const EditInverterPlanModal = ({
           <Col span={20}>
             <Row>
               <Col span={7}>
-                <Divider>预计装机量</Divider>
+                <Divider>{t('project.modifyPlan.expected_capacity')}</Divider>
                 <Descriptions bordered size='small' column={2} layout='vertical'>
                   <Descriptions.Item label={t('project.spec.capacity')} span={1}>
                     {`${w2other(capacity * 1000).value} ${w2other(capacity * 1000).unit}`}
@@ -98,9 +98,9 @@ export const EditInverterPlanModal = ({
               </Col>
 
               <Col offset={1} span={16}>
-                <Divider>实际装机量</Divider>
+                <Divider>{t('project.modifyPlan.actual_capacity')}</Divider>
                 <Descriptions bordered size='small' column={5} layout='vertical'>
-                  <Descriptions.Item label={'实际直流装机容量'} span={1}>
+                  <Descriptions.Item label={t('project.modifyPlan.actual_dc_capacity')} span={1}>
                     <ChangeHighlight>
                       <div ref={actualCapRef}>
                       {
@@ -111,7 +111,7 @@ export const EditInverterPlanModal = ({
                       </div>
                     </ChangeHighlight>
                   </Descriptions.Item>
-                  <Descriptions.Item label={'逆变器数量'} span={1}>
+                  <Descriptions.Item label={t('project.modifyPlan.inv_num')} span={1}>
                     <ChangeHighlight>
                       <div ref={invNumRef}>
                       {
@@ -122,7 +122,7 @@ export const EditInverterPlanModal = ({
                       </div>
                     </ChangeHighlight>
                   </Descriptions.Item>
-                  <Descriptions.Item label={'实际接入组件数量'} span={2}>
+                  <Descriptions.Item label={t('project.modifyPlan.pv_num')} span={2}>
                     <ChangeHighlight>
                       <div ref={pvNumRef}>
                       {
@@ -133,7 +133,7 @@ export const EditInverterPlanModal = ({
                       </div>
                     </ChangeHighlight>
                   </Descriptions.Item>
-                  <Descriptions.Item label={'未接入组件数量'} span={1}>
+                  <Descriptions.Item label={t('project.modifyPlan.unused_pv_num')} span={1}>
                     <ChangeHighlight>
                       <div ref={unusedNumRef}>
                       {
@@ -150,15 +150,15 @@ export const EditInverterPlanModal = ({
 
             <Row>
               <Col span={15}>
-                <Divider>串联组件数N1</Divider>
+                <Divider>{t('project.modifyPlan.n1')}</Divider>
                 <Descriptions bordered size='small' column={2} layout='vertical'>
-                  <Descriptions.Item label={'最大直流输入电压限制'} span={1}>
+                  <Descriptions.Item label={t('project.modifyPlan.n1_limit_dc')} span={1}>
                     N1 ≤ {N1.N1vdcMax ? N1.N1vdcMax.toFixed(2) : '-'}
                   </Descriptions.Item>
-                  <Descriptions.Item label={'MPPT电压范围限制'} span={1}>
+                  <Descriptions.Item label={t('project.modifyPlan.n1_limit_mppt')} span={1}>
                     {N1.N1Min ? N1.N1Min.toFixed(2) : '-'} ≤ N1 ≤ {N1.N1vmpptMax ? N1.N1vmpptMax.toFixed(2) : '-'}
                   </Descriptions.Item>
-                  <Descriptions.Item label={'最大超配系数限制'} span={1}>
+                  <Descriptions.Item label={t('project.modifyPlan.n1_limit_ratio')} span={1}>
                     <ChangeHighlight>
                       <div ref={N1RatioRef}>
                       {
@@ -169,7 +169,7 @@ export const EditInverterPlanModal = ({
                       </div>
                     </ChangeHighlight>
                   </Descriptions.Item>
-                  <Descriptions.Item label={'N1取值范围'} span={1}>
+                  <Descriptions.Item label={t('project.modifyPlan.n1_range')} span={1}>
                     {`
                       ${N1.N1Min ? Math.ceil(N1.N1Min) : '-'} 
                       ≤ N1 ≤ 
@@ -180,9 +180,9 @@ export const EditInverterPlanModal = ({
               </Col>
 
               <Col offset={1} span={8}>
-                <Divider>并联组串数N2</Divider>
+                <Divider>{t('project.modifyPlan.n2')}</Divider>
                 <Descriptions bordered size='small' column={1} layout='vertical'>
-                  <Descriptions.Item label={'最大直流功率限制'} span={1}>
+                  <Descriptions.Item label={t('project.modifyPlan.n2_limit_power')} span={1}>
                     <ChangeHighlight>
                       <div ref={N2Ref}>
                       {
@@ -197,9 +197,9 @@ export const EditInverterPlanModal = ({
               </Col>
             </Row>
 
-            <Divider>逆变器</Divider>
+            <Divider>{t('project.modifyPlan.inv')}</Divider>
             <Descriptions bordered size='small' column={4} layout='vertical'>
-              <Descriptions.Item label={'逆变器数量(计算值)'} span={1}>
+              <Descriptions.Item label={t('project.modifyPlan.inv_expected')} span={1}>
                 <ChangeHighlight>
                   <div ref={invReqRef}>
                   {
@@ -210,7 +210,7 @@ export const EditInverterPlanModal = ({
                   </div>
                 </ChangeHighlight>
               </Descriptions.Item>
-              <Descriptions.Item label={'逆变器数量(设计值)'} span={1}>
+              <Descriptions.Item label={t('project.modifyPlan.inv_actual')} span={1}>
                 <ChangeHighlight>
                   <div ref={invNeedRef}>
                   {
@@ -221,14 +221,14 @@ export const EditInverterPlanModal = ({
                   </div>
                 </ChangeHighlight>
               </Descriptions.Item>
-              <Descriptions.Item label={'逆变器最大允许超配系数'} span={1}>
+              <Descriptions.Item label={t('project.modifyPlan.inv_max_ratio')} span={1}>
                 {
                   selInv ? 
                   AllowDCOverAcRatio().toFixed(2) : 
                   '-'
                 }
               </Descriptions.Item>
-              <Descriptions.Item label={'逆变器实际超配系数'} span={1}>
+              <Descriptions.Item label={t('project.modifyPlan.inv_actual_ratio')} span={1}>
                 <ChangeHighlight>
                   <div ref={invRatioRef}>
                   {
@@ -241,21 +241,21 @@ export const EditInverterPlanModal = ({
               </Descriptions.Item>
             </Descriptions>
 
-            <Divider>校验</Divider>
+            <Divider>{t('project.modifyPlan.validation')}</Divider>
             <Descriptions bordered size='small' column={3} layout='vertical'>
-              <Descriptions.Item label={'逆变器额定直流输入电压核算'} span={1}>
+              <Descriptions.Item label={t('project.modifyPlan.power_validation')} span={1}>
                 {
                   curN1 && selInv && (curN1 * selPV.vmpo < selInv.vdcMax) ? 
                   pass : fail
                 }
               </Descriptions.Item>
-              <Descriptions.Item label={'逆变器实际超配系数核算'} span={1}>
+              <Descriptions.Item label={t('project.modifyPlan.ratio_validation')} span={1}>
                 {
                   curN1 && curN2 && selInv && ActualDCOverACRatio() <= AllowDCOverAcRatio() ? 
                   pass : fail
                 }
               </Descriptions.Item>
-              <Descriptions.Item label={'N1按逆变器最大超配系数核算'} span={1}>
+              <Descriptions.Item label={t('project.modifyPlan.n1_validation')} span={1}>
                 {
                   curN1 && curN2 && selInv && curN1 <= selInv.pdcMax * 1000 / (curN2 * selPV.pmax) ?
                   pass : fail

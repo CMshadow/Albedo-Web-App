@@ -526,6 +526,7 @@ export const InvestmentTable = ({ buildingID }) => {
         </Title>
       }
       hoverable
+      className='card'
     >
       <Table
         components={components}

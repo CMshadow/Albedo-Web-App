@@ -97,6 +97,7 @@ export const LossChart = ({buildingID}) => {
       }
       bodyStyle={{padding: 0}}
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Chart pure scale={scale} height={500} data={dataSource.reverse()} autoFit padding={[0, 30, 0, 80]}>
         <Coordinate transpose/>

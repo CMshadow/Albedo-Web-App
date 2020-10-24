@@ -1,3 +1,5 @@
 {
-  "form.confirm": "Confirm"
+  "form.confirm": "Confirm",
+  "form.pass": "Passed",
+  "form.fail": "Failed"
 }

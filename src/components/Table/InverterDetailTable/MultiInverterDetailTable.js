@@ -63,7 +63,7 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
         dataSource={dataSource}
         renderItem={inverterID => (
           <List.Item>
-            <Card hoverable bodyStyle={{padding: '5px'}} bordered={false}>
+            <Card hoverable bodyStyle={{padding: '5px'}} bordered={false} style={{cursor: 'unset'}}>
               <InverterDetailTable inverterID={inverterID} count={uniqueInverterCount[inverterID]}/>
             </Card>
           </List.Item>

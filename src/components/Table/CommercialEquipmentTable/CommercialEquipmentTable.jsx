@@ -280,6 +280,7 @@ export const CommercialEquipmentTable = () => {
         </Title>
       }
       hoverable
+      className='card'
     >
       <Table
         rowClassName={() => 'editable-row'}

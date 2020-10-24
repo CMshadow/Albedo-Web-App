@@ -1,5 +1,6 @@
 {
-  "irrTable.title": "Monthly Irradiance Table of Proposed Rooftop Array",
+  "irrTable.title.domestic": "Monthly Irradiance Table of Proposed Rooftop Array",
+  "irrTable.title.commercial": "Monthly Irradiance Table of Proposed Distributed Array",
 
   "irrTable.irradiance": "Tota POA Irradiance",
   "irrTable.irradianceYear": "Annual Total Irradiance",

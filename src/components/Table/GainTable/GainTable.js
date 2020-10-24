@@ -396,6 +396,7 @@ export const GainTable = ({ buildingID }) => {
         </Title>
       }
       hoverable
+      className='card'
     >
       <Table
         components={components}

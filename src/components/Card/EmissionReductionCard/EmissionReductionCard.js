@@ -16,7 +16,7 @@ export const EmissionReductionCard = ({buildingID}) => {
     const data = kg2other(reportData[buildingID][key])
     return (
     <Col key={key} span={8}>
-      <Card hoverable>
+      <Card hoverable style={{cursor: 'unset'}}>
         <Statistic
           title={t(`emissionReduction.${key}`)}
           value={data.value}

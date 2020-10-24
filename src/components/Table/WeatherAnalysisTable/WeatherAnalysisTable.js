@@ -74,6 +74,7 @@ export const WeatherAnalysisTable = ({ buildingID }) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Table
         bordered

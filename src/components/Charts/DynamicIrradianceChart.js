@@ -114,6 +114,7 @@ export const DynamicIrradianceChart = () => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Row justify='center'>
         <Space>
