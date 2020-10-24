@@ -59,9 +59,13 @@ export const ReportHeadDescription = ({buildingID}) => {
         <Item label={t('report.head.kWh_over_kWp')}>
           {`${curBuildingReport.kWh_over_kWp.toFixed(0)} h`}
         </Item>
-        <Item label={t('report.head.ttl_investment')}>
-          {ttl_investment}
-        </Item>
+        {
+          buildingID !== 'overview' ? 
+          <Item label={t('report.head.ttl_investment')}>
+            {ttl_investment}
+          </Item> :
+          null
+        }
         <Item label={t('report.head.download_csv')}>
           <Button 
             size='small' shape='circle' type='link' 
