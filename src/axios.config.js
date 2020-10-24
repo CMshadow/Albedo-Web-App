@@ -8,7 +8,7 @@ if (process.env.REACT_APP_STAGE_OVERWRITE) {
 }
 
 const instance = axios.create({
-  baseURL: `https://hmtn4lq275.execute-api.us-west-2.amazonaws.com/${stage}`,
+  baseURL: `${process.env.REACT_APP_BACKEND_URL}/${stage}`,
   timeout: 60000,
 });
 

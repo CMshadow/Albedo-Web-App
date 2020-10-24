@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { Form, Input, Select, Checkbox, Row, Col, Modal, Divider, message, Collapse, Tooltip } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Form, Input, Select, Checkbox, Row, Col, Modal, Divider, message, Collapse, Tooltip, Upload, Button } from 'antd';
+import { QuestionCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import * as styles from './Modal.module.scss';
-import { addInverter, getInverter, updateInverter } from './service';
+import { addInverter, getInverter, updateInverter, parseOND } from './service';
 import { setInverterData } from '../../store/action/index'
 import { getLanguage } from '../../utils/getLanguage';
 const FormItem = Form.Item;
 const { Option } = Select;
 const { Panel } = Collapse;
 
-const rowGutter = { xs: 8, sm: 16, md: 32};
-const labelCol = { lg: {span: 24}, xl: {span: 16}, xxl: {span: 12} };
-const wrapperCol = { lg: {span: 24}, xl: {span: 8}, xxl: {span: 12} };
+const labelCol = { span: 24 };
+const wrapperCol = { span: 24 };
 
 // Inverter表单默认值
 const initValues = {
@@ -27,51 +26,41 @@ const initValues = {
 export const InverterModal = ({showModal, setshowModal, setactiveData, editRecord, seteditRecord}) => {
   const { t } = useTranslation();
   const [loading, setloading] = useState(false);
+  const [uploadFileList, setuploadFileList] = useState([])
   const [form] = Form.useForm();
   const dispatch = useDispatch();
 
   // Inverter表单基本信息[key，类型，单位]
   const formBasicKeys = [
-    [['name', 's', ''], ['note', 's', '']],
-    [['inverterLength', 'n', 'mm'], ['inverterWidth', 'n', 'mm']],
-    [['inverterHeight', 'n', 'mm'], ['inverterWeight', 'n', 'kg']],
+    [['name', 's', ''], ['note', 's', ''], ['inverterWeight', 'n', 'kg']],
+    [['inverterLength', 'n', 'mm'], ['inverterWidth', 'n', 'mm'], ['inverterHeight', 'n', 'mm']],
   ]
   // Inverter表单进阶信息[key，类型，单位]
   const formAdvancedKeys = [
-    [['vdcMin', 'n', 'V'], ['vdcMax', 'n', 'V']],
-    [['vdco', 'n', 'V'], ['vac', 'n', 'V']],
-    [['vmpptMin', 'n', 'V'], ['vmpptMax', 'n', 'V']],
-    [['paco', 'n', 'kWp'], ['pacMax', 'n', 'kVA']],
-    [['pdco', 'n', 'kWp'], ['pnt', 'n', 'W']],
-    [['vso', 'n', 'V'], ['pso', 'n', 'kWp']],
-    [['pdcMax', 'n', 'kWp'], ['idcMax', 'n', 'A']],
-    [['iacMax', 'n', 'A'], ['nominalPwrFac', 'n', 'cosφ']],
+    [['vdcMin', 'n', 'V'], ['vdcMax', 'n', 'V'], ['vdco', 'n', 'V']],
+    [['vac', 'n', 'V'], ['vmpptMin', 'n', 'V'], ['vmpptMax', 'n', 'V']],
+    [['pdco', 'n', 'kWp'], ['paco', 'n', 'kWp'], ['pacMax', 'n', 'kVA']],
+    [['vso', 'n', 'V'], ['pso', 'n', 'kWp'], ['pnt', 'n', 'W']],
+    [['idcMax', 'n', 'A'], ['iacMax', 'n', 'A'], ['pdcMax', 'n', 'kWp']],
     [['mpptNum', 'n', ''], ['mpptIdcMax', 'n', 'A']],
     [['strNum', 'n', ''], ['strIdcMax', 'n', 'A']],
 
-    [['inverterEffcy', 'n', '%'], ['nationEffcy', 'n', '%']],
-    [['acFreqMin', 'n', 'Hz'], ['acFreqMax', 'n', 'Hz']],
-    [['workingTempMin', 'n', '℃'], ['workingTempMax', 'n', '℃']],
-    [['protectLvl', 's', ''], ['commProtocal', 's', '']],
-    [['workingAltMax', 'n', 'm'], ['THDi', 'n', '%']],
-    [['radiator', 'c', ['forcedConvection', 'naturalConvection']]]
+    [['inverterEffcy', 'n', '%'], ['nationEffcy', 'n', '%'], ['nominalPwrFac', 'n', 'cosφ']],
+    [['acFreqMin', 'n', 'Hz'], ['acFreqMax', 'n', 'Hz'], ['THDi', 'n', '%']],
+    [['workingTempMin', 'n', '℃'], ['workingTempMax', 'n', '℃'], ['workingAltMax', 'n', 'm']],
+    [['protectLvl', 's', ''], ['commProtocal', 's', ''], ['radiator', 'c', ['forcedConvection', 'naturalConvection']]],
   ]
   // Inverter表单勾选信息[key，类型，可选项]
   const formBoolKeys = [
-    [
-      ['grdTrblDetect', 'b', ''], ['overloadProtect', 'b', ''],
-      ['revPolarityProtect', 'b', '']
-    ],[
-      ['overvoltageProtect', 'b', ''], ['shortCircuitProtect', 'b', ''],
-      ['antiIslandProtect', 'b', '']
-    ],[
-      ['overheatProtect', 'b', '']
-    ],
+    [['grdTrblDetect', 'b', ''], ['overloadProtect', 'b', ''], ['revPolarityProtect', 'b', ''], ['overvoltageProtect', 'b', '']],
+    [['shortCircuitProtect', 'b', ''], ['antiIslandProtect', 'b', ''], ['overheatProtect', 'b', '']]
   ]
   // Inverter表单高级参数[key，类型，可选项，有提示文本]
   const formProKeys = [
-    [['c0', 'n', '1/W', 'description'], ['c1', 'n', '1/V', 'description']],
-    [['c2', 'n', '1/V', 'description'], ['c3', 'n', '1/V', 'description']],
+    [
+      ['c0', 'n', '1/W', 'description'], ['c1', 'n', '1/V', 'description'], 
+      ['c2', 'n', '1/V', 'description'], ['c3', 'n', '1/V', 'description']
+    ],
   ]
 
   // 根据 类型，单位/选择项 生成表单的用户输入组件
@@ -117,9 +106,9 @@ export const InverterModal = ({showModal, setshowModal, setactiveData, editRecor
 
   // 生成表单字段组件
   const genFormItems = (keys, itemsPerRow) => keys.map((keysInRow, index) =>
-    <Row gutter={rowGutter} key={index}>
+    <Row key={index}>
       {keysInRow.map(([key, type, unit, note]) =>
-        <Col span={ 24 / itemsPerRow } key={key}>
+        <Col offset={1} span={ 24 / itemsPerRow - 1 } key={key}>
           <FormItem
             valuePropName={ type === 'b' ? 'checked' : 'value'}
             name={key}
@@ -136,6 +125,30 @@ export const InverterModal = ({showModal, setshowModal, setactiveData, editRecor
       )}
     </Row>
   )
+
+  const uploadOND = params => {
+    const reader = new FileReader()
+    reader.readAsText(params.file)
+    reader.onload = event => {
+      dispatch(
+        parseOND(event.target.result, {
+          onUploadProgress: ({total, loaded}) => 
+            params.onProgress(() => ({
+              percent: Math.round(loaded / total * 100).toFixed(2)
+            }))
+        })
+      )
+      .then(res => {
+        form.setFieldsValue(res)
+        params.onSuccess('success message')
+      }).catch(err => {
+        params.onError(err);
+      })
+    }
+    reader.onerror = err => {
+      params.onError(err)
+    }
+  }
 
   // modal被关闭后回调
   const onClose = () => {
@@ -229,11 +242,35 @@ export const InverterModal = ({showModal, setshowModal, setactiveData, editRecor
         wrapperCol={wrapperCol}
         onFinish={submitForm}
       >
-        {genFormItems(formBasicKeys, 2)}
+        {
+          editRecord ? null :
+          <>
+            <Row>
+              <Col span={24}>
+                <FormItem 
+                  label={ t('PV.uploadond') }
+                  labelCol={{  span: 4 }}
+                  wrapperCol={{ span: 20 }}
+                >
+                  <Upload 
+                    accept='.ond'
+                    fileList={uploadFileList}
+                    customRequest={uploadOND}
+                    onChange={({fileList}) => setuploadFileList(fileList.slice(-1,))}
+                  >
+                    <Button icon={<UploadOutlined/>}>{t('PV.uploadBut')} .ond</Button>
+                  </Upload>
+                </FormItem>
+              </Col>
+            </Row>
+            <Divider/>
+          </>
+        }
+        {genFormItems(formBasicKeys, 3)}
         <Divider />
-        {genFormItems(formAdvancedKeys, 2)}
+        {genFormItems(formAdvancedKeys, 3)}
         <Divider />
-        {genFormItems(formBoolKeys, 3)}
+        {genFormItems(formBoolKeys, 4)}
         <Divider />
         <Collapse bordered={false}>
           <Panel
@@ -242,7 +279,7 @@ export const InverterModal = ({showModal, setshowModal, setactiveData, editRecor
             key="pro"
             forceRender
           >
-            {genFormItems(formProKeys, 2)}
+            {genFormItems(formProKeys, 4)}
           </Panel>
         </Collapse>
       </Form>

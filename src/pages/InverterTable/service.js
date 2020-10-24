@@ -118,3 +118,28 @@ export const updateInverter = ({inverterID, values}) => async dispatch => {
     dispatch(setSignOut())
   }
 }
+
+export const parseOND = (fileText, extraParam) => async dispatch => {
+  try {
+    const session = await Auth.currentSession()
+    dispatch(setCognitoUserSession(session))
+
+    return axios.post(
+      `/parseond`,
+      fileText,
+      {
+        ...extraParam,
+        headers: {'COG-TOKEN': session.idToken.jwtToken}
+      }
+    )
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err)
+      notification.error({message: err.response.data.message})
+      throw err
+    })
+  } catch(err) {
+    Auth.signOut()
+    dispatch(setSignOut())
+  }
+}
