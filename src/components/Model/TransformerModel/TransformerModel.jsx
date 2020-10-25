@@ -12,7 +12,7 @@ const markStyle = {overflow: 'hidden', whiteSpace: 'nowrap'}
 const rowGutter = { md: 8, lg: 15, xl: 32 };
 
 // 给定Ut和当前关联设备容量，在国标中查找最接近的变压器容量
-const nearestCapacity = (Ut, linkedCapacity) => {
+export const nearestCapacity = (Ut, linkedCapacity) => {
   if (!linkedCapacity) {
     return null
   }
@@ -33,7 +33,7 @@ const nearestCapacity = (Ut, linkedCapacity) => {
 }
 
 // 给定Ut，变压器容量，变压器类型，等差计算no_load_loss值和short_circuit_loss
-const autoValue = (Ut, capacity, type) => {
+export const autoValue = (Ut, capacity, type) => {
   const cal = (defaultValues, type, prev_cap, next_cap, prop) => (
     defaultValues[type][prev_cap][prop] + 
     (capacity - prev_cap) * (

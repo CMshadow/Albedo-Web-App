@@ -62,8 +62,6 @@ export const SingleBuildingTab = ({building}) => {
                   }, 500)
               }}
             >
-              {t('project.add.spec.prefix')}
-              {building.buildingName}
               {t('project.add.spec')}
             </Button>
           </Col>

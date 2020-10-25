@@ -15,13 +15,13 @@ export const SpecView = ({transformerIndex}) => {
 
   return (
     <>
-      <Descriptions column={{ lg:2, xl: 3}} bordered layout='vertical'>
-        <Item label={t('project.spec.transformer_serial_num')} span={1}>
+      <Descriptions column={4} bordered layout='vertical'>
+        <Item label={t('project.spec.transformer_serial_num')} span={2}>
           <Text className={styles.transformerSerial}>
             T{transformerData.transformer_serial_num}
           </Text>
         </Item>
-        <Item label={t('project.spec.transformer_name')} span={1}>
+        <Item label={t('project.spec.transformer_name')} span={2}>
           {transformerData.transformer_name}
         </Item>
         <Item label={t('project.spec.transformer_vac')} span={1}>
@@ -37,8 +37,8 @@ export const SpecView = ({transformerIndex}) => {
             null
           } {unit}
         </Item>
-        <Item label={t('project.spec.transformer.type')} span={1}>
-          {t(`project.spec.transformer.type.${transformerData.transformer_type}`)}
+        <Item label={t('project.spec.transformer.transformer_wir_choice')} span={1}>
+          {transformerData.transformer_wir_choice}
         </Item>
         <Item label={t('project.spec.transformer_capacity')} span={1}>
           {transformerData.transformer_capacity} kVA
@@ -52,12 +52,9 @@ export const SpecView = ({transformerIndex}) => {
         <Item label={t('project.spec.transformer.consumption_loss.power')} span={1}>
           {transformerData.transformer_power} W
         </Item>
-        <Item label={t('project.spec.transformer.transformer_wir_choice')} span={2}>
-          {transformerData.transformer_wir_choice}
-        </Item>
         {
           transformerData.linked_combibox_serial_num.length > 0 ?
-          <Item label={t('project.spec.linked_combibox_serial_num')} span={3}>
+          <Item label={t('project.spec.linked_combibox_serial_num')} span={4}>
             <Paragraph className={styles.linkedCombiboxParagraph}>
             {
               transformerData.linked_combibox_serial_num.map(serial =>
@@ -70,7 +67,7 @@ export const SpecView = ({transformerIndex}) => {
         }
         {
           transformerData.linked_inverter_serial_num.length > 0 ?
-          <Item label={t('project.spec.linked_inverter_serial_num')} span={3}>
+          <Item label={t('project.spec.linked_inverter_serial_num')} span={4}>
             <Paragraph className={styles.linkedInverterParagraph}>
             {
               transformerData.linked_inverter_serial_num.map(serial =>
