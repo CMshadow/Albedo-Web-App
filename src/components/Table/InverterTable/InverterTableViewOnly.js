@@ -8,7 +8,7 @@ import { InverterDetailTable } from '../InverterDetailTable/InverterDetailTable'
 // 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
 const colKeys = [
   ['paco', 'n', 'kWp', 175], ['vac', 'n', 'V', 175], ['pdcMax', 'n', 'kWp', 175],
-  ['pacMax', 'n', 'kVA', 175], ['mpptNum', 'n', '', 175], ['vdcMax', 'n', 'V', 200], 
+  ['pacMax', 'n', 'kVA', 200], ['mpptNum', 'n', '', 175], ['vdcMax', 'n', 'V', 200], 
   ['vso', 'n', 'V', 175], ['idcMax', 'n', 'A', 200], ['mpptIdcMax', 'n', 'A', 180],
   ['strIdcMax', 'n', 'A', 180], ['vmpptMin', 'n', 'V', 200],
   ['vmpptMax', 'n', 'V', 200], ['inverterEffcy', 'n', '%', 175]

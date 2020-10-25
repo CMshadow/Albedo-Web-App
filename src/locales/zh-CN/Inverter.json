@@ -13,6 +13,7 @@
   "InverterTable.table.paco": "交流额定功率",
   "InverterTable.table.vac": "额定交流电压",
   "InverterTable.table.pdcMax": "最大直流功率",
+  "InverterTable.table.pacMax": "最大交流视在功率",
   "InverterTable.table.mpptNum": "MPPT数量",
   "InverterTable.table.vdcMax": "最大直流输入电压",
   "InverterTable.table.vso": "启动电压",

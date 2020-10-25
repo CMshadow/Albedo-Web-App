@@ -13,6 +13,7 @@
   "InverterTable.table.paco": "Rated Output Power",
   "InverterTable.table.vac": "Rated Output Voltage",
   "InverterTable.table.pdcMax": "Max Input Power",
+  "InverterTable.table.pacMax": "Max AC Apparent Power",
   "InverterTable.table.mpptNum": "Number of MPPT Tracker",
   "InverterTable.table.vdcMax": "Max Input Voltage",
   "InverterTable.table.vso": "Start-up Voltage",
