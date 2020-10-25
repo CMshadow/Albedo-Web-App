@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Row, Col } from 'antd'
 import { useSelector } from 'react-redux'
-import { ACPowerTable } from '../../../components/ACPowerTable/ACPowerTable'
+import { ACPowerTable } from '../../../components/Table/ACPowerTable/ACPowerTable'
 import { ACPowerChart } from '../../../components/Charts/ACPowerChart'
 import { ProductionChart } from '../../../components/Charts/ProductionChart'
 import { IrrVSProdChart } from '../../../components/Charts/IrrVSProdChart'

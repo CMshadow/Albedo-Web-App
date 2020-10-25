@@ -44,6 +44,7 @@ export const ACDistributionChart = ({buildingID}) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Chart
         scale={scale}

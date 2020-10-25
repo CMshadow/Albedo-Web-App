@@ -1,6 +1,6 @@
 import React from 'react';
 import * as styles from './index.module.scss';
-import BackToTop from '../../../components/BackToTop/BackToTop';
+import { Back2TopButton } from '../../../components/Back2TopButton/Back2TopButton';
 import DisplayPageHeader from '../../../layouts/DisplayPageHeader/DisplayPageHeader'
 import DisplayPageFooter from '../../../layouts/DisplayPageFooter/DisplayPageFooter';
 import { Layout, Typography, Card, Statistic } from 'antd';
@@ -21,7 +21,7 @@ const { Content } = Layout;
 
 const DisplayPage = () => (
   <>
-  <BackToTop/>
+  <Back2TopButton/>
   <Layout className={styles.layout}>
     <DisplayPageHeader/>
     <Content className={styles.content}>
@@ -170,7 +170,7 @@ const DisplayPage = () => (
             </Row>
             <Row>
               <p className={styles.regularTxt}>
-                自动统计项目设计中所有使用设备数量与线缆长度，完全实现项目造价自定义。
+                自动统计项目设计中所有使用设备数量与电缆长度，完全实现项目造价自定义。
                 支持手动输入上下网电价与补贴，收益与回本周期从此全掌握
               </p>
             </Row>

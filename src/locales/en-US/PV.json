@@ -20,6 +20,9 @@
   "PVtable.table.iv-curve": "I-V Curve (STC)",
   "PVtable.table.pv-curve": "P-V Curve (STC)",
 
+  "PV.uploadpan": "Read .pan Data",
+  "PV.uploadond": "Read .ond Data",
+  "PV.uploadBut": "Upload",
   "PV.name": "Module Model",
   "PV.note": "Module Descriptionn",
   "PV.panelWidth": "Width",

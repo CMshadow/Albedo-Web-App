@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Row, Col } from 'antd'
-import { InvestmentTable } from '../../../components/InvestmentTable/InvestmentTable'
+import { InvestmentTable } from '../../../components/Table/InvestmentTable/InvestmentTable'
 import { InvestmentChart } from '../../../components/Charts/InvestmentChart'
 
 export const InvestTab = ({buildingID}) => {

@@ -13,9 +13,18 @@ export const IrradianceChart = ({buildingID}) => {
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
   const [selSpecIndex, setselSpecIndex] = useState(0)
-  const curBuilding = projectData.buildings.find(building =>
-    building.buildingID === buildingID
-  )
+  const uniqueTiltAzimuth = buildingID === 'overview' ?
+    projectData.buildings.flatMap(building => 
+      building.data.flatMap(setup => ({
+        tilt: setup.pv_panel_parameters.tilt_angle,
+        azimuth: setup.pv_panel_parameters.azimuth,
+      }))
+    ) :
+    projectData.buildings.find(building => building.buildingID === buildingID)
+    .data.map(setup => ({
+      tilt: setup.pv_panel_parameters.tilt_angle,
+      azimuth: setup.pv_panel_parameters.azimuth,
+    }))
 
   const stringifySetupMonthIrr = reportData[buildingID].setup_month_irr.map(JSON.stringify)
   const uniqueSetupMonthIrr = [...new Set(stringifySetupMonthIrr)].map(JSON.parse)
@@ -23,8 +32,8 @@ export const IrradianceChart = ({buildingID}) => {
     const setupIndex = stringifySetupMonthIrr.indexOf(JSON.stringify(setup))
     return (
       <Space>
-        {`${t('irrTable.tilt')}: ${curBuilding.data[setupIndex].pv_panel_parameters.tilt_angle}°`}
-        {`${t('irrTable.azimuth')}: ${curBuilding.data[setupIndex].pv_panel_parameters.azimuth}°`}
+        {`${t('irrTable.tilt')}: ${uniqueTiltAzimuth[setupIndex].tilt}°`}
+        {`${t('irrTable.azimuth')}: ${uniqueTiltAzimuth[setupIndex].azimuth}°`}
       </Space>
     )
   })
@@ -59,8 +68,8 @@ export const IrradianceChart = ({buildingID}) => {
           {t('irrChart.title')}
         </Title>
       }
-      // bordered={false}
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Row justify='center'>
         <Space>

@@ -77,6 +77,7 @@ export const HeatMap = ({buildingID}) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <ReactEcharts option={option} style={{height: '800px', width: '100%'}}/>
     </Card>

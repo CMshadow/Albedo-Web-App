@@ -17,7 +17,6 @@ export const ReportHeadDescription = ({buildingID}) => {
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
   const curBuildingReport = reportData[buildingID]
-  const buildingName = projectData.buildings.find(building => building.buildingID === buildingID).buildingName
   const [csvLoading, setcsvLoading] = useState(false)
 
   let ttl_investment = null
@@ -41,9 +40,13 @@ export const ReportHeadDescription = ({buildingID}) => {
         <Item label={t('project.descriptions.projectAddress')}>
           {projectData.projectAddress}
         </Item>
-        <Item label={t('report.head.buildingName')}>
-          {buildingName}
-        </Item>
+        {
+          buildingID !== 'overview' ? 
+          <Item label={t('report.head.buildingName')}>
+            {projectData.buildings.find(building => building.buildingID === buildingID).buildingName}
+          </Item> :
+          null
+        }
         <Item label={t('report.head.ttl_dc_power_capacity')}>
           {`${curBuildingReport.ttl_dc_power_capacity.value.toFixed(2)} ${curBuildingReport.ttl_dc_power_capacity.unit}`}
         </Item>
@@ -56,9 +59,13 @@ export const ReportHeadDescription = ({buildingID}) => {
         <Item label={t('report.head.kWh_over_kWp')}>
           {`${curBuildingReport.kWh_over_kWp.toFixed(0)} h`}
         </Item>
-        <Item label={t('report.head.ttl_investment')}>
-          {ttl_investment}
-        </Item>
+        {
+          buildingID !== 'overview' ? 
+          <Item label={t('report.head.ttl_investment')}>
+            {ttl_investment}
+          </Item> :
+          null
+        }
         <Item label={t('report.head.download_csv')}>
           <Button 
             size='small' shape='circle' type='link' 

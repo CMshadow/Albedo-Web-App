@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { DatePicker, Row, Divider, Typography, Space, Radio, Spin, Card, Select } from 'antd'
 import moment from 'moment';
@@ -18,13 +18,12 @@ const disabledDate = (date) => {
   return date.year() < meteonormYear || date.year() > meteonormYear
 }
 
-export const DynamicIrradianceChart = ({buildingID}) => {
+export const DynamicIrradianceChart = () => {
   const { t } = useTranslation()
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
   const dispatch = useDispatch()
-  const history = useHistory()
-  const projectID = history.location.pathname.split('/')[2]
+  const { projectID, buildingID } = useParams()
   const [mode, setmode] = useState('month')
   const [date, setdate] = useState(moment())
   const [loading, setloading] = useState(false)
@@ -32,9 +31,19 @@ export const DynamicIrradianceChart = ({buildingID}) => {
   const [unit, setunit] = useState('')
   const [selSpecIndex, setselSpecIndex] = useState(0)
 
-  const curBuilding = projectData.buildings.find(building =>
-    building.buildingID === buildingID
-  )
+  const uniqueTiltAzimuth = 
+    buildingID === 'overview' ?
+    JSON.stringify(projectData.buildings.flatMap(building => 
+      building.data.flatMap(setup => ({
+        tilt: setup.pv_panel_parameters.tilt_angle,
+        azimuth: setup.pv_panel_parameters.azimuth,
+      }))
+    )) :
+    JSON.stringify(projectData.buildings.find(building => building.buildingID === buildingID)
+    .data.map(setup => ({
+      tilt: setup.pv_panel_parameters.tilt_angle,
+      azimuth: setup.pv_panel_parameters.azimuth,
+    })))
 
   const stringifySetupMonthIrr = reportData[buildingID].setup_month_irr.map(JSON.stringify)
   const uniqueSetupMonthIrr = [...new Set(stringifySetupMonthIrr)].map(JSON.parse)
@@ -44,8 +53,8 @@ export const DynamicIrradianceChart = ({buildingID}) => {
       setupIndex: setupIndex,
       elem: (
         <Space>
-          {`${t('irrTable.tilt')}: ${curBuilding.data[setupIndex].pv_panel_parameters.tilt_angle}°`}
-          {`${t('irrTable.azimuth')}: ${curBuilding.data[setupIndex].pv_panel_parameters.azimuth}°`}
+          {`${t('irrTable.tilt')}: ${JSON.parse(uniqueTiltAzimuth)[setupIndex].tilt}°`}
+          {`${t('irrTable.azimuth')}: ${JSON.parse(uniqueTiltAzimuth)[setupIndex].azimuth}°`}
         </Space>
       )
     })
@@ -67,8 +76,8 @@ export const DynamicIrradianceChart = ({buildingID}) => {
     setloading(true)
     dispatch(getIrradianceData({
       projectID, buildingID, month, day,
-      tilt: curBuilding.data[selSpecIndex].pv_panel_parameters.tilt_angle,
-      azimuth: curBuilding.data[selSpecIndex].pv_panel_parameters.azimuth,
+      tilt: JSON.parse(uniqueTiltAzimuth)[selSpecIndex].tilt,
+      azimuth: JSON.parse(uniqueTiltAzimuth)[selSpecIndex].azimuth,
     }))
     .then(res => {
       const irr_res = mode === 'day' ? w2other(res) : wh2other(res) // 月用wh日用w
@@ -80,7 +89,7 @@ export const DynamicIrradianceChart = ({buildingID}) => {
       setdataSource(irr_data)
       setloading(false)
     })
-  }, [buildingID, curBuilding.data, date, dispatch, mode, projectID, selSpecIndex, t])
+  }, [mode, dispatch, selSpecIndex, date, projectID, buildingID, uniqueTiltAzimuth])
 
   const scale = {
     date: {
@@ -105,6 +114,7 @@ export const DynamicIrradianceChart = ({buildingID}) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Row justify='center'>
         <Space>

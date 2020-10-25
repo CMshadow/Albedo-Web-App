@@ -55,8 +55,9 @@
   "lossChart.p_loss_conversion": "Inverter",
   "lossChart.p_loss_transformer": "Transformer",
   "lossChart.p_loss_dc_wiring": "DC Wiring",
-  "lossChart.p_loss_ac_wiring": "AC Wiring (Inverter(s) to Combiner Box)",
-  "lossChart.p_loss_combibox_wiring": "AC Wiring (Combiner Box to Meter)",
+  "lossChart.p_loss_ac_wiring": "Inverters Out AC Wiring",
+  "lossChart.p_loss_combibox_wiring": "Combiboxes Out AC Wiring",
+  "lossChart.p_loss_transformer_wiring": "Transformers Out AC Wiring",
   "lossChart.p_loss_availability": "System Availability Loss",
 
   "systemEfficiencyChart.name": "System Efficiency",
@@ -127,5 +128,13 @@
 
   "ivChart.current": "Current",
   "ivChart.voltage": "Voltage",
-  "pvChart.power": "Power"
+  "pvChart.power": "Power",
+
+  "PacPdcChart.pdc": "DC Power Input",
+  "PacPdcChart.pac": "AC Power Output",
+  "PacPdcChart.vdcMin": "Vdcmin",
+  "PacPdcChart.vdco": "Vdco",
+  "PacPdcChart.vdcMax": "Vdcmax",
+  "InverterEfficiencyChart.eff": "Inverter Efficiency",
+  "InverterEfficiencyChart.pac_percent": "Normalized Output Power "
 }

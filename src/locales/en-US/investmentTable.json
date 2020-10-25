@@ -21,12 +21,15 @@
   "investment.name.rack": "PV Rack & Support",
   "investment.name.inverter": "Inverter",
   "investment.name.combibox": "AC Combiner Box",
+  "investment.name.transformer": "Transformer",
+  "investment.name.powercabinet": "Power Cabinet",
   "investment.name.meter": "Gateway Electricity Meter",
   "investment.name.router": "Wireless Router",
   "investment.name.comm": "Communication Gateway",
   "investment.name.dc_wiring": "DC Cable",
-  "investment.name.ac_wiring": "AC Cable (Inverters to Combiner Box)",
-  "investment.name.combibox_wiring": "AC Cable (Combiner Box to Meter)",
+  "investment.name.ac_wiring": "Inverters Out Cable Wiring",
+  "investment.name.combibox_wiring": "Combiboxes Out Cable Wiring",
+  "investment.name.transformer_wiring": "Transformers Out Cable Wiring",
   "investment.name.rooftop": "Rooftop Reinforcement",
   "investment.name.other": "Other",
   "investment.name.unitInvestment": "Investment Per kW",
@@ -44,5 +47,12 @@
   "investment.unit.price/ft": "$/ft",
   "investment.unit.price": "$",
   "investment.unit.price/W": "$/W",
-  "investment.unit.price/KW": "$/kW"
+  "investment.unit.price/KW": "$/kW",
+
+  "equipment.description": "Equipment",
+  "equipment.unit.kuai": "Each",
+  "equipment.unit.tai": "Each",
+  "equipment.unit.m": "m",
+  "equipment.unit.ft": "ft",
+  "equipment.unit.mian": "Each"
 }

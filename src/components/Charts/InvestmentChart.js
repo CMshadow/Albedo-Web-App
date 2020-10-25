@@ -35,6 +35,7 @@ export const InvestmentChart = ({buildingID}) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Chart scale={scale} data={dataSource} height={500} autoFit >
         <Legend position="right" offsetX={-20} itemName={{style: legendStyle}}/>

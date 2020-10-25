@@ -1,37 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { Form, Input, Select, Row, Col, Modal, Divider, message, Collapse } from 'antd';
+import { Form, Input, Select, Row, Col, Modal, Divider, message, Collapse, Upload, Button } from 'antd';
+import { UploadOutlined } from '@ant-design/icons'
 import * as styles from './Modal.module.scss';
-import { addPV, getPV, updatePV } from './service';
+import { addPV, getPV, updatePV, parsePAN } from './service';
 import { setPVData } from '../../store/action/index'
 const FormItem = Form.Item;
 const { Option } = Select;
 const { Panel } = Collapse;
 
-const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
-const labelCol = { lg: {span: 24}, xl: {span: 16}, xxl: {span: 12} };
-const wrapperCol = { lg: {span: 24}, xl: {span: 8}, xxl: {span: 12} };
+const labelCol = {span: 24};
+const wrapperCol = {span: 24};
 
 // PV表单默认值
 const initValues = {
   'siliconMaterial': 'mc-Si',
   'moduleMaterial': 'glass/cell/glass',
-  'year1Decay': '2.5',
-  'year2To25Decay': '0.7'
+  'year1Decay': 2.5,
+  'year2To25Decay': 0.7,
+  'tenYDecay': Number((2.5 + 0.7 * 9).toFixed(2)),
+  'twentyfiveYDecay': Number((2.5 + 0.7 * 24).toFixed(2))
 }
 
 export const PVModal = ({showModal, setactiveData, setshowModal, editRecord, seteditRecord}) => {
   const { t } = useTranslation();
   const [loading, setloading] = useState(false);
+  const [uploadFileList, setuploadFileList] = useState([])
   const [form] = Form.useForm();
   const dispatch = useDispatch();
 
   // PV表单基本信息[key，类型，单位]
   const formBasicKeys = [
-    [['name', 's', ''], ['note', 's', '']],
-    [['panelLength', 'n', 'mm'], ['panelWidth', 'n', 'mm']],
-    [['panelHeight', 'n', 'mm'], ['panelWeight', 'n', 'kg']],
+    [['name', 's', ''], ['note', 's', ''], ['panelWeight', 'n', 'kg']],
+    [['panelLength', 'n', 'mm'], ['panelWidth', 'n', 'mm'], ['panelHeight', 'n', 'mm']],
   ]
   // PV表单选择项[key，类型，可选项]
   const formSelectKeys = [
@@ -42,15 +44,12 @@ export const PVModal = ({showModal, setactiveData, setshowModal, editRecord, set
   ]
   // PV表单进阶信息[key，类型，单位]
   const formAdvancedKeys = [
-    [['seriesCell', 'n', ''], ['parallelCell', 'n', '']],
-    [['pmax', 'n', 'Wp'], ['gammaPmax', 'n', '%/℃']],
-    [['impo', 'n', 'A'], ['vmpo', 'n', 'V']],
-    [['voco', 'n', 'V'], ['betaVoco', 'n', '%/℃']],
-    [['isco', 'n', 'A'], ['alphaIsc', 'n', '%/℃']],
-    [['alphaImp', 'n', '%/℃'], ['betaVmpo', 'n', '%/℃']],
-    [['ixo', 'n', 'A'], ['ixxo', 'n', 'A']],
-    [['t', 'n', '℃'], ['tPrime', 'n', '℃']],
-    [['tenYDecay', 'n', '%'], ['twentyfiveYDecay', 'n', '%']],
+    [['pmax', 'n', 'Wp'], ['seriesCell', 'n', ''], ['parallelCell', 'n', '']],
+    [['vmpo', 'n', 'V'], ['voco', 'n', 'V'], ['betaVoco', 'n', '%/℃']],
+    [['impo', 'n', 'A'], ['isco', 'n', 'A'], ['alphaImp', 'n', '%/℃']],
+    [['ixo', 'n', 'A'], ['ixxo', 'n', 'A'], ['alphaIsc', 'n', '%/℃']],
+    [['t', 'n', '℃'], ['tPrime', 'n', '℃'], ['betaVmpo', 'n', '%/℃']],
+    [['tenYDecay', 'n', '%'], ['twentyfiveYDecay', 'n', '%'], ['gammaPmax', 'n', '%/℃']],
   ]
   // PV表单高级参数[key，类型，单位]
   const formProKeys = [
@@ -80,9 +79,9 @@ export const PVModal = ({showModal, setactiveData, setshowModal, editRecord, set
   }
   // 生成表单字段组件
   const genFormItems = (keys, itemsPerRow) => keys.map((keysInRow, index) =>
-    <Row gutter={rowGutter} key={index}>
+    <Row key={index}>
       {keysInRow.map(([key, type, unit, note]) =>
-        <Col span={ 24 / itemsPerRow } key={key}>
+        <Col offset={1} span={ 24 / itemsPerRow - 1 } key={key}>
           <FormItem
             valuePropName={ type === 'b' ? 'checked' : 'value'}
             name={key}
@@ -96,10 +95,29 @@ export const PVModal = ({showModal, setactiveData, setshowModal, editRecord, set
     </Row>
   )
 
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
+  const uploadPAN = params => {
+    const reader = new FileReader()
+    reader.readAsText(params.file)
+    reader.onload = event => {
+      dispatch(
+        parsePAN(event.target.result, {
+          onUploadProgress: ({total, loaded}) => 
+            params.onProgress(() => ({
+              percent: Math.round(loaded / total * 100).toFixed(2)
+            }))
+        })
+      )
+      .then(res => {
+        form.setFieldsValue(res)
+        params.onSuccess('success message')
+      }).catch(err => {
+        params.onError(err);
+      })
+    }
+    reader.onerror = err => {
+      params.onError(err)
+    }
+  }
 
   // modal被关闭后回调
   const onClose = () => {
@@ -182,16 +200,39 @@ export const PVModal = ({showModal, setactiveData, setshowModal, editRecord, set
         className={styles.form}
         name="add-PV"
         scrollToFirstError
-        validateMessages={validateMessages}
         labelCol={labelCol}
         wrapperCol={wrapperCol}
         onFinish={submitForm}
       >
-        {genFormItems(formBasicKeys, 2)}
+        {
+          editRecord ? null :
+          <>
+            <Row>
+              <Col span={24}>
+                <FormItem 
+                  label={ t('PV.uploadpan') }
+                  labelCol={{ span: 4 }}
+                  wrapperCol={{ span: 20 }}
+                >
+                  <Upload 
+                    accept='.pan'
+                    fileList={uploadFileList}
+                    customRequest={uploadPAN}
+                    onChange={({fileList}) => setuploadFileList(fileList.slice(-1,))}
+                  >
+                    <Button icon={<UploadOutlined/>}>{t('PV.uploadBut')} .pan</Button>
+                  </Upload>
+                </FormItem>
+              </Col>
+            </Row>
+            <Divider/>
+          </>
+        }
+        {genFormItems(formBasicKeys, 3)}
         <Divider />
         {genFormItems(formSelectKeys, 2)}
         <Divider />
-        {genFormItems(formAdvancedKeys, 2)}
+        {genFormItems(formAdvancedKeys, 3)}
         <Collapse bordered={false}>
           <Panel
             className={styles.collapsePanel}

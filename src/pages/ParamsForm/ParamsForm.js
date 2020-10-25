@@ -6,8 +6,7 @@ import { updateProjectAttributes } from '../../store/action/index'
 import { useHistory } from 'react-router-dom'
 import { saveProject } from '../Project/service'
 import { HorizonChart } from '../../components/Charts/HorizonChart'
-import { MonthlyAlbedo } from '../../components/MonthlyAlbedo/MonthlyAlbedo'
-import { TransformerModel } from '../../components/TransformerModel/TransformerModel'
+import { MonthlyAlbedoModel } from '../../components/Model/MonthlyAlbedoModel/MonthlyAlbedoModel'
 import * as styles from './ParamsForm.module.scss'
 const FormItem = Form.Item;
 const { Text } = Typography;
@@ -24,8 +23,6 @@ const genInitValues = (projectData) => {
     p_loss_mismatch_betweenstrings: 0.1,
     system_availability: 100,
     Ub: 380,
-    ACVolDropFac: 2,
-    DCVolDropFac: 1,
     p_loss_availability: 0.5
   }
   new Array(12).fill(0).map((_, index) => index + 1).forEach(month =>
@@ -76,17 +73,7 @@ const ParamsForm = () => {
     1: {style: markStyle, label: t('report.paramsForm.loss_1')},
   };
 
-  // ACVolDropFac标识
-  const ACVolDropFacMarks = {
-    0.1: t('report.paramsForm.drop_0.1'),
-    5: {style: markStyle, label: t('report.paramsForm.drop_5')}
-  }
 
-  // DCVolDropFac标识
-  const DCVolDropFacMarks = {
-    0.1: t('report.paramsForm.drop_0.1'),
-    2: {style: markStyle, label: t('report.paramsForm.drop_2')}
-  }
 
   const irrandianceKeys = [
     [['p_loss_soiling', 0.1, 0, 5, pLossSoilingMarks], ['p_loss_tilt_azimuth', 'disabled', 'disabled']],
@@ -108,17 +95,9 @@ const ParamsForm = () => {
   ]
 
   const gridKeys = [
-    [['p_loss_availability', 0.1, 0, 5, pLossAvailabilityMarks], ['p_loss_ac_wiring', 'disabled', 'disabled']]
+    [['p_loss_availability', 0.1, 0, 5, pLossAvailabilityMarks]],
+    [['p_loss_ac_wiring', 'disabled', 'disabled'], ['p_loss_transformer', 'disabled', 'disabled']]
   ]
-
-  const wiringKeys = [
-    [['ACVolDropFac', 0.05, 0.1, 5, ACVolDropFacMarks], ['DCVolDropFac', 0.05, 0.1, 2, DCVolDropFacMarks]]
-  ]
-
-  // 通用required项提示文本
-  const validateMessages = {
-    required: t('form.required')
-  };
 
   const genFormInputArea = (key, step, min, max, marks) => {
     switch(step) {
@@ -129,7 +108,7 @@ const ParamsForm = () => {
           </Text>
         )
       case 'albedo':
-        return <MonthlyAlbedo/>
+        return <MonthlyAlbedoModel/>
       case 'pv':
         return (
           <Space>
@@ -225,7 +204,6 @@ const ParamsForm = () => {
         form={form}
         name="report-params"
         scrollToFirstError
-        validateMessages={validateMessages}
         labelAlign='left'
         labelCol={labelCol}
         wrapperCol={wrapperCol}
@@ -240,16 +218,7 @@ const ParamsForm = () => {
         <Divider>{t('report.paramsForm.ac')}</Divider>
         {genFormItems(acKeys, 2)}
         <Divider>{t('report.paramsForm.grid')}</Divider>
-        {
-          <Row gutter={rowGutter}>
-            <Col span={24}>
-              <TransformerModel form={form} initUb={projectData.Ub || null}/>
-            </Col>
-          </Row>
-        }
         {genFormItems(gridKeys, 2)}
-        <Divider>{t('report.paramsForm.wiring')}</Divider>
-        {genFormItems(wiringKeys, 2)}
         <HorizonChart data={horizonData}/>
         <br/>
         <Row justify='center'>

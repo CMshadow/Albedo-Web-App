@@ -14,6 +14,7 @@ import { getProject, saveProject, globalOptTiltAzimuth, allTiltAzimuthPOA } from
 import { getPV, getOfficialPV } from '../../pages/PVTable/service'
 import { getInverter, getOfficialInverter } from '../../pages/InverterTable/service'
 import { saveReport, getReport } from '../../pages/Report/service'
+import { usedAllEquipments } from '../../utils/checkUnusedEquipments'
 import { setProjectData, setReportData, setPVData, setOfficialPVData, setInverterData, setOfficialInverterData, updateProjectAttributes, releaseProjectData } from '../../store/action/index';
 
 import * as styles from './ProjectLayout.module.scss';
@@ -46,8 +47,7 @@ const ProjectLayout = (props) => {
   const genReportSubMenu = () => {
     return projectData.buildings &&
     projectData.buildings.filter(building =>
-      building.data.length > 0 &&
-      building.data[0].inverter_wiring.length > 0
+      building.data.length > 0 && building.data[0].inverter_wiring.length > 0
     ).map(building => {
       let disabled = true
       if (
@@ -57,7 +57,11 @@ const ProjectLayout = (props) => {
         )) && projectData.tiltAzimuthPOA
       ) disabled = false
       return (
-        <Menu.Item key={`report/${building.buildingID}`} disabled={disabled}>
+        <Menu.Item 
+          key={`report/${building.buildingID}`} 
+          className={styles.menuItem} 
+          disabled={disabled}
+        >
           <Tooltip title={disabled ? t('sider.report.disabled') : null}>
             {
               t('sider.menu.report.prefix') +
@@ -85,7 +89,11 @@ const ProjectLayout = (props) => {
         disabled = false
       }
       return (
-        <Menu.Item key={`singleLineDiagram/${building.buildingID}`} disabled={disabled}>
+        <Menu.Item 
+          key={`singleLineDiagram/${building.buildingID}`} 
+          className={styles.menuItem} 
+          disabled={disabled}
+        >
           <Tooltip title={disabled ? t('sider.menu.singleLineDiagram.disabled') : null}>
             {
               t('sider.menu.singleLineDiagram.prefix') +
@@ -97,6 +105,62 @@ const ProjectLayout = (props) => {
       )
     })
   }
+
+  const domesticMenu = 
+    <Menu
+      className={styles.menu}
+      theme="dark"
+      mode="inline"
+      selectedKeys={[selectMenu]}
+      onSelect={menuOnSelect}
+    >
+      <Menu.Item key='dashboard' className={styles.menuItem}>
+        {t('sider.menu.projectDetail')}
+      </Menu.Item>
+      <Menu.Item key='params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+        {t('sider.menu.reportParams')}
+      </Menu.Item>
+      <SubMenu
+        disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
+        key='report'
+        className={styles.menuItem}
+        title={t('sider.menu.report')}
+      >
+        {genReportSubMenu()}
+      </SubMenu>
+      <SubMenu
+        disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
+        key='singleLineDiag'
+        className={styles.menuItem}
+        title={t('sider.menu.singleLineDiagram')}
+      >
+        {genSLDSubMen()}
+      </SubMenu>
+    </Menu>
+
+  const commercialMenu = 
+    <Menu
+      className={styles.menu}
+      theme="dark"
+      mode="inline"
+      selectedKeys={[selectMenu]}
+      onSelect={menuOnSelect}
+    >
+      <Menu.Item key='dashboard' className={styles.menuItem}>
+        {t('sider.menu.projectDetail')}
+      </Menu.Item>
+      <Menu.Item key='powergrid' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+        {t('sider.menu.commercial')}
+      </Menu.Item>
+      <Menu.Item key='params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+        {t('sider.menu.reportParams')}
+      </Menu.Item>
+      <Menu.Item key={`report/overview`} className={styles.menuItem} disabled={!usedAllEquipments(projectData)}>
+        <Tooltip title={!usedAllEquipments(projectData) ? t('sider.report.disabled-commercial') : null}>
+          {t('sider.menu.report')}
+        </Tooltip>
+      </Menu.Item>
+    </Menu>
 
   const saveProjectClick = () => {
     setsaveLoading(true)
@@ -163,7 +227,12 @@ const ProjectLayout = (props) => {
         .then(res =>
           dispatch(setReportData({buildingID: building.buildingID, data: res}))
         )
-      })
+      }).concat([
+        dispatch(getReport({projectID, buildingID: 'overview'}))
+        .then(res =>
+          dispatch(setReportData({buildingID: 'overview', data: res}))
+        )
+      ])
       await Promise.all(getReportPromises)
       setfetchLoading(false)
 
@@ -211,7 +280,7 @@ const ProjectLayout = (props) => {
       <Helmet>
         <meta charSet="utf-8" />
         <meta name="description" content={t('user.logo.welcome')}/>
-        <title>{`${projectData.projectTitle || ''} - ${t('sider.company')}`}</title>
+        <title>{`${projectData.projectTitle || 'Loading'} - ${t('sider.company')}`}</title>
       </Helmet>
       <Layout>
         <EmailSupport />
@@ -226,42 +295,10 @@ const ProjectLayout = (props) => {
           {
             Object.keys(projectData).length !== 0 ?
             <div>
-              <Menu
-                className={styles.menu}
-                theme="dark"
-                mode="inline"
-                selectedKeys={[selectMenu]}
-                onSelect={menuOnSelect}
-              >
-                <Menu.Item key='dashboard' className={styles.menuItem}>
-                  {t('sider.menu.projectDetail')}
-                </Menu.Item>
-                <Menu.Item key='report/params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
-                  {t('sider.menu.reportParams')}
-                </Menu.Item>
-                <SubMenu
-                  disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
-                  key='report'
-                  className={styles.menuItem}
-                  title={t('sider.menu.report')}
-                >
-                  {genReportSubMenu()}
-                </SubMenu>
-                <SubMenu
-                  disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
-                  key='singleLineDiag'
-                  className={styles.menuItem}
-                  title={t('sider.menu.singleLineDiagram')}
-                >
-                  {genSLDSubMen()}
-                </SubMenu>
-                <Menu.Item key="pv" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
-                  {t('sider.menu.pv')}
-                </Menu.Item>
-                <Menu.Item key="inverter" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
-                  {t('sider.menu.inverter')}
-                </Menu.Item>
-              </Menu>
+              {
+                projectData.projectType === 'domestic' ?
+                domesticMenu : commercialMenu
+              }
               <Button
                 block
                 type='link'
@@ -277,16 +314,16 @@ const ProjectLayout = (props) => {
               <Spin size='large' />
             </div>
           }
-
         </Sider>
+
         <Layout className={styles.main}>
           {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
+
           <Content className={styles.content}>
             {fetchLoading ? null : props.children}
           </Content>
-          <Footer className={styles.footer}>
-            <DefaultFooter/>
-          </Footer>
+
+          <Footer className={styles.footer}><DefaultFooter/></Footer>
         </Layout>
       </Layout>
     </>

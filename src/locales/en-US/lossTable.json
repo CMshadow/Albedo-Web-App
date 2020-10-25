@@ -14,8 +14,9 @@
   "lossTable.p_loss_conversion": "Inverter Loss",
   "lossTable.p_loss_transformer": "Transformer Loss",
   "lossTable.p_loss_dc_wiring": "DC Wiring Loss",
-  "lossTable.p_loss_ac_wiring": "AC Wiring Loss (Inverters to Combiner Box)",
-  "lossTable.p_loss_combibox_wiring": "AC Wiring Loss (Combiner Box to Meter)",
+  "lossTable.p_loss_ac_wiring": "Inverters Out AC Wiring",
+  "lossTable.p_loss_combibox_wiring": "Combiboxes Out AC Wiring",
+  "lossTable.p_loss_transformer_wiring": "Transformers Out AC Wiring",
   "lossTable.p_loss_availability": "System Availability Loss",
   "lossTable.p_loss_system": "Overall System Loss",
   "lossTable.system_efficiency": "System Efficiency"

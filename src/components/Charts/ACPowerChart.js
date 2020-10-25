@@ -37,6 +37,7 @@ export const ACPowerChart = ({buildingID}) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Chart
         scale={scale}

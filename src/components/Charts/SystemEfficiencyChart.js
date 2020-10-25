@@ -58,6 +58,7 @@ export const SystemEfficiencyChart = ({buildingID}) => {
       }
       bodyStyle={{padding: 0, minHeight: 500}}
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Chart
         height={400}

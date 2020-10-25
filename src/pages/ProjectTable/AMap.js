@@ -18,7 +18,6 @@ const AMap = ({apikey, mapPos, setmapPos, validated, setvalidated, form, webApiK
         plugins={plugins}
         zoom={14}
         center={{latitude: mapPos.lat, longitude: mapPos.lon}}
-        onClick={(...props) => console.log(props)}
         events={{
           click: (e) => {
             amapRevGeocoder({lon: e.lnglat.lng, lat: e.lnglat.lat, key: webApiKey})

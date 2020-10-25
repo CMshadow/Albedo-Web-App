@@ -48,6 +48,7 @@ export const ProductionChart = ({buildingID}) => {
       const ac_res = day ? w2other(res) : wh2other(res) // 月用wh日用w
       setunit(ac_res.unit)
       const ac_data = ac_res.value.map((val,index) => ({
+        key: index,
         date: `${index + 1}`,
         value: val,
         type: t('lossChart.ac')
@@ -57,6 +58,7 @@ export const ProductionChart = ({buildingID}) => {
         .then(res2 => {
           const dc_res = wh2other(res2)
           const dc_data = dc_res.value.map((val,index) => ({
+            key: index,
             date: `${index + 1}`,
             value: val,
             type: t('lossChart.dc')
@@ -94,6 +96,7 @@ export const ProductionChart = ({buildingID}) => {
         </Title>
       }
       hoverable
+      style={{cursor: 'unset'}}
     >
       <Row justify='center'>
         <Space>

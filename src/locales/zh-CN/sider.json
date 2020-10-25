@@ -5,7 +5,8 @@
 
 
   "sider.menu.back-project": "退出该项目",
-  "sider.menu.projectDetail": "项目信息",
+  "sider.menu.projectDetail": "光伏发电单元配置",
+  "sider.menu.commercial": "接入系统配置",
   "sider.menu.reportParams": "系统效率参数设置",
   "sider.menu.report": "查看报告",
   "sider.menu.report.prefix": "房屋",
@@ -20,7 +21,8 @@
 
 
   "sider.save": "保存项目",
-  "sider.report.disabled": "该房屋配置尚未完成，无法查看报告",
+  "sider.report.disabled": "该房屋配置尚未完成",
+  "sider.report.disabled-commercial": "未配置并网柜/有设备未接入并网柜",
 
   "sider.tiltAzimuthPOA.success": "已生成朝向倾角POA数据"
 }

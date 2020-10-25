@@ -156,3 +156,61 @@ async (dispatch, getState) => {
     dispatch(setSignOut())
   }
 }
+
+export const wiringOptions = ({type, ...values}) => async (dispatch, getState) => {
+  try {
+    const session = await Auth.currentSession()
+    dispatch(setCognitoUserSession(session))
+
+    return axios.get(
+      `/wiringoptions`,
+      {
+        params: {
+          type: type,
+          ut: values.Ut
+        },
+        headers: {'COG-TOKEN': session.idToken.jwtToken}
+      }
+    )
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err)
+      notification.error({message: err.response.data.message})
+      throw err
+    })
+  } catch(err) {
+    Auth.signOut()
+    dispatch(setSignOut())
+  }
+}
+
+export const wiringChoice = ({type, ...values}) => async (dispatch, getState) => {
+  try {
+    const session = await Auth.currentSession()
+    dispatch(setCognitoUserSession(session))
+
+    return axios.get(
+      `/wiringchoice`,
+      {
+        params: {
+          type: type,
+          ut: values.Ut,
+          se: values.Se,
+          transformercablelen: values.TransformerCableLen,
+          allowacvoldropfac: values.allowACVolDropFac,
+          ib: values.Ib
+        },
+        headers: {'COG-TOKEN': session.idToken.jwtToken}
+      }
+    )
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err)
+      notification.error({message: err.response.data.message})
+      throw err
+    })
+  } catch(err) {
+    Auth.signOut()
+    dispatch(setSignOut())
+  }
+}
