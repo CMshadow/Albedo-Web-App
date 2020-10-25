@@ -216,8 +216,10 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
 
   // 某个subAry种checkbox值变化后更新全部checkAll状态
   const updateCheckAll = (buildingIndex, curCombiboxCBValues, curInvCBValues) => {
-    const combiboxCBValues = curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`)
-    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`)
+    const combiboxCBValues = 
+      curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`) || []
+    const invCBValues = 
+      curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
     const status = determineCheckAll(
       [...combiboxCBValues, ...invCBValues],
       [...createCombiboxCheckboxOptions(buildingIndex), ...createInverterCheckboxOptions(buildingIndex)]
@@ -229,8 +231,10 @@ export const EditForm = ({transformerIndex, seteditingFalse}) => {
 
   // 某个subAry种checkbox值变化后更新全部intermediate状态
   const updateIntermediate = (buildingIndex, curCombiboxCBValues, curInvCBValues) => {
-    const combiboxCBValues = curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`)
-    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`)
+    const combiboxCBValues = 
+      curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`) || []
+    const invCBValues = 
+      curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
     const status = determineIntermediate(
       [...combiboxCBValues, ...invCBValues],
       [...createCombiboxCheckboxOptions(buildingIndex), ...createInverterCheckboxOptions(buildingIndex)]
