@@ -23,6 +23,9 @@
   "InverterTable.table.vmpptMin": "Min MPPT Voltage",
   "InverterTable.table.vmpptMax": "Max MPPT Voltage",
   "InverterTable.table.inverterEffcy": "Max Inverter Efficiency",
+  "InverterTable.table.curve-title": "Power & Efficiency Curve",
+  "InverterTable.table.pdc-pac-curve": "Pdc-Pac Curve",
+  "InverterTable.table.inverter-efficiency-curve": "Efficiency Curve",
 
   "Inverter.name": "Inverter Model",
   "Inverter.note": "Inverter Descriptionn",

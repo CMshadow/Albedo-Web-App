@@ -128,5 +128,13 @@
 
   "ivChart.current": "Current",
   "ivChart.voltage": "Voltage",
-  "pvChart.power": "Power"
+  "pvChart.power": "Power",
+
+  "PacPdcChart.pdc": "DC Power Input",
+  "PacPdcChart.pac": "AC Power Output",
+  "PacPdcChart.vdcMin": "Vdcmin",
+  "PacPdcChart.vdco": "Vdco",
+  "PacPdcChart.vdcMax": "Vdcmax",
+  "InverterEfficiencyChart.eff": "Inverter Efficiency",
+  "InverterEfficiencyChart.pac_percent": "Normalized Output Power "
 }

@@ -119,6 +119,30 @@ export const updateInverter = ({inverterID, values}) => async dispatch => {
   }
 }
 
+export const getPerformanceCurve = ({inverterID, userID}) => async dispatch => {
+  try {
+    const session = await Auth.currentSession()
+    dispatch(setCognitoUserSession(session))
+
+    return axios.get(
+      `/inverter/inverterperformance`,
+      {
+        params: {inverterID: inverterID, userID: userID},
+        headers: {'COG-TOKEN': session.idToken.jwtToken}
+      }
+    )
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err)
+      notification.error({message: err.response.data.message})
+      throw err
+    })
+  } catch(err) {
+    Auth.signOut()
+    dispatch(setSignOut())
+  }
+}
+
 export const parseOND = (fileText, extraParam) => async dispatch => {
   try {
     const session = await Auth.currentSession()

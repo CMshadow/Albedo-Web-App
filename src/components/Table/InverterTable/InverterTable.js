@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Table, Divider, Button, Drawer } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { Table, Divider, Button, Drawer, Tooltip } from 'antd';
+import { EditOutlined, LineChartOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { SearchString, SearchRange } from '../TableColFilters/TableColSearch';
 import { DeleteAction } from './Actions';
 import { InverterDetailTable } from '../InverterDetailTable/InverterDetailTable'
+import { PerformanceCurve } from './PerformanceCurve'
 
 // 表单中的数字columns和单位
 // 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
@@ -22,11 +23,20 @@ export const InverterTable = ({
   const { t } = useTranslation();
   const [showDrawer, setshowDrawer] = useState(false)
   const [viewInverterID, setviewInverterID] = useState(null)
+  const [viewInverterUserID, setviewInverterUserID] = useState(null)
+  const [showChartModal, setshowChartModal] = useState(false)
 
   // 点击组件名显示详细信息
   const onClickName = (inverterID) => {
     setviewInverterID(inverterID)
     setshowDrawer(true)
+  }
+
+  // 点击IV曲线图标
+  const onClickCurve = (inverterID, userID) => {
+    setviewInverterID(inverterID)
+    setviewInverterUserID(userID)
+    setshowChartModal(true)
   }
 
   // 生成表单所有数字列属性
@@ -70,9 +80,17 @@ export const InverterTable = ({
       dataIndex: 'action',
       key: 'action',
       fixed: 'right',
-      width: 125,
+      width: showEditBut ? 175 : 50,
       render: (value, record) => (
         <div>
+          <Tooltip title={t('InverterTable.table.curve-title')}>
+            <Button
+              type="link"
+              icon={<LineChartOutlined />}
+              onClick={() => onClickCurve(record.inverterID, record.userID)}
+            />
+          </Tooltip>
+          <Divider type='vertical' />
           <Button
             type="link"
             icon={<EditOutlined />}
@@ -117,6 +135,14 @@ export const InverterTable = ({
       >
         <InverterDetailTable inverterID={viewInverterID} />
       </Drawer>
+      <PerformanceCurve
+        inverterID={viewInverterID}
+        userID={viewInverterUserID}
+        show={showChartModal} 
+        setshow={setshowChartModal} 
+        setinverterID={setviewInverterID}
+        setuserID={setviewInverterUserID}
+      />
     </>
   )
 }

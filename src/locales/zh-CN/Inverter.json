@@ -23,6 +23,9 @@
   "InverterTable.table.vmpptMin": "MPPT电压最小值",
   "InverterTable.table.vmpptMax": "MPPT电压最大值",
   "InverterTable.table.inverterEffcy": "最高转换效率",
+  "InverterTable.table.curve-title": "功率&效率曲线",
+  "InverterTable.table.pdc-pac-curve": "Pdc-Pac曲线",
+  "InverterTable.table.inverter-efficiency-curve": "效率曲线",
 
   "Inverter.name": "逆变器型号",
   "Inverter.note": "逆变器备注",

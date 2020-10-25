@@ -128,5 +128,13 @@
 
   "ivChart.current": " 电流",
   "ivChart.voltage": "电压",
-  "pvChart.power": "功率"
+  "pvChart.power": "功率",
+
+  "PacPdcChart.pdc": "输入直流功率",
+  "PacPdcChart.pac": "输出交流功率",
+  "PacPdcChart.vdcMin": "Vdcmin",
+  "PacPdcChart.vdco": "Vdco",
+  "PacPdcChart.vdcMax": "Vdcmax",
+  "InverterEfficiencyChart.eff": "逆变器效率",
+  "InverterEfficiencyChart.pac_percent": "输出功率/额定功率"
 }
