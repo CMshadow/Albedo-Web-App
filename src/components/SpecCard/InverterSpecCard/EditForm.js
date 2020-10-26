@@ -480,8 +480,8 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
         <Row gutter={rowGutter}>
           <Col span={24}>
             <FormItem label={`${t('project.spec.dcoveracratio-actual')} / ${t('project.spec.dcoveracratio-max')}`}>
-              {selPV.pmax * pps.value * spi.value / inv.paco_sandia} / 
-              {inv.pdcMax_sandia / inv.paco_sandia}
+              {(selPV.pmax * pps.value * spi.value / inv.paco_sandia).toFixed(2)} / 
+              {(inv.pdcMax_sandia / inv.paco_sandia).toFixed(2)}
             </FormItem>
           </Col>
         </Row>

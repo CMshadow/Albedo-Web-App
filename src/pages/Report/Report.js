@@ -91,7 +91,6 @@ const Report = () => {
       ) {
         dispatch(saveProject(projectID))
         .then(res => {
-          console.log('genreport')
           dispatch(genReport({projectID, buildingID: buildingID}))
           .then(res => {
             dispatch(setReportData({buildingID: buildingID, data: res}))

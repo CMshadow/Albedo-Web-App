@@ -44,7 +44,6 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
         pvID: selPV.pvID,
         pvUserID: selPV.userID
       })).then(res => {
-        console.log(res)
         setloading(false)
         const invLimits = {}
         res.inverterPlans.forEach(limit => 
@@ -53,7 +52,6 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
           invLimits[limit.pps] = [limit.spi]
         )
         Object.keys(invLimits).forEach(key => invLimits[key].sort())
-        console.log(invLimits)
         setinvLimits(invLimits)
       }).catch(e => setloading(false))
     }
