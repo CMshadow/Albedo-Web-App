@@ -9,7 +9,9 @@ import { deleteInverterSpec } from '../../../store/action/index'
 import { inverterLimit } from '../../../pages/Project/service'
 import * as styles from './InverterSpecCard.module.scss';
 
-export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled, ...props}) => {
+export const InverterSpecCard = ({
+  id, buildingID, specIndex, invIndex, disabled, editingInv, onClickEdit, onClickEndEdit, ...props
+}) => {
   const dispatch = useDispatch()
   const { projectID } = useParams()
   const [editing, setediting] = useState(props.panels_per_string === null)
@@ -33,6 +35,9 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
     inverterData.find(inv => inv.inverterID === invSpec.inverter_model.inverterID) :
     null
 
+  const disableEdit = editing || disabled || (editingInv !== null && editingInv !== invIndex)
+  const disableDelete = disabled || (editingInv !== null && editingInv !== invIndex)
+
   useEffect(() => {
     // 如果选择了逆变器计算该逆变器配合使用组件的可选接线方案
     if (selInv) {
@@ -44,7 +49,6 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
         pvID: selPV.pvID,
         pvUserID: selPV.userID
       })).then(res => {
-        console.log(res)
         setloading(false)
         const invLimits = {}
         res.inverterPlans.forEach(limit => 
@@ -53,7 +57,6 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
           invLimits[limit.pps] = [limit.spi]
         )
         Object.keys(invLimits).forEach(key => invLimits[key].sort())
-        console.log(invLimits)
         setinvLimits(invLimits)
       }).catch(e => setloading(false))
     }
@@ -68,19 +71,23 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
       hoverable
       actions={[
         <Button
-          disabled={editing || disabled}
+          disabled={disableEdit}
           type='link'
           shape="circle"
-          icon={<EditTwoTone twoToneColor={editing || disabled ? '#bfbfbf' : '#1890ff'}/>}
-          onClick={() => setediting(true)}
+          icon={<EditTwoTone twoToneColor={disableEdit ? '#bfbfbf' : '#1890ff'}/>}
+          onClick={() => {
+            onClickEdit(invIndex)
+            setediting(true)
+          }}
         />,
         <Button
-          disabled={disabled}
+          disabled={disableDelete}
           type='link'
           shape="circle"
           danger
           icon={<DeleteOutlined />}
           onClick={() => {
+            onClickEndEdit()
             setloading(true)
             setediting(false)
             setTimeout(() => {
@@ -101,6 +108,7 @@ export const InverterSpecCard = ({id, buildingID, specIndex, invIndex, disabled,
             invIndex={invIndex}
             setediting={setediting}
             disabled={disabled}
+            onClickEndEdit={onClickEndEdit}
           /> :
           <SpecView
             initInvLimits={invLimits}

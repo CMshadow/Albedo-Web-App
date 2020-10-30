@@ -11,13 +11,18 @@ export const ACPowerTable = ({ buildingID }) => {
   const { t } = useTranslation()
   const reportData = useSelector(state => state.report)
 
-  const dataSource = reportData[buildingID].year25_AC_power.map((record, index) => ({
-    key: index,
-    year: t('acPowerTable.year.prefix') + `${index + 1}` + t('acPowerTable.year.suffix'),
-    unit: record.unit,
-    acpower: Number(record.value.toFixed(2)),
-    kwhOverKwp: Number(reportData[buildingID].year25_kWh_over_kWp[index].toFixed(0))
-  }))
+  const dataSource = reportData[buildingID].year25_AC_power.map((record, index) => {
+    const dcData = reportData[buildingID].year25_DC_power ? reportData[buildingID].year25_DC_power[index] : null
+    return{
+      key: index,
+      year: t('acPowerTable.year.prefix') + `${index + 1}` + t('acPowerTable.year.suffix'),
+      dcpower: dcData ? dcData.value.toFixed(2) : null,
+      dcunit: dcData ? dcData.unit : null,
+      acpower: record.value.toFixed(2),
+      acunit: record.unit,
+      kwhOverKwp: Number(reportData[buildingID].year25_kWh_over_kWp[index].toFixed(0))
+    }
+  })
 
   const columns = [
     {
@@ -27,28 +32,39 @@ export const ACPowerTable = ({ buildingID }) => {
       align: 'center',
     }, {
       key: 1,
-      title: t('acPowerTable.unit'),
-      dataIndex: 'unit',
+      title: t('acPowerTable.dcpower'),
+      dataIndex: 'dcpower',
       align: 'center',
+      render: (text, record) => text ? `${text} ${record.dcunit}` : '-'
     }, {
       key: 2,
-      title: t('acPowerTable.prod'),
+      title: t('acPowerTable.acpower'),
       dataIndex: 'acpower',
       align: 'center',
+      render: (text, record) => `${text} ${record.acunit}`
     }, {
       key: 3,
       title: t('acPowerTable.kwh_over_kwp'),
       dataIndex: 'kwhOverKwp',
       align: 'center',
+      render: text => `${text} ${t('acPowerTable.unit.h')}`
     }
   ];
 
   // 生成表单统计数据
   const genSummary = dataSource => {
     const ttlACPower = wh2other(dataSource.reduce((sum, record) =>
-      sum + other2wh(record.acpower, record.unit), 0
+      sum + other2wh(record.acpower, record.acunit), 0
     ))
+    const ttlDCPower = reportData[buildingID].year25_DC_power ?
+      wh2other(dataSource.reduce((sum, record) =>
+        sum + other2wh(record.dcpower, record.dcunit), 0
+      )) :
+      null
     const avgACPower = wh2other(other2wh(ttlACPower.value / 25, ttlACPower.unit))
+    const avgDCPower = ttlDCPower ? 
+      wh2other(other2wh(ttlDCPower.value / 25, ttlDCPower.unit)) :
+      null
     const ttlKwhOverWkp = dataSource.reduce((sum, record) =>
       sum + record.kwhOverKwp, 0
     )
@@ -59,32 +75,40 @@ export const ACPowerTable = ({ buildingID }) => {
             <Text strong>{t('acPowerTable.totalACPower')}</Text>
           </Table.Summary.Cell>
           <Table.Summary.Cell>
-            <Text strong>{ttlACPower.unit}</Text>
+            {
+              ttlDCPower ?
+              <Text strong>{Number(ttlDCPower.value.toFixed(2))} {ttlDCPower.unit}</Text> :
+              <Text strong>-</Text>
+            }
           </Table.Summary.Cell>
           <Table.Summary.Cell>
-            <Text strong>{Number(ttlACPower.value.toFixed(2))}</Text>
+            <Text strong>{Number(ttlACPower.value.toFixed(2))} {ttlACPower.unit}</Text>
           </Table.Summary.Cell>
+          <Table.Summary.Cell/>
         </Table.Summary.Row>
         <Table.Summary.Row className={styles.summaryRow}>
           <Table.Summary.Cell>
             <Text strong>{t('acPowerTable.avgACPower')}</Text>
           </Table.Summary.Cell>
           <Table.Summary.Cell>
-            <Text strong>{avgACPower.unit}</Text>
+            {
+              avgDCPower ?
+              <Text strong>{Number(avgDCPower.value.toFixed(2))} {avgDCPower.unit}</Text> :
+              <Text strong>-</Text>
+            }
           </Table.Summary.Cell>
           <Table.Summary.Cell>
-            <Text strong>{Number(avgACPower.value.toFixed(2))}</Text>
+            <Text strong>{Number(avgACPower.value.toFixed(2))} {avgACPower.unit}</Text>
           </Table.Summary.Cell>
+          <Table.Summary.Cell/>
         </Table.Summary.Row>
         <Table.Summary.Row className={styles.summaryRow}>
           <Table.Summary.Cell>
             <Text strong>{t('acPowerTable.avgKwhOverKwp')}</Text>
           </Table.Summary.Cell>
+          <Table.Summary.Cell colSpan={2}/>
           <Table.Summary.Cell>
-            <Text strong>{t('acPowerTable.unit.h')}</Text>
-          </Table.Summary.Cell>
-          <Table.Summary.Cell>
-            <Text strong>{Number((ttlKwhOverWkp / 25).toFixed(0))}</Text>
+            <Text strong>{Number((ttlKwhOverWkp / 25).toFixed(0))} {t('acPowerTable.unit.h')}</Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
       </>

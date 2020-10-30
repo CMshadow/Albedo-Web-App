@@ -18,6 +18,7 @@ export const PVSpecCard = ({id, buildingID, specIndex, collapseActive, setcollap
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [editing, setediting] = useState(props.tilt_angle === null)
+  const [editingInv, seteditingInv] = useState(null)
   const [loading, setloading] = useState(false)
   const [deleteLoading, setdeleteLoading] = useState(false)
 
@@ -55,16 +56,21 @@ export const PVSpecCard = ({id, buildingID, specIndex, collapseActive, setcollap
         <Col {...toolbarSpan} flex="auto">
           <Row align='middle' className={styles.toolbar}>
             <Button
-              disabled={editing}
+              disabled={editing || editingInv !== null}
               type='link'
               shape="circle"
-              icon={<EditTwoTone twoToneColor={editing ? '#bfbfbf' : '#1890ff'}/>}
+              icon={
+                <EditTwoTone 
+                  twoToneColor={editing || editingInv !== null ? '#bfbfbf' : '#1890ff'}
+                />
+              }
               onClick={() => setediting(true)}
             />
             <Divider className={styles.divider}/>
             <Button
               type='link'
               shape="circle"
+              disabled={editingInv !== null}
               danger
               icon={<DeleteOutlined />}
               onClick={() => {
@@ -102,17 +108,21 @@ export const PVSpecCard = ({id, buildingID, specIndex, collapseActive, setcollap
                       specIndex={specIndex}
                       invIndex={invIndex}
                       disabled={editing}
+                      editingInv={editingInv}
+                      onClickEdit={invIndex => seteditingInv(invIndex)}
+                      onClickEndEdit={() => seteditingInv(null)}
                       {...invSpec}
                     />
                   )
                 }
                 <Button
                   className={styles.addSpec}
-                  disabled={editing}
+                  disabled={editing || editingInv !== null}
                   loading={loading}
                   block
                   type="dashed"
                   onClick={() => {
+                    seteditingInv(invsSpec.length)
                     setloading(true)
                     setTimeout(() => {
                       addSpec()

@@ -2,8 +2,8 @@
   "acPowerTable.title": "逐年上网发电量表",
 
   "acPowerTable.year": "年份",
-  "acPowerTable.unit": "单位",
-  "acPowerTable.prod": "发电量",
+  "acPowerTable.dcpower": "直流发电量",
+  "acPowerTable.acpower": "交流发电量",
   "acPowerTable.kwh_over_kwp": "小时数",
 
   "acPowerTable.year.prefix": "第",

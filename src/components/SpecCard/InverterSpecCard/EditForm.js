@@ -39,7 +39,9 @@ export const genPPSLimits = (invLimits) => {
   return [Number(minPPS), Number(maxPPS)]
 }
 
-export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled, initInvLimits}) => {
+export const EditForm = ({
+  buildingID, specIndex, invIndex, setediting, disabled, initInvLimits, onClickEndEdit
+}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { projectID } = useParams()
@@ -257,6 +259,7 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
         record => record.inverterID === values.inverterID
       ).userID
     }))
+    onClickEndEdit()
     setediting(false)
   }
 
@@ -480,8 +483,13 @@ export const EditForm = ({buildingID, specIndex, invIndex, setediting, disabled,
         <Row gutter={rowGutter}>
           <Col span={24}>
             <FormItem label={`${t('project.spec.dcoveracratio-actual')} / ${t('project.spec.dcoveracratio-max')}`}>
-              {selPV.pmax * pps.value * spi.value / inv.paco_sandia} / 
-              {inv.pdcMax_sandia / inv.paco_sandia}
+              {
+                inv ?
+                `${(selPV.pmax * pps.value * spi.value / inv.paco_sandia).toFixed(2)} 
+                / 
+                ${(inv.pdcMax_sandia / inv.paco_sandia).toFixed(2)}`:
+                null
+              }
             </FormItem>
           </Col>
         </Row>
