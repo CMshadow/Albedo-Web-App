@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet'
 import { useBeforeunload } from 'react-beforeunload'
-import { Layout, Menu, Row, Button, Spin, Tooltip, notification } from 'antd';
+import { Layout, Menu, Row, Button, Spin, Tooltip, notification, Card, Typography } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,9 +21,9 @@ import { setProjectData, setReportData, setPVData, setOfficialPVData, setInverte
 
 import * as styles from './ProjectLayout.module.scss';
 
-const { Sider, Content } = Layout;
+const { Sider, Content, Footer } = Layout;
 const { SubMenu } = Menu;
-const { Footer } = Layout;
+const { Title } = Typography;
 
 const ProjectLayout = (props) => {
   const history = useHistory();
@@ -162,6 +163,16 @@ const ProjectLayout = (props) => {
         </Tooltip>
       </Menu.Item>
     </Menu>
+
+  const projectLoadingSpin = 
+    <Spin 
+      size="large"
+      spinning
+      tip={<Title level={4}>{t('project.loading')}</Title>}
+      indicator={<LoadingOutlined/>} 
+    >
+      <Card className={styles.loadingSpin}/>
+    </Spin>
 
   const saveProjectClick = () => {
     setsaveLoading(true)
@@ -328,7 +339,7 @@ const ProjectLayout = (props) => {
           {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
 
           <Content className={styles.content}>
-            {fetchLoading ? null : props.children}
+            {fetchLoading ? projectLoadingSpin : props.children}
           </Content>
 
           <Footer className={styles.footer}><DefaultFooter/></Footer>

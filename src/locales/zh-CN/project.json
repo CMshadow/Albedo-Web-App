@@ -205,6 +205,7 @@
   "project.modifyPlan.n1_validation": "N1按逆变器最大超配系数核算",
 
   "project.loading.analyze": "正在分析Meteonorm天气数据...",
+  "project.loading": "正在处理项目配置...",
 
   "project.transformer.title": "配置变压器",
   "project.powerCabinet.title": "配置并网柜"

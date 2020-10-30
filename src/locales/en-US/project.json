@@ -205,6 +205,7 @@
   "project.modifyPlan.n1_validation": "N1 Check",
 
   "project.loading.analyze": "Analyzing Meteonorm Weather Data...",
+  "project.loading": "Processing Project Configurations...",
 
   "project.transformer.title": "Transformer Setup",
   "project.powerCabinet.title": "Power Cabinet Setup"
