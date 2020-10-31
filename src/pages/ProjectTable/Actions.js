@@ -18,17 +18,13 @@ export const DeleteAction = ({record, setdata, setactiveData, setloading}) => {
     .then(async res => {
       await dispatch(deleteProductionData({projectID: record.projectID}))
       await dispatch(deleteIrradianceData({projectID: record.projectID}))
-      await Promise.all(res.buildings.map(building =>
-        dispatch(deleteReport({projectID: record.projectID, buildingID: building.buildingID}))
-      ))
-      dispatch(deleteProject({projectID: record.projectID}))
-      .then(() => {
-        message.success(t('project.success.deleteProject'))
-        dispatch(getAllProject()).then(data => {
-          setdata(data)
-          setactiveData(data)
-          setloading(false)
-        })
+      await dispatch(deleteReport({projectID: record.projectID}))
+      await dispatch(deleteProject({projectID: record.projectID}))
+      message.success(t('project.success.deleteProject'))
+      dispatch(getAllProject()).then(data => {
+        setdata(data)
+        setactiveData(data)
+        setloading(false)
       })
     })
   }
