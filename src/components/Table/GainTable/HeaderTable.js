@@ -83,7 +83,6 @@ export const HeaderTable = ({ buildingID }) => {
   const [dataSource, setdataSource] = useState([])
 
   useEffect(() => {
-    console.log('useEffect')
     setdataSource([
       {
         key: 1,

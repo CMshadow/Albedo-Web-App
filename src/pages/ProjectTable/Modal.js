@@ -35,9 +35,9 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
   const [loading, setloading] = useState(false);
   const [validated, setvalidated] = useState(false);
   const [mapPos, setmapPos] = useState({lon: -117.843687, lat: 33.676542})
-  const [googleMapKey, setgoogleMapKey] = useState('')
-  const [aMapKey, setaMapKey] = useState('')
-  const [aMapWebKey, setaMapWebKey] = useState('')
+  const [googleMapKey, setgoogleMapKey] = useState(null)
+  const [aMapKey, setaMapKey] = useState(null)
+  const [aMapWebKey, setaMapWebKey] = useState(null)
   const [selectedMap, setselectedMap] = useState(cognitoUser.attributes.locale === 'zh-CN' ? 'aMap' : 'googleMap')
   const [form] = Form.useForm();
 
@@ -175,6 +175,7 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
   return (
     <Modal
       title={t('project.create-project')}
+      forceRender
       visible={showModal}
       onOk={handleOk}
       confirmLoading={loading}
@@ -193,34 +194,32 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
         type="card"
         onChange={activeKey => setselectedMap(activeKey)}
       >
-        <TabPane
-          tab={t(`project.map.aMap`)}
-          key="aMap"
-          forceRender
-        >
-          <AMap
-            mapPos={mapPos}
-            setmapPos={setmapPos}
-            validated={validated}
-            setvalidated={setvalidated}
-            apiKey={aMapKey}
-            webApiKey={aMapWebKey}
-            form={form}
-          />
+        <TabPane tab={t(`project.map.aMap`)} key="aMap" forceRender>
+          {
+            aMapWebKey ?
+            <AMap
+              mapPos={mapPos}
+              setmapPos={setmapPos}
+              validated={validated}
+              setvalidated={setvalidated}
+              apiKey={aMapKey}
+              webApiKey={aMapWebKey}
+              form={form}
+            /> : null
+          }
         </TabPane>
-        <TabPane
-          tab={t(`project.map.googleMap`)}
-          key="googleMap"
-          forceRender
-        >
-          <GoogleMap
-            mapPos={mapPos}
-            setmapPos={setmapPos}
-            validated={validated}
-            setvalidated={setvalidated}
-            apiKey={googleMapKey}
-            form={form}
-          />
+        <TabPane tab={t(`project.map.googleMap`)} key="googleMap" forceRender>
+          {
+            googleMapKey ?
+            <GoogleMap
+              mapPos={mapPos}
+              setmapPos={setmapPos}
+              validated={validated}
+              setvalidated={setvalidated}
+              apiKey={googleMapKey}
+              form={form}
+            /> : null
+          }
         </TabPane>
       </Tabs>
 
@@ -228,6 +227,7 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
 
       <Form
         colon={false}
+        preserve={false}
         form={form}
         className={styles.form}
         initialValues={initValues}
