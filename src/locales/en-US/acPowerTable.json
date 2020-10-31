@@ -2,8 +2,8 @@
   "acPowerTable.title": "Yearly Production",
 
   "acPowerTable.year": "Year",
-  "acPowerTable.unit": "Unit",
-  "acPowerTable.prod": "Energy Generation",
+  "acPowerTable.dcpower": "DC Power",
+  "acPowerTable.acpower": "AC Power",
   "acPowerTable.kwh_over_kwp": "kWh/kWp",
 
   "acPowerTable.year.prefix": "",

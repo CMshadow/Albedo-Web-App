@@ -347,7 +347,7 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
           </Col>
         </Row>
         <Row gutter={rowGutter}>
-          <Col offset={6} span={12}>
+          <Col offset={4} span={16}>
             <FormItem label={t('project.spec.transformer.transformer_wir_choice')}>
               <Row gutter={rowGutter} align='top'>
                 <Col span={8}>

@@ -68,13 +68,13 @@ export const saveReport = ({projectID}) => async (dispatch, getState) => {
   }
 }
 
-export const deleteReport = ({projectID, buildingID}) => async dispatch => {
+export const deleteReport = ({projectID}) => async dispatch => {
   try {
     const session = await Auth.currentSession()
     dispatch(setCognitoUserSession(session))
 
     return axios.delete(
-      `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/report`,
+      `/project/${session.idToken.payload.sub}/${projectID}/_/report`,
       {headers: {'COG-TOKEN': session.idToken.jwtToken}}
     )
     .then(res => res.data)

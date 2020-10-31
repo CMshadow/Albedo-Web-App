@@ -52,7 +52,7 @@ export const PowerCabinetSpecCard = ({id, powercabinetIndex, editingPowercabinet
             seteditingPowercabinet(null)
             setTimeout(() => {
               setloading(false)
-              dispatch(deletePowercabinet(editingPowercabinet))
+              dispatch(deletePowercabinet(powercabinetIndex))
             }, 500)
           }}
         />,

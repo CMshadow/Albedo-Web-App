@@ -149,9 +149,11 @@ export const CreateProjectModal = ({showModal, setshowModal, google}) => {
       latitude: Number(mapPos.lat)
     }))
     .then(data => {
-      setloading(false)
-      setshowModal(false)
-      history.push(`project/${data.projectID}/dashboard`);
+      setTimeout(() => {
+        setloading(false)
+        setshowModal(false)
+        history.push(`project/${data.projectID}/dashboard`)
+      }, 10000);
     }).catch(err => {
       setloading(false)
     })

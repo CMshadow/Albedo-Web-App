@@ -66,9 +66,15 @@
   .content {
     margin-top: 64px;
     padding: 15px;
+    height: 100%;
+
+    .loadingSpin {
+      height: calc(100vh - 64px - 100px - 30px);
+    }
   }
 
   .footer {
+    height: 100px;
     background-color: white;
     padding: 0;
   }

@@ -19,9 +19,10 @@ export const Equipments = ({loading, ...values}) => {
 
   return (
     <Spin
+      size="large"
       spinning={loading}
       tip={<Title level={4}>{t('project.loading.analyze')}</Title>}
-      indicator={<LoadingOutlined className={styles.loadingIcon}/>}
+      indicator={<LoadingOutlined/>}
     >
       <Card loading={loading} title={t('project.dashboard.title')} headStyle={{textAlign: 'center'}}>
         {

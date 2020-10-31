@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet'
 import { useBeforeunload } from 'react-beforeunload'
-import { Layout, Menu, Row, Button, Spin, Tooltip, notification } from 'antd';
+import { Layout, Menu, Row, Button, Spin, Tooltip, notification, Card, Typography } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
+import * as promiseRetry from 'promise-retry'
 import logo from '../../assets/logo-no-text.png';
 import PrivateHeader from '../PrivateHeader/PrivateHeader';
 import PublicHeader from '../PublicHeader/PublicHeader'
@@ -19,9 +21,9 @@ import { setProjectData, setReportData, setPVData, setOfficialPVData, setInverte
 
 import * as styles from './ProjectLayout.module.scss';
 
-const { Sider, Content } = Layout;
+const { Sider, Content, Footer } = Layout;
 const { SubMenu } = Menu;
-const { Footer } = Layout;
+const { Title } = Typography;
 
 const ProjectLayout = (props) => {
   const history = useHistory();
@@ -162,6 +164,16 @@ const ProjectLayout = (props) => {
       </Menu.Item>
     </Menu>
 
+  const projectLoadingSpin = 
+    <Spin 
+      size="large"
+      spinning
+      tip={<Title level={4}>{t('project.loading')}</Title>}
+      indicator={<LoadingOutlined/>} 
+    >
+      <Card className={styles.loadingSpin}/>
+    </Spin>
+
   const saveProjectClick = () => {
     setsaveLoading(true)
     dispatch(saveProject(projectID))
@@ -212,54 +224,61 @@ const ProjectLayout = (props) => {
       await Promise.all(fetchPromises)
 
       let projectData
-      await dispatch(getProject({projectID: projectID}))
+      promiseRetry((retry) => {
+        return dispatch(getProject({projectID: projectID}))
         .then(res => {
-          projectData = res
-          dispatch(setProjectData(res))
+          if (!res.weatherFile) {
+            retry()
+          } else {
+            projectData = res
+            dispatch(setProjectData(res))
+          }
         })
-        .catch(err => {
-          dispatch(setProjectData(null))
-          history.push('/dashboard')
-        })
-
-      const getReportPromises = projectData.buildings.map(building => {
-        return dispatch(getReport({projectID, buildingID: building.buildingID}))
-        .then(res =>
-          dispatch(setReportData({buildingID: building.buildingID, data: res}))
-        )
-      }).concat([
-        dispatch(getReport({projectID, buildingID: 'overview'}))
-        .then(res =>
-          dispatch(setReportData({buildingID: 'overview', data: res}))
-        )
-      ])
-      await Promise.all(getReportPromises)
-      setfetchLoading(false)
-
-      if (
-        !(projectData.optTilt >= 0) || !(projectData.optAzimuth >= 0) ||
-        !projectData.optPOA || !projectData.tiltAzimuthPOA ||
-        projectData.tiltAzimuthPOA.length === 0
-      ) {
-        dispatch(globalOptTiltAzimuth({projectID: projectID}))
-        .then(optSpec => {
-          dispatch(setProjectData(optSpec))
-        })
-        const allTiltAziPOA = [
-          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 0, endAzi: 90})),
-          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 90, endAzi: 180})),
-          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 180, endAzi: 270})),
-          dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 270, endAzi: 360}))
-        ]
-        Promise.all(allTiltAziPOA).then(allPOARes => {
-          notification.success({
-            message:t('sider.tiltAzimuthPOA.success')
+      }, {minTimeout: 10000})
+      .then(async() => {
+        const getReportPromises = projectData.buildings.map(building => {
+          return dispatch(getReport({projectID, buildingID: building.buildingID}))
+          .then(res =>
+            dispatch(setReportData({buildingID: building.buildingID, data: res}))
+          )
+        }).concat([
+          dispatch(getReport({projectID, buildingID: 'overview'}))
+          .then(res =>
+            dispatch(setReportData({buildingID: 'overview', data: res}))
+          )
+        ])
+        await Promise.all(getReportPromises)
+        setfetchLoading(false)
+  
+        if (
+          !(projectData.optTilt >= 0) || !(projectData.optAzimuth >= 0) ||
+          !projectData.optPOA || !projectData.tiltAzimuthPOA ||
+          projectData.tiltAzimuthPOA.length === 0
+        ) {
+          dispatch(globalOptTiltAzimuth({projectID: projectID}))
+          .then(optSpec => {
+            dispatch(setProjectData(optSpec))
           })
-          dispatch(setProjectData({
-            tiltAzimuthPOA: allPOARes.flatMap(obj => obj.allTiltAziPOA)
-          }))
-        })
-      }
+          const allTiltAziPOA = [
+            dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 0, endAzi: 90})),
+            dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 90, endAzi: 180})),
+            dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 180, endAzi: 270})),
+            dispatch(allTiltAzimuthPOA({projectID: projectID, startAzi: 270, endAzi: 360}))
+          ]
+          Promise.all(allTiltAziPOA).then(allPOARes => {
+            notification.success({
+              message:t('sider.tiltAzimuthPOA.success')
+            })
+            dispatch(setProjectData({
+              tiltAzimuthPOA: allPOARes.flatMap(obj => obj.allTiltAziPOA)
+            }))
+          })
+        }
+      })
+      .catch(err => {
+        dispatch(setProjectData(null))
+        history.push('/dashboard')
+      })
     }
 
     fetchData()
@@ -320,7 +339,7 @@ const ProjectLayout = (props) => {
           {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
 
           <Content className={styles.content}>
-            {fetchLoading ? null : props.children}
+            {fetchLoading ? projectLoadingSpin : props.children}
           </Content>
 
           <Footer className={styles.footer}><DefaultFooter/></Footer>
