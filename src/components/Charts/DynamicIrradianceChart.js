@@ -161,8 +161,8 @@ export const DynamicIrradianceChart = () => {
           {
             mode === 'day' ?
             [
-              <Line color='#1890ff' shape="smooth" position="date*value" />,
-              <Point position="date*value"/>
+              <Line key='line' color='#1890ff' shape="smooth" position="date*value" />,
+              <Point key='point' position="date*value"/>
             ]:
             <Interval color='#1890ff' position="date*value" />
           }

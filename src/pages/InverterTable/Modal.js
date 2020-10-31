@@ -223,6 +223,7 @@ export const InverterModal = ({showModal, setshowModal, setactiveData, editRecor
       }
       visible={showModal}
       onOk={handleOk}
+      forceRender
       confirmLoading={loading}
       onCancel={handleCancel}
       okText={t('action.confirm')}
@@ -234,6 +235,7 @@ export const InverterModal = ({showModal, setshowModal, setactiveData, editRecor
     >
       <Form
         colon={false}
+        preserve={false}
         form={form}
         className={styles.form}
         name="Inverter"

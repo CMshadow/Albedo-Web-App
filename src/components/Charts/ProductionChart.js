@@ -135,8 +135,8 @@ export const ProductionChart = ({buildingID}) => {
           {
             mode === 'day' ?
             [
-              <Line shape="smooth" position="date*value" color={["type", ['#1890ff', '#faad14']]} />,
-              <Point position="date*value" color={["type", ['#1890ff', '#faad14']]} />
+              <Line key='line' shape="smooth" position="date*value" color={["type", ['#1890ff', '#faad14']]} />,
+              <Point key='point' position="date*value" color={["type", ['#1890ff', '#faad14']]} />
             ]:
             <Interval position="date*value" color={["type", ['#1890ff', '#faad14']]}/>
           }

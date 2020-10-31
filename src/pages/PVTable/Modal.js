@@ -184,6 +184,7 @@ export const PVModal = ({showModal, setactiveData, setshowModal, editRecord, set
     <Modal
       title={editRecord ? t('PVtable.edit-PV') : t('PVtable.add-PV')}
       visible={showModal}
+      forceRender
       onOk={handleOk}
       confirmLoading={loading}
       onCancel={handleCancel}
@@ -196,6 +197,7 @@ export const PVModal = ({showModal, setactiveData, setshowModal, editRecord, set
     >
       <Form
         colon={false}
+        preserve={false}
         form={form}
         className={styles.form}
         name="add-PV"
