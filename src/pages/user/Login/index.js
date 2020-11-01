@@ -21,7 +21,6 @@ const Login = (props) => {
     setloading(true);
     SignIn({username: values.mail, password: values.password})
     .then(cognitoUser => {
-      console.log(cognitoUser)
       setloading(false);
       return new Promise((resolve, reject) => {
         dispatch(setCognitoUser(cognitoUser));
@@ -88,7 +87,7 @@ const Login = (props) => {
         <Checkbox className={styles.floatleft} checked={check} onChange={e => setcheck(!check)}>
           {t('user.save-login')}
         </Checkbox>
-        <Link className={styles.floatright} to="/user/register">
+        <Link className={styles.floatright} to="/user/forget">
           {t('user.forget-password')}
         </Link>
         <FormItem className={styles.submit}>
