@@ -68,7 +68,7 @@ const Router = () => {
                   <Report/>
                 </PrivateRoute>
                 <PrivateRoute path="/project/:projectID/singleLineDiagram/:buildingID">
-                 <SLD/>
+                  <SLD/>
                 </PrivateRoute>
                 <PrivateRoute path='*'>
                   <NotFound404/>
@@ -100,7 +100,7 @@ const Router = () => {
               <ProjectTable/>
             </BasicLayout>
           </PrivateRoute>
-          <Route path="/">
+              <Route path="/">
             <Switch>
               <Route path="/cn/tutorial" component={VideoPage} />
               <Route path="/en/tutorial" component={EnVideoPage} />

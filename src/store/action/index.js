@@ -1,6 +1,5 @@
 export {
   setCognitoUser,
-  setCognitoUserSession,
   setSignOut
 } from './authAction'
 

@@ -1,25 +1,24 @@
 import React from 'react';
 import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
+import AuthGateway from './components/AuthGateway'
 import './App.less';
 import Amplify from 'aws-amplify';
 import cognitoConfig from './auth.config';
-import configureStore from './store.config';
+import { store } from './store.config'
 import AntdConfig from './antd.config'
 import Router from './Router';
 
 Amplify.configure(cognitoConfig);
 
 const App = () => {
-  const {store, persistor} = configureStore();
 
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <AntdConfig>
+      <AntdConfig>
+        <AuthGateway>
           <Router />
-        </AntdConfig>
-      </PersistGate>
+        </AuthGateway>
+      </AntdConfig>
     </Provider>
   );
 }

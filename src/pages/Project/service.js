@@ -1,16 +1,15 @@
 import { Auth } from 'aws-amplify';
 import { notification } from 'antd';
-import { setCognitoUserSession, setSignOut } from '../../store/action/index';
+import { setSignOut } from '../../store/action/index';
 import axios from '../../axios.config';
 
 export const getProject = ({projectID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      `/project/${session.idToken.payload.sub}/${projectID}`,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      `/project/${auth.username}/${projectID}`,
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -25,13 +24,12 @@ export const getProject = ({projectID}) => async dispatch => {
 
 export const globalOptTiltAzimuth = ({projectID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.post(
-      `/project/${session.idToken.payload.sub}/${projectID}/opttiltazimuth`,
+      `/project/${auth.username}/${projectID}/opttiltazimuth`,
       {},
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -47,15 +45,14 @@ export const globalOptTiltAzimuth = ({projectID}) => async dispatch => {
 
 export const allTiltAzimuthPOA = ({projectID, startAzi, endAzi}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.post(
-      `/project/${session.idToken.payload.sub}/${projectID}/alltiltazimuthpoa`,
+      `/project/${auth.username}/${projectID}/alltiltazimuthpoa`,
       {},
       {
         params: {startAzi: startAzi, endAzi: endAzi},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -73,12 +70,12 @@ export const allTiltAzimuthPOA = ({projectID, startAzi, endAzi}) => async dispat
 export const saveProject = (projectID) => async (dispatch, getState) => {
   try {
     const projectData = getState().project
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
+
     return axios.put(
-      `/project/${session.idToken.payload.sub}/${projectID}`,
+      `/project/${auth.username}/${projectID}`,
       projectData,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
   } catch(err) {
@@ -90,11 +87,10 @@ export const saveProject = (projectID) => async (dispatch, getState) => {
 export const manualInverter = ({projectID, invID, invUserID, pvID, pvUserID, ttlPV}) =>
 async (dispatch, getState) => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      `/project/${session.idToken.payload.sub}/${projectID}/manualinverter`,
+      `/project/${auth.username}/${projectID}/manualinverter`,
       {
         params: {
           inverterModel: {
@@ -108,7 +104,7 @@ async (dispatch, getState) => {
           ttlPV: ttlPV,
           pvMode: 'single'
         },
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -126,11 +122,10 @@ async (dispatch, getState) => {
 export const inverterLimit = ({projectID, invID, invUserID, pvID, pvUserID}) => 
 async (dispatch, getState) => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      `/project/${session.idToken.payload.sub}/${projectID}/inverterlimit`,
+      `/project/${auth.username}/${projectID}/inverterlimit`,
       {
         params: {
           inverterModel: {
@@ -142,7 +137,7 @@ async (dispatch, getState) => {
             userID: pvUserID
           }
         },
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -159,8 +154,7 @@ async (dispatch, getState) => {
 
 export const wiringOptions = ({type, ...values}) => async (dispatch, getState) => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
       `/wiringoptions`,
@@ -169,7 +163,7 @@ export const wiringOptions = ({type, ...values}) => async (dispatch, getState) =
           type: type,
           ut: values.Ut
         },
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -186,8 +180,7 @@ export const wiringOptions = ({type, ...values}) => async (dispatch, getState) =
 
 export const wiringChoice = ({type, ...values}) => async (dispatch, getState) => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
       `/wiringchoice`,
@@ -200,7 +193,7 @@ export const wiringChoice = ({type, ...values}) => async (dispatch, getState) =>
           allowacvoldropfac: values.allowACVolDropFac,
           ib: values.Ib
         },
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)

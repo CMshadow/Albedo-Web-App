@@ -21,6 +21,7 @@ const Login = (props) => {
     setloading(true);
     SignIn({username: values.mail, password: values.password})
     .then(cognitoUser => {
+      console.log(cognitoUser)
       setloading(false);
       return new Promise((resolve, reject) => {
         dispatch(setCognitoUser(cognitoUser));

@@ -1,17 +1,15 @@
 import { Auth } from 'aws-amplify';
-import { setCognitoUserSession, setSignOut } from '../../store/action/index';
+import { setSignOut } from '../../store/action/index';
 import { notification } from 'antd';
 import axios from '../../axios.config';
 
 export const addInverter = ({values}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
-
+    const auth = await Auth.currentAuthenticatedUser()
     return axios.post(
-      `/inverter/${session.idToken.payload.sub}`,
+      `/inverter/${auth.username}`,
       values,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -27,12 +25,11 @@ export const addInverter = ({values}) => async dispatch => {
 
 export const getInverter = () => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      `/inverter/${session.idToken.payload.sub}`,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      `/inverter/${auth.username}`,
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -48,14 +45,13 @@ export const getInverter = () => async dispatch => {
 
 export const getOfficialInverter = (region) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
       `/inverter/official`,
       {
         params: {region: region},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -72,14 +68,13 @@ export const getOfficialInverter = (region) => async dispatch => {
 
 export const deleteInverter = ({inverterID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.delete(
-      `/inverter/${session.idToken.payload.sub}`,
+      `/inverter/${auth.username}`,
       {
         params: {inverterID: inverterID},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -96,15 +91,14 @@ export const deleteInverter = ({inverterID}) => async dispatch => {
 
 export const updateInverter = ({inverterID, values}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.put(
-      `/inverter/${session.idToken.payload.sub}`,
+      `/inverter/${auth.username}`,
       values,
       {
         params: {inverterID: inverterID},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -121,14 +115,13 @@ export const updateInverter = ({inverterID, values}) => async dispatch => {
 
 export const getPerformanceCurve = ({inverterID, userID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
       `/inverter/inverterperformance`,
       {
         params: {inverterID: inverterID, userID: userID},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -145,15 +138,14 @@ export const getPerformanceCurve = ({inverterID, userID}) => async dispatch => {
 
 export const parseOND = (fileText, extraParam) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.post(
       `/parseond`,
       fileText,
       {
         ...extraParam,
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)

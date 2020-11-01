@@ -7,15 +7,7 @@ const PublicRoute = ({ children, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={({ location }) =>
-        !cognitoUser ? (
-          children
-        ) : (
-          <Redirect
-            to={{pathname: '/dashboard'}}
-          />
-        )
-      }
+      render={() => !cognitoUser ? children : <Redirect to={{pathname: '/dashboard'}}/>}
     />
   );
 };
