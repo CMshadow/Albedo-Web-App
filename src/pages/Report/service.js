@@ -1,17 +1,16 @@
 import { Auth } from 'aws-amplify';
-import { setCognitoUserSession, setSignOut } from '../../store/action/index';
+import { setSignOut } from '../../store/action/index';
 import { notification } from 'antd';
 import axios from '../../axios.config';
 
 export const genReport = ({projectID, buildingID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.post(
-      `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/report`,
+      `/project/${auth.username}/${projectID}/${buildingID}/report`,
       {},
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -26,12 +25,11 @@ export const genReport = ({projectID, buildingID}) => async dispatch => {
 
 export const getReport = ({projectID, buildingID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/report`,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      `/project/${auth.username}/${projectID}/${buildingID}/report`,
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -46,14 +44,14 @@ export const getReport = ({projectID, buildingID}) => async dispatch => {
 
 export const saveReport = ({projectID}) => async (dispatch, getState) => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
+
     const reportData = getState().report
     const allPromise = Object.keys(reportData).map(buildingID =>
       axios.put(
-        `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/report`,
+        `/project/${auth.username}/${projectID}/${buildingID}/report`,
         reportData[buildingID],
-        {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+        {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
       )
     )
     return Promise.all(allPromise)
@@ -70,12 +68,11 @@ export const saveReport = ({projectID}) => async (dispatch, getState) => {
 
 export const deleteReport = ({projectID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.delete(
-      `/project/${session.idToken.payload.sub}/${projectID}/_/report`,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      `/project/${auth.username}/${projectID}/_/report`,
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -91,14 +88,13 @@ export const deleteReport = ({projectID}) => async dispatch => {
 export const getProductionData = ({projectID, buildingID, month, day, dataKey}) =>
 async (dispatch, getState) => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/production`,
+      `/project/${auth.username}/${projectID}/${buildingID}/production`,
       {
         params: {month: month, day: day, dataKey: dataKey},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -114,12 +110,11 @@ async (dispatch, getState) => {
 
 export const deleteProductionData = ({projectID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.delete(
-      `/project/${session.idToken.payload.sub}/${projectID}/_/production`,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      `/project/${auth.username}/${projectID}/_/production`,
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -135,14 +130,13 @@ export const deleteProductionData = ({projectID}) => async dispatch => {
 export const getIrradianceData = ({projectID, buildingID, month, day, tilt, azimuth}) =>
 async (dispatch, getState) => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/irradiance`,
+      `/project/${auth.username}/${projectID}/${buildingID}/irradiance`,
       {
         params: {month: month, day: day, tilt: tilt, azimuth: azimuth},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -158,12 +152,11 @@ async (dispatch, getState) => {
 
 export const deleteIrradianceData = ({projectID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.delete(
-      `/project/${session.idToken.payload.sub}/${projectID}/_/irradiance`,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      `/project/${auth.username}/${projectID}/_/irradiance`,
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -178,12 +171,11 @@ export const deleteIrradianceData = ({projectID}) => async dispatch => {
 
 export const downloadReportCSV = ({projectID, buildingID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      `/project/${session.idToken.payload.sub}/${projectID}/${buildingID}/csv`,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      `/project/${auth.username}/${projectID}/${buildingID}/csv`,
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {

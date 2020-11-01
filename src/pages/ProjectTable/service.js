@@ -1,6 +1,6 @@
 import { Auth } from 'aws-amplify';
 import { notification } from 'antd';
-import { setCognitoUserSession, setSignOut } from '../../store/action/index';
+import { setSignOut } from '../../store/action/index';
 import axios from '../../axios.config';
 
 export const googleGeocoder = async ({address, key}) => {
@@ -33,11 +33,10 @@ export const amapRevGeocoder = async ({lon, lat, key}) => {
 
 export const getApiKey = () => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      '/apikeysender',{headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      '/apikeysender',{headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -53,13 +52,12 @@ export const getApiKey = () => async dispatch => {
 
 export const createProject = (values) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.post(
-      `/project/${session.idToken.payload.sub}`,
+      `/project/${auth.username}`,
       values,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -75,13 +73,11 @@ export const createProject = (values) => async dispatch => {
 
 export const getProject = () => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      `/project/${session.idToken.payload.sub}`,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      `/project/${auth.username}`,
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -97,14 +93,13 @@ export const getProject = () => async dispatch => {
 
 export const deleteProject = ({projectID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.delete(
-      `/project/${session.idToken.payload.sub}`,
+      `/project/${auth.username}`,
       {
         params: {projectID: projectID},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)

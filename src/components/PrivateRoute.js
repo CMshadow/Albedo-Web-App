@@ -7,15 +7,7 @@ const PrivateRoute = ({ children, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={({ location }) =>
-        cognitoUser ? (
-          children
-        ) : (
-          <Redirect
-            to={{pathname: "/user/login"}}
-          />
-        )
-      }
+      render={() => cognitoUser ? children : <Redirect to={{pathname: "/user/login"}}/>}
     />
   );
 };

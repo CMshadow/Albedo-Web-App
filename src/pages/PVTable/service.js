@@ -1,17 +1,16 @@
 import { Auth } from 'aws-amplify';
-import { setCognitoUserSession, setSignOut } from '../../store/action/index';
+import { setSignOut } from '../../store/action/index';
 import { notification } from 'antd';
 import axios from '../../axios.config';
 
 export const addPV = ({values}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.post(
-      `/pv/${session.idToken.payload.sub}`,
+      `/pv/${auth.username}`,
       values,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -27,12 +26,11 @@ export const addPV = ({values}) => async dispatch => {
 
 export const getPV = () => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
-      `/pv/${session.idToken.payload.sub}`,
-      {headers: {'COG-TOKEN': session.idToken.jwtToken}}
+      `/pv/${auth.username}`,
+      {headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}}
     )
     .then(res => res.data)
     .catch(err => {
@@ -48,14 +46,13 @@ export const getPV = () => async dispatch => {
 
 export const getOfficialPV = (region) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
       `/pv/official`,
       {
         params: {region: region},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -72,14 +69,13 @@ export const getOfficialPV = (region) => async dispatch => {
 
 export const deletePV = ({pvID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.delete(
-      `/pv/${session.idToken.payload.sub}`,
+      `/pv/${auth.username}`,
       {
         params: {pvID: pvID},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -96,15 +92,14 @@ export const deletePV = ({pvID}) => async dispatch => {
 
 export const updatePV = ({pvID, values}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.put(
-      `/pv/${session.idToken.payload.sub}`,
+      `/pv/${auth.username}`,
       values,
       {
         params: {pvID: pvID},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -121,14 +116,13 @@ export const updatePV = ({pvID, values}) => async dispatch => {
 
 export const getIVCurve = ({pvID, userID}) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.get(
       `/pv/ivcurve`,
       {
         params: {pvID: pvID, userID: userID},
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
@@ -145,15 +139,14 @@ export const getIVCurve = ({pvID, userID}) => async dispatch => {
 
 export const parsePAN = (fileText, extraParam) => async dispatch => {
   try {
-    const session = await Auth.currentSession()
-    dispatch(setCognitoUserSession(session))
+    const auth = await Auth.currentAuthenticatedUser()
 
     return axios.post(
       `/parsepan`,
       fileText,
       {
         ...extraParam,
-        headers: {'COG-TOKEN': session.idToken.jwtToken}
+        headers: {'COG-TOKEN': auth.signInUserSession.idToken.jwtToken}
       }
     )
     .then(res => res.data)
