@@ -7,6 +7,7 @@ import PublicRoute from './components/PublicRoute';
 import Register from './pages/user/Register/index';
 import Verification from './pages/user/Verification/index';
 import Login from './pages/user/Login/index';
+import ForgetPassword from './pages/user/ForgetPwd/index'
 import EmptyLayout from './layouts/EmptyLayout/EmptyLayout'
 import UserLayout from './layouts/UserLayout/UserLayout';
 import BasicLayout from './layouts/BasicLayout/BasicLayout';
@@ -39,6 +40,9 @@ const Router = () => {
               <Switch>
                 <PublicRoute path='/user/login'>
                   <Login/>
+                </PublicRoute>
+                <PublicRoute path='/user/forget'>
+                  <ForgetPassword/>
                 </PublicRoute>
                 <PublicRoute path="/user/register">
                   <Register />

@@ -24,3 +24,11 @@ export const SignIn = async ({username, password}) => {
 export const ResendVerification = async ({username}) => {
   return Auth.resendSignUp(username)
 }
+
+export const SendForgotPasswordVerification = async ({username}) => {
+  return Auth.forgotPassword(username)
+}
+
+export const SubmitForgotPassword = async({username, code, newPassword}) => {
+  return Auth.forgotPasswordSubmit(username, code, newPassword)
+}
