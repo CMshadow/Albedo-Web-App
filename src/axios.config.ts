@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let stage
+let stage: 'dev' | 'v1'
 if (process.env.REACT_APP_STAGE_OVERWRITE) {
   stage = process.env.REACT_APP_STAGE_OVERWRITE === 'dev' ? 'dev' : 'v1'
 } else {
@@ -9,7 +9,7 @@ if (process.env.REACT_APP_STAGE_OVERWRITE) {
 
 const instance = axios.create({
   baseURL: `${process.env.REACT_APP_BACKEND_URL}/${stage}`,
-  timeout: 60000,
+  timeout: 30000,
 });
 
 export default instance;

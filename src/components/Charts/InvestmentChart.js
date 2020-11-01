@@ -4,7 +4,7 @@ import { Chart, Interval, Tooltip, Axis, Coordinate, Interaction, Annotation, Le
 import {useTranslation} from 'react-i18next'
 import {useSelector} from 'react-redux'
 import { MoneyText } from '../../utils/genMoneyText'
-import { lgTextStyle, legendStyle } from '../../styles.config'
+import { lgTextStyle, legendStyle } from '../../styles/chartStyles'
 const Title = Typography.Title
 
 export const InvestmentChart = ({buildingID}) => {

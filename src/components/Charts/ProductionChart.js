@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { DatePicker, Row, Divider, Typography, Space, Radio, Spin, Card } from 'antd'
 import moment from 'moment';
 import { Chart, Legend, Axis, Line, Point, Interval } from 'bizcharts';
-import { titleStyle, legendStyle } from '../../styles.config'
+import { titleStyle, legendStyle } from '../../styles/chartStyles'
 import { getProductionData } from '../../pages/Report/service'
 import { wh2other, w2other } from '../../utils/unitConverter'
 import { getLanguage } from '../../utils/getLanguage'

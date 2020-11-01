@@ -1,7 +1,7 @@
 import React from "react";
 import { Divider } from "antd";
 import { useTranslation } from "react-i18next";
-import { titleStyle } from "../../styles.config";
+import { titleStyle } from "../../styles/chartStyles";
 import ReactEcharts from "echarts-for-react";
 
 export const HorizonChart = ({data}) => {

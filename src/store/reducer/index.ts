@@ -19,4 +19,5 @@ const rootReducer = combineReducers({
   SLD: SLDReducer
 });
 
-export default rootReducer;
+export type rootState = ReturnType<typeof rootReducer>
+export default rootReducer

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Card, Typography, Row, Space, Select } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { titleStyle } from '../../styles.config'
+import { titleStyle } from '../../styles/chartStyles'
 import ReactEcharts from "echarts-for-react";
 const { Title, Text } = Typography
 const { Option } = Select;

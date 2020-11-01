@@ -3,7 +3,7 @@ import { Card, Typography } from 'antd'
 import { Chart, Interval, Axis, Annotation, Coordinate } from "bizcharts";
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { titleStyle, lgTitleStyle } from '../../styles.config'
+import { titleStyle, lgTitleStyle } from '../../styles/chartStyles'
 const Title = Typography.Title
 
 export const LossChart = ({buildingID}) => {

@@ -5,7 +5,7 @@ import { Card, Typography } from 'antd'
 import { Chart, Interval, Axis, Tooltip, Legend } from 'bizcharts';
 import { createDateSource } from '../../utils/createGainData'
 import { MoneyText } from '../../utils/genMoneyText'
-import { titleStyle, legendStyle } from '../../styles.config'
+import { titleStyle, legendStyle } from '../../styles/chartStyles'
 const Title = Typography.Title
 
 export const CashFlowChart = ({buildingID}) => {

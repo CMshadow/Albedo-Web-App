@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Card, Typography } from 'antd'
 import { Chart, Line, Axis, Tooltip } from 'bizcharts';
-import { titleStyle } from '../../styles.config'
+import { titleStyle } from '../../styles/chartStyles'
 const Title = Typography.Title
 
 export const ACDistributionChart = ({buildingID}) => {

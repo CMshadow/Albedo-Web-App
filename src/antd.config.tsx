@@ -12,7 +12,7 @@ const localeSwitch = {
 }
 moment.locale('en')
 
-const AntdConfig = (props) => {
+const AntdConfig: React.FC = (props) => {
   const locale = useSelector(state => state.locale.locale)
 
   useEffect(() => {

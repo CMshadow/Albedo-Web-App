@@ -3,7 +3,7 @@ import { Space, Row, Typography, Select, Card } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Chart, Interval, Axis, Tooltip } from 'bizcharts';
-import { titleStyle } from '../../styles.config'
+import { titleStyle } from '../../styles/chartStyles'
 const Text = Typography.Text
 const Title = Typography.Title
 const { Option } = Select;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Chart, Axis, Line } from 'bizcharts';
-import { titleStyle } from '../../styles.config'
+import { titleStyle } from '../../styles/chartStyles'
 
 export const InverterEfficiencyChart = ({ dataSource }) => {
   const { t } = useTranslation();
