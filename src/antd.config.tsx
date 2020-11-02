@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { ConfigProvider } from 'antd';
 import { useSelector } from 'react-redux'
+import { RootState } from './store/reducer/index'
 import enUS from 'antd/es/locale/en_US';
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
@@ -13,7 +14,7 @@ const localeSwitch = {
 moment.locale('en')
 
 const AntdConfig: React.FC = (props) => {
-  const locale = useSelector(state => state.locale.locale)
+  const locale = useSelector((state: RootState) => state.locale.locale)
 
   useEffect(() => {
     if (locale === 'zh-CN') moment.locale('zh-cn')

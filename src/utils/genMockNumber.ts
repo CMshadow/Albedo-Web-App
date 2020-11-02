@@ -1,4 +1,9 @@
-export const genMockNumber = ({base, increase}) => {
+interface IGenMockNumber {
+  (param: {base: number, increase: number}): number
+}
+
+// 给一个底数，一个每日增加数，生成一个当前的假数字，日期差为当前日期-2020/07/18
+export const genMockNumber: IGenMockNumber = ({base, increase}) => {
   const date1 = new Date("07/18/2020");
   const date2 = new Date();
 

@@ -1,13 +1,13 @@
 import { getLanguage } from './getLanguage'
+import { Unit } from '../store/types/unit'
 
-
-export const watthour2MJ = (data) => {
-  return data * 0.0036
-}
-
-const wh2otherCN = (data, withH=true) => {
-  let mark = data
-  if (Array.isArray(data)) mark = Math.max(...data)
+const wh2otherCN = (data: number | number[], withH=true) => {
+  let mark: number
+  if (Array.isArray(data)) {
+    mark = Math.max(...data)
+  } else {
+    mark = data
+  }
 
   if (mark < 1000) {
     return {
@@ -38,9 +38,13 @@ const wh2otherCN = (data, withH=true) => {
   }
 }
 
-const wh2otherUS = (data, withH=true) => {
-  let mark = data
-  if (Array.isArray(data)) mark = Math.max(...data)
+const wh2otherUS = (data: number | number[], withH=true) => {
+  let mark: number
+  if (Array.isArray(data)) {
+    mark = Math.max(...data)
+  } else {
+    mark = data
+  }
 
   if (mark < 1000) {
     return {
@@ -66,7 +70,7 @@ const wh2otherUS = (data, withH=true) => {
   }
 }
 
-export const wh2other = (data) => {
+export const wh2other = (data: number | number[]) => {
   const locale = getLanguage()
   switch(locale) {
     case 'zh-CN': return wh2otherCN(data)
@@ -74,7 +78,7 @@ export const wh2other = (data) => {
   }
 }
 
-export const w2other = (data) => {
+export const w2other = (data: number | number[]) => {
   const locale = getLanguage()
   switch(locale) {
     case 'zh-CN': return wh2otherCN(data, false)
@@ -82,7 +86,7 @@ export const w2other = (data) => {
   }
 }
 
-export const other2wh = (data, unit) => {
+export const other2wh = (data: number | number[], unit: string) => {
   if (unit.toLowerCase() === 'wh') {
     return data
   } else if (unit.toLowerCase() === 'kwh') {
@@ -96,7 +100,7 @@ export const other2wh = (data, unit) => {
   }
 }
 
-export const other2w = (data, unit) => {
+export const other2w = (data: number | number[], unit: string) => {
   if (unit.toLowerCase() === 'w') {
     return data
   } else if (unit.toLowerCase() === 'kw') {
@@ -110,82 +114,98 @@ export const other2w = (data, unit) => {
   }
 }
 
-export const wh2kwh = (data) => {
+export const wh2kwh = (data: number | number[]) => {
   if (Array.isArray(data)) return data.map(val => val / 1e3)
   else return data / 1e3
 }
 
-export const kwh2wh = (data) => {
+export const kwh2wh = (data: number | number[]) => {
   if (Array.isArray(data)) return data.map(val => val * 1e3)
   else return data * 1e3
 }
 
-export const wh2mwh = (data) => {
+export const wh2mwh = (data: number | number[]) => {
   if (Array.isArray(data)) return data.map(val => val / 1e6)
   else return data / 1e6
 }
 
-export const mwh2wh = (data) => {
+export const mwh2wh = (data: number | number[]) => {
   if (Array.isArray(data)) return data.map(val => val * 1e6)
   else return data * 1e6
 }
 
-export const wh2WANkwh = (data) => {
+export const wh2WANkwh = (data: number | number[]) => {
   if (Array.isArray(data)) return data.map(val => val / 1e7)
   else return data / 1e7
 }
 
-export const WANkwh2wh = (data) => {
+export const WANkwh2wh = (data: number | number[]) => {
   if (Array.isArray(data)) return data.map(val => val * 1e7)
   else return data * 1e7
 }
 
-export const wh2gwh = (data) => {
+export const wh2gwh = (data: number | number[]) => {
   if (Array.isArray(data)) return data.map(val => val / 1e9)
   else return data / 1e9
 }
 
-export const gwh2wh = (data) => {
+export const gwh2wh = (data: number | number[]) => {
   if (Array.isArray(data)) return data.map(val => val * 1e9)
   else return data * 1e9
 }
 
-export const money2Other = (data) => {
+export const money2Other = (data: number | number[]) => {
   const locale = getLanguage()
-  let mark = data
-  if (Array.isArray(data)) mark = Math.max(...data)
+  let mark: number
+  if (Array.isArray(data)) {
+    mark = Math.max(...data)
+  } else {
+    mark = data
+  }
 
   switch (locale) {
     case 'zh-CN':
       if (Math.abs(mark) < 1000) {
         return { 'value': data, 'unit': '' }
       } else if (Math.abs(mark) / 1e3 < 10) {
-        return { 'value': data / 1e3, 'unit': 'qian' }
+        return { 
+          'value': Array.isArray(data) ? data.map(d => d / 1e3) : data / 1e3, 
+          'unit': 'qian' 
+        }
       } else {
-        return { 'value': data / 1e4, 'unit': 'wan' }
+        return { 
+          'value': Array.isArray(data) ? data.map(d => d / 1e4) : data / 1e4, 
+          'unit': 'wan' 
+        }
       }
     default:
       if (Math.abs(mark) < 1000) {
         return { 'value': data, 'unit': '' }
       } else if (Math.abs(mark) / 1e6 < 1) {
-        return { 'value': data / 1e3, 'unit': 'qian' }
+        return { 
+          'value': Array.isArray(data) ? data.map(d => d / 1e3) : data / 1e3, 
+          'unit': 'qian' 
+        }
       } else {
-        return { 'value': data / 1e6, 'unit': 'baiwan' }
+        return { 
+          'value': Array.isArray(data) ? data.map(d => d / 1e6) : data / 1e6, 
+          'unit': 'baiwan' 
+        }
       }
   }
 }
 
-export const kg2other = (data) => {
+export const kg2other = (data: number) => {
   if (data < 1000) return {value: data, unit: 'kg'}
   else return {value: data / 1000, unit: 't'}
 }
 
-export const other2m = (unit, value) => {
+export const other2m = (unit: Unit, value: number) => {
   if (unit === 'm') return value
   else return Number((value * 0.3048).toFixed(4))
 }
 
-export const m2other = (unit, value) => {
+export const m2other = (unit: Unit, value: number) => {
   if (unit === 'm') return value
   else return Number((value * 3.28084).toFixed(4))
 }

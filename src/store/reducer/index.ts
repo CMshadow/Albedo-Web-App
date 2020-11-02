@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
-import localReducer from './locale'
+import localReducer from './localeReducer'
 import unitReducer from './unitReducer'
 import projectReducer from './projectReducer';
 import pvTableReducer from './pvTableReducer'
