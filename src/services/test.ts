@@ -1,16 +1,21 @@
 import axios from '../axios.config'
 import { APIGatewayProxyResult } from 'aws-lambda'
 import withAuth from './withAuth'
+import { PV } from '../@types'
 
-interface test<R> {
-  (username: string, jwtToken: string): Promise<R>
+interface IGetPV<T> {
+  (username: string, jwtToken: string): Promise<T>
 }
 
-const testRequest: test<APIGatewayProxyResult> = (username, jwtToken) => {
-  return axios.get(
+const getPV: IGetPV<Array<PV>> = async (username, jwtToken) => {
+  return await axios.get<Array<PV>>(
     `/pv/${username}`,
     {headers: {'COG-TOKEN': jwtToken}}
   )
+  .then(res => {
+    console.log(res)
+    return res.data
+  })
 }
 
-export testfunc = withAuth(testRequest)
+export const testRequest = () => withAuth(getPV)

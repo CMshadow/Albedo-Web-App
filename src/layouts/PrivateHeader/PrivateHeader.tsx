@@ -10,7 +10,7 @@ import { useHistory, useLocation } from "react-router-dom"
 import { useTranslation } from 'react-i18next'
 import { setSignOut, setUnit } from '../../store/action/index'
 import { RootState, CognitoUserExt } from '../../@types'
-import axios from '../../axios.config'
+import { testRequest } from '../../services/test'
 
 const { Header } = Layout
 
@@ -52,16 +52,8 @@ const PrivateHeader: React.FC = () => {
       }
       <Button type='primary'
         onClick={async () => {
-          try {
-            const auth: CognitoUserExt = await Auth.currentAuthenticatedUser()
-            const username = auth.getUsername()
-            const session = auth.getSignInUserSession()
-            if (!session) throw AuthEr
-            const token = session.getIdToken()
-          } catch(err) {
-            console.log(err)
-          }
-
+          testRequest().then(res => console.log(res))
+          // console.log(res)
         }}
       >Test</Button>
       <Row className={styles.right} align='middle'>
