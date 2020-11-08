@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
 import { ThunkAction } from 'redux-thunk'
-import { RootState } from '../reducer/index'
-import { UnitActionTypes, Unit } from '../types/unit'
+import { UnitActionTypes, RootState } from '../../@types'
+import { Unit } from '../../@types';
 
 type ThunkResult<R> = ThunkAction<R, RootState, undefined, UnitActionTypes>
 

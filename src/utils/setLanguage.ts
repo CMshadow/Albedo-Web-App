@@ -1,6 +1,6 @@
 import { TFunction } from 'i18next';
+import { Locale } from '../@types';
 import i18n from '../i18n';
-import { Locale } from '../store/types/locale'
 
 interface ISetLanguage {
   (locale: Locale): Promise<TFunction>

@@ -4,7 +4,7 @@ import { Table, Form, InputNumber, Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { HeaderTable } from './HeaderTable'
-import { createDateSource } from '../../../utils/createGainData'
+import { createGainData } from '../../../utils/createGainData'
 import { updateReportAttributes } from '../../../store/action/index'
 import './GainTable.scss'
 const EditableContext = React.createContext();
@@ -88,12 +88,12 @@ export const GainTable = ({ buildingID }) => {
   const reportData = useSelector(state => state.report)
 
   const [dataSource, setdataSource] = useState(
-    createDateSource(reportData[buildingID])
+    createGainData(reportData[buildingID])
   )
 
   // 组件渲染后动态更新数据
   useEffect(() => {
-    const initDataSource = createDateSource(reportData[buildingID])
+    const initDataSource = createGainData(reportData[buildingID])
     setdataSource(initDataSource)
   }, [buildingID, reportData, t])
 

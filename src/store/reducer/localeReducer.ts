@@ -1,5 +1,5 @@
 import * as actionTypes from '../action/actionTypes';
-import { ILocalState, LocalActionTypes } from '../types/locale'
+import { ILocalState, LocalActionTypes } from '../../@types'
 import { getLanguage } from '../../utils/getLanguage'
 
 const initialState: ILocalState = {

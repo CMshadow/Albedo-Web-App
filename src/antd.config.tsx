@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { ConfigProvider } from 'antd';
 import { useSelector } from 'react-redux'
-import { RootState } from './store/reducer/index'
+import { RootState } from './@types'
 import enUS from 'antd/es/locale/en_US';
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';

@@ -1,5 +1,5 @@
 import * as actionTypes from '../action/actionTypes';
-import { IAuthState, AuthActionTypes, SetCognitoUserAction, SetSignOutAction } from '../types/auth'
+import { IAuthState, AuthActionTypes, SetCognitoUserAction, SetSignOutAction } from '../../@types'
 
 const initialState: IAuthState = {
   cognitoUser: null,

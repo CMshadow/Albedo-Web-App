@@ -1,6 +1,6 @@
 import * as actionTypes from '../action/actionTypes'
 import { getLanguage } from '../../utils/getLanguage'
-import { IUnitState, UnitActionTypes } from '../types/unit'
+import { IUnitState, UnitActionTypes } from '../../@types'
 
 const initialState: IUnitState = {
   unit: getLanguage() === 'zh-CN' ? 'm' : 'ft'

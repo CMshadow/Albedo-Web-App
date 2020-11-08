@@ -1,11 +1,10 @@
 import * as actionTypes from './actionTypes';
 import { ThunkAction } from 'redux-thunk'
-import { RootState } from '../reducer/index'
-import { AuthActionTypes, CognitoUser } from '../types/auth'
+import { CognitoUserExt, RootState, AuthActionTypes } from '../../@types';
 
 type ThunkResult<R> = ThunkAction<R, RootState, undefined, AuthActionTypes>
 
-export const setCognitoUser = (cognitoUser: CognitoUser):ThunkResult<void>  => (dispatch, getState) => {
+export const setCognitoUser = (cognitoUser: CognitoUserExt):ThunkResult<void>  => (dispatch, getState) => {
   dispatch({
     type: actionTypes.SET_COGNITOUSER,
     cognitoUser: cognitoUser

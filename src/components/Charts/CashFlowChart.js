@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Card, Typography } from 'antd'
 import { Chart, Interval, Axis, Tooltip, Legend } from 'bizcharts';
-import { createDateSource } from '../../utils/createGainData'
+import { createGainData } from '../../utils/createGainData'
 import { MoneyText } from '../../utils/genMoneyText'
 import { titleStyle, legendStyle } from '../../styles/chartStyles'
 const Title = Typography.Title
@@ -12,12 +12,12 @@ export const CashFlowChart = ({buildingID}) => {
   const { t } = useTranslation()
   const reportData = useSelector(state => state.report)
 
-  const dataSource = createDateSource(reportData[buildingID]).map((record, index) => ({
+  const dataSource = createGainData(reportData[buildingID]).map((record, index) => ({
     year: index,
     value: record['acc-net-cash-flow-togrid'],
     type: t('cashflowChart.togrid')
   })).concat(
-    createDateSource(reportData[buildingID]).map((record, index) => ({
+    createGainData(reportData[buildingID]).map((record, index) => ({
       year: index,
       value: record['acc-net-cash-flow-selfuse'],
       type: t('cashflowChart.selfuse')

@@ -1,7 +1,7 @@
 import { ThunkAction } from 'redux-thunk'
 import * as actionTypes from './actionTypes';
-import { LocalActionTypes, Locale } from '../types/locale'
-import { RootState } from '../reducer/index'
+import { RootState, LocalActionTypes } from '../../@types'
+import { Locale } from '../../@types';
 
 type ThunkResult<R> = ThunkAction<R, RootState, undefined, LocalActionTypes>
 

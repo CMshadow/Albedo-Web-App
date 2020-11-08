@@ -1,7 +1,21 @@
 import { getLanguage } from './getLanguage'
-import { Unit } from '../store/types/unit'
+import { Unit } from '../@types'
 
-const wh2otherCN = (data: number | number[], withH=true) => {
+interface IConverterW2Other<T extends number | number[]> {
+  (data: T, withH?: boolean): {value: T extends number ? number : number[], unit: string}
+}
+
+interface IConverterMoney<T extends number | number[]> extends IConverterW2Other<T> {}
+
+interface IConverterOther2W<T extends number | number[]> {
+  (data: T, unit: string): T extends number ? number : number[]
+}
+
+interface IConverter<T extends number | number[]> {
+  (data: T): T extends number ? number : number[]
+}
+
+const wh2otherCN: IConverterW2Other<number | number[]> = (data, withH=true) => {
   let mark: number
   if (Array.isArray(data)) {
     mark = Math.max(...data)
@@ -38,7 +52,7 @@ const wh2otherCN = (data: number | number[], withH=true) => {
   }
 }
 
-const wh2otherUS = (data: number | number[], withH=true) => {
+const wh2otherUS: IConverterW2Other<number | number[]> = (data, withH=true) => {
   let mark: number
   if (Array.isArray(data)) {
     mark = Math.max(...data)
@@ -70,7 +84,7 @@ const wh2otherUS = (data: number | number[], withH=true) => {
   }
 }
 
-export const wh2other = (data: number | number[]) => {
+export const wh2other: IConverterW2Other<number | number[]> = (data) => {
   const locale = getLanguage()
   switch(locale) {
     case 'zh-CN': return wh2otherCN(data)
@@ -78,7 +92,7 @@ export const wh2other = (data: number | number[]) => {
   }
 }
 
-export const w2other = (data: number | number[]) => {
+export const w2other: IConverterW2Other<number | number[]> = (data) => {
   const locale = getLanguage()
   switch(locale) {
     case 'zh-CN': return wh2otherCN(data, false)
@@ -86,7 +100,7 @@ export const w2other = (data: number | number[]) => {
   }
 }
 
-export const other2wh = (data: number | number[], unit: string) => {
+export const other2wh: IConverterOther2W<number | number[]> = (data, unit) => {
   if (unit.toLowerCase() === 'wh') {
     return data
   } else if (unit.toLowerCase() === 'kwh') {
@@ -100,7 +114,7 @@ export const other2wh = (data: number | number[], unit: string) => {
   }
 }
 
-export const other2w = (data: number | number[], unit: string) => {
+export const other2w: IConverterOther2W<number | number[]> = (data, unit) => {
   if (unit.toLowerCase() === 'w') {
     return data
   } else if (unit.toLowerCase() === 'kw') {
@@ -114,47 +128,47 @@ export const other2w = (data: number | number[], unit: string) => {
   }
 }
 
-export const wh2kwh = (data: number | number[]) => {
+export const wh2kwh: IConverter<number | number[]> = (data) => {
   if (Array.isArray(data)) return data.map(val => val / 1e3)
   else return data / 1e3
 }
 
-export const kwh2wh = (data: number | number[]) => {
+export const kwh2wh: IConverter<number | number[]> = (data)=> {
   if (Array.isArray(data)) return data.map(val => val * 1e3)
   else return data * 1e3
 }
 
-export const wh2mwh = (data: number | number[]) => {
+export const wh2mwh: IConverter<number | number[]> = (data) => {
   if (Array.isArray(data)) return data.map(val => val / 1e6)
   else return data / 1e6
 }
 
-export const mwh2wh = (data: number | number[]) => {
+export const mwh2wh: IConverter<number | number[]> = (data) => {
   if (Array.isArray(data)) return data.map(val => val * 1e6)
   else return data * 1e6
 }
 
-export const wh2WANkwh = (data: number | number[]) => {
+export const wh2WANkwh: IConverter<number | number[]> = (data) => {
   if (Array.isArray(data)) return data.map(val => val / 1e7)
   else return data / 1e7
 }
 
-export const WANkwh2wh = (data: number | number[]) => {
+export const WANkwh2wh: IConverter<number | number[]> = (data) => {
   if (Array.isArray(data)) return data.map(val => val * 1e7)
   else return data * 1e7
 }
 
-export const wh2gwh = (data: number | number[]) => {
+export const wh2gwh: IConverter<number | number[]> = (data) => {
   if (Array.isArray(data)) return data.map(val => val / 1e9)
   else return data / 1e9
 }
 
-export const gwh2wh = (data: number | number[]) => {
+export const gwh2wh: IConverter<number | number[]> = (data) => {
   if (Array.isArray(data)) return data.map(val => val * 1e9)
   else return data * 1e9
 }
 
-export const money2Other = (data: number | number[]) => {
+export const money2Other: IConverterMoney<number | number[]> = (data) => {
   const locale = getLanguage()
   let mark: number
   if (Array.isArray(data)) {

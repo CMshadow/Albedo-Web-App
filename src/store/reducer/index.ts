@@ -8,7 +8,7 @@ import inverterTableReducer from './inverterTableReducer'
 import reportReducer from './reportReducer'
 import SLDReducer from './SLDReducer'
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   auth: authReducer,
   locale: localReducer,
   unit: unitReducer,
@@ -18,6 +18,3 @@ const rootReducer = combineReducers({
   report: reportReducer,
   SLD: SLDReducer
 });
-
-export type RootState = ReturnType<typeof rootReducer>
-export default rootReducer
