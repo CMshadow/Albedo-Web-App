@@ -6,7 +6,7 @@ import SelectLang from '../../components/SelectLang/index'
 import styles from './PrivateHeader.module.scss'
 import { Auth } from 'aws-amplify'
 import { genInitial } from '../../utils/genInitial'
-import { useHistory, useLocation } from "react-router-dom"
+import { useHistory, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { setSignOut, setUnit } from '../../store/action/index'
 import { RootState, CognitoUserExt } from '../../@types'
@@ -39,35 +39,36 @@ const PrivateHeader: React.FC = () => {
 
   return (
     <Header className={styles.header}>
-      {
-        projectExist &&
+      {projectExist && (
         <Button
-          type='link'
-          size='large'
+          type="link"
+          size="large"
           icon={<ArrowLeftOutlined />}
-          onClick={() => {history.push('/dashboard')}}
+          onClick={() => {
+            history.push('/dashboard')
+          }}
         >
           {t('sider.menu.back-project')}
         </Button>
-      }
-      <Row className={styles.right} align='middle'>
+      )}
+      <Row className={styles.right} align="middle">
         <Space>
           {t('header.unit')}
           <Switch
-            checkedChildren='m'
-            unCheckedChildren='ft'
+            checkedChildren="m"
+            unCheckedChildren="ft"
             checked={unit === 'm'}
             onChange={checked => dispatch(setUnit(checked ? 'm' : 'ft'))}
           />
         </Space>
         <Dropdown overlay={menuHeaderDropdown}>
           <div className={styles.item}>
-            <Avatar className={styles.avatar} alt="avatar" icon={<UserOutlined />}/>
+            <Avatar className={styles.avatar} alt="avatar" icon={<UserOutlined />} />
             {cognitoUser && genInitial(cognitoUser)}
           </div>
         </Dropdown>
         <div className={styles.item}>
-          <SelectLang className={styles.item}/>
+          <SelectLang className={styles.item} />
         </div>
       </Row>
     </Header>

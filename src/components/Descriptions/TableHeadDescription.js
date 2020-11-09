@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 const Item = Descriptions.Item
 
-export const TableHeadDescription = ({buildingID}) => {
+export const TableHeadDescription = ({ buildingID }) => {
   const { t } = useTranslation()
   const projectData = useSelector(state => state.project)
   const reportData = useSelector(state => state.report)
@@ -12,7 +12,7 @@ export const TableHeadDescription = ({buildingID}) => {
   const DCCapacity = reportData[buildingID].ttl_dc_power_capacity
 
   return (
-    <Descriptions column={2} bordered className='tableHeader'>
+    <Descriptions column={2} bordered className="tableHeader">
       <Item label={t('investment.project-title')} span={1}>
         {projectData.projectTitle}
       </Item>

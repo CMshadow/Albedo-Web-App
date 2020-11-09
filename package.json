@@ -23,6 +23,8 @@
     "@types/react-helmet": "^6.1.0",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.6",
+    "@typescript-eslint/eslint-plugin": "^4.6.1",
+    "@typescript-eslint/parser": "^4.6.1",
     "aliplayer-react": "^0.5.0",
     "antd": "^4.2.0",
     "aws-amplify": "^3.0.10",
@@ -34,6 +36,8 @@
     "echarts": "^4.8.0",
     "echarts-for-react": "^2.0.16",
     "echarts-gl": "^1.1.1",
+    "eslint": "^7.13.0",
+    "eslint-plugin-react": "^7.21.5",
     "financejs": "^4.1.0",
     "global": "^4.4.0",
     "google-maps-react": "^2.0.6",
@@ -67,9 +71,11 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "craco  start",
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
+    "lint": "eslint --fix src/**/*.{js,jsx,ts,tsx}",
+    "start": "craco start",
     "build": "craco --max-old-space-size=4096 build",
-    "test": "craco  test",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -88,6 +94,9 @@
     ]
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.64"
+    "@types/aws-lambda": "^8.10.64",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.2"
   }
 }

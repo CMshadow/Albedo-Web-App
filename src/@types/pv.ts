@@ -1,32 +1,31 @@
-export type PVPreUpload  ={
-  name: string,
-  note: string,
-  panelLength: number,
-  panelWidth: number,
-  panelHeight: number,
-  panelWeight: number,
-  siliconMaterial: 'mc-Si' | 'c-Si',
-  moduleMaterial: 'glass/cell/glass' | 'glass/cell/polymer-sheet' | 'polymer/thin-film/steel',
-  seriesCell: number,
-  parallelCell: number,
-  pmax: number,
-  gammaPmax: number,
-  impo: number,
-  vmpo: number,
-  voco: number,
-  betaVoco: number,
-  isco: number,
-  alphaIsc: number,
-  alphaImp: number,
-  betaVmpo: number,
-  ixo: number,
-  ixxo: number,
-  t: number,
-  tPrime: number,
-  tenYDecay: number,
+export type PVPreUpload = {
+  name: string
+  note: string
+  panelLength: number
+  panelWidth: number
+  panelHeight: number
+  panelWeight: number
+  siliconMaterial: 'mc-Si' | 'c-Si'
+  moduleMaterial: 'glass/cell/glass' | 'glass/cell/polymer-sheet' | 'polymer/thin-film/steel'
+  seriesCell: number
+  parallelCell: number
+  pmax: number
+  gammaPmax: number
+  impo: number
+  vmpo: number
+  voco: number
+  betaVoco: number
+  isco: number
+  alphaIsc: number
+  alphaImp: number
+  betaVmpo: number
+  ixo: number
+  ixxo: number
+  t: number
+  tPrime: number
+  tenYDecay: number
   twentyfiveYDecay: number
 }
-
 
 export type PV = PVPreUpload & {
   pvID: string
@@ -57,7 +56,7 @@ export type PV = PVPreUpload & {
   b4: number
   b5: number
   fd: number
-  area:number
+  area: number
   betaVoco_sandia: number
   alphaIsc_sandia: number
   alphaImp_sandia: number

@@ -2,11 +2,11 @@ import React from 'react'
 import { Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import ReactEcharts from "echarts-for-react";
+import ReactEcharts from 'echarts-for-react'
 import 'echarts-gl'
 const Title = Typography.Title
 
-export const HeatMap = ({buildingID}) => {
+export const HeatMap = ({ buildingID }) => {
   const { t } = useTranslation()
   const projectData = useSelector(state => state.project)
   const tiltAzimuthPOA = projectData.tiltAzimuthPOA || [[0, 0, 0]]
@@ -16,12 +16,12 @@ export const HeatMap = ({buildingID}) => {
   const option = {
     backgroundColor: '#fff',
     tooltip: {
-      formatter: (a,b,c,d) => `
+      formatter: (a, b, c, d) => `
         ${a.marker}<br/>
         ${t('heatMap.tilt')}: ${a.value[0]} °<br/>
         ${t('heatMap.azimuth')}: ${a.value[1]} °<br/>
-        ${t('heatMap.poa')}: ${(a.value[2]/1000).toFixed(2)}  kWh/㎡<br/>
-      `
+        ${t('heatMap.poa')}: ${(a.value[2] / 1000).toFixed(2)}  kWh/㎡<br/>
+      `,
     },
     visualMap: {
       show: true,
@@ -29,8 +29,20 @@ export const HeatMap = ({buildingID}) => {
       min: poaMin,
       max: poaMax,
       inRange: {
-        color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-      }
+        color: [
+          '#313695',
+          '#4575b4',
+          '#74add1',
+          '#abd9e9',
+          '#e0f3f8',
+          '#ffffbf',
+          '#fee090',
+          '#fdae61',
+          '#f46d43',
+          '#d73027',
+          '#a50026',
+        ],
+      },
     },
     xAxis3D: {
       type: 'value',
@@ -38,8 +50,8 @@ export const HeatMap = ({buildingID}) => {
       min: 0,
       max: 90,
       axisLabel: {
-        formatter: text => `${text} °`
-      }
+        formatter: text => `${text} °`,
+      },
     },
     yAxis3D: {
       type: 'value',
@@ -47,39 +59,41 @@ export const HeatMap = ({buildingID}) => {
       min: 0,
       max: 360,
       axisLabel: {
-        formatter: text => `${text} °`
-      }
+        formatter: text => `${text} °`,
+      },
     },
     zAxis3D: {
       type: 'value',
       name: t('heatMap.poa'),
       axisLabel: {
-        formatter: text => `${(text/1000).toFixed(2)} kWh/㎡`
-      }
+        formatter: text => `${(text / 1000).toFixed(2)} kWh/㎡`,
+      },
     },
     grid3D: {
       viewControl: {
-        rotateSensitivity: 2
-      }
+        rotateSensitivity: 2,
+      },
     },
-    series: [{
-      type: 'scatter3D',
-      data: tiltAzimuthPOA
-    }]
-}
+    series: [
+      {
+        type: 'scatter3D',
+        data: tiltAzimuthPOA,
+      },
+    ],
+  }
 
   return (
     <Card
-      bodyStyle={{padding: '50px'}}
+      bodyStyle={{ padding: '50px' }}
       title={
-        <Title style={{textAlign: 'center'}} level={4}>
+        <Title style={{ textAlign: 'center' }} level={4}>
           {t('heatMap.title')}
         </Title>
       }
       hoverable
-      style={{cursor: 'unset'}}
+      style={{ cursor: 'unset' }}
     >
-      <ReactEcharts option={option} style={{height: '800px', width: '100%'}}/>
+      <ReactEcharts option={option} style={{ height: '800px', width: '100%' }} />
     </Card>
   )
 }

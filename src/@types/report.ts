@@ -16,6 +16,6 @@ export type GainEntry = {
 export type Report = {
   ttl_investment?: number
   gain?: Array<GainEntry>
-  year25_AC_power: Array<{unit: string, value: number}>
+  year25_AC_power: Array<{ unit: string; value: number }>
   'final-export-credit'?: number
 }

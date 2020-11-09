@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { Form, Input, InputNumber, Row, Col, Select, Button, Drawer, Tooltip, Space, Spin } from 'antd';
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { Form, Input, InputNumber, Row, Col, Select, Button, Drawer, Tooltip, Space, Spin } from 'antd'
 import { TableOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { editInverterSpec } from '../../../store/action/index'
 import { InverterTableViewOnly } from '../../Table/InverterTable/InverterTableViewOnly'
 import { other2m } from '../../../utils/unitConverter'
 import { inverterLimit } from '../../../pages/Project/service'
 import * as styles from './EditForm.module.scss'
-const FormItem = Form.Item;
+const FormItem = Form.Item
 
-const rowGutter = { md: 8, lg: 15, xl: 32 };
+const rowGutter = { md: 8, lg: 15, xl: 32 }
 
 // 根据给定的逆变器接线可选方案，生成SPI区间
-export const genSPILimits = (invLimits, pps=null) => {
+export const genSPILimits = (invLimits, pps = null) => {
   if (pps in invLimits) {
-    const minSPI = invLimits[pps].reduce((minSPI, val) => 
-      val < minSPI ? val : minSPI, Infinity
-    )
-    const maxSPI = invLimits[pps].reduce((maxSPI, val) => 
-      val > maxSPI ? val : maxSPI, -Infinity
-    )
+    const minSPI = invLimits[pps].reduce((minSPI, val) => (val < minSPI ? val : minSPI), Infinity)
+    const maxSPI = invLimits[pps].reduce((maxSPI, val) => (val > maxSPI ? val : maxSPI), -Infinity)
     return [Number(minSPI), Number(maxSPI)]
   } else {
     return [-Infinity, Infinity]
@@ -29,19 +25,16 @@ export const genSPILimits = (invLimits, pps=null) => {
 }
 
 // 根据给定的逆变器接线可选方案，和可给定的SPI,生成PPS区间
-export const genPPSLimits = (invLimits) => {
-  const minPPS = Object.keys(invLimits).reduce((minPPS, val) => 
-    Number(val) < minPPS ? Number(val) : minPPS, Infinity
-  )
-  const maxPPS = Object.keys(invLimits).reduce((maxPPS, val) => 
-    Number(val) > maxPPS ? Number(val) : maxPPS, -Infinity
+export const genPPSLimits = invLimits => {
+  const minPPS = Object.keys(invLimits).reduce((minPPS, val) => (Number(val) < minPPS ? Number(val) : minPPS), Infinity)
+  const maxPPS = Object.keys(invLimits).reduce(
+    (maxPPS, val) => (Number(val) > maxPPS ? Number(val) : maxPPS),
+    -Infinity
   )
   return [Number(minPPS), Number(maxPPS)]
 }
 
-export const EditForm = ({
-  buildingID, specIndex, invIndex, setediting, disabled, initInvLimits, onClickEndEdit
-}) => {
+export const EditForm = ({ buildingID, specIndex, invIndex, setediting, disabled, initInvLimits, onClickEndEdit }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { projectID } = useParams()
@@ -49,14 +42,12 @@ export const EditForm = ({
   const [loading, setloading] = useState(false)
   const [showDrawer, setshowDrawer] = useState(false)
   const unit = useSelector(state => state.unit.unit)
-  const pvData = useSelector(state => state.pv.data).concat(
-    useSelector(state => state.pv.officialData)
-  )
+  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
   const [invActiveData, setinvActiveData] = useState(inverterData)
-  
+
   const projectType = useSelector(state => state.project.projectType)
   const buildings = useSelector(state => state.project.buildings)
   const buildingIndex = buildings.map(building => building.buildingID).indexOf(buildingID)
@@ -64,26 +55,26 @@ export const EditForm = ({
   const selPV = pvData.find(pv => pv.pvID === specData.pv_panel_parameters.pv_model.pvID)
   const invSpec = specData.inverter_wiring[invIndex]
   const [dc_cable_len, setdc_cable_len] = useState({
-    value: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
+    value: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null,
   })
 
   // 所有使用的逆变器的vac
-  const allVac = new Set(buildings.flatMap(building => 
-    building.data.flatMap(spec => 
-      spec.inverter_wiring.map(inverterSpec => 
-        inverterSpec.inverter_model.inverterID ?
-        inverterData.find(obj => 
-          obj.inverterID === inverterSpec.inverter_model.inverterID
-        ).vac :
-        null
-      ).filter(elem => elem !== null)
+  const allVac = new Set(
+    buildings.flatMap(building =>
+      building.data.flatMap(spec =>
+        spec.inverter_wiring
+          .map(inverterSpec =>
+            inverterSpec.inverter_model.inverterID
+              ? inverterData.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID).vac
+              : null
+          )
+          .filter(elem => elem !== null)
+      )
     )
-  ))
-  
-  // 当前选中的逆变器完整参数
-  const [inv, setinv] = useState(
-    inverterData.find(obj => obj.inverterID === invSpec.inverter_model.inverterID) || null
   )
+
+  // 当前选中的逆变器完整参数
+  const [inv, setinv] = useState(inverterData.find(obj => obj.inverterID === invSpec.inverter_model.inverterID) || null)
   // form中最新的逆变器可选方案限制
   const [invLimits, setinvLimits] = useState({})
   // 根据当前逆变器可选方案限制产生的SPI范围
@@ -91,9 +82,9 @@ export const EditForm = ({
   // 根据当前逆变器可选方案限制产生的PPS范围
   const [invPPSLimit, setinvPPSLimit] = useState([-Infinity, Infinity])
   // 表中spi值
-  const [spi, setspi] = useState({value: invSpec.string_per_inverter || null})
+  const [spi, setspi] = useState({ value: invSpec.string_per_inverter || null })
   // 表中pps值
-  const [pps, setpps] = useState({value: invSpec.panels_per_string || null})
+  const [pps, setpps] = useState({ value: invSpec.panels_per_string || null })
   // spi对应文本
   const [spimsg, setspimsg] = useState(null)
   // pps对应文本
@@ -127,18 +118,22 @@ export const EditForm = ({
   const validateSpi = (value, minSPI, maxSPI, pps, minPPS, maxPPS) => {
     if (pps >= minPPS && pps <= maxPPS) {
       if (value > maxSPI) {
-        setspimsg(`${t('project.spec.error.over-max')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
-        return {validateStatus: 'warning'}
+        setspimsg(
+          `${t('project.spec.error.over-max')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`
+        )
+        return { validateStatus: 'warning' }
       } else if (value < minSPI) {
-        setspimsg(`${t('project.spec.error.under-min')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
-        return {validateStatus: 'warning'}
+        setspimsg(
+          `${t('project.spec.error.under-min')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`
+        )
+        return { validateStatus: 'warning' }
       } else {
         setspimsg(`${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
-        return {validateStatus: 'success'}
+        return { validateStatus: 'success' }
       }
     } else {
       setspimsg(t('project.spec.string_per_inverter.out-of-range'))
-      return {validateStatus: 'warning'}
+      return { validateStatus: 'warning' }
     }
   }
 
@@ -146,13 +141,13 @@ export const EditForm = ({
   const validatePps = (value, minPPS, maxPPS) => {
     if (value > maxPPS) {
       setppsmsg(`${t('project.spec.error.over-max')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
-      return {validateStatus: 'warning'}
+      return { validateStatus: 'warning' }
     } else if (value < minPPS) {
       setppsmsg(`${t('project.spec.error.under-min')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
-      return {validateStatus: 'warning'}
+      return { validateStatus: 'warning' }
     } else {
       setppsmsg(`${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
-      return {validateStatus: 'success'}
+      return { validateStatus: 'success' }
     }
   }
 
@@ -160,23 +155,30 @@ export const EditForm = ({
   const onDCCableLenChange = value => {
     setdc_cable_len({
       ...validateDCCableLen(value.target.value),
-      value: value.target.value
-    });
+      value: value.target.value,
+    })
   }
 
   //并联组串数输入框改变回调，校验SPI，如果存在pps则同时校验PPS，否则只更新pps文本
-  const onSPIChange = (spiValue, minSPI, maxSPI, ppsValue=pps.value, minPPS=invPPSLimit[0], maxPPS=invPPSLimit[1]) => {
+  const onSPIChange = (
+    spiValue,
+    minSPI,
+    maxSPI,
+    ppsValue = pps.value,
+    minPPS = invPPSLimit[0],
+    maxPPS = invPPSLimit[1]
+  ) => {
     setspi({
       ...validateSpi(spiValue, minSPI, maxSPI, ppsValue, minPPS, maxPPS),
-      value: spiValue
+      value: spiValue,
     })
   }
 
   //每串组件数输入框改变回调，校验PPS
-  const onPPSChange = (value, minPPS, maxPPS, limit=invLimits) => {
+  const onPPSChange = (value, minPPS, maxPPS, limit = invLimits) => {
     setpps({
       ...validatePps(value, minPPS, maxPPS),
-      value: value
+      value: value,
     })
     const newSPILimit = genSPILimits(limit, value)
     setinvSPILimit(newSPILimit)
@@ -192,19 +194,19 @@ export const EditForm = ({
     const selInv = inverterData.find(inv => inv.inverterID === invID)
     setinv(selInv)
     setloading(true)
-    dispatch(inverterLimit({
-      projectID, 
-      invID: selInv.inverterID, 
-      invUserID: selInv.userID,
-      pvID: selPV.pvID,
-      pvUserID: selPV.userID
-    })).then(res => {
+    dispatch(
+      inverterLimit({
+        projectID,
+        invID: selInv.inverterID,
+        invUserID: selInv.userID,
+        pvID: selPV.pvID,
+        pvUserID: selPV.userID,
+      })
+    ).then(res => {
       setloading(false)
       const newinvLimits = {}
-      res.inverterPlans.forEach(limit => 
-        limit.pps in newinvLimits ? 
-        newinvLimits[limit.pps].push(limit.spi) :
-        newinvLimits[limit.pps] = [limit.spi]
+      res.inverterPlans.forEach(limit =>
+        limit.pps in newinvLimits ? newinvLimits[limit.pps].push(limit.spi) : (newinvLimits[limit.pps] = [limit.spi])
       )
       Object.keys(newinvLimits).forEach(key => newinvLimits[key].sort())
       setinvLimits(newinvLimits)
@@ -219,7 +221,7 @@ export const EditForm = ({
       const [minPPS, maxPPS] = genPPSLimits(newinvLimits)
       setinvPPSLimit([minPPS, maxPPS])
       setppsmsg(`${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
-      
+
       if (spi) onSPIChange(spi, minSPI, maxSPI)
       if (pps) onPPSChange(pps, minPPS, maxPPS, newinvLimits)
     })
@@ -227,38 +229,40 @@ export const EditForm = ({
 
   const handleOk = () => {
     // 验证表单，如果通过提交表单
-    form.validateFields()
-    .then(success => {
-      // 验证组串线缆长度输入是否规范
-      const dcLenVali = validateDCCableLen(form.getFieldValue('dc_cable_len'))
-      if (dcLenVali.validateStatus === 'error') {
-        setdc_cable_len({
-          ...dcLenVali,
-          value: dc_cable_len.value
-        })
+    form
+      .validateFields()
+      .then(success => {
+        // 验证组串线缆长度输入是否规范
+        const dcLenVali = validateDCCableLen(form.getFieldValue('dc_cable_len'))
+        if (dcLenVali.validateStatus === 'error') {
+          setdc_cable_len({
+            ...dcLenVali,
+            value: dc_cable_len.value,
+          })
+          return
+        }
+        form.submit()
+      })
+      .catch(err => {
+        form.scrollToField(err.errorFields[0].name[0])
         return
-      }
-      form.submit()
-    })
-    .catch(err => {
-      form.scrollToField(err.errorFields[0].name[0])
-      return
-    })
+      })
   }
 
-  const submitForm = (values) => {
+  const submitForm = values => {
     // 组串线缆长度string转换数字array并进行m/ft到m的转换
-    values.dc_cable_len = values.dc_cable_len.split(',').map(v =>
-      other2m(unit, Number(v))
-    )
+    values.dc_cable_len = values.dc_cable_len.split(',').map(v => other2m(unit, Number(v)))
     // ac线缆长度m/ft到m的转换
     values.ac_cable_len = other2m(unit, Number(values.ac_cable_len))
-    dispatch(editInverterSpec({
-      buildingID, specIndex, invIndex, ...values,
-      inverter_userID: inverterData.find(
-        record => record.inverterID === values.inverterID
-      ).userID
-    }))
+    dispatch(
+      editInverterSpec({
+        buildingID,
+        specIndex,
+        invIndex,
+        ...values,
+        inverter_userID: inverterData.find(record => record.inverterID === values.inverterID).userID,
+      })
+    )
     onClickEndEdit()
     setediting(false)
   }
@@ -275,32 +279,40 @@ export const EditForm = ({
     const evalSPI = (value, minSPI, maxSPI, pps, minPPS, maxPPS) => {
       if (pps >= minPPS && pps <= maxPPS) {
         if (value > maxSPI) {
-          setspimsg(`${t('project.spec.error.over-max')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
-          return {validateStatus: 'warning'}
+          setspimsg(
+            `${t('project.spec.error.over-max')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`
+          )
+          return { validateStatus: 'warning' }
         } else if (value < minSPI) {
-          setspimsg(`${t('project.spec.error.under-min')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
-          return {validateStatus: 'warning'}
+          setspimsg(
+            `${t('project.spec.error.under-min')} ${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`
+          )
+          return { validateStatus: 'warning' }
         } else {
           setspimsg(`${t('project.spec.string_per_inverter.help')}: ${minSPI}-${maxSPI}`)
-          return {validateStatus: 'success'}
+          return { validateStatus: 'success' }
         }
       } else {
         setspimsg(t('project.spec.string_per_inverter.out-of-range'))
-        return {validateStatus: 'warning'}
+        return { validateStatus: 'warning' }
       }
     }
 
     const evalPPS = (value, minPPS, maxPPS) => {
       // 数量与该逆变器规格不符
       if (value > maxPPS) {
-        setppsmsg(`${t('project.spec.error.over-max')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
-        return {validateStatus: 'warning'}
+        setppsmsg(
+          `${t('project.spec.error.over-max')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`
+        )
+        return { validateStatus: 'warning' }
       } else if (value < minPPS) {
-        setppsmsg(`${t('project.spec.error.under-min')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
-        return {validateStatus: 'warning'}
+        setppsmsg(
+          `${t('project.spec.error.under-min')} ${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`
+        )
+        return { validateStatus: 'warning' }
       } else {
         setppsmsg(`${t('project.spec.panels_per_string.help')}: ${minPPS}-${maxPPS}`)
-        return {validateStatus: 'success'}
+        return { validateStatus: 'success' }
       }
     }
 
@@ -311,7 +323,7 @@ export const EditForm = ({
       setinvPPSLimit(initPPSLimit)
       setpps({
         ...evalPPS(invSpec.panels_per_string, initPPSLimit[0], initPPSLimit[1]),
-        value: invSpec.panels_per_string
+        value: invSpec.panels_per_string,
       })
     }
     if (invSpec.string_per_inverter) {
@@ -319,10 +331,14 @@ export const EditForm = ({
       setinvSPILimit(initSPILimit)
       setspi({
         ...evalSPI(
-          invSpec.string_per_inverter, initSPILimit[0], initSPILimit[1],
-          invSpec.panels_per_string || 0, initPPSLimit[0], initPPSLimit[1]
+          invSpec.string_per_inverter,
+          initSPILimit[0],
+          initSPILimit[1],
+          invSpec.panels_per_string || 0,
+          initPPSLimit[0],
+          initPPSLimit[1]
         ),
-        value: invSpec.string_per_inverter
+        value: invSpec.string_per_inverter,
       })
     }
   }, [initInvLimits, invSpec.panels_per_string, invSpec.string_per_inverter, t])
@@ -339,61 +355,52 @@ export const EditForm = ({
         initialValues={{
           ...invSpec,
           inverterID: invSpec.inverter_model.inverterID,
-          ac_cable_len: 
-            invSpec.ac_cable_len >= 0 ?
-            invSpec.ac_cable_len : 
-            specData.pv_panel_parameters.ac_cable_avg_len,
-          dc_cable_len: 
-            invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null
+          ac_cable_len:
+            invSpec.ac_cable_len >= 0 ? invSpec.ac_cable_len : specData.pv_panel_parameters.ac_cable_avg_len,
+          dc_cable_len: invSpec.dc_cable_len ? invSpec.dc_cable_len.join(',') : null,
         }}
       >
         <Row gutter={12}>
           <Col span={22}>
             <FormItem
-              name='inverterID'
+              name="inverterID"
               label={t('project.spec.inverter')}
-              rules={[{required: true}]}
+              rules={[{ required: true }]}
               help={
-                projectType === 'domestic' && 
-                (allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1)) ?
-                t('project.spec.inverter.vac-inconsistent') : null
+                projectType === 'domestic' &&
+                (allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1))
+                  ? t('project.spec.inverter.vac-inconsistent')
+                  : null
               }
               validateStatus={
-                projectType === 'domestic' && 
-                (allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1)) ?
-                'warning' : null
+                projectType === 'domestic' &&
+                (allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1))
+                  ? 'warning'
+                  : null
               }
             >
               <Select
                 showSearch
-                options={
-                  invActiveData.map(record => ({
-                    label: record.name,
-                    value: record.inverterID
-                  }))
-                }
+                options={invActiveData.map(record => ({
+                  label: record.name,
+                  value: record.inverterID,
+                }))}
                 disabled={disabled}
                 onChange={onInverterIDChange}
-                filterOption={(value, option) =>
-                  option.label.toLowerCase().includes(value.toLowerCase())
-                }
+                filterOption={(value, option) => option.label.toLowerCase().includes(value.toLowerCase())}
               />
             </FormItem>
           </Col>
           <Col span={2}>
-            <Button
-              shape="circle"
-              icon={<TableOutlined />}
-              onClick={() => setshowDrawer(true)}
-            />
+            <Button shape="circle" icon={<TableOutlined />} onClick={() => setshowDrawer(true)} />
           </Col>
         </Row>
         <Row gutter={rowGutter}>
           <Col span={12}>
             <FormItem
-              name='panels_per_string'
+              name="panels_per_string"
               label={t('project.spec.panels_per_string')}
-              rules={[{required: true}]}
+              rules={[{ required: true }]}
               validateStatus={pps.validateStatus}
               help={ppsmsg}
             >
@@ -409,9 +416,9 @@ export const EditForm = ({
           </Col>
           <Col span={12}>
             <FormItem
-              name='string_per_inverter'
+              name="string_per_inverter"
               label={t('project.spec.string_per_inverter')}
-              rules={[{required: true}]}
+              rules={[{ required: true }]}
               validateStatus={spi.validateStatus}
               help={spimsg}
             >
@@ -424,8 +431,7 @@ export const EditForm = ({
                   onSPIChange(val, invSPILimit[0], invSPILimit[1])
                   if (specData.pv_panel_parameters.dc_cable_avg_len) {
                     form.setFieldsValue({
-                      'dc_cable_len': 
-                        new Array(val).fill(specData.pv_panel_parameters.dc_cable_avg_len).join(',')
+                      dc_cable_len: new Array(val).fill(specData.pv_panel_parameters.dc_cable_avg_len).join(','),
                     })
                   }
                 }}
@@ -437,38 +443,35 @@ export const EditForm = ({
         <Row gutter={rowGutter}>
           <Col span={12}>
             <FormItem
-              name='ac_cable_len'
+              name="ac_cable_len"
               label={
                 <Tooltip title={t(`project.spec.ac_cable_len.hint`)}>
                   <Space>
-                    <QuestionCircleOutlined/>{t('project.spec.ac_cable_len')}
+                    <QuestionCircleOutlined />
+                    {t('project.spec.ac_cable_len')}
                   </Space>
                 </Tooltip>
               }
-              normalize={val => val ? Number(val) : val}
-              rules={[{required: true, type: 'number', min: 0}]}
+              normalize={val => (val ? Number(val) : val)}
+              rules={[{ required: true, type: 'number', min: 0 }]}
             >
-              <Input
-                type='number'
-                addonAfter={unit}
-                className={styles.inputNumber}
-                disabled={disabled}
-              />
+              <Input type="number" addonAfter={unit} className={styles.inputNumber} disabled={disabled} />
             </FormItem>
           </Col>
           <Col span={12}>
             <FormItem
-              name='dc_cable_len'
+              name="dc_cable_len"
               label={
                 <Tooltip title={t(`project.spec.dc_cable_len.hint`)}>
                   <Space>
-                    <QuestionCircleOutlined/>{t('project.spec.dc_cable_len')}
+                    <QuestionCircleOutlined />
+                    {t('project.spec.dc_cable_len')}
                   </Space>
                 </Tooltip>
               }
               validateStatus={dc_cable_len.validateStatus}
               help={dc_cable_len.errorMsg}
-              rules={[{required: true}]}
+              rules={[{ required: true }]}
             >
               <Input
                 className={styles.inputNumber}
@@ -483,38 +486,32 @@ export const EditForm = ({
         <Row gutter={rowGutter}>
           <Col span={24}>
             <FormItem label={`${t('project.spec.dcoveracratio-actual')} / ${t('project.spec.dcoveracratio-max')}`}>
-              {
-                inv ?
-                `${(selPV.pmax * pps.value * spi.value / inv.paco_sandia).toFixed(2)} 
+              {inv
+                ? `${((selPV.pmax * pps.value * spi.value) / inv.paco_sandia).toFixed(2)} 
                 / 
-                ${(inv.pdcMax_sandia / inv.paco_sandia).toFixed(2)}`:
-                null
-              }
+                ${(inv.pdcMax_sandia / inv.paco_sandia).toFixed(2)}`
+                : null}
             </FormItem>
           </Col>
         </Row>
-        <Row align='middle' justify='center'>
+        <Row align="middle" justify="center">
           <FormItem className={styles.submitBut}>
-            <Button disabled={disabled} type='primary' onClick={handleOk}>
+            <Button disabled={disabled} type="primary" onClick={handleOk}>
               {t('form.confirm')}
             </Button>
           </FormItem>
         </Row>
       </Form>
       <Drawer
-        bodyStyle={{padding: '0px'}}
+        bodyStyle={{ padding: '0px' }}
         title={t('InverterTable.table')}
         placement="right"
         closable={false}
         onClose={() => setshowDrawer(false)}
         visible={showDrawer}
-        width='50vw'
+        width="50vw"
       >
-        <InverterTableViewOnly
-          data={inverterData}
-          activeData={invActiveData}
-          setactiveData={setinvActiveData}
-        />
+        <InverterTableViewOnly data={inverterData} activeData={invActiveData} setactiveData={setinvActiveData} />
       </Drawer>
     </Spin>
   )

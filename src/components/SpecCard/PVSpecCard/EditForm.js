@@ -1,9 +1,24 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 import { QuestionCircleOutlined } from '@ant-design/icons'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { Form, Input, Row, Col, Select, Button, Drawer, Divider, notification, Spin, Space, Descriptions, Tooltip, Table } from 'antd';
+import {
+  Form,
+  Input,
+  Row,
+  Col,
+  Select,
+  Button,
+  Drawer,
+  Divider,
+  notification,
+  Spin,
+  Space,
+  Descriptions,
+  Tooltip,
+  Table,
+} from 'antd'
 import { TableOutlined } from '@ant-design/icons'
 import { EditInverterPlanModal } from './EditInverterPlanModal'
 import { editSubAry } from '../../../store/action/index'
@@ -12,12 +27,12 @@ import { InverterTableViewOnly } from '../../Table/InverterTable/InverterTableVi
 import { CellTempModel } from '../../Model/CellTempModel/CellTempModel'
 import { manualInverter } from '../../../pages/Project/service'
 import { w2other } from '../../../utils/unitConverter'
-const FormItem = Form.Item;
+const FormItem = Form.Item
 const { Item } = Descriptions
 
-const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128};
+const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128 }
 
-export const EditForm = ({buildingID, specIndex, setediting}) => {
+export const EditForm = ({ buildingID, specIndex, setediting }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { projectID } = useParams()
@@ -25,9 +40,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   const unit = useSelector(state => state.unit.unit)
   const projectType = useSelector(state => state.project.projectType)
 
-  const pvData = useSelector(state => state.pv.data).concat(
-    useSelector(state => state.pv.officialData)
-  )
+  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
@@ -35,16 +48,15 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   const [invActiveData, setinvActiveData] = useState(inverterData)
 
   const buildings = useSelector(state => state.project.buildings)
-  const buildingIndex = buildings.map(building => building.buildingID)
-    .indexOf(buildingID)
+  const buildingIndex = buildings.map(building => building.buildingID).indexOf(buildingID)
   const spec = buildings[buildingIndex].data[specIndex].pv_panel_parameters
 
   const [form] = Form.useForm()
   const [showPVDrawer, setshowPVDrawer] = useState(false)
   const [showInvDrawer, setshowInvDrawer] = useState(false)
   const [pvID, setpvID] = useState(spec ? spec.pv_model.pvID : null)
-  const [tilt, settilt] = useState({value: null})
-  const [azimuth, setazimuth] = useState({value: null})
+  const [tilt, settilt] = useState({ value: null })
+  const [azimuth, setazimuth] = useState({ value: null })
   const [capacity, setcapacity] = useState(null)
   const [autoInvLoading, setautoInvLoading] = useState(false)
   const [autoInvPlan, setautoInvPlan] = useState({})
@@ -53,33 +65,34 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
   const [N1, setN1] = useState({})
 
   // 所有使用的逆变器的vac
-  const allVac = new Set(buildings.flatMap(building => 
-    building.data.flatMap(spec => 
-      spec.inverter_wiring.map(inverterSpec => 
-        inverterData.find(obj => 
-          obj.inverterID === inverterSpec.inverter_model.inverterID
-        ).vac
+  const allVac = new Set(
+    buildings.flatMap(building =>
+      building.data.flatMap(spec =>
+        spec.inverter_wiring.map(
+          inverterSpec => inverterData.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID).vac
+        )
       )
     )
-  ))
+  )
 
   const handleOk = () => {
     if (tilt.validateStatus === 'error' || azimuth.validateStatus === 'error') {
       return
     }
     // 验证表单，如果通过提交表单
-    form.validateFields()
-    .then(success => {
-      form.submit()
-    })
-    .catch(err => {
-      form.scrollToField(err.errorFields[0].name[0])
-      return
-    })
+    form
+      .validateFields()
+      .then(success => {
+        form.submit()
+      })
+      .catch(err => {
+        form.scrollToField(err.errorFields[0].name[0])
+        return
+      })
   }
 
-  const submitForm = (values) => {
-    const formatValues = {...values}
+  const submitForm = values => {
+    const formatValues = { ...values }
     const model = formatValues.celltemp_model.split(',')[0]
     if (model === 'sandia') {
       formatValues.celltemp_vars = [values.a, values.b, values.dtc]
@@ -92,18 +105,23 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
       delete formatValues.uv
       delete formatValues.v
     }
-    dispatch(editSubAry({
-      buildingID, specIndex, ...formatValues, invPlan: autoInvPlan,
-      pv_userID: pvData.find(record => record.pvID === formatValues.pvID).userID,
-    }))
+    dispatch(
+      editSubAry({
+        buildingID,
+        specIndex,
+        ...formatValues,
+        invPlan: autoInvPlan,
+        pv_userID: pvData.find(record => record.pvID === formatValues.pvID).userID,
+      })
+    )
     setediting(false)
   }
 
-  const tiltChange = (event) => {
-    settilt({ ...validateTilt(event.target.value), value: event.target.value});
+  const tiltChange = event => {
+    settilt({ ...validateTilt(event.target.value), value: event.target.value })
   }
 
-  const validateTilt = (tilt) => {
+  const validateTilt = tilt => {
     if (Number(tilt) < 0 || Number(tilt) > 60) {
       return {
         validateStatus: 'error',
@@ -113,14 +131,14 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     return {
       validateStatus: 'success',
       errorMsg: null,
-    };
+    }
   }
 
-  const azimuthChange = (event) => {
-    setazimuth({ ...validateAzimuth(event.target.value), value: event.target.value});
+  const azimuthChange = event => {
+    setazimuth({ ...validateAzimuth(event.target.value), value: event.target.value })
   }
 
-  const validateAzimuth = (azimuth) => {
+  const validateAzimuth = azimuth => {
     if (Number(azimuth) < 0 || Number(azimuth) > 360) {
       return {
         validateStatus: 'error',
@@ -130,7 +148,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     return {
       validateStatus: 'success',
       errorMsg: null,
-    };
+    }
   }
 
   const genInverterPlan = () => {
@@ -147,121 +165,138 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
     }
     const pvUserID = pvData.find(pv => pv.pvID === pvID).userID
     const pvPmax = pvData.find(pv => pv.pvID === pvID).pmax
-    const ttlPV = Math.floor(capacity * 1000 / pvPmax)
+    const ttlPV = Math.floor((capacity * 1000) / pvPmax)
     const invUserID = inverterData.find(inv => inv.inverterID === inverterID).userID
     const invName = inverterData.find(inv => inv.inverterID === inverterID).name
-    dispatch(manualInverter({
-      projectID: projectID, invID: inverterID, invUserID: invUserID,
-      pvID: pvID, pvUserID: pvUserID, ttlPV: ttlPV
-    }))
-    .then(res => {
-      setautoInvLoading(false)
-      if (res === 'PV and Inverter does not fit') {
-        notification.error({
-          message: t('project.autoInverter.no-fit'),
-        })
-        return
-      }
-      if (res.autoPlan.plan.length === 0) {
-        notification.warning({
-          message: t('project.autoInverter.too-small'),
-          description: t('project.autoInverter.too-small.detail'),
-          duration: 15,
-        })
-        return
-      }
-      const notiKey = 'notification'
-      const actCapacity = w2other((ttlPV - res.autoPlan.wasted) * pvPmax)
-      const description = (
-        <Descriptions column={1}>
-          <Item label={t('project.autoInverter.invModel')} span={1}>
-            {invName}
-          </Item>
-          <Item label={t('project.autoInverter.requiredInv')} span={1}>
-            {res.autoPlan.plan.length}
-          </Item>
-          <Item label={t('project.autoInverter.capacity')} span={1}>
-            {`${actCapacity.value} ${actCapacity.unit}`}
-          </Item>
-          <Item label={t('project.autoInverter.pvConnected')} span={1}>
-            {ttlPV - res.autoPlan.wasted}
-          </Item>
-          <Item label={t('project.autoInverter.detail')} span={1}>
-            <Table
-              scroll={{y: '40vh'}}
-              dataSource={res.autoPlan.plan.map((obj, index) => ({...obj, key: index}))}
-              pagination={false}
-              columns={[
-                {
-                  key: 'spi',
-                  title: t('project.spec.string_per_inverter'),
-                  dataIndex: 'spi',
-                  align: 'center'
-                },
-                {
-                  key: 'pps',
-                  title: t('project.spec.panels_per_string'),
-                  dataIndex: 'pps',
-                  align: 'center'
-                }
-              ]}
-            />
-          </Item>
-        </Descriptions>
-      )
-      const btn = (
-        <Space>
-          <Button type="primary" onClick={() => {
-            setautoInvPlan({
-              plan: res.autoPlan.plan, inverterID: inverterID, inverterUserID: invUserID
-            })
-            notification.close(notiKey)
-          }}>
-            {t('project.autoInverter.use')}
-          </Button>
-          <Button onClick={() => {
-            setautoInvPlan({
-              plan: res.autoPlan.plan, inverterID: inverterID, inverterUserID: invUserID
-            })
-            setN1({N1vdcMax: res.N1vdcMax, N1vmpptMax: res.N1vmpptMax, N1Min: res.N1Min})
-            setshowModal(true)
-            notification.close(notiKey)
-          }}>
-            {t('project.autoInverter.edit')}
-          </Button>
-          <Button onClick={() => {
-            form.setFieldsValue({inverterID: ''})
-            setautoInvPlan({})
-            notification.close(notiKey)
-          }}>
-            {t('project.autoInverter.notuse')}
-          </Button>
-        </Space>
-      )
-      notification.info({
-        key: notiKey,
-        btn: btn,
-        message: t('project.autoInverter.title'),
-        description: description,
-        duration: null,
-        onClose: () => {
-          form.setFieldsValue({inverterID: ''})
-          setautoInvPlan({})
-        },
-        style: {
-          width: 550,
-          marginLeft: 375 - 550
-        }
+    dispatch(
+      manualInverter({
+        projectID: projectID,
+        invID: inverterID,
+        invUserID: invUserID,
+        pvID: pvID,
+        pvUserID: pvUserID,
+        ttlPV: ttlPV,
       })
-    })
-    .catch(err => {
-      console.log(err)
-      setautoInvLoading(false)
-    })
+    )
+      .then(res => {
+        setautoInvLoading(false)
+        if (res === 'PV and Inverter does not fit') {
+          notification.error({
+            message: t('project.autoInverter.no-fit'),
+          })
+          return
+        }
+        if (res.autoPlan.plan.length === 0) {
+          notification.warning({
+            message: t('project.autoInverter.too-small'),
+            description: t('project.autoInverter.too-small.detail'),
+            duration: 15,
+          })
+          return
+        }
+        const notiKey = 'notification'
+        const actCapacity = w2other((ttlPV - res.autoPlan.wasted) * pvPmax)
+        const description = (
+          <Descriptions column={1}>
+            <Item label={t('project.autoInverter.invModel')} span={1}>
+              {invName}
+            </Item>
+            <Item label={t('project.autoInverter.requiredInv')} span={1}>
+              {res.autoPlan.plan.length}
+            </Item>
+            <Item label={t('project.autoInverter.capacity')} span={1}>
+              {`${actCapacity.value} ${actCapacity.unit}`}
+            </Item>
+            <Item label={t('project.autoInverter.pvConnected')} span={1}>
+              {ttlPV - res.autoPlan.wasted}
+            </Item>
+            <Item label={t('project.autoInverter.detail')} span={1}>
+              <Table
+                scroll={{ y: '40vh' }}
+                dataSource={res.autoPlan.plan.map((obj, index) => ({ ...obj, key: index }))}
+                pagination={false}
+                columns={[
+                  {
+                    key: 'spi',
+                    title: t('project.spec.string_per_inverter'),
+                    dataIndex: 'spi',
+                    align: 'center',
+                  },
+                  {
+                    key: 'pps',
+                    title: t('project.spec.panels_per_string'),
+                    dataIndex: 'pps',
+                    align: 'center',
+                  },
+                ]}
+              />
+            </Item>
+          </Descriptions>
+        )
+        const btn = (
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => {
+                setautoInvPlan({
+                  plan: res.autoPlan.plan,
+                  inverterID: inverterID,
+                  inverterUserID: invUserID,
+                })
+                notification.close(notiKey)
+              }}
+            >
+              {t('project.autoInverter.use')}
+            </Button>
+            <Button
+              onClick={() => {
+                setautoInvPlan({
+                  plan: res.autoPlan.plan,
+                  inverterID: inverterID,
+                  inverterUserID: invUserID,
+                })
+                setN1({ N1vdcMax: res.N1vdcMax, N1vmpptMax: res.N1vmpptMax, N1Min: res.N1Min })
+                setshowModal(true)
+                notification.close(notiKey)
+              }}
+            >
+              {t('project.autoInverter.edit')}
+            </Button>
+            <Button
+              onClick={() => {
+                form.setFieldsValue({ inverterID: '' })
+                setautoInvPlan({})
+                notification.close(notiKey)
+              }}
+            >
+              {t('project.autoInverter.notuse')}
+            </Button>
+          </Space>
+        )
+        notification.info({
+          key: notiKey,
+          btn: btn,
+          message: t('project.autoInverter.title'),
+          description: description,
+          duration: null,
+          onClose: () => {
+            form.setFieldsValue({ inverterID: '' })
+            setautoInvPlan({})
+          },
+          style: {
+            width: 550,
+            marginLeft: 375 - 550,
+          },
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        setautoInvLoading(false)
+      })
   }
 
-  const genInitValues = (spec) => {
-    const init = {...spec, pvID:spec.pv_model.pvID}
+  const genInitValues = spec => {
+    const init = { ...spec, pvID: spec.pv_model.pvID }
     if (spec.celltemp_model) {
       if (spec.celltemp_model.split(',')[0] === 'sandia') {
         init.a = spec.celltemp_vars[0]
@@ -297,142 +332,117 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
       >
         <Row gutter={12}>
           <Col span={22}>
-            <FormItem
-              name='pvID'
-              label={t('project.spec.pv')}
-              rules={[{required: true}]}
-            >
+            <FormItem name="pvID" label={t('project.spec.pv')} rules={[{ required: true }]}>
               <Select
                 showSearch
-                options={
-                  pvActiveData.map(record => ({
-                    label: record.name,
-                    value: record.pvID
-                  }))
-                }
-                filterOption={(value, option) =>
-                  option.label.toLowerCase().includes(value.toLowerCase())
-                }
+                options={pvActiveData.map(record => ({
+                  label: record.name,
+                  value: record.pvID,
+                }))}
+                filterOption={(value, option) => option.label.toLowerCase().includes(value.toLowerCase())}
                 onChange={setpvID}
               />
             </FormItem>
           </Col>
           <Col span={2}>
-            <Button
-              shape="circle"
-              icon={<TableOutlined />}
-              onClick={() => setshowPVDrawer(true)}
-            />
+            <Button shape="circle" icon={<TableOutlined />} onClick={() => setshowPVDrawer(true)} />
           </Col>
         </Row>
         <Row gutter={rowGutter}>
           <Col span={12}>
             <FormItem
-              name='tilt_angle'
+              name="tilt_angle"
               label={
                 <Tooltip title={t(`project.spec.tilt_angle.hint`)}>
                   <Space>
-                    <QuestionCircleOutlined/>{t('project.spec.tilt_angle')}
+                    <QuestionCircleOutlined />
+                    {t('project.spec.tilt_angle')}
                   </Space>
                 </Tooltip>
               }
-              rules={[{required: true}]}
+              rules={[{ required: true }]}
               validateStatus={tilt.validateStatus}
               help={tilt.errorMsg || null}
             >
-              <Input
-                addonAfter='°'
-                type='number'
-                value={tilt.value}
-                onChange={tiltChange}
-              />
+              <Input addonAfter="°" type="number" value={tilt.value} onChange={tiltChange} />
             </FormItem>
           </Col>
           <Col span={12}>
             <FormItem
-              name='azimuth'
+              name="azimuth"
               label={
                 <Tooltip title={t(`project.spec.azimuth.hint`)}>
                   <Space>
-                    <QuestionCircleOutlined/>{t('project.spec.azimuth')}
+                    <QuestionCircleOutlined />
+                    {t('project.spec.azimuth')}
                   </Space>
                 </Tooltip>
               }
-              rules={[{required: true}]}
+              rules={[{ required: true }]}
               validateStatus={azimuth.validateStatus}
               help={azimuth.errorMsg || null}
             >
-              <Input
-                addonAfter='°'
-                type='number'
-                value={azimuth.value}
-                onChange={azimuthChange}
-              />
+              <Input addonAfter="°" type="number" value={azimuth.value} onChange={azimuthChange} />
             </FormItem>
           </Col>
         </Row>
-        {
-          projectType === 'domestic' ? null :
+        {projectType === 'domestic' ? null : (
           <>
-            <Divider>
-              {t('project.spec.avg-length')}
-            </Divider>
+            <Divider>{t('project.spec.avg-length')}</Divider>
             <Row gutter={rowGutter}>
               <Col span={12}>
                 <FormItem
-                  name='ac_cable_avg_len'
+                  name="ac_cable_avg_len"
                   label={
                     <Tooltip title={t('project.spec.ac_cable_avg_len.hint')}>
                       <Space>
-                        <QuestionCircleOutlined/>{t('project.spec.ac_cable_avg_len')}
+                        <QuestionCircleOutlined />
+                        {t('project.spec.ac_cable_avg_len')}
                       </Space>
                     </Tooltip>
                   }
-                  rules={[{required: true}]}
+                  rules={[{ required: true }]}
                 >
-                  <Input addonAfter={unit} type='number'/>
+                  <Input addonAfter={unit} type="number" />
                 </FormItem>
               </Col>
               <Col span={12}>
                 <FormItem
-                  name='dc_cable_avg_len'
+                  name="dc_cable_avg_len"
                   label={
                     <Tooltip title={t(`project.spec.dc_cable_avg_len.hint`)}>
                       <Space>
-                        <QuestionCircleOutlined/>{t('project.spec.dc_cable_avg_len')}
+                        <QuestionCircleOutlined />
+                        {t('project.spec.dc_cable_avg_len')}
                       </Space>
                     </Tooltip>
                   }
-                  rules={[{required: true}]}
+                  rules={[{ required: true }]}
                 >
-                  <Input addonAfter={unit} type='number'/>
+                  <Input addonAfter={unit} type="number" />
                 </FormItem>
               </Col>
             </Row>
           </>
-        }
+        )}
 
-        <Divider>
-          {t('project.spec.celltemp-model')}
-        </Divider>
-        <CellTempModel form={form} pvID={pvID} initModel={genInitValues(spec).celltemp_model}/>
+        <Divider>{t('project.spec.celltemp-model')}</Divider>
+        <CellTempModel form={form} pvID={pvID} initModel={genInitValues(spec).celltemp_model} />
 
         <Divider>
           <Tooltip title={t('project.spec.optional.tooltip')}>
             <Space>
-              <QuestionCircleOutlined />{t('project.spec.optional')}
+              <QuestionCircleOutlined />
+              {t('project.spec.optional')}
             </Space>
           </Tooltip>
         </Divider>
         <Row gutter={8}>
           <Col span={8}>
-            <FormItem
-              name='capacity'
-              label={t('project.spec.capacity')}
-            >
+            <FormItem name="capacity" label={t('project.spec.capacity')}>
               <Input
-                addonAfter='kW'
-                type='number'
+                addonAfter="kW"
+                type="number"
                 value={capacity}
                 onChange={e => {
                   setcapacity(e.target.value)
@@ -443,98 +453,86 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
           </Col>
           <Col span={12} offset={2}>
             <FormItem
-              name='inverterID'
+              name="inverterID"
               label={t('project.spec.inverter')}
               help={
-                projectType === 'commercial' ? null :
-                allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1) ?
-                t('project.spec.inverter.vac-inconsistent') : null
+                projectType === 'commercial'
+                  ? null
+                  : allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1)
+                  ? t('project.spec.inverter.vac-inconsistent')
+                  : null
               }
               validateStatus={
-                projectType === 'commercial' ? null :
-                allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1) ?
-                'warning' : null
+                projectType === 'commercial'
+                  ? null
+                  : allVac.size > 1 || (getInvVac() && new Set([...allVac, getInvVac()]).size > 1)
+                  ? 'warning'
+                  : null
               }
             >
               <Select
                 showSearch
                 disabled={!capacity}
-                options={
-                  invActiveData.map(record => ({
-                    label: record.name,
-                    value: record.inverterID
-                  }))
-                }
+                options={invActiveData.map(record => ({
+                  label: record.name,
+                  value: record.inverterID,
+                }))}
                 onSelect={genInverterPlan}
-                filterOption={(value, option) =>
-                  option.label.toLowerCase().includes(value.toLowerCase())
-                }
+                filterOption={(value, option) => option.label.toLowerCase().includes(value.toLowerCase())}
               />
             </FormItem>
           </Col>
           <Col span={2}>
-            <Button
-              shape="circle"
-              icon={<TableOutlined />}
-              onClick={() => setshowInvDrawer(true)}
-            />
+            <Button shape="circle" icon={<TableOutlined />} onClick={() => setshowInvDrawer(true)} />
           </Col>
         </Row>
-        <Divider style={{marginTop: 0}}/>
-        <Row align='middle' justify='center'>
+        <Divider style={{ marginTop: 0 }} />
+        <Row align="middle" justify="center">
           <FormItem>
             <Space>
-              <Button type='primary' onClick={handleOk}>
+              <Button type="primary" onClick={handleOk}>
                 {autoInvPlan.plan ? t('project.autoInverter.confirm') : t('form.confirm')}
               </Button>
-              {
-                autoInvPlan.plan ?
-                <Button onClick={() => {
-                  form.setFieldsValue({inverterID: ''})
-                  setautoInvPlan({})
-                }}>
+              {autoInvPlan.plan ? (
+                <Button
+                  onClick={() => {
+                    form.setFieldsValue({ inverterID: '' })
+                    setautoInvPlan({})
+                  }}
+                >
                   {t('project.autoInverter.cancel')}
-                </Button> :
-                null
-              }
+                </Button>
+              ) : null}
             </Space>
           </FormItem>
         </Row>
       </Form>
       <Drawer
-        bodyStyle={{padding: '0px'}}
+        bodyStyle={{ padding: '0px' }}
         title={t('PVtable.table')}
         placement="right"
         closable={false}
         onClose={() => setshowPVDrawer(false)}
         visible={showPVDrawer}
-        width='50vw'
+        width="50vw"
       >
-        <PVTableViewOnly
-          data={pvData}
-          activeData={pvActiveData}
-          setactiveData={setpvActiveData}
-        />
+        <PVTableViewOnly data={pvData} activeData={pvActiveData} setactiveData={setpvActiveData} />
       </Drawer>
       <Drawer
-        bodyStyle={{padding: '0px'}}
+        bodyStyle={{ padding: '0px' }}
         title={t('InverterTable.table')}
         placement="right"
         closable={false}
         onClose={() => setshowInvDrawer(false)}
         visible={showInvDrawer}
-        width='50vw'
+        width="50vw"
       >
-        <InverterTableViewOnly
-          data={inverterData}
-          activeData={invActiveData}
-          setactiveData={setinvActiveData}
-        />
+        <InverterTableViewOnly data={inverterData} activeData={invActiveData} setactiveData={setinvActiveData} />
       </Drawer>
       <EditInverterPlanModal
         pvID={pvID}
         capacity={capacity}
-        showModal={showModal} 
+        showModal={showModal}
         setshowModal={setshowModal}
         setautoInvPlan={setautoInvPlan}
         N1={N1}

@@ -1,19 +1,18 @@
-import React from 'react';
-import { Button, Popconfirm, message } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
-import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import React from 'react'
+import { Button, Popconfirm, message } from 'antd'
+import { DeleteOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { setPVData } from '../../../store/action/index'
 import { getPV, deletePV } from '../../../pages/PVTable/service'
 
 // PV列表中触发删除一个PV
-export const DeleteAction = ({record, setactiveData}) => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
+export const DeleteAction = ({ record, setactiveData }) => {
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const onDelete = () => {
-    dispatch(deletePV({pvID: record.pvID}))
-    .then(() => {
+    dispatch(deletePV({ pvID: record.pvID })).then(() => {
       message.success(t('PV.success.deletePV'))
       dispatch(getPV()).then(data => {
         dispatch(setPVData(data))

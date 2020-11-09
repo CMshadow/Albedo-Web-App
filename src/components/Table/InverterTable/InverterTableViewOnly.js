@@ -1,30 +1,38 @@
-import React, { useState } from 'react';
-import { Table, Drawer, Tooltip, Button } from 'antd';
-import { LineChartOutlined } from '@ant-design/icons';
-import { useTranslation } from 'react-i18next';
-import { SearchString, SearchRange } from '../TableColFilters/TableColSearch';
+import React, { useState } from 'react'
+import { Table, Drawer, Tooltip, Button } from 'antd'
+import { LineChartOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { SearchString, SearchRange } from '../TableColFilters/TableColSearch'
 import { InverterDetailTable } from '../InverterDetailTable/InverterDetailTable'
 import { PerformanceCurve } from './PerformanceCurve'
 
 // 表单中的数字columns和单位
 // 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
 const colKeys = [
-  ['paco', 'n', 'kWp', 175], ['vac', 'n', 'V', 175], ['pdcMax', 'n', 'kWp', 175],
-  ['pacMax', 'n', 'kVA', 200], ['mpptNum', 'n', '', 175], ['vdcMax', 'n', 'V', 200], 
-  ['vso', 'n', 'V', 175], ['idcMax', 'n', 'A', 200], ['mpptIdcMax', 'n', 'A', 180],
-  ['strIdcMax', 'n', 'A', 180], ['vmpptMin', 'n', 'V', 200],
-  ['vmpptMax', 'n', 'V', 200], ['inverterEffcy', 'n', '%', 175]
+  ['paco', 'n', 'kWp', 175],
+  ['vac', 'n', 'V', 175],
+  ['pdcMax', 'n', 'kWp', 175],
+  ['pacMax', 'n', 'kVA', 200],
+  ['mpptNum', 'n', '', 175],
+  ['vdcMax', 'n', 'V', 200],
+  ['vso', 'n', 'V', 175],
+  ['idcMax', 'n', 'A', 200],
+  ['mpptIdcMax', 'n', 'A', 180],
+  ['strIdcMax', 'n', 'A', 180],
+  ['vmpptMin', 'n', 'V', 200],
+  ['vmpptMax', 'n', 'V', 200],
+  ['inverterEffcy', 'n', '%', 175],
 ]
 
-export const InverterTableViewOnly = ({data, activeData, setactiveData}) => {
-  const { t } = useTranslation();
+export const InverterTableViewOnly = ({ data, activeData, setactiveData }) => {
+  const { t } = useTranslation()
   const [showDrawer, setshowDrawer] = useState(false)
   const [viewInverterID, setviewInverterID] = useState(null)
   const [viewInverterUserID, setviewInverterUserID] = useState(null)
   const [showModal, setshowModal] = useState(false)
 
   // 点击组件名显示详细信息
-  const onClickName = (inverterID) => {
+  const onClickName = inverterID => {
     setviewInverterID(inverterID)
     setshowDrawer(true)
   }
@@ -42,15 +50,15 @@ export const InverterTableViewOnly = ({data, activeData, setactiveData}) => {
       title: t(`InverterTable.table.${key}`),
       dataIndex: key,
       key: key,
-      render: (value) => `${value} ${unit}`,
+      render: value => `${value} ${unit}`,
       sorter: (a, b) => a[key] - b[key],
       multiple: index,
       width: width,
       ...SearchRange({
         colKey: key,
         data,
-        setactiveData
-      })
+        setactiveData,
+      }),
     }
   })
   // 生成表单组件提供商
@@ -60,7 +68,7 @@ export const InverterTableViewOnly = ({data, activeData, setactiveData}) => {
     key: 'companyName',
     sorter: (a, b) => a.companyName - b.companyName,
     width: 150,
-    ...SearchString({colKey: 'companyName', data, setactiveData}),
+    ...SearchString({ colKey: 'companyName', data, setactiveData }),
   })
   // 生成表单组件备注列属性
   tableCols.splice(0, 0, {
@@ -77,7 +85,7 @@ export const InverterTableViewOnly = ({data, activeData, setactiveData}) => {
     sorter: (a, b) => a.name - b.name,
     fixed: 'left',
     width: 250,
-    ...SearchString({colKey: 'name', onClick: onClickName, data, setactiveData}),
+    ...SearchString({ colKey: 'name', onClick: onClickName, data, setactiveData }),
   })
   // 生成表单操作列属性
   tableCols.push({
@@ -94,7 +102,7 @@ export const InverterTableViewOnly = ({data, activeData, setactiveData}) => {
           onClick={() => onClickCurve(record.inverterID, record.userID)}
         />
       </Tooltip>
-    )
+    ),
   })
 
   return (
@@ -102,31 +110,31 @@ export const InverterTableViewOnly = ({data, activeData, setactiveData}) => {
       <Table
         columns={tableCols}
         dataSource={activeData}
-        rowKey='inverterID'
+        rowKey="inverterID"
         pagination={{
           position: ['bottomCenter'],
           total: activeData.length,
           showTotal: total => `${total}` + t('table.totalCount'),
           defaultPageSize: 10,
-          showSizeChanger: true
+          showSizeChanger: true,
         }}
         scroll={{ x: 'max-content', y: 'calc(100vh - 275px)' }}
       />
       <Drawer
-        bodyStyle={{padding: '0px'}}
+        bodyStyle={{ padding: '0px' }}
         placement="right"
         closable={false}
         onClose={() => setshowDrawer(false)}
         visible={showDrawer}
-        width='50vw'
+        width="50vw"
       >
         <InverterDetailTable inverterID={viewInverterID} />
       </Drawer>
       <PerformanceCurve
         inverterID={viewInverterID}
         userID={viewInverterUserID}
-        show={showModal} 
-        setshow={setshowModal} 
+        show={showModal}
+        setshow={setshowModal}
         setinverterID={setviewInverterID}
         setuserID={setviewInverterUserID}
       />

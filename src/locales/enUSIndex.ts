@@ -1,16 +1,16 @@
-import country from './en-US/country.json';
+import country from './en-US/country.json'
 import money from './en-US/money.json'
-import register from './en-US/register.json';
-import footer from './en-US/footer.json';
-import sider from './en-US/sider.json';
-import header from './en-US/header.json';
-import errorANDwarning from './en-US/error&warning.json';
-import pv from './en-US/PV.json';
-import inverter from './en-US/Inverter.json';
-import action from './en-US/action.json';
-import formGeneral from './en-US/formGeneral.json';
-import tableGeneral from './en-US/tableGeneral.json';
-import project from './en-US/project.json';
+import register from './en-US/register.json'
+import footer from './en-US/footer.json'
+import sider from './en-US/sider.json'
+import header from './en-US/header.json'
+import errorANDwarning from './en-US/error&warning.json'
+import pv from './en-US/PV.json'
+import inverter from './en-US/Inverter.json'
+import action from './en-US/action.json'
+import formGeneral from './en-US/formGeneral.json'
+import tableGeneral from './en-US/tableGeneral.json'
+import project from './en-US/project.json'
 import report from './en-US/report.json'
 import investmentTable from './en-US/investmentTable.json'
 import gainTable from './en-US/gainTable.json'
@@ -45,5 +45,5 @@ export default {
   ...emissionReduction,
   ...chart,
   ...techSupport,
-  ...WeatherAnalysisTable
+  ...WeatherAnalysisTable,
 }

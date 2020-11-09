@@ -1,10 +1,14 @@
-import * as actionTypes from '../action/actionTypes';
-import { 
-  DeleteReportDataAction, IReportState, ReleaseReportDataAction, 
-  ReportActionTypes, SetReportDataAction, UpdateReportAttributesAction 
+import * as actionTypes from '../action/actionTypes'
+import {
+  DeleteReportDataAction,
+  IReportState,
+  ReleaseReportDataAction,
+  ReportActionTypes,
+  SetReportDataAction,
+  UpdateReportAttributesAction,
 } from '../../@types'
 
-const initialState: IReportState = {};
+const initialState: IReportState = {}
 
 interface IReducer<A> {
   (state: IReportState, action: A): IReportState
@@ -13,7 +17,7 @@ interface IReducer<A> {
 const setReportData: IReducer<SetReportDataAction> = (state, action) => {
   return {
     ...state,
-    [action.buildingID]: action.data
+    [action.buildingID]: action.data,
   }
 }
 
@@ -22,8 +26,8 @@ const updateReportAttributes: IReducer<UpdateReportAttributesAction> = (state, a
     ...state,
     [action.buildingID]: {
       ...state[action.buildingID],
-      ...action.values
-    }
+      ...action.values,
+    },
   }
 }
 
@@ -37,18 +41,19 @@ const deleteReportData: IReducer<DeleteReportDataAction> = (state, action) => {
   return newState
 }
 
-const reducer = (state=initialState, action: ReportActionTypes) => {
+const reducer = (state = initialState, action: ReportActionTypes) => {
   switch (action.type) {
     case actionTypes.SET_REPORTDATA:
-      return setReportData(state, action);
+      return setReportData(state, action)
     case actionTypes.UPDATE_REPORTATTRIBUTES:
       return updateReportAttributes(state, action)
     case actionTypes.RELEASE_REPORTDATA:
       return releaseReportData(state, action)
     case actionTypes.DELETE_REPORTDATA:
       return deleteReportData(state, action)
-    default: return state;
+    default:
+      return state
   }
-};
+}
 
-export default reducer;
+export default reducer

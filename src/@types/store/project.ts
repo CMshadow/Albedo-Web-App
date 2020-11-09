@@ -1,11 +1,27 @@
-import { 
-  SET_PROJECTDATA, UPDATE_PROJECTATTRIBUTES, RELEASE_PROJECTDATA, ADD_BUILDING,
-  EDIT_BUILDING, DELETE_BUILDING, SET_BUILDING_REGENREPORT, ADD_PV_SPEC, 
-  EDIT_PV_SPEC, DELETE_PV_SPEC, ADD_INVERTER_SPEC, EDIT_INVERTER_SPEC,
-  DELETE_INVERTER_SPEC, ADD_COMBIBOX, EDIT_COMBIBOX, DELETE_COMBIBOX,
-  ADD_TRANSFORMER, EDIT_TRANSFORMER, DELETE_TRANSFORMER, ADD_POWERCABINET,
-  EDIT_POWERCABINET, DELETE_POWERCABINET
-} from '../../store/action/actionTypes' 
+import {
+  SET_PROJECTDATA,
+  UPDATE_PROJECTATTRIBUTES,
+  RELEASE_PROJECTDATA,
+  ADD_BUILDING,
+  EDIT_BUILDING,
+  DELETE_BUILDING,
+  SET_BUILDING_REGENREPORT,
+  ADD_PV_SPEC,
+  EDIT_PV_SPEC,
+  DELETE_PV_SPEC,
+  ADD_INVERTER_SPEC,
+  EDIT_INVERTER_SPEC,
+  DELETE_INVERTER_SPEC,
+  ADD_COMBIBOX,
+  EDIT_COMBIBOX,
+  DELETE_COMBIBOX,
+  ADD_TRANSFORMER,
+  EDIT_TRANSFORMER,
+  DELETE_TRANSFORMER,
+  ADD_POWERCABINET,
+  EDIT_POWERCABINET,
+  DELETE_POWERCABINET,
+} from '../../store/action/actionTypes'
 import { Project } from '../../@types'
 
 export type IProjectState = Project | {}
@@ -33,7 +49,7 @@ export interface AddBuildingAction extends AddBuildingParams {
   type: typeof ADD_BUILDING
 }
 
-export type EditBuildingParams = AddBuildingParams & {buildingID: string}
+export type EditBuildingParams = AddBuildingParams & { buildingID: string }
 export interface EditBuildingAction extends EditBuildingParams {
   type: typeof EDIT_BUILDING
 }
@@ -46,9 +62,9 @@ export interface DeleteBuildingAction {
 export type SetBuildingReGenReportParams = {
   buildingID: string
   reGenReport: boolean
-} 
+}
 export interface SetBuildingReGenReportAction extends SetBuildingReGenReportParams {
-  type: typeof SET_BUILDING_REGENREPORT 
+  type: typeof SET_BUILDING_REGENREPORT
 }
 
 export interface AddSubAryAction {
@@ -70,7 +86,7 @@ export type EditSubAryParams = {
   invPlan?: {
     inverterID: string
     inverterUserID: string
-    plan?: Array<{pps: number, spi: number}>
+    plan?: Array<{ pps: number; spi: number }>
   }
 }
 export interface EditSubAryAction extends EditSubAryParams {
@@ -192,13 +208,26 @@ export interface DeletePowercabinetAction {
   powercabinetIndex: number
 }
 
-export type ProjectActionTypes = (
-  SetProjectDataAction | UpdateProjectAttributesAction | 
-  ReleaseProjectDataAction | SetBuildingReGenReportAction |
-  AddBuildingAction | EditBuildingAction | DeleteBuildingAction | 
-  AddSubAryAction | EditSubAryAction | DeleteSubAryAction |
-  AddInverterSpecAction | EditInverterSpecAction | DeleteInverterSpecAction |
-  AddCombiboxAction | EditCombiboxAction | DeleteCombiboxAction |
-  AddTransformerAction | EditTransformerAction | DeleteTransformerAction |
-  AddPowercabinetAction | EditPowercabinetAction | DeletePowercabinetAction
-)
+export type ProjectActionTypes =
+  | SetProjectDataAction
+  | UpdateProjectAttributesAction
+  | ReleaseProjectDataAction
+  | SetBuildingReGenReportAction
+  | AddBuildingAction
+  | EditBuildingAction
+  | DeleteBuildingAction
+  | AddSubAryAction
+  | EditSubAryAction
+  | DeleteSubAryAction
+  | AddInverterSpecAction
+  | EditInverterSpecAction
+  | DeleteInverterSpecAction
+  | AddCombiboxAction
+  | EditCombiboxAction
+  | DeleteCombiboxAction
+  | AddTransformerAction
+  | EditTransformerAction
+  | DeleteTransformerAction
+  | AddPowercabinetAction
+  | EditPowercabinetAction
+  | DeletePowercabinetAction

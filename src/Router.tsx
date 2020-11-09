@@ -1,19 +1,19 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React, { Suspense, lazy } from 'react'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { getLanguage } from './utils/getLanguage'
-import PrivateRoute from './components/PrivateRoute';
-import PublicRoute from './components/PublicRoute';
-import Register from './pages/user/Register/index';
-import Verification from './pages/user/Verification/index';
-import Login from './pages/user/Login/index';
+import PrivateRoute from './components/PrivateRoute'
+import PublicRoute from './components/PublicRoute'
+import Register from './pages/user/Register/index'
+import Verification from './pages/user/Verification/index'
+import Login from './pages/user/Login/index'
 import ForgetPassword from './pages/user/ForgetPwd/index'
 import EmptyLayout from './layouts/EmptyLayout/EmptyLayout'
-import UserLayout from './layouts/UserLayout/UserLayout';
-import BasicLayout from './layouts/BasicLayout/BasicLayout';
+import UserLayout from './layouts/UserLayout/UserLayout'
+import BasicLayout from './layouts/BasicLayout/BasicLayout'
 import ProjectLayout from './layouts/ProjectLayout/ProjectLayout'
-import ProjectTable from './pages/ProjectTable/ProjectTable';
-import NotFound404 from './pages/404';
+import ProjectTable from './pages/ProjectTable/ProjectTable'
+import NotFound404 from './pages/404'
 import Term from './pages/static/Term'
 import Cookie from './pages/static/Cookie'
 import Privacy from './pages/static/Privacy'
@@ -30,28 +30,28 @@ const InverterTable = lazy(() => import('./pages/InverterTable/index'))
 const SLD = lazy(() => import('./pages/SingleLineDiagram/index'))
 
 const Router = () => {
-  return(
+  return (
     <BrowserRouter>
-      <Suspense fallback={<EmptyLayout/>} >
+      <Suspense fallback={<EmptyLayout />}>
         <ScrollToTop />
         <Switch>
           <Route path="/user">
             <UserLayout>
               <Switch>
-                <PublicRoute path='/user/login'>
-                  <Login/>
+                <PublicRoute path="/user/login">
+                  <Login />
                 </PublicRoute>
-                <PublicRoute path='/user/forget'>
-                  <ForgetPassword/>
+                <PublicRoute path="/user/forget">
+                  <ForgetPassword />
                 </PublicRoute>
                 <PublicRoute path="/user/register">
                   <Register />
                 </PublicRoute>
                 <PublicRoute path="/user/verify">
-                  <Verification/>
+                  <Verification />
                 </PublicRoute>
-                <Route path='*'>
-                  <NotFound404/>
+                <Route path="*">
+                  <NotFound404 />
                 </Route>
               </Switch>
             </UserLayout>
@@ -59,35 +59,35 @@ const Router = () => {
           <PrivateRoute path="/project/:projectID">
             <ProjectLayout>
               <Switch>
-                <PrivateRoute path='/project/:projectID/dashboard'>
-                  <Dashboard/>
+                <PrivateRoute path="/project/:projectID/dashboard">
+                  <Dashboard />
                 </PrivateRoute>
-                <PrivateRoute path='/project/:projectID/powergrid'>
-                  <PowerGrid/>
+                <PrivateRoute path="/project/:projectID/powergrid">
+                  <PowerGrid />
                 </PrivateRoute>
                 <PrivateRoute path="/project/:projectID/params">
-                  <ParamsForm/>
+                  <ParamsForm />
                 </PrivateRoute>
                 <PrivateRoute path="/project/:projectID/report/:buildingID">
-                  <Report/>
+                  <Report />
                 </PrivateRoute>
                 <PrivateRoute path="/project/:projectID/singleLineDiagram/:buildingID">
-                  <SLD/>
+                  <SLD />
                 </PrivateRoute>
-                <PrivateRoute path='*'>
-                  <NotFound404/>
+                <PrivateRoute path="*">
+                  <NotFound404 />
                 </PrivateRoute>
               </Switch>
             </ProjectLayout>
           </PrivateRoute>
           <PrivateRoute path="/pv">
             <BasicLayout>
-              <PVTable/>
+              <PVTable />
             </BasicLayout>
           </PrivateRoute>
           <PrivateRoute path="/inverter">
             <BasicLayout>
-              <InverterTable/>
+              <InverterTable />
             </BasicLayout>
           </PrivateRoute>
           <Route path="/terms">
@@ -99,24 +99,19 @@ const Router = () => {
           <Route path="/privacy">
             <Privacy />
           </Route>
-          <PrivateRoute path='/dashboard'>
+          <PrivateRoute path="/dashboard">
             <BasicLayout>
-              <ProjectTable/>
+              <ProjectTable />
             </BasicLayout>
           </PrivateRoute>
-              <Route path="/">
+          <Route path="/">
             <Switch>
               <Route path="/cn/tutorial" component={VideoPage} />
               <Route path="/en/tutorial" component={EnVideoPage} />
               <Route path="/cn" component={DisplayPage} />
               <Route path="/en" component={EnDisplayPage} />
-              <Route path="/">
-                {
-                  getLanguage() === 'zh-CN' ?
-                  <DisplayPage /> : <EnDisplayPage />
-                }
-              </Route>
-              <Route path='*' component={NotFound404} />
+              <Route path="/">{getLanguage() === 'zh-CN' ? <DisplayPage /> : <EnDisplayPage />}</Route>
+              <Route path="*" component={NotFound404} />
             </Switch>
           </Route>
         </Switch>

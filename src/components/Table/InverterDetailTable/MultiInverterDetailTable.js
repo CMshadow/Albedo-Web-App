@@ -7,9 +7,7 @@ const Title = Typography.Title
 
 const reduceUnique = data => {
   return data.reduce((acc, val) => {
-    Object.keys(acc).includes(val.inverterID) ?
-    acc[val.inverterID] += val.count :
-    acc[val.inverterID] = val.count
+    Object.keys(acc).includes(val.inverterID) ? (acc[val.inverterID] += val.count) : (acc[val.inverterID] = val.count)
     return acc
   }, {})
 }
@@ -21,19 +19,20 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
     useSelector(state => state.inverter.officialData)
   )
 
-  const genInverterCount = buildingData => buildingData.data.flatMap(spec =>
-    spec.inverter_wiring.map(inverterSpec => ({
-      inverterID: inverterData.find(inverter =>
-        inverter.inverterID === inverterSpec.inverter_model.inverterID
-      ).inverterID,
-      count: 1
-    }))
-  )
+  const genInverterCount = buildingData =>
+    buildingData.data.flatMap(spec =>
+      spec.inverter_wiring.map(inverterSpec => ({
+        inverterID: inverterData.find(inverter => inverter.inverterID === inverterSpec.inverter_model.inverterID)
+          .inverterID,
+        count: 1,
+      }))
+    )
 
   // 统计每种用到的逆变器id及数量
-  const inverterCount = buildingID === 'overview' ?
-    projectData.buildings.flatMap(building => genInverterCount(building)) :
-    genInverterCount(projectData.buildings.find(building => building.buildingID === buildingID))
+  const inverterCount =
+    buildingID === 'overview'
+      ? projectData.buildings.flatMap(building => genInverterCount(building))
+      : genInverterCount(projectData.buildings.find(building => building.buildingID === buildingID))
   const uniqueInverterCount = reduceUnique(inverterCount)
   const dataSource = Object.keys(uniqueInverterCount)
 
@@ -44,17 +43,17 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
     md: dataSource.length > 1 ? 2 : 1,
     lg: dataSource.length > 1 ? 2 : 1,
     xl: dataSource.length > 1 ? 2 : 1,
-    xxl: dataSource.length > 1 ? 3 : 1
+    xxl: dataSource.length > 1 ? 3 : 1,
   }
 
   return (
     <Card
       title={
-        <Title className='cardTitle' level={4}>
+        <Title className="cardTitle" level={4}>
           {t('table.title.inverterDetail')}
         </Title>
       }
-      headStyle={{textAlign: 'center'}}
+      headStyle={{ textAlign: 'center' }}
       bordered={false}
     >
       <List
@@ -63,8 +62,8 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
         dataSource={dataSource}
         renderItem={inverterID => (
           <List.Item>
-            <Card hoverable bodyStyle={{padding: '5px'}} bordered={false} style={{cursor: 'unset'}}>
-              <InverterDetailTable inverterID={inverterID} count={uniqueInverterCount[inverterID]}/>
+            <Card hoverable bodyStyle={{ padding: '5px' }} bordered={false} style={{ cursor: 'unset' }}>
+              <InverterDetailTable inverterID={inverterID} count={uniqueInverterCount[inverterID]} />
             </Card>
           </List.Item>
         )}

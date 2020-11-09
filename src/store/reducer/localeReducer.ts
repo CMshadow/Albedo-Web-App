@@ -1,23 +1,24 @@
-import * as actionTypes from '../action/actionTypes';
+import * as actionTypes from '../action/actionTypes'
 import { ILocalState, LocalActionTypes } from '../../@types'
 import { getLanguage } from '../../utils/getLanguage'
 
 const initialState: ILocalState = {
-  locale: getLanguage()
-};
+  locale: getLanguage(),
+}
 
 const setLocale = (state: ILocalState, action: LocalActionTypes) => {
   return {
-    locale: action.locale
+    locale: action.locale,
   }
 }
 
-const reducer = (state=initialState, action: LocalActionTypes) => {
+const reducer = (state = initialState, action: LocalActionTypes) => {
   switch (action.type) {
     case actionTypes.SET_LOCALE:
-      return setLocale(state, action);
-    default: return state;
+      return setLocale(state, action)
+    default:
+      return state
   }
-};
+}
 
-export default reducer;
+export default reducer

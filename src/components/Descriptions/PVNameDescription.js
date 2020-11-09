@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 const Item = Descriptions.Item
 
-export const PVNameDescription = ({pvID, count}) => {
+export const PVNameDescription = ({ pvID, count }) => {
   const { t } = useTranslation()
   const pvRedux = useSelector(state => state.pv)
   const pvData = pvRedux.data.concat(pvRedux.officialData)
@@ -15,12 +15,11 @@ export const PVNameDescription = ({pvID, count}) => {
       <Item label={t('table.pvName')} span={2}>
         {pvSpec.name}
       </Item>
-      {
-        count ?
+      {count ? (
         <Item label={t('table.count')} span={2}>
           {count}
-        </Item> : null
-      }
+        </Item>
+      ) : null}
     </Descriptions>
   )
 }

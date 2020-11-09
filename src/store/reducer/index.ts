@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux';
-import authReducer from './authReducer';
+import { combineReducers } from 'redux'
+import authReducer from './authReducer'
 import localReducer from './localeReducer'
 import unitReducer from './unitReducer'
-import projectReducer from './projectReducer';
+import projectReducer from './projectReducer'
 import pvTableReducer from './pvTableReducer'
 import inverterTableReducer from './inverterTableReducer'
 import reportReducer from './reportReducer'
@@ -16,5 +16,5 @@ export const rootReducer = combineReducers({
   pv: pvTableReducer,
   inverter: inverterTableReducer,
   report: reportReducer,
-  SLD: SLDReducer
-});
+  SLD: SLDReducer,
+})

@@ -1,21 +1,21 @@
-import React from 'react';
+import React from 'react'
 import { Helmet } from 'react-helmet'
-import { Layout, Typography } from 'antd';
-import { useTranslation } from 'react-i18next';
+import { Layout, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
 import { getLanguage } from '../../utils/getLanguage'
-import DefaultFooter from '../Footer/DefaultFooter';
-import logo from '../../assets/logo.png';
-import SelectLang from '../../components/SelectLang/index';
-import styles from './UserLayout.module.scss';
+import DefaultFooter from '../Footer/DefaultFooter'
+import logo from '../../assets/logo.png'
+import SelectLang from '../../components/SelectLang/index'
+import styles from './UserLayout.module.scss'
 const { Text } = Typography
 
 const UserLayout: React.FC = ({ children }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <meta name="description" content={t('user.logo.welcome')}/>
+        <meta name="description" content={t('user.logo.welcome')} />
         <title>{t('sider.company')}</title>
       </Helmet>
       <Layout className={styles.container}>
@@ -30,7 +30,10 @@ const UserLayout: React.FC = ({ children }) => {
               </a>
             </div>
             <div>
-              <Text type='warning'>{t('sider.edition')}{process.env.REACT_APP_VERSION}</Text>
+              <Text type="warning">
+                {t('sider.edition')}
+                {process.env.REACT_APP_VERSION}
+              </Text>
             </div>
             <div className={styles.desc}>
               <Text strong>{t('user.logo.welcome')}</Text>
@@ -41,7 +44,7 @@ const UserLayout: React.FC = ({ children }) => {
         <DefaultFooter />
       </Layout>
     </>
-  );
-};
+  )
+}
 
-export default UserLayout;
+export default UserLayout

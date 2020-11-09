@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Card, Button } from 'antd';
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Card, Button } from 'antd'
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons'
 import { EditForm } from './EditForm'
 import { SpecView } from './SpecView'
 import { deleteCombibox } from '../../../store/action/index'
-import * as styles from './CombinerBoxSpecCard.module.scss';
+import * as styles from './CombinerBoxSpecCard.module.scss'
 
-export const CombinerBoxSpecCard = ({id, buildingID, combiboxIndex, editingCombibox, seteditingCombibox, ...props}) => {
+export const CombinerBoxSpecCard = ({
+  id,
+  buildingID,
+  combiboxIndex,
+  editingCombibox,
+  seteditingCombibox,
+  ...props
+}) => {
   const dispatch = useDispatch()
   const [editing, setediting] = useState(props.combibox_vac === null)
   const [loading, setloading] = useState(false)
@@ -16,29 +23,26 @@ export const CombinerBoxSpecCard = ({id, buildingID, combiboxIndex, editingCombi
     <Card
       id={id}
       className={styles.card}
-      bodyStyle={{padding: 0}}
+      bodyStyle={{ padding: 0 }}
       loading={loading}
       actions={[
         <Button
           disabled={editing || editingCombibox !== null}
-          type='link'
+          type="link"
           shape="circle"
-          icon={<EditTwoTone twoToneColor={editing || editingCombibox !== null ? '#bfbfbf' : '#1890ff'}/>}
+          icon={<EditTwoTone twoToneColor={editing || editingCombibox !== null ? '#bfbfbf' : '#1890ff'} />}
           onClick={() => {
             setediting(true)
             seteditingCombibox(combiboxIndex)
           }}
         />,
         <Button
-          type='link'
+          type="link"
           shape="circle"
           danger
           icon={
-            <DeleteTwoTone 
-              twoToneColor={
-                editingCombibox !== null && editingCombibox !== combiboxIndex ? 
-                '#bfbfbf' : '#f5222d'
-              }
+            <DeleteTwoTone
+              twoToneColor={editingCombibox !== null && editingCombibox !== combiboxIndex ? '#bfbfbf' : '#f5222d'}
             />
           }
           disabled={editingCombibox !== null && editingCombibox !== combiboxIndex}
@@ -46,17 +50,16 @@ export const CombinerBoxSpecCard = ({id, buildingID, combiboxIndex, editingCombi
             setloading(true)
             setediting(false)
             seteditingCombibox(null)
-            setTimeout(() => { 
+            setTimeout(() => {
               setloading(false)
-              dispatch(deleteCombibox({buildingID, combiboxIndex}))
+              dispatch(deleteCombibox({ buildingID, combiboxIndex }))
             }, 500)
           }}
         />,
       ]}
     >
       <div className={styles.content}>
-        {
-          editing ?
+        {editing ? (
           <EditForm
             buildingID={buildingID}
             combiboxIndex={combiboxIndex}
@@ -64,12 +67,10 @@ export const CombinerBoxSpecCard = ({id, buildingID, combiboxIndex, editingCombi
               setediting(false)
               seteditingCombibox(null)
             }}
-          /> :
-          <SpecView
-            buildingID={buildingID}
-            combiboxIndex={combiboxIndex}
           />
-        }
+        ) : (
+          <SpecView buildingID={buildingID} combiboxIndex={combiboxIndex} />
+        )}
       </div>
     </Card>
   )

@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { DatePicker, Row, Divider, Typography, Space, Radio, Spin, Card } from 'antd'
-import moment from 'moment';
-import { Chart, Legend, Axis, Line, Point, Interval } from 'bizcharts';
+import moment from 'moment'
+import { Chart, Legend, Axis, Line, Point, Interval } from 'bizcharts'
 import { titleStyle, legendStyle } from '../../styles/chartStyles'
 import { getProductionData } from '../../pages/Report/service'
 import { wh2other, w2other } from '../../utils/unitConverter'
@@ -14,11 +14,11 @@ const Text = Typography.Text
 
 const meteonormYear = 2005
 
-const disabledDate = (date) => {
+const disabledDate = date => {
   return date.year() < meteonormYear || date.year() > meteonormYear
 }
 
-export const ProductionChart = ({buildingID}) => {
+export const ProductionChart = ({ buildingID }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const history = useHistory()
@@ -43,25 +43,23 @@ export const ProductionChart = ({buildingID}) => {
     const month = date.month() + 1
     const day = mode === 'day' ? date.date() : null
     setloading(true)
-    dispatch(getProductionData({projectID, buildingID, month, day, dataKey: 'hour_AC_power'}))
-    .then(res => {
+    dispatch(getProductionData({ projectID, buildingID, month, day, dataKey: 'hour_AC_power' })).then(res => {
       const ac_res = day ? w2other(res) : wh2other(res) // 月用wh日用w
       setunit(ac_res.unit)
-      const ac_data = ac_res.value.map((val,index) => ({
+      const ac_data = ac_res.value.map((val, index) => ({
         key: index,
         date: `${index + 1}`,
         value: val,
-        type: t('lossChart.ac')
+        type: t('lossChart.ac'),
       }))
       if (mode === 'day') {
-        dispatch(getProductionData({projectID, buildingID, month, day, dataKey: 'hour_DC_power'}))
-        .then(res2 => {
+        dispatch(getProductionData({ projectID, buildingID, month, day, dataKey: 'hour_DC_power' })).then(res2 => {
           const dc_res = wh2other(res2)
-          const dc_data = dc_res.value.map((val,index) => ({
+          const dc_data = dc_res.value.map((val, index) => ({
             key: index,
             date: `${index + 1}`,
             value: val,
-            type: t('lossChart.dc')
+            type: t('lossChart.dc'),
           }))
           setdataSource(ac_data.concat(dc_data))
           setloading(false)
@@ -77,45 +75,45 @@ export const ProductionChart = ({buildingID}) => {
     date: {
       type: mode === 'month' ? 'cat' : 'linear',
       alias: mode === 'month' ? t('productionChart.day') : t('productionChart.hour'),
-      tickCount: mode === 'month' ? dataSource.length : dataSource.length / 2
+      tickCount: mode === 'month' ? dataSource.length : dataSource.length / 2,
     },
     value: {
       type: 'linear',
       alias: t('acPowerChart.production'),
       tickCount: 10,
       formatter: text => `${text.toFixed(2)} ${unit}`,
-      nice: true
+      nice: true,
     },
   }
 
   return (
     <Card
       title={
-        <Title style={{textAlign: 'center'}} level={4}>
+        <Title style={{ textAlign: 'center' }} level={4}>
           {t('productionChart.title')}
         </Title>
       }
       hoverable
-      style={{cursor: 'unset'}}
+      style={{ cursor: 'unset' }}
     >
-      <Row justify='center'>
+      <Row justify="center">
         <Space>
           <Text strong>{t('productionChart.selectdate')}</Text>
-          <Radio.Group onChange={e => {
-            setmode(e.target.value)
-          }} value={mode}>
-            <Radio value='month'>{t('productionChart.monthStatics')}</Radio>
-            <Radio value='day'>{t('productionChart.dayStatics')}</Radio>
+          <Radio.Group
+            onChange={e => {
+              setmode(e.target.value)
+            }}
+            value={mode}
+          >
+            <Radio value="month">{t('productionChart.monthStatics')}</Radio>
+            <Radio value="day">{t('productionChart.dayStatics')}</Radio>
           </Radio.Group>
           <DatePicker
-            defaultValue={moment(
-              `${meteonormYear}-${moment().month() + 1}-${moment().date()}`,
-              'YYYY-MM-DD'
-            )}
+            defaultValue={moment(`${meteonormYear}-${moment().month() + 1}-${moment().date()}`, 'YYYY-MM-DD')}
             disabledDate={disabledDate}
             format={mode === 'month' ? monthFormat : dateFormat}
-            picker={mode === 'month' ? "month" : 'date'}
-            onChange={date => date ? setdate(date) : null}
+            picker={mode === 'month' ? 'month' : 'date'}
+            onChange={date => (date ? setdate(date) : null)}
           />
         </Space>
       </Row>
@@ -129,17 +127,17 @@ export const ProductionChart = ({buildingID}) => {
           data={dataSource}
           interactions={['active-region']}
         >
-          <Legend visible={mode === 'day'} position='bottom' itemName={{style: legendStyle}} offsetY={-10}/>
-          <Axis name='date' title={{style: titleStyle}} />
-          <Axis name='value' title={{style: titleStyle}} />
-          {
-            mode === 'day' ?
+          <Legend visible={mode === 'day'} position="bottom" itemName={{ style: legendStyle }} offsetY={-10} />
+          <Axis name="date" title={{ style: titleStyle }} />
+          <Axis name="value" title={{ style: titleStyle }} />
+          {mode === 'day' ? (
             [
-              <Line key='line' shape="smooth" position="date*value" color={["type", ['#1890ff', '#faad14']]} />,
-              <Point key='point' position="date*value" color={["type", ['#1890ff', '#faad14']]} />
-            ]:
-            <Interval position="date*value" color={["type", ['#1890ff', '#faad14']]}/>
-          }
+              <Line key="line" shape="smooth" position="date*value" color={['type', ['#1890ff', '#faad14']]} />,
+              <Point key="point" position="date*value" color={['type', ['#1890ff', '#faad14']]} />,
+            ]
+          ) : (
+            <Interval position="date*value" color={['type', ['#1890ff', '#faad14']]} />
+          )}
         </Chart>
       </Spin>
     </Card>

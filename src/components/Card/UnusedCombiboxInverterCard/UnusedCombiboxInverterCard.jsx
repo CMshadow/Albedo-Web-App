@@ -2,12 +2,15 @@ import React from 'react'
 import { Card, Collapse, Typography, Row, Space, Divider } from 'antd'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { findUnusedTransformerSerial, findUnusedCombiboxSerial, findUnusedInverterSerial } from '../../../utils/checkUnusedEquipments'
+import {
+  findUnusedTransformerSerial,
+  findUnusedCombiboxSerial,
+  findUnusedInverterSerial,
+} from '../../../utils/checkUnusedEquipments'
 import * as styles from './UnusedCombiboxInverterCard.module.scss'
 
 const { Panel } = Collapse
 const { Paragraph } = Typography
-
 
 export const UnusedCombiboxInverterCard = () => {
   const { t } = useTranslation()
@@ -16,86 +19,63 @@ export const UnusedCombiboxInverterCard = () => {
   const allTransformers = projectData.transformers || []
 
   const unusedTransformerSerial = findUnusedTransformerSerial(allPowercabinets, allTransformers)
-  
-  const genUnusedCombiboxInverter = (building) => {
+
+  const genUnusedCombiboxInverter = building => {
     const unusedCombiboxSerial = findUnusedCombiboxSerial(allTransformers, allPowercabinets, building)
     const unusedInverterSerial = findUnusedInverterSerial(allTransformers, allPowercabinets, building)
 
     return (
       <>
-        {
-          unusedCombiboxSerial.length > 0 ?
+        {unusedCombiboxSerial.length > 0 ? (
           <Row>
             <Space>
-              {t('project.spec.unlink_combibox_serial')}:   
+              {t('project.spec.unlink_combibox_serial')}:
               <Paragraph className={styles.combiboxParagraph}>
-                {
-                  unusedCombiboxSerial.map(serial => `C${serial.split('-')[1]}`).join(' , ')
-                }
+                {unusedCombiboxSerial.map(serial => `C${serial.split('-')[1]}`).join(' , ')}
               </Paragraph>
             </Space>
-          </Row> :
-          null
-        }
-        {
-          unusedInverterSerial.length > 0 ?
+          </Row>
+        ) : null}
+        {unusedInverterSerial.length > 0 ? (
           <Row>
             <Space>
               {t('project.spec.unlink_inverter_serial')}:
               <Paragraph className={styles.inverterParagraph}>
-                {
-                  unusedInverterSerial.map(serial =>
-                    `S${serial.split('-').slice(-2,).join('-')}`
-                  ).join(' , ')
-                }
+                {unusedInverterSerial.map(serial => `S${serial.split('-').slice(-2).join('-')}`).join(' , ')}
               </Paragraph>
             </Space>
-          </Row> :
-          null
-        }
+          </Row>
+        ) : null}
       </>
     )
   }
 
   return (
-    <Card 
-      className={styles.card} 
-      title={t('project.spec.unusedEquipments')} 
-      headStyle={{textAlign: 'center'}} 
+    <Card
+      className={styles.card}
+      title={t('project.spec.unusedEquipments')}
+      headStyle={{ textAlign: 'center' }}
       bordered
     >
-      {
-        unusedTransformerSerial.length > 0 ?
+      {unusedTransformerSerial.length > 0 ? (
         <>
           <Row>
             <Space>
-              {t('project.spec.unlink_transformer_serial')}:   
+              {t('project.spec.unlink_transformer_serial')}:
               <Paragraph className={styles.transformerParagraph}>
-                {
-                  unusedTransformerSerial.map(serial => `T${serial}`).join(' , ')
-                }
+                {unusedTransformerSerial.map(serial => `T${serial}`).join(' , ')}
               </Paragraph>
             </Space>
           </Row>
-          <Divider/>
-        </> :
-        null
-      }
-      <Collapse 
-        ghost 
-        defaultActiveKey={projectData.buildings.map(building => building.buildingID)}
-      >
-        {
-          projectData.buildings.map(building =>
-            <Panel 
-              header={building.buildingName} 
-              key={building.buildingID}
-              forceRender
-            >
-              {genUnusedCombiboxInverter(building)}
-            </Panel>
-          )
-        }
+          <Divider />
+        </>
+      ) : null}
+      <Collapse ghost defaultActiveKey={projectData.buildings.map(building => building.buildingID)}>
+        {projectData.buildings.map(building => (
+          <Panel header={building.buildingName} key={building.buildingID} forceRender>
+            {genUnusedCombiboxInverter(building)}
+          </Panel>
+        ))}
       </Collapse>
     </Card>
   )

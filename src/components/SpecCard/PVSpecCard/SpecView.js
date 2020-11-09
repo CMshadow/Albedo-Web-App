@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Descriptions, Typography } from 'antd'
 import { useSelector } from 'react-redux'
@@ -6,31 +6,26 @@ import { w2other } from '../../../utils/unitConverter'
 const Item = Descriptions.Item
 const { Text } = Typography
 
-
-export const SpecView = ({buildingID, specIndex}) => {
+export const SpecView = ({ buildingID, specIndex }) => {
   const { t } = useTranslation()
   const unit = useSelector(state => state.unit.unit)
   const projectType = useSelector(state => state.project.projectType)
   const buildings = useSelector(state => state.project.buildings)
-  const pvData = useSelector(state => state.pv.data).concat(
-    useSelector(state => state.pv.officialData)
-  )
+  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
 
-  const buildingIndex = buildings.map(building => building.buildingID)
-    .indexOf(buildingID)
+  const buildingIndex = buildings.map(building => building.buildingID).indexOf(buildingID)
   const spec = buildings[buildingIndex].data[specIndex].pv_panel_parameters
 
-  const pvIndex = pvData.map(record => record.pvID)
-    .indexOf(spec.pv_model.pvID)
+  const pvIndex = pvData.map(record => record.pvID).indexOf(spec.pv_model.pvID)
   const pvName = pvIndex >= 0 ? pvData[pvIndex].name : ''
 
-  const capacity = buildings[buildingIndex].data[specIndex].inverter_wiring
-  .reduce((acc, obj) =>
-    acc + obj.panels_per_string * obj.string_per_inverter * pvData[pvIndex].pmax, 0
+  const capacity = buildings[buildingIndex].data[specIndex].inverter_wiring.reduce(
+    (acc, obj) => acc + obj.panels_per_string * obj.string_per_inverter * pvData[pvIndex].pmax,
+    0
   )
-  const pvNum = buildings[buildingIndex].data[specIndex].inverter_wiring
-  .reduce((acc, obj) =>
-    acc + obj.panels_per_string * obj.string_per_inverter, 0
+  const pvNum = buildings[buildingIndex].data[specIndex].inverter_wiring.reduce(
+    (acc, obj) => acc + obj.panels_per_string * obj.string_per_inverter,
+    0
   )
 
   const genCelltempText = () => {
@@ -46,7 +41,7 @@ export const SpecView = ({buildingID, specIndex}) => {
       if (model === 'pvsyst') {
         modeText = null
         mountText = t(`project.spec.mount.${second}`)
-      } 
+      }
       if (model === 'sandia') {
         modeText = t(`PV.${second}`)
         mountText = t(`project.spec.mount.${spec.celltemp_model.split(',')[2]}`)
@@ -59,29 +54,28 @@ export const SpecView = ({buildingID, specIndex}) => {
   return (
     <Descriptions bordered column={2}>
       <Item label={t('project.spec.sub-array_serial_num')} span={2}>
-        <Text style={{color: '#faad14'}}>{`S${specIndex + 1}`}</Text>
+        <Text style={{ color: '#faad14' }}>{`S${specIndex + 1}`}</Text>
       </Item>
-      <Item label={t('project.spec.pv')} span={2}>{pvName}</Item>
+      <Item label={t('project.spec.pv')} span={2}>
+        {pvName}
+      </Item>
       <Item label={t('project.spec.tilt_angle')}>{spec.tilt_angle}°</Item>
       <Item label={t('project.spec.azimuth')}>{spec.azimuth}°</Item>
-      {
-        projectType === 'domestic' ? null :
+      {projectType === 'domestic' ? null : (
         <>
           <Item label={t('project.spec.ac_cable_avg_len')}>
-            {spec.ac_cable_avg_len}{unit}
+            {spec.ac_cable_avg_len}
+            {unit}
           </Item>
           <Item label={t('project.spec.dc_cable_avg_len')}>
-            {spec.dc_cable_avg_len}{unit}
+            {spec.dc_cable_avg_len}
+            {unit}
           </Item>
         </>
-      }
-      <Item label={t('project.spec.capacity')}>
-        {`${w2other(capacity).value} ${w2other(capacity).unit}`}
-      </Item>
+      )}
+      <Item label={t('project.spec.capacity')}>{`${w2other(capacity).value} ${w2other(capacity).unit}`}</Item>
       <Item label={t('project.spec.pvNum')}>{pvNum}</Item>
-      <Item label={t('project.spec.celltemp-model')}>
-        {genCelltempText()}
-      </Item>
+      <Item label={t('project.spec.celltemp-model')}>{genCelltempText()}</Item>
     </Descriptions>
   )
 }

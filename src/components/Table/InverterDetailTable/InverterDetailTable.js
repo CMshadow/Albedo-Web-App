@@ -12,18 +12,41 @@ export const InverterDetailTable = ({ inverterID, count }) => {
   const inverterSpec = inverterData.find(inverter => inverter.inverterID === inverterID)
 
   const KeysAndUnits = [
-    ['vdcMax', 'V'], ['vdco', 'V'], ['vdcMin', 'V'], ['vac', 'V'],
-    ['vmpptMin', 'V'], ['vmpptMax', 'V'], ['pdcMax', 'kWp'],['pacMax', 'kVA'],
-    ['paco', 'kWp'], ['inverterEffcy', '%'], ['nationEffcy', '%'], ['mpptNum', '/'],
-    ['mpptStrNum', '/'], ['acFreqMin', 'Hz'], ['acFreqMax', 'Hz'],
-    ['idcMax', 'A'], ['iacMax', 'A'], ['nominalPwrFac', 'cosφ'],
-    ['pnt', 'W'], ['THDi', '%'], ['grdTrblDetect', 'check'],
-    ['overloadProtect', 'check'], ['revPolarityProtect', 'check'],
-    ['overvoltageProtect', 'check'], ['shortCircuitProtect', 'check'],
-    ['antiIslandProtect', 'check'], ['overheatProtect', 'check'],
-    ['workingTempMin', '℃'], ['workingTempMax', '℃'],
-    ['workingAltMax', 'm'], ['protectLvl', '/'], ['commProtocal', '/'],
-    ['radiator', '/'], ['size', 'mm'], ['inverterWeight', 'kg']
+    ['vdcMax', 'V'],
+    ['vdco', 'V'],
+    ['vdcMin', 'V'],
+    ['vac', 'V'],
+    ['vmpptMin', 'V'],
+    ['vmpptMax', 'V'],
+    ['pdcMax', 'kWp'],
+    ['pacMax', 'kVA'],
+    ['paco', 'kWp'],
+    ['inverterEffcy', '%'],
+    ['nationEffcy', '%'],
+    ['mpptNum', '/'],
+    ['mpptStrNum', '/'],
+    ['acFreqMin', 'Hz'],
+    ['acFreqMax', 'Hz'],
+    ['idcMax', 'A'],
+    ['iacMax', 'A'],
+    ['nominalPwrFac', 'cosφ'],
+    ['pnt', 'W'],
+    ['THDi', '%'],
+    ['grdTrblDetect', 'check'],
+    ['overloadProtect', 'check'],
+    ['revPolarityProtect', 'check'],
+    ['overvoltageProtect', 'check'],
+    ['shortCircuitProtect', 'check'],
+    ['antiIslandProtect', 'check'],
+    ['overheatProtect', 'check'],
+    ['workingTempMin', '℃'],
+    ['workingTempMax', '℃'],
+    ['workingAltMax', 'm'],
+    ['protectLvl', '/'],
+    ['commProtocal', '/'],
+    ['radiator', '/'],
+    ['size', 'mm'],
+    ['inverterWeight', 'kg'],
   ]
 
   const dataSource = KeysAndUnits.map(([key, unit], index) => {
@@ -56,33 +79,28 @@ export const InverterDetailTable = ({ inverterID, count }) => {
       title: t('table.series'),
       dataIndex: 'series',
       align: 'center',
-    }, {
+    },
+    {
       key: 1,
       title: t('table.paramName'),
       dataIndex: 'paramName',
       align: 'center',
-    }, {
+    },
+    {
       key: 2,
       title: t('table.unit'),
       dataIndex: 'unit',
       align: 'center',
-    }, {
+    },
+    {
       key: 3,
       title: t('table.param'),
       dataIndex: 'param',
       align: 'center',
-    }
-  ];
+    },
+  ]
 
-  const genHeader = () => <InverterNameDescription inverterID={inverterID} count={count}/>
+  const genHeader = () => <InverterNameDescription inverterID={inverterID} count={count} />
 
-  return (
-    <Table
-      bordered
-      dataSource={dataSource}
-      columns={columns}
-      pagination={false}
-      title={genHeader}
-    />
-  )
+  return <Table bordered dataSource={dataSource} columns={columns} pagination={false} title={genHeader} />
 }

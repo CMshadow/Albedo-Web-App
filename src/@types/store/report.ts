@@ -1,6 +1,10 @@
-import { SET_REPORTDATA, UPDATE_REPORTATTRIBUTES, RELEASE_REPORTDATA, DELETE_REPORTDATA } from '../../store/action/actionTypes' 
+import {
+  SET_REPORTDATA,
+  UPDATE_REPORTATTRIBUTES,
+  RELEASE_REPORTDATA,
+  DELETE_REPORTDATA,
+} from '../../store/action/actionTypes'
 import { Report } from '../../@types'
-
 
 export interface IReportState {
   [key: string]: Report
@@ -27,9 +31,8 @@ export interface DeleteReportDataAction {
   buildingID: string
 }
 
-export type ReportActionTypes = (
-  SetReportDataAction | 
-  UpdateReportAttributesAction |
-  ReleaseReportDataAction | 
-  DeleteReportDataAction
-)
+export type ReportActionTypes =
+  | SetReportDataAction
+  | UpdateReportAttributesAction
+  | ReleaseReportDataAction
+  | DeleteReportDataAction

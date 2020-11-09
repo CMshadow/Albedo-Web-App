@@ -1,10 +1,10 @@
-import React from 'react';
-import { Alert } from 'antd';
-import { useTranslation } from 'react-i18next';
-import * as styles from './GlobalAlert.module.scss';
+import React from 'react'
+import { Alert } from 'antd'
+import { useTranslation } from 'react-i18next'
+import * as styles from './GlobalAlert.module.scss'
 
-const GlobalAlert = (props) => {
-  const { t } = useTranslation();
+const GlobalAlert = props => {
+  const { t } = useTranslation()
 
   return (
     <Alert

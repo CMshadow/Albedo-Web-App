@@ -24,25 +24,23 @@ const PowerGrid = () => {
 
   return (
     <>
-      <GlobalAlert/>
-      <Card title={t('project.powergrid.title')} headStyle={{textAlign: 'center'}}>
-        <UnusedCombiboxInverterCard/>
-        <Tabs defaultActiveKey="1" centered tabBarStyle={{textAlign: 'center'}}>
+      <GlobalAlert />
+      <Card title={t('project.powergrid.title')} headStyle={{ textAlign: 'center' }}>
+        <UnusedCombiboxInverterCard />
+        <Tabs defaultActiveKey="1" centered tabBarStyle={{ textAlign: 'center' }}>
           <TabPane tab={t('project.transformer.title')} key="1">
             <Row gutter={rowGutter}>
               <Col span={22}>
-                {
-                  projectTransformers.map((transformer, transformerIndex) =>
-                    <TransformerSpecCard 
-                      transformerIndex={transformerIndex}
-                      id={`trans${transformerIndex}`}
-                      key={transformerIndex}
-                      editingTransformer={editingTransformer}
-                      seteditingTransformer={seteditingTransformer}
-                      {...transformer}
-                    />
-                  )
-                }
+                {projectTransformers.map((transformer, transformerIndex) => (
+                  <TransformerSpecCard
+                    transformerIndex={transformerIndex}
+                    id={`trans${transformerIndex}`}
+                    key={transformerIndex}
+                    editingTransformer={editingTransformer}
+                    seteditingTransformer={seteditingTransformer}
+                    {...transformer}
+                  />
+                ))}
                 <Button
                   className={styles.addSpecTransformer}
                   loading={loading}
@@ -65,15 +63,13 @@ const PowerGrid = () => {
 
               <Col span={2}>
                 <Anchor offsetTop={70}>
-                {
-                  projectTransformers.map((transformer, transformerIndex) =>
-                    <Link 
-                      key={`anchor-trans${transformerIndex}`} 
-                      href={`#trans${transformerIndex}`} 
-                      title={`T${transformer.transformer_serial_num}`} 
-                    />  
-                  )
-                }
+                  {projectTransformers.map((transformer, transformerIndex) => (
+                    <Link
+                      key={`anchor-trans${transformerIndex}`}
+                      href={`#trans${transformerIndex}`}
+                      title={`T${transformer.transformer_serial_num}`}
+                    />
+                  ))}
                 </Anchor>
               </Col>
             </Row>
@@ -82,18 +78,16 @@ const PowerGrid = () => {
           <TabPane tab={t('project.powerCabinet.title')} key="2">
             <Row gutter={rowGutter}>
               <Col span={22}>
-                {
-                  projectPowercabinets.map((powercabinet, powercabinetIndex) =>
-                    <PowerCabinetSpecCard 
-                      powercabinetIndex={powercabinetIndex}
-                      id={`cabinet${powercabinetIndex}`}
-                      key={powercabinetIndex}
-                      editingPowercabinet={editingPowercabinet}
-                      seteditingPowercabinet={seteditingPowercabinet}
-                      {...powercabinet}
-                    />
-                  )
-                }
+                {projectPowercabinets.map((powercabinet, powercabinetIndex) => (
+                  <PowerCabinetSpecCard
+                    powercabinetIndex={powercabinetIndex}
+                    id={`cabinet${powercabinetIndex}`}
+                    key={powercabinetIndex}
+                    editingPowercabinet={editingPowercabinet}
+                    seteditingPowercabinet={seteditingPowercabinet}
+                    {...powercabinet}
+                  />
+                ))}
                 <Button
                   className={styles.addSpecPowercabinet}
                   loading={loading}
@@ -116,15 +110,13 @@ const PowerGrid = () => {
 
               <Col span={2}>
                 <Anchor offsetTop={70}>
-                {
-                  projectPowercabinets.map((powercabinet, powercabinetIndex) =>
-                    <Link 
-                      key={`anchor-cabinet${powercabinetIndex}`} 
-                      href={`#cabinet${powercabinetIndex}`} 
-                      title={`P${powercabinet.powercabinet_serial_num}`} 
-                    />  
-                  )
-                }
+                  {projectPowercabinets.map((powercabinet, powercabinetIndex) => (
+                    <Link
+                      key={`anchor-cabinet${powercabinetIndex}`}
+                      href={`#cabinet${powercabinetIndex}`}
+                      title={`P${powercabinet.powercabinet_serial_num}`}
+                    />
+                  ))}
                 </Anchor>
               </Col>
             </Row>

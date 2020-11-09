@@ -1,6 +1,6 @@
-import React from 'react';
-import { BackTop } from 'antd';
-import { VerticalAlignTopOutlined } from '@ant-design/icons';
+import React from 'react'
+import { BackTop } from 'antd'
+import { VerticalAlignTopOutlined } from '@ant-design/icons'
 
 const style = {
   height: 40,
@@ -11,10 +11,10 @@ const style = {
   color: '#fff',
   textAlign: 'center',
   fontSize: 40,
-};
+}
 
 export const Back2TopButton = () => (
   <BackTop>
-    <VerticalAlignTopOutlined style={style}/>
+    <VerticalAlignTopOutlined style={style} />
   </BackTop>
 )

@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { Row, Col, Select, Form, Tooltip, Input, Divider, Spin, Slider } from 'antd'
 import { transDefaultValue6Kor10K, transDefaultValue35K } from './defaultValues'
 import { wiringOptions, wiringChoice } from '../../../pages/Project/service'
 
-const FormItem = Form.Item;
+const FormItem = Form.Item
 const { Option } = Select
-const markStyle = {overflow: 'hidden', whiteSpace: 'nowrap'}
-const rowGutter = { md: 8, lg: 15, xl: 32 };
+const markStyle = { overflow: 'hidden', whiteSpace: 'nowrap' }
+const rowGutter = { md: 8, lg: 15, xl: 32 }
 
 // 给定Ut和当前关联设备容量，在国标中查找最接近的变压器容量
 export const nearestCapacity = (Ut, linkedCapacity) => {
@@ -34,13 +34,10 @@ export const nearestCapacity = (Ut, linkedCapacity) => {
 
 // 给定Ut，变压器容量，变压器类型，等差计算no_load_loss值和short_circuit_loss
 export const autoValue = (Ut, capacity, type) => {
-  const cal = (defaultValues, type, prev_cap, next_cap, prop) => (
-    defaultValues[type][prev_cap][prop] + 
-    (capacity - prev_cap) * (
-      defaultValues[type][next_cap][prop] - 
-      defaultValues[type][prev_cap][prop]
-    ) / (next_cap - prev_cap)
-  )
+  const cal = (defaultValues, type, prev_cap, next_cap, prop) =>
+    defaultValues[type][prev_cap][prop] +
+    ((capacity - prev_cap) * (defaultValues[type][next_cap][prop] - defaultValues[type][prev_cap][prop])) /
+      (next_cap - prev_cap)
 
   let capacities
   let defaultValues
@@ -57,8 +54,8 @@ export const autoValue = (Ut, capacity, type) => {
 
   if (capacities.includes(capacity)) {
     return {
-      no_load_loss: defaultValues[type][capacity].no_load_loss, 
-      short_circuit_loss: defaultValues[type][capacity].short_circuit_loss
+      no_load_loss: defaultValues[type][capacity].no_load_loss,
+      short_circuit_loss: defaultValues[type][capacity].short_circuit_loss,
     }
   }
 
@@ -69,15 +66,14 @@ export const autoValue = (Ut, capacity, type) => {
       const short_circuit_loss = cal(defaultValues, type, prev_cap, next_cap, 'short_circuit_loss')
       const no_load_loss = cal(defaultValues, type, prev_cap, next_cap, 'no_load_loss')
       return {
-        no_load_loss: Number(no_load_loss.toFixed(2)), 
-        short_circuit_loss: Number(short_circuit_loss.toFixed(2))
+        no_load_loss: Number(no_load_loss.toFixed(2)),
+        short_circuit_loss: Number(short_circuit_loss.toFixed(2)),
       }
     }
   }
 }
 
-
-export const TransformerModel = ({children, form, transformerData, curCapacity, formChanged, setformChanged}) => {
+export const TransformerModel = ({ children, form, transformerData, curCapacity, formChanged, setformChanged }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [disableDryType, setdisableDryType] = useState(false)
@@ -88,61 +84,67 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
   // ACVolDropFac标识
   const ACVolDropFacMarks = {
     0.1: t('report.paramsForm.drop_0.1'),
-    5:  {style: markStyle, label: t('report.paramsForm.drop_5')}
+    5: { style: markStyle, label: t('report.paramsForm.drop_5') },
   }
 
   // 如果提供有Ut, 变压器类型和变压器容量，自动更新 transformer_no_load_loss和transformer_short_circuit_loss
   // 否则清空
-  const autoField = useCallback((t, c) => {
-    const type = t || form.getFieldValue('transformer_type')
-    const capacity = c || form.getFieldValue('transformer_capacity')
-    if (type && capacity >= 0) {
-      const autoValues = autoValue(form.getFieldValue('Ut'), capacity, type)
-      if (autoValues) {
-        form.setFieldsValue({
-          'transformer_no_load_loss': autoValues.no_load_loss,
-          'transformer_short_circuit_loss': autoValues.short_circuit_loss
-        })
-      } else {
-        form.setFieldsValue({
-          'transformer_no_load_loss': null,
-          'transformer_short_circuit_loss': null
-        })
-      }
-    }
-  }, [form])
-
-  const autoWiringChoice = useCallback((ut=null, capacity=null, cableLen=null, ACVolDropFac=null, cableIb=null) => {
-    const Ut = ut || form.getFieldValue('Ut')
-    const Se = capacity || Number(form.getFieldValue('transformer_capacity'))
-    const TransformerCableLen = cableLen || Number(form.getFieldValue('transformer_cable_len'))
-    const allowACVolDropFac = ACVolDropFac ? ACVolDropFac / 100 : form.getFieldValue('transformer_ACVolDropFac') / 100
-    const Ib = cableIb || form.getFieldValue('transformer_high_voltage_cable_Ib')
-
-    if ( Ut && Se > 0 && TransformerCableLen && allowACVolDropFac && Ib) {
-      setloading(true)
-      dispatch(wiringChoice({type: 'transformer', Ut: Ut / 1000, Se, TransformerCableLen, allowACVolDropFac, Ib}))
-      .then(res => {
-        const chunk = res.transformer_wir_choice.split('(')
-        if (chunk.length > 1) {
-          form.setFieldsValue({'transformer_wir_num': Number(chunk[0].trim())})
-          form.setFieldsValue({'transformer_wir_choice': chunk[1].split(')')[0].trim()})
+  const autoField = useCallback(
+    (t, c) => {
+      const type = t || form.getFieldValue('transformer_type')
+      const capacity = c || form.getFieldValue('transformer_capacity')
+      if (type && capacity >= 0) {
+        const autoValues = autoValue(form.getFieldValue('Ut'), capacity, type)
+        if (autoValues) {
+          form.setFieldsValue({
+            transformer_no_load_loss: autoValues.no_load_loss,
+            transformer_short_circuit_loss: autoValues.short_circuit_loss,
+          })
         } else {
-          form.setFieldsValue({'transformer_wir_num': 1})
-          form.setFieldsValue({'transformer_wir_choice': res.transformer_wir_choice})
+          form.setFieldsValue({
+            transformer_no_load_loss: null,
+            transformer_short_circuit_loss: null,
+          })
         }
-        setloading(false)
-      })
-      .catch(err => setloading(false))
-    }
-  }, [dispatch, form])
+      }
+    },
+    [form]
+  )
+
+  const autoWiringChoice = useCallback(
+    (ut = null, capacity = null, cableLen = null, ACVolDropFac = null, cableIb = null) => {
+      const Ut = ut || form.getFieldValue('Ut')
+      const Se = capacity || Number(form.getFieldValue('transformer_capacity'))
+      const TransformerCableLen = cableLen || Number(form.getFieldValue('transformer_cable_len'))
+      const allowACVolDropFac = ACVolDropFac ? ACVolDropFac / 100 : form.getFieldValue('transformer_ACVolDropFac') / 100
+      const Ib = cableIb || form.getFieldValue('transformer_high_voltage_cable_Ib')
+
+      if (Ut && Se > 0 && TransformerCableLen && allowACVolDropFac && Ib) {
+        setloading(true)
+        dispatch(wiringChoice({ type: 'transformer', Ut: Ut / 1000, Se, TransformerCableLen, allowACVolDropFac, Ib }))
+          .then(res => {
+            const chunk = res.transformer_wir_choice.split('(')
+            if (chunk.length > 1) {
+              form.setFieldsValue({ transformer_wir_num: Number(chunk[0].trim()) })
+              form.setFieldsValue({ transformer_wir_choice: chunk[1].split(')')[0].trim() })
+            } else {
+              form.setFieldsValue({ transformer_wir_num: 1 })
+              form.setFieldsValue({ transformer_wir_choice: res.transformer_wir_choice })
+            }
+            setloading(false)
+          })
+          .catch(err => setloading(false))
+      }
+    },
+    [dispatch, form]
+  )
 
   // Ut改变回调，同时会自动更新变压器容量值和变压器类型，并自动计算no_load_loss值和short_circuit_loss
-  const onChangeUt = (val) => {
+  const onChangeUt = val => {
     setformChanged(true)
-    form.setFieldsValue({'transformer_capacity': nearestCapacity(val, curCapacity)})
+    form.setFieldsValue({ transformer_capacity: nearestCapacity(val, curCapacity) })
     if (val === 35000) {
-      form.setFieldsValue({'transformer_type': 'oil-immersed'})
+      form.setFieldsValue({ transformer_type: 'oil-immersed' })
       autoField('oil-immersed', nearestCapacity(val, curCapacity))
       setdisableDryType(true)
     } else {
@@ -150,13 +152,13 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
       setdisableDryType(false)
     }
     setloading(true)
-    dispatch(wiringOptions({type: 'transformer', Ut: val}))
-    .then(res => {
-      setloading(false)
-      setoptions(res.map(val => ({label: val, value: val})))
-      autoWiringChoice(val)
-    })
-    .catch(err => setloading(false))
+    dispatch(wiringOptions({ type: 'transformer', Ut: val }))
+      .then(res => {
+        setloading(false)
+        setoptions(res.map(val => ({ label: val, value: val })))
+        autoWiringChoice(val)
+      })
+      .catch(err => setloading(false))
   }
 
   const onSliderChange = val => {
@@ -168,23 +170,23 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
     if (curCapacity !== transformerData.transformer_linked_capacity || formChanged) {
       if (form.getFieldValue('Ut')) {
         const nearestCap = nearestCapacity(form.getFieldValue('Ut'), curCapacity)
-        form.setFieldsValue({'transformer_capacity': nearestCap})
+        form.setFieldsValue({ transformer_capacity: nearestCap })
         autoField(null, nearestCap)
         autoWiringChoice(null, nearestCap)
       }
-      form.setFieldsValue({'transformer_linked_capacity': Number(curCapacity.toFixed(2))})
+      form.setFieldsValue({ transformer_linked_capacity: Number(curCapacity.toFixed(2)) })
     }
   }, [autoField, autoWiringChoice, curCapacity, form, formChanged, transformerData.transformer_linked_capacity])
 
   useEffect(() => {
     if (form.getFieldValue('Ut')) {
       setloading(true)
-      dispatch(wiringOptions({type: 'transformer', Ut: form.getFieldValue('Ut')}))
-      .then(res => {
-        setloading(false)
-        setoptions(res.map(val => ({label: val, value: val})))
-      })
-      .catch(err => setloading(false))
+      dispatch(wiringOptions({ type: 'transformer', Ut: form.getFieldValue('Ut') }))
+        .then(res => {
+          setloading(false)
+          setoptions(res.map(val => ({ label: val, value: val })))
+        })
+        .catch(err => setloading(false))
     }
   }, [dispatch, form])
 
@@ -192,11 +194,7 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
     <>
       <Row gutter={rowGutter}>
         <Col span={8}>
-          <FormItem
-            name='Ut'
-            label={ t(`project.spec.transformer.Ut`) }
-            rules={[{required: true}]}
-          >
+          <FormItem name="Ut" label={t(`project.spec.transformer.Ut`)} rules={[{ required: true }]}>
             <Select onChange={onChangeUt}>
               <Option value={6000}>6 kV</Option>
               <Option value={10000}>10 kV</Option>
@@ -206,16 +204,10 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
         </Col>
 
         <Col span={8}>
-          <FormItem 
-            name='transformer_type' 
-            label={t('project.spec.transformer.type')}
-            rules={[{required: true}]} 
-          >
+          <FormItem name="transformer_type" label={t('project.spec.transformer.type')} rules={[{ required: true }]}>
             <Select onChange={val => autoField(val)}>
-              <Option value='oil-immersed'>
-                {t('project.spec.transformer.type.oil-immersed')}
-              </Option>
-              <Option value='dry-type' disabled={disableDryType}>
+              <Option value="oil-immersed">{t('project.spec.transformer.type.oil-immersed')}</Option>
+              <Option value="dry-type" disabled={disableDryType}>
                 {t('project.spec.transformer.type.dry-type')}
               </Option>
             </Select>
@@ -224,19 +216,20 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
 
         <Col span={8}>
           <FormItem
-            name='transformer_cable_len'
+            name="transformer_cable_len"
             label={t('project.spec.transformer_cable_len')}
-            normalize={val => val ? Number(val) : val}
-            rules={[{required: true, type: 'number', min: 0}]}
+            normalize={val => (val ? Number(val) : val)}
+            rules={[{ required: true, type: 'number', min: 0 }]}
           >
-            <Input 
-              type='number' addonAfter={unit} 
+            <Input
+              type="number"
+              addonAfter={unit}
               onChange={val => autoWiringChoice(null, null, Number(val.target.value))}
             />
           </FormItem>
         </Col>
       </Row>
-      
+
       <Divider>{t('project.spec.linked_combibox_inverter_serial_num')}</Divider>
       {children}
 
@@ -244,71 +237,71 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
       <Row gutter={rowGutter}>
         <Col span={8}>
           <FormItem
-            name='transformer_capacity'
+            name="transformer_capacity"
             label={
               <Tooltip title={t('project.spec.transformer.capacity')}>
-                S<sub>e</sub> <QuestionCircleOutlined />  
+                S<sub>e</sub> <QuestionCircleOutlined />
               </Tooltip>
             }
-            normalize={val => val ? Number(val) : val}
-            rules={[{required: true, type: 'number', min: 0}]}
+            normalize={val => (val ? Number(val) : val)}
+            rules={[{ required: true, type: 'number', min: 0 }]}
           >
-            <Input 
-              type='number' 
+            <Input
+              type="number"
               onChange={val => {
                 autoField(null, Number(val.target.value))
                 autoWiringChoice(null, Number(val.target.value))
               }}
-              addonAfter='kVA'
+              addonAfter="kVA"
             />
           </FormItem>
         </Col>
 
         <Col span={8}>
           <FormItem
-            name='transformer_no_load_loss'
+            name="transformer_no_load_loss"
             label={
               <Tooltip title={t('project.spec.transformer.power_loss.no_load_loss')}>
-                ΔP<sub>0</sub> <QuestionCircleOutlined />  
+                ΔP<sub>0</sub> <QuestionCircleOutlined />
               </Tooltip>
             }
-            normalize={val => val ? Number(val) : val}
-            rules={[{required: true, type: 'number', min: 0}]}
+            normalize={val => (val ? Number(val) : val)}
+            rules={[{ required: true, type: 'number', min: 0 }]}
           >
-            <Input type='number' addonAfter='W'/>
+            <Input type="number" addonAfter="W" />
           </FormItem>
         </Col>
 
         <Col span={8}>
           <FormItem
-            name='transformer_short_circuit_loss'
+            name="transformer_short_circuit_loss"
             label={
               <Tooltip title={t('project.spec.transformer.power_loss.short_circuit_loss')}>
-                P<sub>k</sub> <QuestionCircleOutlined />  
+                P<sub>k</sub> <QuestionCircleOutlined />
               </Tooltip>
             }
-            normalize={val => val ? Number(val) : val}
-            rules={[{required: true, type: 'number', min: 0}]}
+            normalize={val => (val ? Number(val) : val)}
+            rules={[{ required: true, type: 'number', min: 0 }]}
           >
-            <Input type='number' addonAfter='W'/>
+            <Input type="number" addonAfter="W" />
           </FormItem>
         </Col>
       </Row>
-      
+
       <Divider>{t('project.spec.transformer.consumption_loss')}</Divider>
       <Row gutter={rowGutter}>
         <Col span={8}>
           <FormItem
-            name='transformer_power' 
+            name="transformer_power"
             label={
               <Tooltip title={t('project.spec.transformer.consumption_loss.power')}>
                 S<sub>c</sub> <QuestionCircleOutlined />
               </Tooltip>
             }
-            normalize={val => val ? Number(val) : val}
-            rules={[{required: true, type: 'number', min: 0}]}
+            normalize={val => (val ? Number(val) : val)}
+            rules={[{ required: true, type: 'number', min: 0 }]}
           >
-            <Input type='number' addonAfter='W' />
+            <Input type="number" addonAfter="W" />
           </FormItem>
         </Col>
       </Row>
@@ -318,28 +311,28 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
         <Row gutter={rowGutter}>
           <Col span={8} offset={2}>
             <FormItem
-              name='transformer_ACVolDropFac'
+              name="transformer_ACVolDropFac"
               label={t('project.spec.transformer.ACVolDropFac')}
-              labelCol={{span: 24}}
-              wrapperCol={{span: 24}}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
             >
-              <Slider marks={ACVolDropFacMarks} step={0.05} min={0.1} max={5} onAfterChange={onSliderChange}/>
+              <Slider marks={ACVolDropFacMarks} step={0.05} min={0.1} max={5} onAfterChange={onSliderChange} />
             </FormItem>
           </Col>
 
           <Col span={10} offset={3}>
             <FormItem
-              name='transformer_high_voltage_cable_Ib'
+              name="transformer_high_voltage_cable_Ib"
               label={t('project.spec.transformer.transformer_high_voltage_cable_Ib')}
-              rules={[{required: true}]}
-              labelCol={{span: 24}}
-              wrapperCol={{span: 24}}
+              rules={[{ required: true }]}
+              labelCol={{ span: 24 }}
+              wrapperCol={{ span: 24 }}
             >
-              <Select 
+              <Select
                 options={[
-                  {label: '25 kA', value: 25}, 
-                  {label: '31.5 kA', value: 31.5}, 
-                  {label: '40 kA', value: 40}
+                  { label: '25 kA', value: 25 },
+                  { label: '31.5 kA', value: 31.5 },
+                  { label: '40 kA', value: 40 },
                 ]}
                 onChange={val => autoWiringChoice(null, null, null, null, val)}
               />
@@ -349,23 +342,19 @@ export const TransformerModel = ({children, form, transformerData, curCapacity, 
         <Row gutter={rowGutter}>
           <Col offset={4} span={16}>
             <FormItem label={t('project.spec.transformer.transformer_wir_choice')}>
-              <Row gutter={rowGutter} align='top'>
+              <Row gutter={rowGutter} align="top">
                 <Col span={8}>
                   <FormItem
-                    name='transformer_wir_num'
-                    label=''
-                    rules={[{required: true, type: 'number', min: 1, transform: val => Number(val)}]}
+                    name="transformer_wir_num"
+                    label=""
+                    rules={[{ required: true, type: 'number', min: 1, transform: val => Number(val) }]}
                   >
-                    <Input type='number' addonAfter={t('project.spec.transformer.transformer_wir_num')}/>
+                    <Input type="number" addonAfter={t('project.spec.transformer.transformer_wir_num')} />
                   </FormItem>
                 </Col>
                 <Col span={16}>
-                  <FormItem
-                    name='transformer_wir_choice'
-                    rules={[{required: true}]}
-                    wrapperCol={{span: 24}}
-                  >
-                    <Select options={options}/>
+                  <FormItem name="transformer_wir_choice" rules={[{ required: true }]} wrapperCol={{ span: 24 }}>
+                    <Select options={options} />
                   </FormItem>
                 </Col>
               </Row>

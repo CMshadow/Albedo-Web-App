@@ -1,19 +1,18 @@
-import React from 'react';
-import { Button, Popconfirm, message } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
-import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import React from 'react'
+import { Button, Popconfirm, message } from 'antd'
+import { DeleteOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { setInverterData } from '../../../store/action/index'
 import { getInverter, deleteInverter } from '../../../pages/InverterTable/service'
 
 // Inverter列表中触发删除一个Inverter
-export const DeleteAction = ({record, setactiveData, }) => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
+export const DeleteAction = ({ record, setactiveData }) => {
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const onDelete = () => {
-    dispatch(deleteInverter({inverterID: record.inverterID}))
-    .then(() => {
+    dispatch(deleteInverter({ inverterID: record.inverterID })).then(() => {
       message.success(t('Inverter.success.deleteInverter'))
       const response = dispatch(getInverter())
       response.then(data => {

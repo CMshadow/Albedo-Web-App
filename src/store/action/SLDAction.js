@@ -1,10 +1,9 @@
 import * as ActionTypes from './actionTypes'
 
-export const setPVDist = (newPVDist) => (dispatch, getState) => {
+export const setPVDist = newPVDist => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_PV_DIST,
     pvDist: newPVDist,
-    
   })
 }
 
@@ -13,14 +12,14 @@ export const setInverterWidth = (newWidth, newAccessPorts, newPvGap) => (dispatc
     type: ActionTypes.SET_INVERTER_WIDTH,
     width: newWidth,
     pvGap: newPvGap,
-    accessPoints: newAccessPorts
+    accessPoints: newAccessPorts,
   })
 }
 
-export const InverterDataExport = (newAccessPorts) => (dispatch, getState) => {
+export const InverterDataExport = newAccessPorts => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_INVERTER_DATA_SLD,
-    accessPoints: newAccessPorts
+    accessPoints: newAccessPorts,
   })
 }
 
@@ -29,14 +28,14 @@ export const setInterConnectData = (newAccessPorts, newStartPosition, newSize) =
     type: ActionTypes.SET_INTERCONNECT_DATA,
     startPosition: newStartPosition,
     accessPoints: newAccessPorts,
-    size: newSize
+    size: newSize,
   })
 }
 
-export const setResize = (newHeight) => (dispatch, getState) => {
+export const setResize = newHeight => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_SIZE,
-    height: newHeight
+    height: newHeight,
   })
 }
 
@@ -44,7 +43,7 @@ export const setServerPanel = (newAccessPorts, newStartPosition) => (dispatch, g
   return dispatch({
     type: ActionTypes.SET_SERVER_PANEL,
     startPosition: newStartPosition,
-    accessPoints: newAccessPorts
+    accessPoints: newAccessPorts,
   })
 }
 
@@ -52,72 +51,63 @@ export const setMeter = (newAccessPorts, newStartPosition) => (dispatch, getStat
   return dispatch({
     type: ActionTypes.SET_METER,
     startPosition: newStartPosition,
-    accessPoints: newAccessPorts
+    accessPoints: newAccessPorts,
   })
 }
 
-export const setGrid = (newAccessPorts, newStartPosition) => 
-(dispatch, getState) => {
+export const setGrid = (newAccessPorts, newStartPosition) => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_GRID,
     startPosition: newStartPosition,
-    accessPoints: newAccessPorts
+    accessPoints: newAccessPorts,
   })
 }
 
-export const setWidth = (newWidth) => 
-(dispatch, getState) => {
+export const setWidth = newWidth => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_WIDTH,
     width: newWidth,
   })
 }
 
-export const setStartPosition = (newPosition) => 
-(dispatch, getState) => {
+export const setStartPosition = newPosition => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_START_POSTION,
-    position: newPosition
+    position: newPosition,
   })
 }
 
-export const setDiagramWidth = (newWidth) => 
-(dispatch, getState) => {
+export const setDiagramWidth = newWidth => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_DIAGRAM_WIDTH,
-    width: newWidth
+    width: newWidth,
   })
 }
 
-export const setDiagramHeight = (newHeight) => 
-(dispatch, getState) => {
+export const setDiagramHeight = newHeight => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_DIAGRAM_HEIGHT,
-    height: newHeight
+    height: newHeight,
   })
 }
 
-export const setInverterAccessPorts = (accessPortsList) => 
-(dispatch, getState) => {
+export const setInverterAccessPorts = accessPortsList => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_INVERTER_ACCESSPORTS,
-    accessPoints: accessPortsList
+    accessPoints: accessPortsList,
   })
 }
 
-
-export const setMeterAccess = (newPosition) => 
-(dispatch, getState) => {
+export const setMeterAccess = newPosition => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_METER_ACCESS,
-    meterAccess: newPosition
+    meterAccess: newPosition,
   })
 }
 
-export const setMeterAccessAllIn = (newPosition) => 
-(dispatch, getState) => {
+export const setMeterAccessAllIn = newPosition => (dispatch, getState) => {
   return dispatch({
     type: ActionTypes.SET_METER_ACCESS_ALL_IN,
-    meterAllInAccess: newPosition
+    meterAllInAccess: newPosition,
   })
 }

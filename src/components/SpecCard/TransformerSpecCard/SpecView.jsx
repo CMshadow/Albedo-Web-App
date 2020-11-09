@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Descriptions, Typography } from 'antd'
 import { useSelector } from 'react-redux'
@@ -7,7 +7,7 @@ import * as styles from './TransformerSpecCard.module.scss'
 const Item = Descriptions.Item
 const { Text, Paragraph } = Typography
 
-export const SpecView = ({transformerIndex}) => {
+export const SpecView = ({ transformerIndex }) => {
   const { t } = useTranslation()
   const unit = useSelector(state => state.unit.unit)
   const transformers = useSelector(state => state.project.transformers)
@@ -15,11 +15,9 @@ export const SpecView = ({transformerIndex}) => {
 
   return (
     <>
-      <Descriptions column={4} bordered layout='vertical'>
+      <Descriptions column={4} bordered layout="vertical">
         <Item label={t('project.spec.transformer_serial_num')} span={2}>
-          <Text className={styles.transformerSerial}>
-            T{transformerData.transformer_serial_num}
-          </Text>
+          <Text className={styles.transformerSerial}>T{transformerData.transformer_serial_num}</Text>
         </Item>
         <Item label={t('project.spec.transformer_name')} span={2}>
           {transformerData.transformer_name}
@@ -31,11 +29,10 @@ export const SpecView = ({transformerIndex}) => {
           {transformerData.Ut} V
         </Item>
         <Item label={t('project.spec.transformer_cable_len')} span={1}>
-          {
-            transformerData.transformer_cable_len ?
-            m2other(unit, transformerData.transformer_cable_len).toFixed(2) :
-            null
-          } {unit}
+          {transformerData.transformer_cable_len
+            ? m2other(unit, transformerData.transformer_cable_len).toFixed(2)
+            : null}{' '}
+          {unit}
         </Item>
         <Item label={t('project.spec.transformer.transformer_wir_choice')} span={1}>
           {transformerData.transformer_wir_choice}
@@ -52,33 +49,25 @@ export const SpecView = ({transformerIndex}) => {
         <Item label={t('project.spec.transformer.consumption_loss.power')} span={1}>
           {transformerData.transformer_power} W
         </Item>
-        {
-          transformerData.linked_combibox_serial_num.length > 0 ?
+        {transformerData.linked_combibox_serial_num.length > 0 ? (
           <Item label={t('project.spec.linked_combibox_serial_num')} span={4}>
             <Paragraph className={styles.linkedCombiboxParagraph}>
-            {
-              transformerData.linked_combibox_serial_num.map(serial =>
-                `${serial.split('-')[0]}-C${serial.split('-').slice(1,).join('-')}`
-              ).join(' , ')
-            }
+              {transformerData.linked_combibox_serial_num
+                .map(serial => `${serial.split('-')[0]}-C${serial.split('-').slice(1).join('-')}`)
+                .join(' , ')}
             </Paragraph>
-          </Item> :
-          null
-        }
-        {
-          transformerData.linked_inverter_serial_num.length > 0 ?
+          </Item>
+        ) : null}
+        {transformerData.linked_inverter_serial_num.length > 0 ? (
           <Item label={t('project.spec.linked_inverter_serial_num')} span={4}>
             <Paragraph className={styles.linkedInverterParagraph}>
-            {
-              transformerData.linked_inverter_serial_num.map(serial =>
-                `${serial.split('-')[0]}-S${serial.split('-').slice(1,).join('-')}`
-              ).join(' , ')
-            }
+              {transformerData.linked_inverter_serial_num
+                .map(serial => `${serial.split('-')[0]}-S${serial.split('-').slice(1).join('-')}`)
+                .join(' , ')}
             </Paragraph>
-          </Item> :
-          null
-        }
+          </Item>
+        ) : null}
       </Descriptions>
-  </>
+    </>
   )
 }

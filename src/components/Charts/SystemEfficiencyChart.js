@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react'
 import { Card, Typography } from 'antd'
-import { Chart, Point, Annotation, Axis, Coordinate, registerShape } from "bizcharts";
+import { Chart, Point, Annotation, Axis, Coordinate, registerShape } from 'bizcharts'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 const Title = Typography.Title
@@ -8,8 +8,8 @@ const Title = Typography.Title
 // 自定义Shape 部分
 registerShape('point', 'pointer', {
   draw(cfg, container) {
-    const group = container.addGroup();
-    const center = this.parsePoint({ x: 0, y: 0 }); // 获取极坐标系下画布中心点
+    const group = container.addGroup()
+    const center = this.parsePoint({ x: 0, y: 0 }) // 获取极坐标系下画布中心点
     // 绘制指针
     group.addShape('line', {
       attrs: {
@@ -21,7 +21,7 @@ registerShape('point', 'pointer', {
         lineWidth: 5,
         lineCap: 'round',
       },
-    });
+    })
     group.addShape('circle', {
       attrs: {
         x: center.x,
@@ -31,54 +31,45 @@ registerShape('point', 'pointer', {
         lineWidth: 4.5,
         fill: '#fff',
       },
-    });
+    })
 
-    return group;
+    return group
   },
-});
+})
 
-
-
-export const SystemEfficiencyChart = ({buildingID}) => {
-  const {t} = useTranslation()
+export const SystemEfficiencyChart = ({ buildingID }) => {
+  const { t } = useTranslation()
   const reportData = useSelector(state => state.report)
   const buildingReport = reportData[buildingID]
-  const systemEfficiency = Number(
-    (buildingReport.system_efficiency * 100).toFixed(0)
-  )
+  const systemEfficiency = Number((buildingReport.system_efficiency * 100).toFixed(0))
 
-  const data = [{ value: systemEfficiency }];
+  const data = [{ value: systemEfficiency }]
 
   return (
     <Card
       title={
-        <Title style={{textAlign: 'center'}} level={4}>
+        <Title style={{ textAlign: 'center' }} level={4}>
           {t('systemEfficiencyChart.title')}
         </Title>
       }
-      bodyStyle={{padding: 0, minHeight: 500}}
+      bodyStyle={{ padding: 0, minHeight: 500 }}
       hoverable
-      style={{cursor: 'unset'}}
+      style={{ cursor: 'unset' }}
     >
       <Chart
         height={400}
         data={data}
         padding={[0, 0, 30, 0]}
         scale={{
-          value:{
+          value: {
             min: 0,
             max: 100,
             tickInterval: 10,
-          }
+          },
         }}
         forceFit
       >
-        <Coordinate
-        type="polar"
-        radius={0.75}
-        startAngle={(-9 / 8) * Math.PI}
-        endAngle={(1 / 8) * Math.PI}
-        />
+        <Coordinate type="polar" radius={0.75} startAngle={(-9 / 8) * Math.PI} endAngle={(1 / 8) * Math.PI} />
         <Axis name="1" />
         <Axis
           name="value"
@@ -106,8 +97,8 @@ export const SystemEfficiencyChart = ({buildingID}) => {
           shape="pointer"
           animate={{
             appear: {
-              animation: 'fade-in'
-            }
+              animation: 'fade-in',
+            },
           }}
         />
         <Annotation.Arc
@@ -115,9 +106,9 @@ export const SystemEfficiencyChart = ({buildingID}) => {
           start={[0, 1]}
           end={[100, 1]}
           style={{
-            stroke:'#CBCBCB',
-            lineWidth:18,
-            lineDash:null,
+            stroke: '#CBCBCB',
+            lineWidth: 18,
+            lineDash: null,
           }}
         />
         <Annotation.Arc

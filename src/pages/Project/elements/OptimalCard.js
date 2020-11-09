@@ -1,10 +1,10 @@
 import React from 'react'
-import { Card, Statistic, Row, Col } from 'antd';
-import { useTranslation } from 'react-i18next';
-import { wh2other } from '../../../utils/unitConverter';
-import * as styles from './OptimalCard.module.scss';
+import { Card, Statistic, Row, Col } from 'antd'
+import { useTranslation } from 'react-i18next'
+import { wh2other } from '../../../utils/unitConverter'
+import * as styles from './OptimalCard.module.scss'
 
-export const OptimalCard = ({loading, ...values}) => {
+export const OptimalCard = ({ loading, ...values }) => {
   const { t } = useTranslation()
 
   return (
@@ -44,6 +44,5 @@ export const OptimalCard = ({loading, ...values}) => {
         </Card>
       </Col>
     </Row>
-
   )
 }

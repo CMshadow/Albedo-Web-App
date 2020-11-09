@@ -3,7 +3,7 @@ interface IgetLanguage {
 }
 
 interface INavigator extends Navigator {
-  userLanguage?: string;
+  userLanguage?: string
 }
 
 export const getLanguage: IgetLanguage = () => {
@@ -13,9 +13,9 @@ export const getLanguage: IgetLanguage = () => {
   const unionLang = (localLang || lang).toLowerCase()
   let language: 'zh-CN' | 'en-US'
   if (unionLang === 'zh-cn' || unionLang === 'zh') {
-    language = 'zh-CN';
+    language = 'zh-CN'
   } else {
-    language = 'en-US';
+    language = 'en-US'
   }
-  return language;
+  return language
 }

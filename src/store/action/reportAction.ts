@@ -1,4 +1,4 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from './actionTypes'
 import { ThunkAction } from 'redux-thunk'
 import { RootState, ReportActionTypes, Report } from '../../@types'
 
@@ -9,39 +9,38 @@ interface IAction<P, R> {
 }
 
 type EmptyParam = {}
-type BuildingIDParam = {buildingID: string}
-type SetReportDataParams = BuildingIDParam & {data: Report}
-type UpdateReportAttributesParams = BuildingIDParam & {[key: string]: Partial<Report>}
+type BuildingIDParam = { buildingID: string }
+type SetReportDataParams = BuildingIDParam & { data: Report }
+type UpdateReportAttributesParams = BuildingIDParam & { [key: string]: Partial<Report> }
 
-export const setReportData: IAction<SetReportDataParams, void> = 
-({buildingID, data}) => (dispatch, getState) => {
+export const setReportData: IAction<SetReportDataParams, void> = ({ buildingID, data }) => (dispatch, getState) => {
   dispatch({
     type: actionTypes.SET_REPORTDATA,
     buildingID: buildingID,
-    data: data
-  });
+    data: data,
+  })
 }
 
-export const updateReportAttributes: IAction<UpdateReportAttributesParams, void> = 
-({buildingID, ...values}) => (dispatch, getState) => {
+export const updateReportAttributes: IAction<UpdateReportAttributesParams, void> = ({ buildingID, ...values }) => (
+  dispatch,
+  getState
+) => {
   dispatch({
     type: actionTypes.UPDATE_REPORTATTRIBUTES,
     buildingID: buildingID,
-    values: values
-  });
+    values: values,
+  })
 }
 
-export const releaseReportData: IAction<EmptyParam, void> = 
-() => (dispatch, getState) => {
+export const releaseReportData: IAction<EmptyParam, void> = () => (dispatch, getState) => {
   dispatch({
     type: actionTypes.RELEASE_REPORTDATA,
-  });
+  })
 }
 
-export const deleteReportData: IAction<string, void> = 
-(buildingID) => (dispatch, getState) => {
+export const deleteReportData: IAction<string, void> = buildingID => (dispatch, getState) => {
   dispatch({
     type: actionTypes.DELETE_REPORTDATA,
     buildingID: buildingID,
-  });
+  })
 }

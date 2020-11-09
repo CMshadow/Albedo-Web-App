@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Layout, Menu, Row, Space,Col } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { Button, Layout, Menu, Row, Space, Col } from 'antd'
+import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.png'
 import * as styles from './EnDisplayPageHeader.module.scss'
 
-const {Header} = Layout;
+const { Header } = Layout
 
 const EnDisplayPageHeader = () => {
   const [headerClass, setheaderClass] = useState(styles.headerInFixed)
@@ -14,7 +14,7 @@ const EnDisplayPageHeader = () => {
 
   const navKey = location.pathname.split('/')[2] === 'tutorial' ? 'tutorial' : 'home'
 
-  const handleScroll=() =>{
+  const handleScroll = () => {
     if (document.documentElement.scrollTop > 0) {
       setheaderClass(styles.headerInScroll)
     } else {
@@ -23,15 +23,17 @@ const EnDisplayPageHeader = () => {
   }
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  return(
+  return (
     <Header className={headerClass}>
       <Row>
-        <Col className={styles.logo} xs={8} sm={6} align='middle'>
-          <Link to="/en"><img src={logo} alt="logo" height='45px'/></Link>
+        <Col className={styles.logo} xs={8} sm={6} align="middle">
+          <Link to="/en">
+            <img src={logo} alt="logo" height="45px" />
+          </Link>
         </Col>
         <Col xs={4} sm={6}>
           <Menu className={styles.nav} mode="horizontal" selectedKeys={[navKey]}>
@@ -43,19 +45,25 @@ const EnDisplayPageHeader = () => {
             </Menu.Item>
           </Menu>
         </Col>
-        <Col className={styles.right} justify='end' align='middle' xs={12}>
-          {
-            cognitoUser ?
-            <Button type='primary'><Link to='/dashboard'>Dashboard</Link></Button> :
+        <Col className={styles.right} justify="end" align="middle" xs={12}>
+          {cognitoUser ? (
+            <Button type="primary">
+              <Link to="/dashboard">Dashboard</Link>
+            </Button>
+          ) : (
             <Space>
-              <Button type='primary'><Link to='/user/register'>Free Register</Link></Button>
-              <Button ><Link to='/user/login'>Login</Link></Button>
+              <Button type="primary">
+                <Link to="/user/register">Free Register</Link>
+              </Button>
+              <Button>
+                <Link to="/user/login">Login</Link>
+              </Button>
             </Space>
-          }
+          )}
         </Col>
       </Row>
     </Header>
   )
 }
 
-export default EnDisplayPageHeader;
+export default EnDisplayPageHeader

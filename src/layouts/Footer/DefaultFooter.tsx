@@ -1,10 +1,10 @@
-import React from 'react';
-import { Layout, Divider, Typography } from 'antd';
-import { useTranslation } from 'react-i18next';
-import styles from './DefaultFooter.module.scss';
+import React from 'react'
+import { Layout, Divider, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
+import styles from './DefaultFooter.module.scss'
 
 const { Link, Text } = Typography
-const { Footer } = Layout;
+const { Footer } = Layout
 
 const DefaultFooter: React.FC = () => {
   const { t } = useTranslation()
@@ -22,10 +22,10 @@ const DefaultFooter: React.FC = () => {
       <Link href="/privacy" target="_blank">
         {t('footer.privacy')}
       </Link>
-      <br/>
+      <br />
       <Text>Copyright &copy; 2020 Albedo Inc.</Text>
     </Footer>
   )
 }
 
-export default DefaultFooter;
+export default DefaultFooter

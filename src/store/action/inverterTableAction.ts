@@ -12,13 +12,13 @@ interface IAction<T> {
 export const setInverterData: IAction<void> = data => (dispatch, getState) => {
   dispatch({
     type: actionTypes.SET_INVERTER_DATA,
-    data: data
-  });
+    data: data,
+  })
 }
 
 export const setOfficialInverterData: IAction<void> = data => (dispatch, getState) => {
   dispatch({
     type: actionTypes.SET_OFFICIAL_INVERTER_DATA,
-    data: data
+    data: data,
   })
 }

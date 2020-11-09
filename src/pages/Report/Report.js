@@ -20,7 +20,6 @@ import { saveProject } from '../Project/service'
 import { setReportData, setBuildingReGenReport } from '../../store/action/index'
 import * as styles from './Report.module.scss'
 
-
 const Report = () => {
   const { t } = useTranslation()
   const history = useHistory()
@@ -34,55 +33,52 @@ const Report = () => {
   let component
   switch (menuKey) {
     case '9':
-      component = <CommercialEquipmentsTab/>
+      component = <CommercialEquipmentsTab />
       break
     case '8':
       component = (
         <Card bordered={false}>
-          <EmissionReductionCard buildingID={buildingID}/>
+          <EmissionReductionCard buildingID={buildingID} />
         </Card>
       )
       break
     case '7':
       component = (
         <Card bordered={false}>
-          <MultiInverterDetailTable buildingID={buildingID}/>
+          <MultiInverterDetailTable buildingID={buildingID} />
         </Card>
       )
       break
     case '6':
       component = (
         <Card bordered={false}>
-          <MultiPVDetailTable buildingID={buildingID}/>
+          <MultiPVDetailTable buildingID={buildingID} />
         </Card>
       )
       break
     case '5':
-      component = <GainTab buildingID={buildingID}/>
+      component = <GainTab buildingID={buildingID} />
       break
     case '4':
-      component = <InvestTab buildingID={buildingID}/>
+      component = <InvestTab buildingID={buildingID} />
       break
     case '3':
-      component = <LossTab buildingID={buildingID}/>
+      component = <LossTab buildingID={buildingID} />
       break
     case '2':
-      component = <ProdTab buildingID={buildingID}/>
+      component = <ProdTab buildingID={buildingID} />
       break
     case '1':
     default:
-      component = <IrrTab buildingID={buildingID}/>
+      component = <IrrTab buildingID={buildingID} />
   }
 
   useEffect(() => {
     setloading(true)
-    if (
-      projectData.p_loss_soiling === undefined ||
-      projectData.p_loss_soiling === null
-    ) {
+    if (projectData.p_loss_soiling === undefined || projectData.p_loss_soiling === null) {
       history.push({
         pathname: `/project/${projectID}/params`,
-        state: { buildingID: buildingID }
+        state: { buildingID: buildingID },
       })
     } else {
       if (
@@ -90,39 +86,46 @@ const Report = () => {
         (buildingID !== 'overview' && projectData.buildings.find(b => b.buildingID === buildingID).reGenReport)
       ) {
         dispatch(saveProject(projectID))
-        .then(res => {
-          dispatch(genReport({projectID, buildingID: buildingID}))
           .then(res => {
-            dispatch(setReportData({buildingID: buildingID, data: res}))
-            dispatch(setBuildingReGenReport({buildingID, reGenReport: false}))
-            setloading(false)
+            dispatch(genReport({ projectID, buildingID: buildingID })).then(res => {
+              dispatch(setReportData({ buildingID: buildingID, data: res }))
+              dispatch(setBuildingReGenReport({ buildingID, reGenReport: false }))
+              setloading(false)
+            })
           })
-        })
-        .catch(err => {
-          setloading(false)
-          history.push(`/project/${projectID}/dashboard`)
-        })
+          .catch(err => {
+            setloading(false)
+            history.push(`/project/${projectID}/dashboard`)
+          })
       } else {
         setloading(false)
       }
     }
-  },[buildingID, dispatch, history, projectData.buildings, projectData.p_loss_soiling, projectData.reGenReport, projectID])
+  }, [
+    buildingID,
+    dispatch,
+    history,
+    projectData.buildings,
+    projectData.p_loss_soiling,
+    projectData.reGenReport,
+    projectID,
+  ])
 
   return (
-    <Spin indicator={<LoadingOutlined spin />} size='large' spinning={loading}>
-      {
-        loading || !reportData[buildingID]?
-        <Card loading /> :
+    <Spin indicator={<LoadingOutlined spin />} size="large" spinning={loading}>
+      {loading || !reportData[buildingID] ? (
+        <Card loading />
+      ) : (
         <>
-          <GlobalAlert/>
+          <GlobalAlert />
           <Row gutter={[15, 15]}>
             <Col span={24}>
-              <ReportHeadDescription buildingID={buildingID}/>
+              <ReportHeadDescription buildingID={buildingID} />
             </Col>
           </Row>
           <Row gutter={[15, 15]}>
             <Col span={24}>
-              <Card bodyStyle={{padding: 0}} loading={loading}>
+              <Card bodyStyle={{ padding: 0 }} loading={loading}>
                 <Menu
                   className={styles.menu}
                   onClick={e => setmenuKey(e.key)}
@@ -132,21 +135,11 @@ const Report = () => {
                   <Menu.Item key="1">{t('report.irrTable')}</Menu.Item>
                   <Menu.Item key="2">{t('report.acPowerTable')}</Menu.Item>
                   <Menu.Item key="3">{t('report.lossTable')}</Menu.Item>
-                  {
-                    buildingID !== 'overview' ?
-                    <Menu.Item key="4">{t('report.investmentTable')}</Menu.Item> :
-                    null
-                  }
-                  {
-                    buildingID !== 'overview' ?
-                    <Menu.Item key="5">{t('report.gainTable')}</Menu.Item> :
-                    null
-                  }
-                  {
-                    buildingID === 'overview' ?
-                    <Menu.Item key="9">{t('report.commercialEquipmentTable')}</Menu.Item> :
-                    null
-                  }
+                  {buildingID !== 'overview' ? <Menu.Item key="4">{t('report.investmentTable')}</Menu.Item> : null}
+                  {buildingID !== 'overview' ? <Menu.Item key="5">{t('report.gainTable')}</Menu.Item> : null}
+                  {buildingID === 'overview' ? (
+                    <Menu.Item key="9">{t('report.commercialEquipmentTable')}</Menu.Item>
+                  ) : null}
                   <Menu.Item key="6">{t('report.pvDetail')}</Menu.Item>
                   <Menu.Item key="7">{t('report.inverterDetail')}</Menu.Item>
                   <Menu.Item key="8">{t('report.emissionReduction')}</Menu.Item>
@@ -156,7 +149,7 @@ const Report = () => {
             </Col>
           </Row>
         </>
-      }
+      )}
     </Spin>
   )
 }

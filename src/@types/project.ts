@@ -7,7 +7,7 @@ export type PVSpec = {
   ac_cable_avg_len?: number
   dc_cable_avg_len?: number
   pv_model: {
-    pvID: string | null 
+    pvID: string | null
     userID: string | null
   }
 }
@@ -30,10 +30,10 @@ export type SubAry = {
 }
 
 export type Combibox = {
-  combibox_name: string | null,
-  combibox_cable_len: number | null,
-  combibox_serial_num: string,
-  combibox_vac: number | null,
+  combibox_name: string | null
+  combibox_cable_len: number | null
+  combibox_serial_num: string
+  combibox_vac: number | null
   linked_inverter_serial_num: Array<string>
 }
 
@@ -58,7 +58,7 @@ export type Transformer = {
   transformer_linked_capacity: number | null
   transformer_no_load_loss: number | null
   transformer_power: number
-  transformer_short_circuit_loss: number |null
+  transformer_short_circuit_loss: number | null
   transformer_type: string | null
   transformer_ACVolDropFac: number | null
   transformer_high_voltage_cable_Ib: number

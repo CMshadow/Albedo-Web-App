@@ -9,62 +9,56 @@ import { SunPositionChart } from '../../../components/Charts/SunPositionChart'
 import { IrradianceRadarChart } from '../../../components/Charts/IrradianceRadarChart'
 import { DynamicIrradianceChart } from '../../../components/Charts/DynamicIrradianceChart'
 
-export const IrrTab = ({buildingID}) => {
+export const IrrTab = ({ buildingID }) => {
   const reportData = useSelector(state => state.report)
 
   return (
     <Card bordered={false}>
       <Row gutter={[0, 25]}>
         <Col span={24}>
-          <IrradianceTable buildingID={buildingID}/>
+          <IrradianceTable buildingID={buildingID} />
         </Col>
       </Row>
       {/* New Chart Added at Beta 0.3.0 */}
-      {
-        reportData[buildingID].weatherAnalysis ?
+      {reportData[buildingID].weatherAnalysis ? (
         <Row gutter={[0, 25]}>
           <Col span={24}>
-            <WeatherAnalysisTable buildingID={buildingID}/>
+            <WeatherAnalysisTable buildingID={buildingID} />
           </Col>
-        </Row> :
-        null
-      }
+        </Row>
+      ) : null}
       <Row gutter={[0, 25]}>
         <Col span={24}>
-          <IrradianceChart buildingID={buildingID}/>
+          <IrradianceChart buildingID={buildingID} />
         </Col>
       </Row>
       <Row gutter={[0, 25]}>
         <Col span={24}>
-          <HeatMap buildingID={buildingID}/>
-        </Col>
-      </Row>
-      {/* New Chart Added at Beta 0.3.0 */}
-      <Row gutter={[0, 25]}>
-        <Col span={24}>
-          <IrradianceRadarChart buildingID={buildingID}/>
+          <HeatMap buildingID={buildingID} />
         </Col>
       </Row>
       {/* New Chart Added at Beta 0.3.0 */}
-      {
-        reportData[buildingID].sunPosition ?
+      <Row gutter={[0, 25]}>
+        <Col span={24}>
+          <IrradianceRadarChart buildingID={buildingID} />
+        </Col>
+      </Row>
+      {/* New Chart Added at Beta 0.3.0 */}
+      {reportData[buildingID].sunPosition ? (
         <Row gutter={[0, 25]}>
           <Col span={24}>
-            <SunPositionChart buildingID={buildingID}/>
+            <SunPositionChart buildingID={buildingID} />
           </Col>
-        </Row> :
-        null
-      }
+        </Row>
+      ) : null}
       {/* New Chart Added at Beta 0.3.0 */}
-      {
-        reportData[buildingID].weatherAnalysis ?
+      {reportData[buildingID].weatherAnalysis ? (
         <Row gutter={[0, 25]}>
           <Col span={24}>
-            <DynamicIrradianceChart buildingID={buildingID}/>
+            <DynamicIrradianceChart buildingID={buildingID} />
           </Col>
-        </Row> :
-        null
-      }
+        </Row>
+      ) : null}
     </Card>
   )
 }

@@ -11,10 +11,22 @@ export const PVDetailTable = ({ pvID, count }) => {
   const pvSpec = pvData.find(pv => pv.pvID === pvID)
 
   const KeysAndUnits = [
-    ['pmax', 'Wp'], ['voco', 'V'], ['isco', 'A'], ['vmpo', 'V'], ['impo', 'A'],
-    ['betaVoco', '%/℃'], ['betaVmpo', '%/℃'], ['alphaIsc', '%/℃'],
-    ['gammaPmax', '%/℃'], ['t', '℃'], ['tPrime', '℃'], ['tenYDecay', '%'],
-    ['twentyfiveYDecay', '%'], ['size', 'mm'], ['panelWeight', 'kg'], ['moduleMaterial', '']
+    ['pmax', 'Wp'],
+    ['voco', 'V'],
+    ['isco', 'A'],
+    ['vmpo', 'V'],
+    ['impo', 'A'],
+    ['betaVoco', '%/℃'],
+    ['betaVmpo', '%/℃'],
+    ['alphaIsc', '%/℃'],
+    ['gammaPmax', '%/℃'],
+    ['t', '℃'],
+    ['tPrime', '℃'],
+    ['tenYDecay', '%'],
+    ['twentyfiveYDecay', '%'],
+    ['size', 'mm'],
+    ['panelWeight', 'kg'],
+    ['moduleMaterial', ''],
   ]
 
   const dataSource = KeysAndUnits.map(([key, unit], index) => {
@@ -40,33 +52,28 @@ export const PVDetailTable = ({ pvID, count }) => {
       title: t('table.series'),
       dataIndex: 'series',
       align: 'center',
-    }, {
+    },
+    {
       key: 1,
       title: t('table.paramName'),
       dataIndex: 'paramName',
       align: 'center',
-    }, {
+    },
+    {
       key: 2,
       title: t('table.unit'),
       dataIndex: 'unit',
       align: 'center',
-    }, {
+    },
+    {
       key: 3,
       title: t('table.param'),
       dataIndex: 'param',
       align: 'center',
-    }
-  ];
+    },
+  ]
 
-  const genHeader = () => <PVNameDescription pvID={pvID} count={count}/>
+  const genHeader = () => <PVNameDescription pvID={pvID} count={count} />
 
-  return (
-    <Table
-      bordered
-      dataSource={dataSource}
-      columns={columns}
-      pagination={false}
-      title={genHeader}
-    />
-  )
+  return <Table bordered dataSource={dataSource} columns={columns} pagination={false} title={genHeader} />
 }

@@ -1,30 +1,39 @@
-import React, { useState } from 'react';
-import { Table, Divider, Button, Drawer, Tooltip } from 'antd';
-import { EditOutlined, LineChartOutlined } from '@ant-design/icons';
-import { useTranslation } from 'react-i18next';
-import { SearchString, SearchRange } from '../TableColFilters/TableColSearch';
+import React, { useState } from 'react'
+import { Table, Divider, Button, Drawer, Tooltip } from 'antd'
+import { EditOutlined, LineChartOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
+import { SearchString, SearchRange } from '../TableColFilters/TableColSearch'
 import { PVDetailTable } from '../PVDetailTable/PVDetailTable'
-import { DeleteAction } from './Actions';
+import { DeleteAction } from './Actions'
 import { IVModal } from './IVModal'
 
 // 表单中的数字columns和单位
 // 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
 const colKeys = [
-  ['pmax', 'n', 'Wp', 150], ['vmpo', 'n', 'V', 175], ['impo', 'n', 'A', 175],
-  ['isco', 'n', 'A', 150], ['voco', 'n', 'V', 150]
+  ['pmax', 'n', 'Wp', 150],
+  ['vmpo', 'n', 'V', 175],
+  ['impo', 'n', 'A', 175],
+  ['isco', 'n', 'A', 150],
+  ['voco', 'n', 'V', 150],
 ]
 
 export const PVTable = ({
-  loading, data, activeData, setactiveData, setshowModal, seteditRecord, showEditBut=false
+  loading,
+  data,
+  activeData,
+  setactiveData,
+  setshowModal,
+  seteditRecord,
+  showEditBut = false,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const [showDrawer, setshowDrawer] = useState(false)
   const [viewPVID, setviewPVID] = useState(false)
   const [viewPVUserID, setviewPVUserID] = useState(false)
   const [showIVModal, setshowIVModal] = useState(false)
 
   // 点击组件名显示详细信息
-  const onClickName = (pvID) => {
+  const onClickName = pvID => {
     setviewPVID(pvID)
     setshowDrawer(true)
   }
@@ -49,7 +58,7 @@ export const PVTable = ({
     {
       text: t('PV.polymer/thin-film/steel'),
       value: 'polymer/thin-film/steel',
-    }
+    },
   ]
 
   // 生成表单所有数字列属性
@@ -58,15 +67,15 @@ export const PVTable = ({
       title: t(`PVtable.table.${key}`),
       dataIndex: key,
       key: key,
-      render: (value) => `${value} ${unit}`,
+      render: value => `${value} ${unit}`,
       sorter: (a, b) => a[key] - b[key],
       multiple: index,
       width: width,
       ...SearchRange({
         colKey: key,
         data,
-        setactiveData
-      })
+        setactiveData,
+      }),
     }
   })
   // 生成表单组件备注列属性
@@ -84,17 +93,17 @@ export const PVTable = ({
     sorter: (a, b) => a.name - b.name,
     fixed: 'left',
     width: 250,
-    ...SearchString({colKey: 'name', onClick: onClickName, data, setactiveData}),
+    ...SearchString({ colKey: 'name', onClick: onClickName, data, setactiveData }),
   })
   // 生成表单组件材质列属性
   tableCols.push({
     title: t('PVtable.table.moduleMaterial'),
     dataIndex: 'moduleMaterial',
     key: 'moduleMaterial',
-    render: (value) => t(`PV.${value}`),
+    render: value => t(`PV.${value}`),
     filters: moduleMaterialFilters,
     onFilter: (value, record) => record.moduleMaterial.indexOf(value) === 0,
-    width: 200
+    width: 200,
   })
   // 生成表单操作列属性
   tableCols.push({
@@ -106,35 +115,25 @@ export const PVTable = ({
     render: (value, record) => (
       <div>
         <Tooltip title={t('PVtable.table.iv-curve')}>
-          <Button
-            type="link"
-            icon={<LineChartOutlined />}
-            onClick={() => onClickIVCurve(record.pvID, record.userID)}
-          />
+          <Button type="link" icon={<LineChartOutlined />} onClick={() => onClickIVCurve(record.pvID, record.userID)} />
         </Tooltip>
-        {
-          showEditBut ? (
-            <>
-              <Divider type='vertical' />
-              <Button
-                type="link"
-                icon={<EditOutlined />}
-                onClick={() => {
-                  seteditRecord(record)
-                  setshowModal(true)
-                }}
-              />
-              <Divider type='vertical' />
-              <DeleteAction
-                record={record}
-                setactiveData={setactiveData}
-              />
-            </>
-          ) :
-          null
-        }
+        {showEditBut ? (
+          <>
+            <Divider type="vertical" />
+            <Button
+              type="link"
+              icon={<EditOutlined />}
+              onClick={() => {
+                seteditRecord(record)
+                setshowModal(true)
+              }}
+            />
+            <Divider type="vertical" />
+            <DeleteAction record={record} setactiveData={setactiveData} />
+          </>
+        ) : null}
       </div>
-    )
+    ),
   })
 
   return (
@@ -142,31 +141,31 @@ export const PVTable = ({
       <Table
         columns={tableCols}
         dataSource={activeData}
-        rowKey='pvID'
+        rowKey="pvID"
         loading={loading}
         pagination={{
           position: ['bottomCenter'],
           total: activeData.length,
           showTotal: total => `${total}` + t('table.totalCount'),
           defaultPageSize: 10,
-          showSizeChanger: true
+          showSizeChanger: true,
         }}
         scroll={{ x: 'max-content', y: 'calc(100vh - 275px)' }}
       />
       <Drawer
-        bodyStyle={{padding: '0px'}}
+        bodyStyle={{ padding: '0px' }}
         placement="right"
         closable={false}
         onClose={() => setshowDrawer(false)}
         visible={showDrawer}
-        width='50vw'
+        width="50vw"
       >
         <PVDetailTable pvID={viewPVID} />
       </Drawer>
-      <IVModal 
-        pvID={viewPVID} 
-        userID={viewPVUserID} 
-        show={showIVModal} 
+      <IVModal
+        pvID={viewPVID}
+        userID={viewPVUserID}
+        show={showIVModal}
         setshow={setshowIVModal}
         setpvID={setviewPVID}
         setuserID={setviewPVUserID}

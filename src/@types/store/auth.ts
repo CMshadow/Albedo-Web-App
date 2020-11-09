@@ -6,7 +6,7 @@ export interface IAuthState {
 }
 
 export interface SetCognitoUserAction {
-  type: typeof SET_COGNITOUSER,
+  type: typeof SET_COGNITOUSER
   cognitoUser: CognitoUserExt
 }
 

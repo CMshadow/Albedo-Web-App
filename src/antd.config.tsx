@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
-import { ConfigProvider } from 'antd';
+import React, { useEffect } from 'react'
+import { ConfigProvider } from 'antd'
 import { useSelector } from 'react-redux'
 import { RootState } from './@types'
-import enUS from 'antd/es/locale/en_US';
-import zhCN from 'antd/es/locale/zh_CN';
-import moment from 'moment';
-import 'moment/locale/zh-cn';
+import enUS from 'antd/es/locale/en_US'
+import zhCN from 'antd/es/locale/zh_CN'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
 
 const localeSwitch = {
   'zh-CN': zhCN,
-  'en-US': enUS
+  'en-US': enUS,
 }
 moment.locale('en')
 
-const AntdConfig: React.FC = (props) => {
+const AntdConfig: React.FC = props => {
   const locale = useSelector((state: RootState) => state.locale.locale)
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const AntdConfig: React.FC = (props) => {
     'zh-CN': {
       required: '必填',
       types: {
-        number: '必填数字'
+        number: '必填数字',
       },
       number: {
         // eslint-disable-next-line no-template-curly-in-string
@@ -34,12 +34,12 @@ const AntdConfig: React.FC = (props) => {
         max: '不能大于${max}',
         // eslint-disable-next-line no-template-curly-in-string
         range: '必须在${min}到${max}区间内',
-      }
+      },
     },
     'en-US': {
       required: 'required Field',
       types: {
-        number: 'number is required'
+        number: 'number is required',
       },
       number: {
         // eslint-disable-next-line no-template-curly-in-string
@@ -48,15 +48,12 @@ const AntdConfig: React.FC = (props) => {
         max: 'cannot be greater than ${max}',
         // eslint-disable-next-line no-template-curly-in-string
         range: 'must be between ${min} and ${max}',
-      }
-    }
+      },
+    },
   }
 
   return (
-    <ConfigProvider 
-      locale={localeSwitch[locale]}
-      form={{validateMessages: validateMessages[locale]}}
-    >
+    <ConfigProvider locale={localeSwitch[locale]} form={{ validateMessages: validateMessages[locale] }}>
       {props.children}
     </ConfigProvider>
   )

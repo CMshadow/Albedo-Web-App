@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { Tabs, Button, Row, Col, Anchor } from 'antd';
-import * as styles from './BuildingsTab.module.scss';
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { Tabs, Button, Row, Col, Anchor } from 'antd'
+import * as styles from './BuildingsTab.module.scss'
 import { addSubAry, addCombibox } from '../../store/action/index'
 import { PVSpecCard } from '../SpecCard/PVSpecCard/PVSpecCard'
 import { CombinerBoxSpecCard } from '../SpecCard/CombinerBoxSpecCard/CombinerBoxSpecCard'
@@ -11,21 +11,19 @@ const { TabPane } = Tabs
 const { Link } = Anchor
 const rowGutter = [12, 12]
 
-export const SingleBuildingTab = ({building}) => {
+export const SingleBuildingTab = ({ building }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const projectType = useSelector(state => state.project.projectType)
   const [editingCombibox, seteditingCombibox] = useState(null)
   const [loading, setloading] = useState(false)
-  const [collapseActive, setcollapseActive] = useState(
-    new Array(building.data.length).fill(0).map(() => false)
-  )
+  const [collapseActive, setcollapseActive] = useState(new Array(building.data.length).fill(0).map(() => false))
 
-  const addSpec = (buildingID) => {
+  const addSpec = buildingID => {
     dispatch(addSubAry(buildingID))
   }
 
-  const addCB = (buildingID) => {
+  const addCB = buildingID => {
     dispatch(addCombibox(buildingID))
   }
 
@@ -52,14 +50,14 @@ export const SingleBuildingTab = ({building}) => {
               type="dashed"
               onClick={() => {
                 setloading(true)
-                  setTimeout(() => {
-                    addSpec(building.buildingID)
-                    setloading(false)
-                    const newcollapseActive = [...collapseActive]
-                    newcollapseActive.push(false)
-                    setcollapseActive(newcollapseActive)
-                    document.getElementById(`sub${building.data.length - 1}`).scrollIntoView(false)
-                  }, 500)
+                setTimeout(() => {
+                  addSpec(building.buildingID)
+                  setloading(false)
+                  const newcollapseActive = [...collapseActive]
+                  newcollapseActive.push(false)
+                  setcollapseActive(newcollapseActive)
+                  document.getElementById(`sub${building.data.length - 1}`).scrollIntoView(false)
+                }, 500)
               }}
             >
               {t('project.add.spec')}
@@ -67,49 +65,38 @@ export const SingleBuildingTab = ({building}) => {
           </Col>
           <Col span={3}>
             <Anchor offsetTop={70}>
-            {
-              building.data.map((spec, specIndex) =>
-                <Link 
-                  key={`anchor${specIndex}`} 
-                  href={`#sub${specIndex}`} 
-                  title={`S${specIndex + 1}`} 
-                >
-                  {
-                    collapseActive[specIndex] ? 
-                    spec.inverter_wiring.map(invSpec =>
-                      <Link 
-                        key={`anchor${specIndex}${invSpec.inverter_serial_number}`} 
-                        href={`#inv${specIndex}${invSpec.inverter_serial_number}`} 
-                        title={`S${specIndex + 1}-${invSpec.inverter_serial_number}`} 
-                      />
-                    ) :
-                    null
-                  }
-                </Link>  
-              )
-            }
+              {building.data.map((spec, specIndex) => (
+                <Link key={`anchor${specIndex}`} href={`#sub${specIndex}`} title={`S${specIndex + 1}`}>
+                  {collapseActive[specIndex]
+                    ? spec.inverter_wiring.map(invSpec => (
+                        <Link
+                          key={`anchor${specIndex}${invSpec.inverter_serial_number}`}
+                          href={`#inv${specIndex}${invSpec.inverter_serial_number}`}
+                          title={`S${specIndex + 1}-${invSpec.inverter_serial_number}`}
+                        />
+                      ))
+                    : null}
+                </Link>
+              ))}
             </Anchor>
           </Col>
         </Row>
       </TabPane>
-      {
-        projectType === 'domestic' ? null :
+      {projectType === 'domestic' ? null : (
         <TabPane tab={t('project.spec.combiner_box')} key="2">
           <Row gutter={rowGutter}>
             <Col span={22}>
-              {
-                building.combibox.map((combibox, combiboxIndex) => 
-                  <CombinerBoxSpecCard 
-                    id={`combibox${combiboxIndex}`}
-                    buildingID={building.buildingID}
-                    combiboxIndex={combiboxIndex}
-                    key={combiboxIndex}
-                    editingCombibox={editingCombibox}
-                    seteditingCombibox={seteditingCombibox}
-                    {...combibox}
-                  />
-                )
-              }
+              {building.combibox.map((combibox, combiboxIndex) => (
+                <CombinerBoxSpecCard
+                  id={`combibox${combiboxIndex}`}
+                  buildingID={building.buildingID}
+                  combiboxIndex={combiboxIndex}
+                  key={combiboxIndex}
+                  editingCombibox={editingCombibox}
+                  seteditingCombibox={seteditingCombibox}
+                  {...combibox}
+                />
+              ))}
               <Button
                 className={styles.addSpecCombibox}
                 loading={loading}
@@ -123,7 +110,7 @@ export const SingleBuildingTab = ({building}) => {
                     addCB(building.buildingID)
                     setloading(false)
 
-                    document.getElementById(`combibox${building.combibox.length-1}`).scrollIntoView()
+                    document.getElementById(`combibox${building.combibox.length - 1}`).scrollIntoView()
                   }, 500)
                 }}
               >
@@ -132,20 +119,18 @@ export const SingleBuildingTab = ({building}) => {
             </Col>
             <Col span={2}>
               <Anchor offsetTop={70}>
-              {
-                building.combibox.map((combibox, combiboxIndex) =>
-                  <Link 
-                    key={`anchor${combiboxIndex}`} 
-                    href={`#combibox${combiboxIndex}`} 
-                    title={`C${combiboxIndex + 1}`} 
-                  />  
-                )
-              }
+                {building.combibox.map((combibox, combiboxIndex) => (
+                  <Link
+                    key={`anchor${combiboxIndex}`}
+                    href={`#combibox${combiboxIndex}`}
+                    title={`C${combiboxIndex + 1}`}
+                  />
+                ))}
               </Anchor>
             </Col>
           </Row>
         </TabPane>
-      }
+      )}
     </Tabs>
   )
 }

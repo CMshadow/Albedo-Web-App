@@ -1,10 +1,10 @@
-import { IInverterTableState, InverterTableActionTypes } from '../../@types';
-import * as actionTypes from '../action/actionTypes';
+import { IInverterTableState, InverterTableActionTypes } from '../../@types'
+import * as actionTypes from '../action/actionTypes'
 
 const initialState: IInverterTableState = {
   data: [],
-  officialData: []
-};
+  officialData: [],
+}
 
 interface IReducer {
   (state: IInverterTableState, action: InverterTableActionTypes): IInverterTableState
@@ -13,25 +13,26 @@ interface IReducer {
 const setInverterData: IReducer = (state, action) => {
   return {
     ...state,
-    data: action.data
+    data: action.data,
   }
 }
 
 const setOfficialInverterData: IReducer = (state, action) => {
   return {
     ...state,
-    officialData: action.data
+    officialData: action.data,
   }
 }
 
-const reducer = (state=initialState, action: InverterTableActionTypes) => {
+const reducer = (state = initialState, action: InverterTableActionTypes) => {
   switch (action.type) {
     case actionTypes.SET_INVERTER_DATA:
-      return setInverterData(state, action);
+      return setInverterData(state, action)
     case actionTypes.SET_OFFICIAL_INVERTER_DATA:
-      return setOfficialInverterData(state, action);
-    default: return state;
+      return setOfficialInverterData(state, action)
+    default:
+      return state
   }
-};
+}
 
-export default reducer;
+export default reducer

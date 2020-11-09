@@ -2,27 +2,29 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { Card, Typography } from 'antd'
-import { Chart, Interval, Axis, Tooltip, Legend } from 'bizcharts';
+import { Chart, Interval, Axis, Tooltip, Legend } from 'bizcharts'
 import { createGainData } from '../../utils/createGainData'
 import { MoneyText } from '../../utils/genMoneyText'
 import { titleStyle, legendStyle } from '../../styles/chartStyles'
 const Title = Typography.Title
 
-export const CashFlowChart = ({buildingID}) => {
+export const CashFlowChart = ({ buildingID }) => {
   const { t } = useTranslation()
   const reportData = useSelector(state => state.report)
 
-  const dataSource = createGainData(reportData[buildingID]).map((record, index) => ({
-    year: index,
-    value: record['acc-net-cash-flow-togrid'],
-    type: t('cashflowChart.togrid')
-  })).concat(
-    createGainData(reportData[buildingID]).map((record, index) => ({
+  const dataSource = createGainData(reportData[buildingID])
+    .map((record, index) => ({
       year: index,
-      value: record['acc-net-cash-flow-selfuse'],
-      type: t('cashflowChart.selfuse')
+      value: record['acc-net-cash-flow-togrid'],
+      type: t('cashflowChart.togrid'),
     }))
-  )
+    .concat(
+      createGainData(reportData[buildingID]).map((record, index) => ({
+        year: index,
+        value: record['acc-net-cash-flow-selfuse'],
+        type: t('cashflowChart.selfuse'),
+      }))
+    )
 
   const scale = {
     year: {
@@ -35,26 +37,28 @@ export const CashFlowChart = ({buildingID}) => {
       alias: t('cashflowChart.gain'),
       tickCount: 10,
       nice: true,
-      formatter: text => MoneyText({t: t, money: text, abbr: true})
+      formatter: text => MoneyText({ t: t, money: text, abbr: true }),
     },
   }
 
-  const adjust = [{
-    type: 'dodge',
-    marginRatio: 0,
-  }]
+  const adjust = [
+    {
+      type: 'dodge',
+      marginRatio: 0,
+    },
+  ]
 
   const color = ['type', ['#1890ff', '#faad14']]
 
   return (
     <Card
       title={
-        <Title style={{textAlign: 'center'}} level={4}>
+        <Title style={{ textAlign: 'center' }} level={4}>
           {t('cashflowChart.title')}
         </Title>
       }
       hoverable
-      style={{cursor: 'unset'}}
+      style={{ cursor: 'unset' }}
     >
       <Chart
         scale={scale}
@@ -64,9 +68,9 @@ export const CashFlowChart = ({buildingID}) => {
         interactions={['active-region']}
         padding={[30, 30, 100, 100]}
       >
-        <Legend position='bottom' itemName={{style: legendStyle}} offsetY={-10}/>
-        <Axis name='year' title={{style: titleStyle}} />
-        <Axis name='value' title={{style: titleStyle}} />
+        <Legend position="bottom" itemName={{ style: legendStyle }} offsetY={-10} />
+        <Axis name="year" title={{ style: titleStyle }} />
+        <Axis name="value" title={{ style: titleStyle }} />
         <Interval adjust={adjust} color={color} position="year*value" />
         <Tooltip shared />
       </Chart>

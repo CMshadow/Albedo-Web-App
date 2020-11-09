@@ -1,11 +1,11 @@
-import { Button, Result } from 'antd';
-import React from 'react';
-import { useHistory } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
+import { Button, Result } from 'antd'
+import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const NoFoundPage: React.FC = () => {
-  const { t } = useTranslation();
-  const history = useHistory();
+  const { t } = useTranslation()
+  const history = useHistory()
 
   return (
     <Result
@@ -19,6 +19,6 @@ const NoFoundPage: React.FC = () => {
       }
     />
   )
-};
+}
 
-export default NoFoundPage;
+export default NoFoundPage

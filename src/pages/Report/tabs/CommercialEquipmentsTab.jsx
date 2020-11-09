@@ -7,7 +7,7 @@ export const CommercialEquipmentsTab = () => {
     <Card bordered={false}>
       <Row gutter={[0, 25]}>
         <Col span={24}>
-          <CommercialEquipmentTable/>
+          <CommercialEquipmentTable />
         </Col>
       </Row>
     </Card>

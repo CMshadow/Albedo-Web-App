@@ -1,4 +1,4 @@
-export const SET_COGNITOUSER = 'SET_COGNITOUSER';
+export const SET_COGNITOUSER = 'SET_COGNITOUSER'
 export const SET_SIGNOUT = 'SET_SIGNOUT'
 
 export const SET_LOCALE = 'SET_LOCALE'
