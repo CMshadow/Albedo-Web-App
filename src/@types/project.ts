@@ -2,6 +2,10 @@ export type PVSpec = {
   tilt_angle: number | null
   azimuth: number | null
   mode: string | null
+  celltemp_model: string | null
+  celltemp_vars: number[]
+  ac_cable_avg_len?: number
+  dc_cable_avg_len?: number
   pv_model: {
     pvID: string | null 
     userID: string | null
@@ -9,9 +13,11 @@ export type PVSpec = {
 }
 
 export type INVSpec = {
-  inverter_serial_number: string
+  inverter_serial_number: number
   panels_per_string: number | null
   string_per_inverter: number | null
+  ac_cable_len: number | null
+  dc_cable_len: number[] | null
   inverter_model: {
     inverterID: string | null
     userID: string | null

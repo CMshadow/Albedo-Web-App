@@ -50,12 +50,6 @@ const PrivateHeader: React.FC = () => {
           {t('sider.menu.back-project')}
         </Button>
       }
-      <Button type='primary'
-        onClick={async () => {
-          testRequest().then(res => console.log(res))
-          // console.log(res)
-        }}
-      >Test</Button>
       <Row className={styles.right} align='middle'>
         <Space>
           {t('header.unit')}

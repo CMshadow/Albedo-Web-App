@@ -6,7 +6,7 @@ import { EditTwoTone, DeleteOutlined } from '@ant-design/icons'
 import { EditForm } from './EditForm'
 import { SpecView } from './SpecView'
 import { InverterSpecCard } from '../InverterSpecCard/InverterSpecCard'
-import { addInverterSpec, deletePVSpec } from '../../../store/action/index'
+import { addInverterSpec, deleteSubAry } from '../../../store/action/index'
 import * as styles from './PVSpecCard.module.scss';
 
 const { Panel } = Collapse;
@@ -81,7 +81,7 @@ export const PVSpecCard = ({id, buildingID, specIndex, collapseActive, setcollap
                   const newcollapseActive = [...collapseActive]
                   newcollapseActive.splice(specIndex, 1)
                   setcollapseActive(newcollapseActive)
-                  dispatch(deletePVSpec({buildingID, specIndex}))
+                  dispatch(deleteSubAry({buildingID, specIndex}))
                 }, 500)
               }}
             />

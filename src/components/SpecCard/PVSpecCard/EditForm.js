@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import { Form, Input, Row, Col, Select, Button, Drawer, Divider, notification, Spin, Space, Descriptions, Tooltip, Table } from 'antd';
 import { TableOutlined } from '@ant-design/icons'
 import { EditInverterPlanModal } from './EditInverterPlanModal'
-import { editPVSpec } from '../../../store/action/index'
+import { editSubAry } from '../../../store/action/index'
 import { PVTableViewOnly } from '../../Table/PVTable/PVTableViewOnly'
 import { InverterTableViewOnly } from '../../Table/InverterTable/InverterTableViewOnly'
 import { CellTempModel } from '../../Model/CellTempModel/CellTempModel'
@@ -92,7 +92,7 @@ export const EditForm = ({buildingID, specIndex, setediting}) => {
       delete formatValues.uv
       delete formatValues.v
     }
-    dispatch(editPVSpec({
+    dispatch(editSubAry({
       buildingID, specIndex, ...formatValues, invPlan: autoInvPlan,
       pv_userID: pvData.find(record => record.pvID === formatValues.pvID).userID,
     }))

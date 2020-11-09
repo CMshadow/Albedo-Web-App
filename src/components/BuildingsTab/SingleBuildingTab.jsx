@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Tabs, Button, Row, Col, Anchor } from 'antd';
 import * as styles from './BuildingsTab.module.scss';
-import { addPVSpec, addCombibox } from '../../store/action/index'
+import { addSubAry, addCombibox } from '../../store/action/index'
 import { PVSpecCard } from '../SpecCard/PVSpecCard/PVSpecCard'
 import { CombinerBoxSpecCard } from '../SpecCard/CombinerBoxSpecCard/CombinerBoxSpecCard'
 
@@ -22,7 +22,7 @@ export const SingleBuildingTab = ({building}) => {
   )
 
   const addSpec = (buildingID) => {
-    dispatch(addPVSpec(buildingID))
+    dispatch(addSubAry(buildingID))
   }
 
   const addCB = (buildingID) => {
