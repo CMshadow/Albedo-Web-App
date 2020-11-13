@@ -111,7 +111,7 @@ const updateProjectAttributes: IReducer<UpdateProjectAttributesAction> = (state,
   }
 }
 
-const releaseProjectData: IReducer<ReleaseProjectDataAction> = (state, action) => {
+const releaseProjectData: IReducer<ReleaseProjectDataAction> = () => {
   return {}
 }
 
@@ -739,7 +739,7 @@ const deleteCombibox: IReducer<DeleteCombiboxAction> = (state, action) => {
   }
 }
 
-const addTransformer: IReducer<AddTransformerAction> = (state, action) => {
+const addTransformer: IReducer<AddTransformerAction> = state => {
   if (!('transformers' in state)) return state
   const newTransformers = state.transformers ? [...state.transformers] : []
   const newTransformer = {
@@ -832,7 +832,7 @@ const deleteTransformer: IReducer<DeleteTransformerAction> = (state, action) => 
   }
 }
 
-const addPowercabinet: IReducer<AddPowercabinetAction> = (state, action) => {
+const addPowercabinet: IReducer<AddPowercabinetAction> = state => {
   if (!('powercabinets' in state)) return state
   const newPowercabinets = state.powercabinets ? [...state.powercabinets] : []
   const newPowercabinet = {

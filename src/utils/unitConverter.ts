@@ -5,7 +5,7 @@ interface IConverterW2Other<T extends number | number[]> {
   (data: T, withH?: boolean): { value: T extends number ? number : number[]; unit: string }
 }
 
-interface IConverterMoney<T extends number | number[]> extends IConverterW2Other<T> {}
+type IConverterMoney<T extends number | number[]> = IConverterW2Other<T>
 
 interface IConverterOther2W<T extends number | number[]> {
   (data: T, unit: string): T extends number ? number : number[]
