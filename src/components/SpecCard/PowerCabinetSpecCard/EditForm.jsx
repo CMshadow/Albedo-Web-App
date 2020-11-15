@@ -1,7 +1,19 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Divider, Typography } from 'antd'
+import {
+  Form,
+  Input,
+  Row,
+  Col,
+  Button,
+  Collapse,
+  Checkbox,
+  Select,
+  Tooltip,
+  Divider,
+  Typography,
+} from 'antd'
 import { editPowercabinet } from '../../../store/action/index'
 import * as styles from './PowerCabinetSpecCard.module.scss'
 const FormItem = Form.Item
@@ -10,7 +22,12 @@ const { Text } = Typography
 
 const rowGutter = { md: 8, lg: 15, xl: 32 }
 
-const findUnusedCombiboxSerial = (powercabinetIndex, allTransformers, allPowercabinets, building) => {
+const findUnusedCombiboxSerial = (
+  powercabinetIndex,
+  allTransformers,
+  allPowercabinets,
+  building
+) => {
   const allCombiboxSerial = building.combibox.map(combibox => combibox.combibox_serial_num)
   const allUsedCombiboxSerial = allTransformers
     .flatMap(trans => trans.linked_combibox_serial_num)
@@ -22,9 +39,16 @@ const findUnusedCombiboxSerial = (powercabinetIndex, allTransformers, allPowerca
   return allCombiboxSerial.filter(serial => !allUsedCombiboxSerial.includes(serial))
 }
 
-const findUnusedInverterSerial = (powercabinetIndex, allTransformers, allPowercabinets, building) => {
+const findUnusedInverterSerial = (
+  powercabinetIndex,
+  allTransformers,
+  allPowercabinets,
+  building
+) => {
   const allInverterSerial = building.data.flatMap((spec, specIndex) =>
-    spec.inverter_wiring.map(inverter => `${building.buildingName}-${specIndex + 1}-${inverter.inverter_serial_number}`)
+    spec.inverter_wiring.map(
+      inverter => `${building.buildingName}-${specIndex + 1}-${inverter.inverter_serial_number}`
+    )
   )
   const allUsedInverterSerial = allTransformers
     .flatMap(trans => trans.linked_inverter_serial_num)
@@ -71,7 +95,9 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
     .flatMap(powercabinet => powercabinet.linked_inverter_serial_num)
 
   // 所有Ub
-  const allUb = new Set([...allTransformers.map(transformer => transformer.Ut), 400].sort((a, b) => (a < b ? 1 : -1)))
+  const allUb = new Set(
+    [...allTransformers.map(transformer => transformer.Ut), 400].sort((a, b) => (a < b ? 1 : -1))
+  )
 
   // 每个光伏单元中没有接入变压器的汇流箱serial, 光伏单元index为key, [完整汇流箱serial]为value
   const unlinkedCombiboxSerial = {}
@@ -98,7 +124,9 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
   const everyCombiboxVac = {}
   buildings.forEach((building, buildingIndex) => {
     everyCombiboxVac[buildingIndex] = building.combibox
-      .filter(combibox => unlinkedCombiboxSerial[buildingIndex].includes(combibox.combibox_serial_num))
+      .filter(combibox =>
+        unlinkedCombiboxSerial[buildingIndex].includes(combibox.combibox_serial_num)
+      )
       .map(combibox => combibox.combibox_vac)
   })
   // 每个光伏单元下所有没有接入汇流箱的逆变器的vac，光伏单元index为key, [逆变器vac]为value
@@ -123,22 +151,29 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
           <Text style={{ color: '#95de64' }}>{`T${transformer.transformer_serial_num}`}</Text>
         </Tooltip>
       ),
-      disabled: transformer.Ut !== selUb || usedTransformerSerial.includes(transformer.transformer_serial_num),
+      disabled:
+        transformer.Ut !== selUb ||
+        usedTransformerSerial.includes(transformer.transformer_serial_num),
     }))
   // 对每个光伏单元生成关联汇流箱的选项, 禁用掉与变压器vac不符的选项，并禁用其他变压器已选选项
   const createCombiboxCheckboxOptions = buildingIndex =>
     unlinkedCombiboxSerial[buildingIndex].map((serial, serialIndex) => ({
       value: serial,
       label: <Text style={{ color: '#1890ff' }}>{`C${serial.split('-')[1]}`}</Text>,
-      disabled: everyCombiboxVac[buildingIndex][serialIndex] > selUb || usedCombiboxSerial.includes(serial),
+      disabled:
+        everyCombiboxVac[buildingIndex][serialIndex] > selUb || usedCombiboxSerial.includes(serial),
     }))
   // 对每个光伏单元生成关联逆变器的选项, 禁用掉与变压器vac不符的选项，并禁用其他变压器已选选项
   const createInverterCheckboxOptions = buildingIndex =>
     unlinkedInverterSerial[buildingIndex].map((serial, serialIndex) => {
       return {
         value: serial,
-        label: <Text style={{ color: '#faad14' }}>{`S${serial.split('-').slice(-2).join('-')}`}</Text>,
-        disabled: everyInverterVac[buildingIndex][serialIndex] > selUb || usedInverterSerial.includes(serial),
+        label: (
+          <Text style={{ color: '#faad14' }}>{`S${serial.split('-').slice(-2).join('-')}`}</Text>
+        ),
+        disabled:
+          everyInverterVac[buildingIndex][serialIndex] > selUb ||
+          usedInverterSerial.includes(serial),
       }
     })
 
@@ -147,7 +182,9 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
     const values = {}
     powercabinetData[`linked_${equipment}_serial_num`].forEach(serial => {
       const buildingName = serial.split('-')[0]
-      const buildingIndex = buildings.indexOf(buildings.find(building => building.buildingName === buildingName))
+      const buildingIndex = buildings.indexOf(
+        buildings.find(building => building.buildingName === buildingName)
+      )
       if (buildingIndex in values) {
         values[buildingIndex].push(serial)
       } else {
@@ -204,7 +241,10 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
   // 初始化所有变压器的checkAll状态
   const initTransformersCheckAll = () => {
     const transformerCBOptions = createTransformerCheckboxOptions()
-    return determineCheckAll(powercabinetData[`linked_transformer_serial_num`], transformerCBOptions)
+    return determineCheckAll(
+      powercabinetData[`linked_transformer_serial_num`],
+      transformerCBOptions
+    )
   }
 
   // 初始化所有subAry的intermediate状态
@@ -224,7 +264,10 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
   // 初始化所有变压器的intermediate状态
   const initTransformersIntermediate = () => {
     const transformerCBOptions = createTransformerCheckboxOptions()
-    return determineIntermediate(powercabinetData[`linked_transformer_serial_num`], transformerCBOptions)
+    return determineIntermediate(
+      powercabinetData[`linked_transformer_serial_num`],
+      transformerCBOptions
+    )
   }
 
   const [checkAll, setcheckAll] = useState(initCheckAll())
@@ -236,10 +279,14 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
   const updateCheckAll = (buildingIndex, curCombiboxCBValues, curInvCBValues) => {
     const combiboxCBValues =
       curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`) || []
-    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
+    const invCBValues =
+      curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
     const status = determineCheckAll(
       [...combiboxCBValues, ...invCBValues],
-      [...createCombiboxCheckboxOptions(buildingIndex), ...createInverterCheckboxOptions(buildingIndex)]
+      [
+        ...createCombiboxCheckboxOptions(buildingIndex),
+        ...createInverterCheckboxOptions(buildingIndex),
+      ]
     )
     const newCheckAll = [...checkAll]
     newCheckAll[buildingIndex] = status
@@ -247,8 +294,12 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
   }
   // 更新变压器checkAll状态
   const updateTransformerCheckAll = curTransformerCBValues => {
-    const transformerCBValues = curTransformerCBValues || form.getFieldValue('linked_transformer_serial_num') || []
-    const newTransformerCheckAll = determineCheckAll(transformerCBValues, createTransformerCheckboxOptions())
+    const transformerCBValues =
+      curTransformerCBValues || form.getFieldValue('linked_transformer_serial_num') || []
+    const newTransformerCheckAll = determineCheckAll(
+      transformerCBValues,
+      createTransformerCheckboxOptions()
+    )
     settransCheckAll(newTransformerCheckAll)
   }
 
@@ -256,10 +307,14 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
   const updateIntermediate = (buildingIndex, curCombiboxCBValues, curInvCBValues) => {
     const combiboxCBValues =
       curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`) || []
-    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
+    const invCBValues =
+      curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
     const status = determineIntermediate(
       [...combiboxCBValues, ...invCBValues],
-      [...createCombiboxCheckboxOptions(buildingIndex), ...createInverterCheckboxOptions(buildingIndex)]
+      [
+        ...createCombiboxCheckboxOptions(buildingIndex),
+        ...createInverterCheckboxOptions(buildingIndex),
+      ]
     )
     const newIntermediate = [...intermediate]
     newIntermediate[buildingIndex] = status
@@ -267,8 +322,12 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
   }
   // 更新变压器intermediate状态
   const updateTransformerIntermediate = curTransformerCBValues => {
-    const transformerCBValues = curTransformerCBValues || form.getFieldValue('linked_transformer_serial_num') || []
-    const newTransformerCheckAll = determineIntermediate(transformerCBValues, createTransformerCheckboxOptions())
+    const transformerCBValues =
+      curTransformerCBValues || form.getFieldValue('linked_transformer_serial_num') || []
+    const newTransformerCheckAll = determineIntermediate(
+      transformerCBValues,
+      createTransformerCheckboxOptions()
+    )
     settransIntermediate(newTransformerCheckAll)
   }
 
@@ -311,11 +370,14 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
     const initValues = { ...powercabinetData }
     const initInvCBValues = splitLinkedEquipmentSerial('inverter')
     Object.keys(initInvCBValues).forEach(
-      buildingIndex => (initValues[`linked_inverter_serial_num_${buildingIndex}`] = initInvCBValues[buildingIndex])
+      buildingIndex =>
+        (initValues[`linked_inverter_serial_num_${buildingIndex}`] = initInvCBValues[buildingIndex])
     )
     const initCombiboxCBValues = splitLinkedEquipmentSerial('combibox')
     Object.keys(initCombiboxCBValues).forEach(
-      buildingIndex => (initValues[`linked_combibox_serial_num_${buildingIndex}`] = initCombiboxCBValues[buildingIndex])
+      buildingIndex =>
+        (initValues[`linked_combibox_serial_num_${buildingIndex}`] =
+          initCombiboxCBValues[buildingIndex])
     )
     return initValues
   }
@@ -326,9 +388,13 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
     linkedCombiboxSerial,
     linkedInverterSerial
   ) => {
-    const transformerSerial = linkedTransformerSerial || form.getFieldValue(`linked_transformer_serial_num`) || []
+    const transformerSerial =
+      linkedTransformerSerial || form.getFieldValue(`linked_transformer_serial_num`) || []
     const transformerCapacity = transformerSerial.reduce((acc, serial) => {
-      return acc + allTransformers.find(trans => trans.transformer_serial_num === serial).transformer_capacity
+      return (
+        acc +
+        allTransformers.find(trans => trans.transformer_serial_num === serial).transformer_capacity
+      )
     }, 0)
 
     const combiboxCapacity = buildings
@@ -348,7 +414,11 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
                 const specIndex = invSerial.split('-')[0] - 1
                 const invIndex = invSerial.split('-')[1] - 1
                 const findInv = building.data[specIndex].inverter_wiring[invIndex]
-                return acc2 + inverterData.find(obj => obj.inverterID === findInv.inverter_model.inverterID).pacMax
+                return (
+                  acc2 +
+                  inverterData.find(obj => obj.inverterID === findInv.inverter_model.inverterID)
+                    .pacMax
+                )
               }, 0),
           0
         )
@@ -367,7 +437,10 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
           const specIndex = serial.split('-')[1] - 1
           const invIndex = serial.split('-')[2] - 1
           const findInv = building.data[specIndex].inverter_wiring[invIndex]
-          return acc + inverterData.find(obj => obj.inverterID === findInv.inverter_model.inverterID).pacMax
+          return (
+            acc +
+            inverterData.find(obj => obj.inverterID === findInv.inverter_model.inverterID).pacMax
+          )
         }, 0)
       })
       .reduce((acc, val) => acc + val, 0)
@@ -400,7 +473,9 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
     } else {
       const curTransformerCBValues = form.getFieldValue('linked_transformer_serial_num') || []
       const newTransformerCBValues = curTransformerCBValues.filter(serial => {
-        return allTransformers.find(trans => trans.transformer_serial_num === serial).Ut === Ub ? true : false
+        return allTransformers.find(trans => trans.transformer_serial_num === serial).Ut === Ub
+          ? true
+          : false
       })
       form.setFieldsValue({ linked_transformer_serial_num: newTransformerCBValues })
       settransCheckAll(false)
@@ -473,7 +548,11 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
     >
       <Row gutter={rowGutter}>
         <Col span={8}>
-          <FormItem name="Ub" label={t('project.spec.powercabinet.Ub')} rules={[{ required: true }]}>
+          <FormItem
+            name="Ub"
+            label={t('project.spec.powercabinet.Ub')}
+            rules={[{ required: true }]}
+          >
             <Select
               options={[...allUb].map(val => ({
                 label: `${val} V`,
@@ -496,7 +575,10 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
           </FormItem>
         </Col>
         <Col span={8}>
-          <FormItem name="powercabinet_linked_capacity" label={t('project.spec.powercabinet.linked-capacity')}>
+          <FormItem
+            name="powercabinet_linked_capacity"
+            label={t('project.spec.powercabinet.linked-capacity')}
+          >
             <Input type="number" disabled addonAfter="kVA" />
           </FormItem>
         </Col>
@@ -517,7 +599,10 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
                 {t('action.checkall')}
               </Checkbox>
               <Divider className={styles.divider} />
-              <FormItem name={`linked_transformer_serial_num`} label={t('project.spec.linked_transformer_serial_num')}>
+              <FormItem
+                name={`linked_transformer_serial_num`}
+                label={t('project.spec.linked_transformer_serial_num')}
+              >
                 <Checkbox.Group
                   options={createTransformerCheckboxOptions()}
                   onChange={vals => {

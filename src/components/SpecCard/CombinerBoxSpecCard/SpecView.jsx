@@ -11,11 +11,15 @@ export const SpecView = ({ buildingID, combiboxIndex }) => {
   const { t } = useTranslation()
   const unit = useSelector(state => state.unit.unit)
   const buildings = useSelector(state => state.project.buildings)
-  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
   const buildingIndex = buildings.map(building => building.buildingID).indexOf(buildingID)
   const combiboxData = buildings[buildingIndex].combibox[combiboxIndex]
 
-  const capacity = buildings[buildingIndex].combibox[combiboxIndex].linked_inverter_serial_num.reduce((acc, serial) => {
+  const capacity = buildings[buildingIndex].combibox[
+    combiboxIndex
+  ].linked_inverter_serial_num.reduce((acc, serial) => {
     const specIndex = serial.split('-')[0] - 1
     const invIndex = serial.split('-')[1] - 1
     const findInv = buildings[buildingIndex].data[specIndex].inverter_wiring[invIndex]

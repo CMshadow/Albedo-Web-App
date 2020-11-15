@@ -24,7 +24,7 @@ const setOfficialPVData: IReducer = (state, action) => {
   }
 }
 
-const reducer = (state = initialState, action: PVTableActionTypes) => {
+const reducer = (state = initialState, action: PVTableActionTypes): IPVTableState => {
   switch (action.type) {
     case actionTypes.SET_PV_DATA:
       return setPVData(state, action)

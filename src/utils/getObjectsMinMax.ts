@@ -1,10 +1,13 @@
 interface IGetMinorMax {
-  (objArray: { [key: string]: any }[], objKey: string): number | null
+  (objArray: { [key: string]: number }[], objKey: string): number | null
 }
 
 export const getMin: IGetMinorMax = (objArray, objKey) => {
   if (objArray.length === 0) return null
-  return objArray.reduce((min: number, obj) => (obj[objKey] < min ? obj[objKey] : min), objArray[0][objKey])
+  return objArray.reduce(
+    (min: number, obj) => (obj[objKey] < min ? obj[objKey] : min),
+    objArray[0][objKey]
+  )
 }
 
 export const getMax: IGetMinorMax = (objArray, objKey) => {

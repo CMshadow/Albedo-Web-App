@@ -7,10 +7,20 @@ import { w2other } from '../../../utils/unitConverter'
 
 const { Text } = Typography
 
-export const EditInverterPlanModal = ({ pvID, showModal, setshowModal, setautoInvPlan, capacity, N1, autoPlan }) => {
+export const EditInverterPlanModal = ({
+  pvID,
+  showModal,
+  setshowModal,
+  setautoInvPlan,
+  capacity,
+  N1,
+  autoPlan,
+}) => {
   const { t } = useTranslation()
   const [form] = Form.useForm()
-  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
@@ -107,7 +117,9 @@ export const EditInverterPlanModal = ({ pvID, showModal, setshowModal, setautoIn
                     <ChangeHighlight>
                       <div ref={actualCapRef}>
                         {curN1 && curN2
-                          ? `${w2other(genActualCapacity()).value} ${w2other(genActualCapacity()).unit}`
+                          ? `${w2other(genActualCapacity()).value} ${
+                              w2other(genActualCapacity()).unit
+                            }`
                           : '-'}
                       </div>
                     </ChangeHighlight>
@@ -143,12 +155,15 @@ export const EditInverterPlanModal = ({ pvID, showModal, setshowModal, setautoIn
                     N1 ≤ {N1.N1vdcMax ? N1.N1vdcMax.toFixed(2) : '-'}
                   </Descriptions.Item>
                   <Descriptions.Item label={t('project.modifyPlan.n1_limit_mppt')} span={1}>
-                    {N1.N1Min ? N1.N1Min.toFixed(2) : '-'} ≤ N1 ≤ {N1.N1vmpptMax ? N1.N1vmpptMax.toFixed(2) : '-'}
+                    {N1.N1Min ? N1.N1Min.toFixed(2) : '-'} ≤ N1 ≤{' '}
+                    {N1.N1vmpptMax ? N1.N1vmpptMax.toFixed(2) : '-'}
                   </Descriptions.Item>
                   <Descriptions.Item label={t('project.modifyPlan.n1_limit_ratio')} span={1}>
                     <ChangeHighlight>
                       <div ref={N1RatioRef}>
-                        {curN2 && selInv ? `N1 ≤ ${((selInv.pdcMax * 1000) / (curN2 * selPV.pmax)).toFixed(2)}` : '-'}
+                        {curN2 && selInv
+                          ? `N1 ≤ ${((selInv.pdcMax * 1000) / (curN2 * selPV.pmax)).toFixed(2)}`
+                          : '-'}
                       </div>
                     </ChangeHighlight>
                   </Descriptions.Item>
@@ -156,7 +171,11 @@ export const EditInverterPlanModal = ({ pvID, showModal, setshowModal, setautoIn
                     {`
                       ${N1.N1Min ? Math.ceil(N1.N1Min) : '-'} 
                       ≤ N1 ≤ 
-                      ${N1.N1vdcMax && N1.N1vmpptMax ? Math.floor(Math.min(N1.N1vdcMax, N1.N1vmpptMax)) : '-'}
+                      ${
+                        N1.N1vdcMax && N1.N1vmpptMax
+                          ? Math.floor(Math.min(N1.N1vdcMax, N1.N1vmpptMax))
+                          : '-'
+                      }
                     `}
                   </Descriptions.Item>
                 </Descriptions>
@@ -168,7 +187,9 @@ export const EditInverterPlanModal = ({ pvID, showModal, setshowModal, setautoIn
                   <Descriptions.Item label={t('project.modifyPlan.n2_limit_power')} span={1}>
                     <ChangeHighlight>
                       <div ref={N2Ref}>
-                        {curN1 && selInv ? `N2 ≤ ${((selInv.pdcMax / curN1 / selPV.pmax) * 1000).toFixed(2)}` : '-'}
+                        {curN1 && selInv
+                          ? `N2 ≤ ${((selInv.pdcMax / curN1 / selPV.pmax) * 1000).toFixed(2)}`
+                          : '-'}
                       </div>
                     </ChangeHighlight>
                   </Descriptions.Item>
@@ -181,7 +202,9 @@ export const EditInverterPlanModal = ({ pvID, showModal, setshowModal, setautoIn
               <Descriptions.Item label={t('project.modifyPlan.inv_expected')} span={1}>
                 <ChangeHighlight>
                   <div ref={invReqRef}>
-                    {curN1 && curN2 ? ((capacity * 1000) / curN2 / selPV.pmax / curN1).toFixed(2) : '-'}
+                    {curN1 && curN2
+                      ? ((capacity * 1000) / curN2 / selPV.pmax / curN1).toFixed(2)
+                      : '-'}
                   </div>
                 </ChangeHighlight>
               </Descriptions.Item>
@@ -195,7 +218,9 @@ export const EditInverterPlanModal = ({ pvID, showModal, setshowModal, setautoIn
               </Descriptions.Item>
               <Descriptions.Item label={t('project.modifyPlan.inv_actual_ratio')} span={1}>
                 <ChangeHighlight>
-                  <div ref={invRatioRef}>{curN1 && curN2 ? ActualDCOverACRatio().toFixed(2) : '-'}</div>
+                  <div ref={invRatioRef}>
+                    {curN1 && curN2 ? ActualDCOverACRatio().toFixed(2) : '-'}
+                  </div>
                 </ChangeHighlight>
               </Descriptions.Item>
             </Descriptions>
@@ -206,10 +231,14 @@ export const EditInverterPlanModal = ({ pvID, showModal, setshowModal, setautoIn
                 {curN1 && selInv && curN1 * selPV.vmpo < selInv.vdcMax ? pass : fail}
               </Descriptions.Item>
               <Descriptions.Item label={t('project.modifyPlan.ratio_validation')} span={1}>
-                {curN1 && curN2 && selInv && ActualDCOverACRatio() <= AllowDCOverAcRatio() ? pass : fail}
+                {curN1 && curN2 && selInv && ActualDCOverACRatio() <= AllowDCOverAcRatio()
+                  ? pass
+                  : fail}
               </Descriptions.Item>
               <Descriptions.Item label={t('project.modifyPlan.n1_validation')} span={1}>
-                {curN1 && curN2 && selInv && curN1 <= (selInv.pdcMax * 1000) / (curN2 * selPV.pmax) ? pass : fail}
+                {curN1 && curN2 && selInv && curN1 <= (selInv.pdcMax * 1000) / (curN2 * selPV.pmax)
+                  ? pass
+                  : fail}
               </Descriptions.Item>
             </Descriptions>
           </Col>

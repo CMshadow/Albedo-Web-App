@@ -29,7 +29,11 @@ export const PowerCabinetSpecCard = ({
           disabled={editing || editingPowercabinet !== null}
           type="link"
           shape="circle"
-          icon={<EditTwoTone twoToneColor={editing || editingPowercabinet !== null ? '#bfbfbf' : '#1890ff'} />}
+          icon={
+            <EditTwoTone
+              twoToneColor={editing || editingPowercabinet !== null ? '#bfbfbf' : '#1890ff'}
+            />
+          }
           onClick={() => {
             setediting(true)
             seteditingPowercabinet(powercabinetIndex)
@@ -42,7 +46,9 @@ export const PowerCabinetSpecCard = ({
           icon={
             <DeleteTwoTone
               twoToneColor={
-                editingPowercabinet !== null && editingPowercabinet !== powercabinetIndex ? '#bfbfbf' : '#f5222d'
+                editingPowercabinet !== null && editingPowercabinet !== powercabinetIndex
+                  ? '#bfbfbf'
+                  : '#f5222d'
               }
             />
           }

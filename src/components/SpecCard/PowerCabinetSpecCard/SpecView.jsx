@@ -15,7 +15,9 @@ export const SpecView = ({ powercabinetIndex }) => {
     <>
       <Descriptions column={4} bordered layout="vertical">
         <Item label={t('project.spec.powercabinet.powercabinet_serial_num')} span={1}>
-          <Text className={styles.powercabinetSerial}>P{powercabinetData.powercabinet_serial_num}</Text>
+          <Text className={styles.powercabinetSerial}>
+            P{powercabinetData.powercabinet_serial_num}
+          </Text>
         </Item>
         <Item label={t('project.spec.powercabinet.powercabinet_name')} span={1}>
           {powercabinetData.powercabinet_name}
@@ -26,10 +28,13 @@ export const SpecView = ({ powercabinetIndex }) => {
         <Item label={t('project.spec.powercabinet.linked-capacity')} span={1}>
           {powercabinetData.powercabinet_linked_capacity} kVA
         </Item>
-        {powercabinetData.linked_transformer_serial_num && powercabinetData.linked_transformer_serial_num.length > 0 ? (
+        {powercabinetData.linked_transformer_serial_num &&
+        powercabinetData.linked_transformer_serial_num.length > 0 ? (
           <Item label={t('project.spec.linked_transformer_serial_num')} span={4}>
             <Paragraph className={styles.linkedTransformerParagraph}>
-              {powercabinetData.linked_transformer_serial_num.map(serial => `T${serial}`).join(' , ')}
+              {powercabinetData.linked_transformer_serial_num
+                .map(serial => `T${serial}`)
+                .join(' , ')}
             </Paragraph>
           </Item>
         ) : null}

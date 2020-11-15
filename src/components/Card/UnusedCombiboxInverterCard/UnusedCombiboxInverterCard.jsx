@@ -21,8 +21,16 @@ export const UnusedCombiboxInverterCard = () => {
   const unusedTransformerSerial = findUnusedTransformerSerial(allPowercabinets, allTransformers)
 
   const genUnusedCombiboxInverter = building => {
-    const unusedCombiboxSerial = findUnusedCombiboxSerial(allTransformers, allPowercabinets, building)
-    const unusedInverterSerial = findUnusedInverterSerial(allTransformers, allPowercabinets, building)
+    const unusedCombiboxSerial = findUnusedCombiboxSerial(
+      allTransformers,
+      allPowercabinets,
+      building
+    )
+    const unusedInverterSerial = findUnusedInverterSerial(
+      allTransformers,
+      allPowercabinets,
+      building
+    )
 
     return (
       <>
@@ -41,7 +49,9 @@ export const UnusedCombiboxInverterCard = () => {
             <Space>
               {t('project.spec.unlink_inverter_serial')}:
               <Paragraph className={styles.inverterParagraph}>
-                {unusedInverterSerial.map(serial => `S${serial.split('-').slice(-2).join('-')}`).join(' , ')}
+                {unusedInverterSerial
+                  .map(serial => `S${serial.split('-').slice(-2).join('-')}`)
+                  .join(' , ')}
               </Paragraph>
             </Space>
           </Row>

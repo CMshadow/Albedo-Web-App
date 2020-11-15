@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Layout, Menu, Row, Space, Col } from 'antd'
+import { Button, Layout, Menu, Space, Row, Col } from 'antd'
+
 import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import logo from '../../assets/logo.png'
-import * as styles from './EnDisplayPageHeader.module.scss'
+import styles from './DisplayPageHeader.module.scss'
+import { RootState } from '../../@types'
 
 const { Header } = Layout
 
-const EnDisplayPageHeader = () => {
+const DisplayPageHeader: React.FC = () => {
   const [headerClass, setheaderClass] = useState(styles.headerInFixed)
   const location = useLocation()
-  const cognitoUser = useSelector(state => state.auth.cognitoUser)
+  const cognitoUser = useSelector((state: RootState) => state.auth.cognitoUser)
 
   const navKey = location.pathname.split('/')[2] === 'tutorial' ? 'tutorial' : 'home'
 
@@ -30,33 +32,39 @@ const EnDisplayPageHeader = () => {
   return (
     <Header className={headerClass}>
       <Row>
-        <Col className={styles.logo} xs={8} sm={6} align="middle">
-          <Link to="/en">
+        <Col className={styles.logo} xs={6} sm={4}>
+          <Link to="/cn">
             <img src={logo} alt="logo" height="45px" />
           </Link>
         </Col>
-        <Col xs={4} sm={6}>
+        <Col xs={6} sm={8}>
           <Menu className={styles.nav} mode="horizontal" selectedKeys={[navKey]}>
             <Menu.Item key="home">
-              <Link to="/en">Product</Link>
+              <Link to="/cn">产品介绍</Link>
             </Menu.Item>
             <Menu.Item key="tutorial">
-              <Link to="/en/tutorial">Tutorial</Link>
+              <Link to="/cn/tutorial">视频教程</Link>
             </Menu.Item>
           </Menu>
         </Col>
-        <Col className={styles.right} justify="end" align="middle" xs={12}>
+        <Col className={styles.right} xs={12}>
           {cognitoUser ? (
-            <Button type="primary">
-              <Link to="/dashboard">Dashboard</Link>
+            <Button
+              type="primary"
+              href="https://albedowebdesign-1302836232.cos-website.ap-shanghai.myqcloud.com/dashboard"
+            >
+              进入操作台
             </Button>
           ) : (
             <Space>
-              <Button type="primary">
-                <Link to="/user/register">Free Register</Link>
+              <Button
+                type="primary"
+                href="https://albedowebdesign-1302836232.cos-website.ap-shanghai.myqcloud.com/user/register"
+              >
+                免费注册
               </Button>
-              <Button>
-                <Link to="/user/login">Login</Link>
+              <Button href="https://albedowebdesign-1302836232.cos-website.ap-shanghai.myqcloud.com/user/login">
+                账户登录
               </Button>
             </Space>
           )}
@@ -66,4 +74,4 @@ const EnDisplayPageHeader = () => {
   )
 }
 
-export default EnDisplayPageHeader
+export default DisplayPageHeader

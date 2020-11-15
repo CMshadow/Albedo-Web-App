@@ -36,8 +36,12 @@ export const createGainData: ICreateGainData = report => {
     const netCashFlowSelfUse = Number((cashInFlowSelfUse - cashOutFlowSelfUse).toFixed(2))
     const lastAccNetCashFlowToGrid = initDataSource.slice(-1)[0]['acc-net-cash-flow-togrid']
     const lastAccNetCashFlowSelfUse = initDataSource.slice(-1)[0]['acc-net-cash-flow-selfuse']
-    const newAccNetCashFlowToGrid = Number((lastAccNetCashFlowToGrid + netCashFlowToGrid).toFixed(2))
-    const newAccNetCashFlowSelfUse = Number((lastAccNetCashFlowSelfUse + netCashFlowSelfUse).toFixed(2))
+    const newAccNetCashFlowToGrid = Number(
+      (lastAccNetCashFlowToGrid + netCashFlowToGrid).toFixed(2)
+    )
+    const newAccNetCashFlowSelfUse = Number(
+      (lastAccNetCashFlowSelfUse + netCashFlowSelfUse).toFixed(2)
+    )
     initDataSource.push({
       key: index + 1,
       series: index + 1,

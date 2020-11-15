@@ -17,7 +17,9 @@ export const SingleBuildingTab = ({ building }) => {
   const projectType = useSelector(state => state.project.projectType)
   const [editingCombibox, seteditingCombibox] = useState(null)
   const [loading, setloading] = useState(false)
-  const [collapseActive, setcollapseActive] = useState(new Array(building.data.length).fill(0).map(() => false))
+  const [collapseActive, setcollapseActive] = useState(
+    new Array(building.data.length).fill(0).map(() => false)
+  )
 
   const addSpec = buildingID => {
     dispatch(addSubAry(buildingID))
@@ -66,7 +68,11 @@ export const SingleBuildingTab = ({ building }) => {
           <Col span={3}>
             <Anchor offsetTop={70}>
               {building.data.map((spec, specIndex) => (
-                <Link key={`anchor${specIndex}`} href={`#sub${specIndex}`} title={`S${specIndex + 1}`}>
+                <Link
+                  key={`anchor${specIndex}`}
+                  href={`#sub${specIndex}`}
+                  title={`S${specIndex + 1}`}
+                >
                   {collapseActive[specIndex]
                     ? spec.inverter_wiring.map(invSpec => (
                         <Link
@@ -110,7 +116,9 @@ export const SingleBuildingTab = ({ building }) => {
                     addCB(building.buildingID)
                     setloading(false)
 
-                    document.getElementById(`combibox${building.combibox.length - 1}`).scrollIntoView()
+                    document
+                      .getElementById(`combibox${building.combibox.length - 1}`)
+                      .scrollIntoView()
                   }, 500)
                 }}
               >

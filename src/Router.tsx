@@ -110,7 +110,9 @@ const Router = () => {
               <Route path="/en/tutorial" component={EnVideoPage} />
               <Route path="/cn" component={DisplayPage} />
               <Route path="/en" component={EnDisplayPage} />
-              <Route path="/">{getLanguage() === 'zh-CN' ? <DisplayPage /> : <EnDisplayPage />}</Route>
+              <Route path="/">
+                {getLanguage() === 'zh-CN' ? <DisplayPage /> : <EnDisplayPage />}
+              </Route>
               <Route path="*" component={NotFound404} />
             </Switch>
           </Route>

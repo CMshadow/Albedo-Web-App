@@ -36,7 +36,8 @@ export const nearestCapacity = (Ut, linkedCapacity) => {
 export const autoValue = (Ut, capacity, type) => {
   const cal = (defaultValues, type, prev_cap, next_cap, prop) =>
     defaultValues[type][prev_cap][prop] +
-    ((capacity - prev_cap) * (defaultValues[type][next_cap][prop] - defaultValues[type][prev_cap][prop])) /
+    ((capacity - prev_cap) *
+      (defaultValues[type][next_cap][prop] - defaultValues[type][prev_cap][prop])) /
       (next_cap - prev_cap)
 
   let capacities
@@ -73,7 +74,14 @@ export const autoValue = (Ut, capacity, type) => {
   }
 }
 
-export const TransformerModel = ({ children, form, transformerData, curCapacity, formChanged, setformChanged }) => {
+export const TransformerModel = ({
+  children,
+  form,
+  transformerData,
+  curCapacity,
+  formChanged,
+  setformChanged,
+}) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [disableDryType, setdisableDryType] = useState(false)
@@ -116,12 +124,23 @@ export const TransformerModel = ({ children, form, transformerData, curCapacity,
       const Ut = ut || form.getFieldValue('Ut')
       const Se = capacity || Number(form.getFieldValue('transformer_capacity'))
       const TransformerCableLen = cableLen || Number(form.getFieldValue('transformer_cable_len'))
-      const allowACVolDropFac = ACVolDropFac ? ACVolDropFac / 100 : form.getFieldValue('transformer_ACVolDropFac') / 100
+      const allowACVolDropFac = ACVolDropFac
+        ? ACVolDropFac / 100
+        : form.getFieldValue('transformer_ACVolDropFac') / 100
       const Ib = cableIb || form.getFieldValue('transformer_high_voltage_cable_Ib')
 
       if (Ut && Se > 0 && TransformerCableLen && allowACVolDropFac && Ib) {
         setloading(true)
-        dispatch(wiringChoice({ type: 'transformer', Ut: Ut / 1000, Se, TransformerCableLen, allowACVolDropFac, Ib }))
+        dispatch(
+          wiringChoice({
+            type: 'transformer',
+            Ut: Ut / 1000,
+            Se,
+            TransformerCableLen,
+            allowACVolDropFac,
+            Ib,
+          })
+        )
           .then(res => {
             const chunk = res.transformer_wir_choice.split('(')
             if (chunk.length > 1) {
@@ -176,7 +195,14 @@ export const TransformerModel = ({ children, form, transformerData, curCapacity,
       }
       form.setFieldsValue({ transformer_linked_capacity: Number(curCapacity.toFixed(2)) })
     }
-  }, [autoField, autoWiringChoice, curCapacity, form, formChanged, transformerData.transformer_linked_capacity])
+  }, [
+    autoField,
+    autoWiringChoice,
+    curCapacity,
+    form,
+    formChanged,
+    transformerData.transformer_linked_capacity,
+  ])
 
   useEffect(() => {
     if (form.getFieldValue('Ut')) {
@@ -204,9 +230,15 @@ export const TransformerModel = ({ children, form, transformerData, curCapacity,
         </Col>
 
         <Col span={8}>
-          <FormItem name="transformer_type" label={t('project.spec.transformer.type')} rules={[{ required: true }]}>
+          <FormItem
+            name="transformer_type"
+            label={t('project.spec.transformer.type')}
+            rules={[{ required: true }]}
+          >
             <Select onChange={val => autoField(val)}>
-              <Option value="oil-immersed">{t('project.spec.transformer.type.oil-immersed')}</Option>
+              <Option value="oil-immersed">
+                {t('project.spec.transformer.type.oil-immersed')}
+              </Option>
               <Option value="dry-type" disabled={disableDryType}>
                 {t('project.spec.transformer.type.dry-type')}
               </Option>
@@ -316,7 +348,13 @@ export const TransformerModel = ({ children, form, transformerData, curCapacity,
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
             >
-              <Slider marks={ACVolDropFacMarks} step={0.05} min={0.1} max={5} onAfterChange={onSliderChange} />
+              <Slider
+                marks={ACVolDropFacMarks}
+                step={0.05}
+                min={0.1}
+                max={5}
+                onAfterChange={onSliderChange}
+              />
             </FormItem>
           </Col>
 
@@ -347,13 +385,22 @@ export const TransformerModel = ({ children, form, transformerData, curCapacity,
                   <FormItem
                     name="transformer_wir_num"
                     label=""
-                    rules={[{ required: true, type: 'number', min: 1, transform: val => Number(val) }]}
+                    rules={[
+                      { required: true, type: 'number', min: 1, transform: val => Number(val) },
+                    ]}
                   >
-                    <Input type="number" addonAfter={t('project.spec.transformer.transformer_wir_num')} />
+                    <Input
+                      type="number"
+                      addonAfter={t('project.spec.transformer.transformer_wir_num')}
+                    />
                   </FormItem>
                 </Col>
                 <Col span={16}>
-                  <FormItem name="transformer_wir_choice" rules={[{ required: true }]} wrapperCol={{ span: 24 }}>
+                  <FormItem
+                    name="transformer_wir_choice"
+                    rules={[{ required: true }]}
+                    wrapperCol={{ span: 24 }}
+                  >
                     <Select options={options} />
                   </FormItem>
                 </Col>

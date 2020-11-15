@@ -1,7 +1,19 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Divider, Typography } from 'antd'
+import {
+  Form,
+  Input,
+  Row,
+  Col,
+  Button,
+  Collapse,
+  Checkbox,
+  Select,
+  Tooltip,
+  Divider,
+  Typography,
+} from 'antd'
 import { TransformerModel } from '../../Model/TransformerModel/TransformerModel'
 import { editTransformer } from '../../../store/action/index'
 import { other2m } from '../../../utils/unitConverter'
@@ -52,7 +64,8 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
         spec.inverter_wiring
           .map(inverterSpec =>
             inverterSpec.inverter_model.inverterID
-              ? inverterData.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID).vac
+              ? inverterData.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID)
+                  .vac
               : null
           )
           .filter(elem => elem !== null)
@@ -69,9 +82,13 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
       combibox.linked_inverter_serial_num.map(serial => `${building.buildingName}-${serial}`)
     )
     const allInverterSerial = building.data.flatMap((spec, specIndex) =>
-      spec.inverter_wiring.map(inv => `${building.buildingName}-${specIndex + 1}-${inv.inverter_serial_number}`)
+      spec.inverter_wiring.map(
+        inv => `${building.buildingName}-${specIndex + 1}-${inv.inverter_serial_number}`
+      )
     )
-    unlinkedInverterSerial[buildingIndex] = allInverterSerial.filter(serial => !linkedInverterSerial.includes(serial))
+    unlinkedInverterSerial[buildingIndex] = allInverterSerial.filter(
+      serial => !linkedInverterSerial.includes(serial)
+    )
   })
 
   // 每个光伏单元下每个汇流箱的vac，光伏单元index为key, [vac]为value
@@ -99,7 +116,9 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
       value: combibox.combibox_serial_num,
       label: (
         <Tooltip title={combibox.combibox_name}>
-          <Text style={{ color: '#1890ff' }}>{`C${combibox.combibox_serial_num.split('-')[1]}`}</Text>
+          <Text style={{ color: '#1890ff' }}>{`C${
+            combibox.combibox_serial_num.split('-')[1]
+          }`}</Text>
         </Tooltip>
       ),
       disabled:
@@ -111,8 +130,12 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
     unlinkedInverterSerial[buildingIndex].map((serial, serialIndex) => {
       return {
         value: serial,
-        label: <Text style={{ color: '#faad14' }}>{`S${serial.split('-').slice(-2).join('-')}`}</Text>,
-        disabled: everyInverterVac[buildingIndex][serialIndex] !== selVac || usedInverterSerial.includes(serial),
+        label: (
+          <Text style={{ color: '#faad14' }}>{`S${serial.split('-').slice(-2).join('-')}`}</Text>
+        ),
+        disabled:
+          everyInverterVac[buildingIndex][serialIndex] !== selVac ||
+          usedInverterSerial.includes(serial),
       }
     })
 
@@ -121,7 +144,9 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
     const values = {}
     transformerData[`linked_${equipment}_serial_num`].forEach(serial => {
       const buildingName = serial.split('-')[0]
-      const buildingIndex = buildings.indexOf(buildings.find(building => building.buildingName === buildingName))
+      const buildingIndex = buildings.indexOf(
+        buildings.find(building => building.buildingName === buildingName)
+      )
       if (buildingIndex in values) {
         values[buildingIndex].push(serial)
       } else {
@@ -198,10 +223,14 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
   const updateCheckAll = (buildingIndex, curCombiboxCBValues, curInvCBValues) => {
     const combiboxCBValues =
       curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`) || []
-    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
+    const invCBValues =
+      curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
     const status = determineCheckAll(
       [...combiboxCBValues, ...invCBValues],
-      [...createCombiboxCheckboxOptions(buildingIndex), ...createInverterCheckboxOptions(buildingIndex)]
+      [
+        ...createCombiboxCheckboxOptions(buildingIndex),
+        ...createInverterCheckboxOptions(buildingIndex),
+      ]
     )
     const newCheckAll = [...checkAll]
     newCheckAll[buildingIndex] = status
@@ -212,10 +241,14 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
   const updateIntermediate = (buildingIndex, curCombiboxCBValues, curInvCBValues) => {
     const combiboxCBValues =
       curCombiboxCBValues || form.getFieldValue(`linked_combibox_serial_num_${buildingIndex}`) || []
-    const invCBValues = curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
+    const invCBValues =
+      curInvCBValues || form.getFieldValue(`linked_inverter_serial_num_${buildingIndex}`) || []
     const status = determineIntermediate(
       [...combiboxCBValues, ...invCBValues],
-      [...createCombiboxCheckboxOptions(buildingIndex), ...createInverterCheckboxOptions(buildingIndex)]
+      [
+        ...createCombiboxCheckboxOptions(buildingIndex),
+        ...createInverterCheckboxOptions(buildingIndex),
+      ]
     )
     const newIntermediate = [...intermediate]
     newIntermediate[buildingIndex] = status
@@ -240,7 +273,11 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
                 const specIndex = invSerial.split('-')[0] - 1
                 const invIndex = invSerial.split('-')[1] - 1
                 const findInv = building.data[specIndex].inverter_wiring[invIndex]
-                return acc2 + inverterData.find(obj => obj.inverterID === findInv.inverter_model.inverterID).pacMax
+                return (
+                  acc2 +
+                  inverterData.find(obj => obj.inverterID === findInv.inverter_model.inverterID)
+                    .pacMax
+                )
               }, 0),
           0
         )
@@ -259,7 +296,10 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
           const specIndex = serial.split('-')[1] - 1
           const invIndex = serial.split('-')[2] - 1
           const findInv = building.data[specIndex].inverter_wiring[invIndex]
-          return acc + inverterData.find(obj => obj.inverterID === findInv.inverter_model.inverterID).pacMax
+          return (
+            acc +
+            inverterData.find(obj => obj.inverterID === findInv.inverter_model.inverterID).pacMax
+          )
         }, 0)
       })
       .reduce((acc, val) => acc + val, 0)
@@ -307,14 +347,18 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
   // 生成表单默认值
   const genInitValues = () => {
     const initValues = { ...transformerData }
-    initValues.transformer_ACVolDropFac = transformerData.transformer_ACVolDropFac || projectACVolDropFac
+    initValues.transformer_ACVolDropFac =
+      transformerData.transformer_ACVolDropFac || projectACVolDropFac
     const initInvCBValues = splitLinkedEquipmentSerial('inverter')
     Object.keys(initInvCBValues).forEach(
-      buildingIndex => (initValues[`linked_inverter_serial_num_${buildingIndex}`] = initInvCBValues[buildingIndex])
+      buildingIndex =>
+        (initValues[`linked_inverter_serial_num_${buildingIndex}`] = initInvCBValues[buildingIndex])
     )
     const initCombiboxCBValues = splitLinkedEquipmentSerial('combibox')
     Object.keys(initCombiboxCBValues).forEach(
-      buildingIndex => (initValues[`linked_combibox_serial_num_${buildingIndex}`] = initCombiboxCBValues[buildingIndex])
+      buildingIndex =>
+        (initValues[`linked_combibox_serial_num_${buildingIndex}`] =
+          initCombiboxCBValues[buildingIndex])
     )
     if (transformerData.transformer_wir_choice) {
       if (transformerData.transformer_wir_choice.includes('(')) {
@@ -394,7 +438,11 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
     >
       <Row gutter={rowGutter}>
         <Col span={8}>
-          <FormItem name="transformer_vac" label={t('project.spec.transformer_vac')} rules={[{ required: true }]}>
+          <FormItem
+            name="transformer_vac"
+            label={t('project.spec.transformer_vac')}
+            rules={[{ required: true }]}
+          >
             <Select
               options={[...allVac].map(val => ({
                 label: `${val} V`,
@@ -409,12 +457,19 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
           </FormItem>
         </Col>
         <Col span={8}>
-          <FormItem name="transformer_name" label={t('project.spec.transformer_name')} rules={[{ required: true }]}>
+          <FormItem
+            name="transformer_name"
+            label={t('project.spec.transformer_name')}
+            rules={[{ required: true }]}
+          >
             <Input />
           </FormItem>
         </Col>
         <Col span={8}>
-          <FormItem name="transformer_linked_capacity" label={t('project.spec.transformer.linked-capacity')}>
+          <FormItem
+            name="transformer_linked_capacity"
+            label={t('project.spec.transformer.linked-capacity')}
+          >
             <Input type="number" disabled addonAfter="kVA" />
           </FormItem>
         </Col>
@@ -437,7 +492,9 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
                     onChange={() => {
                       setformChanged(true)
                       const check = checkUncheckAll(buildingIndex)
-                      check ? calculateCapacity(buildingIndex, null, null) : calculateCapacity(buildingIndex, [], [])
+                      check
+                        ? calculateCapacity(buildingIndex, null, null)
+                        : calculateCapacity(buildingIndex, [], [])
                     }}
                     checked={checkAll[buildingIndex]}
                   >

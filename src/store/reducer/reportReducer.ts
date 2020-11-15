@@ -41,7 +41,7 @@ const deleteReportData: IReducer<DeleteReportDataAction> = (state, action) => {
   return newState
 }
 
-const reducer = (state = initialState, action: ReportActionTypes) => {
+const reducer = (state = initialState, action: ReportActionTypes): IReportState => {
   switch (action.type) {
     case actionTypes.SET_REPORTDATA:
       return setReportData(state, action)

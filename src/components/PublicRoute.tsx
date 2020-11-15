@@ -5,6 +5,11 @@ import { RootState } from '../@types'
 
 const PublicRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
   const cognitoUser = useSelector((state: RootState) => state.auth.cognitoUser)
-  return <Route {...rest} render={() => (!cognitoUser ? children : <Redirect to={{ pathname: '/dashboard' }} />)} />
+  return (
+    <Route
+      {...rest}
+      render={() => (!cognitoUser ? children : <Redirect to={{ pathname: '/dashboard' }} />)}
+    />
+  )
 }
 export default PublicRoute

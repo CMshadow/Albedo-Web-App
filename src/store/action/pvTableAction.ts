@@ -8,14 +8,14 @@ interface IAction<T> {
   (data: Array<PV>): ThunkResult<T>
 }
 
-export const setPVData: IAction<void> = data => (dispatch, getState) => {
+export const setPVData: IAction<void> = data => dispatch => {
   dispatch({
     type: actionTypes.SET_PV_DATA,
     data: data,
   })
 }
 
-export const setOfficialPVData: IAction<void> = data => (dispatch, getState) => {
+export const setOfficialPVData: IAction<void> = data => dispatch => {
   dispatch({
     type: actionTypes.SET_OFFICIAL_PV_DATA,
     data: data,

@@ -5,7 +5,7 @@ import { Locale } from '../../@types'
 
 type ThunkResult<R> = ThunkAction<R, RootState, undefined, LocalActionTypes>
 
-export const setLocale = (locale: Locale): ThunkResult<void> => (dispatch, getState) => {
+export const setLocale = (locale: Locale): ThunkResult<void> => dispatch => {
   dispatch({
     type: actionTypes.SET_LOCALE,
     locale: locale,

@@ -24,7 +24,7 @@ const setOfficialInverterData: IReducer = (state, action) => {
   }
 }
 
-const reducer = (state = initialState, action: InverterTableActionTypes) => {
+const reducer = (state = initialState, action: InverterTableActionTypes): IInverterTableState => {
   switch (action.type) {
     case actionTypes.SET_INVERTER_DATA:
       return setInverterData(state, action)

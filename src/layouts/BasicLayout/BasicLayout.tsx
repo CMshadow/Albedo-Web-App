@@ -17,45 +17,44 @@ import PublicHeader from '../PublicHeader/PublicHeader'
 import DefaultFooter from '../Footer/DefaultFooter'
 import GlobalAlert from '../../components/GlobalAlert/GlobalAlert'
 import EmailSupport from '../../components/TechSupport/EmailSupport'
-import { getPV, getOfficialPV } from '../../pages/PVTable/service'
-import { getInverter, getOfficialInverter } from '../../pages/InverterTable/service'
+import { getPV, getOfficialPV, getInverter, getOfficialInverter } from '../../services'
 import styles from './BasicLayout.module.scss'
 import { RootState } from '../../@types'
 
 const { Sider, Content } = Layout
 const { Footer } = Layout
 
-const BasicLayout = ({ children }) => {
+const BasicLayout: React.FC = props => {
   const history = useHistory()
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const cognitoUser = useSelector(state => state.auth.cognitoUser)
+  const cognitoUser = useSelector((state: RootState) => state.auth.cognitoUser)
   const selectMenu = history.location.pathname.split('/')[1]
 
-  // 释放redux中存储的项目数据
+  // 获取数据
   useEffect(() => {
     if (!cognitoUser) return
     const fetchData = async () => {
       const fetchPromises = []
       fetchPromises.push(
-        dispatch(getPV())
+        getPV()
           .then(res => dispatch(setPVData(res)))
-          .catch(err => history.push('/dashboard'))
+          .catch(() => history.push('/dashboard'))
       )
       fetchPromises.push(
-        dispatch(getOfficialPV(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US'))
+        getOfficialPV(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US')
           .then(res => dispatch(setOfficialPVData(res)))
-          .catch(err => history.push('/dashboard'))
+          .catch(() => history.push('/dashboard'))
       )
       fetchPromises.push(
-        dispatch(getInverter())
+        getInverter()
           .then(res => dispatch(setInverterData(res)))
-          .catch(err => history.push('/dashboard'))
+          .catch(() => history.push('/dashboard'))
       )
       fetchPromises.push(
-        dispatch(getOfficialInverter(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US'))
+        getOfficialInverter(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US')
           .then(res => dispatch(setOfficialInverterData(res)))
-          .catch(err => history.push('/dashboard'))
+          .catch(() => history.push('/dashboard'))
       )
       await Promise.all(fetchPromises)
     }
@@ -88,7 +87,7 @@ const BasicLayout = ({ children }) => {
             theme="dark"
             mode="inline"
             selectedKeys={[selectMenu]}
-            onSelect={({ item, key }) => history.push(`/${key}`)}
+            onSelect={({ key }) => history.push(`/${key}`)}
           >
             <Menu.Item key="dashboard" className={styles.menuItem}>
               {t('sider.menu.project')}
@@ -105,7 +104,7 @@ const BasicLayout = ({ children }) => {
           {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
           <Content className={styles.content}>
             <GlobalAlert />
-            {children}
+            {props.children}
           </Content>
           <Footer className={styles.footer}>
             <DefaultFooter />

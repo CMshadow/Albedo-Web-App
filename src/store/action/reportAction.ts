@@ -8,12 +8,14 @@ interface IAction<P, R> {
   (param: P): ThunkResult<R>
 }
 
-type EmptyParam = {}
 type BuildingIDParam = { buildingID: string }
 type SetReportDataParams = BuildingIDParam & { data: Report }
 type UpdateReportAttributesParams = BuildingIDParam & { [key: string]: Partial<Report> }
 
-export const setReportData: IAction<SetReportDataParams, void> = ({ buildingID, data }) => (dispatch, getState) => {
+export const setReportData: IAction<SetReportDataParams, void> = ({
+  buildingID,
+  data,
+}) => dispatch => {
   dispatch({
     type: actionTypes.SET_REPORTDATA,
     buildingID: buildingID,
@@ -21,10 +23,10 @@ export const setReportData: IAction<SetReportDataParams, void> = ({ buildingID, 
   })
 }
 
-export const updateReportAttributes: IAction<UpdateReportAttributesParams, void> = ({ buildingID, ...values }) => (
-  dispatch,
-  getState
-) => {
+export const updateReportAttributes: IAction<UpdateReportAttributesParams, void> = ({
+  buildingID,
+  ...values
+}) => dispatch => {
   dispatch({
     type: actionTypes.UPDATE_REPORTATTRIBUTES,
     buildingID: buildingID,
@@ -32,13 +34,13 @@ export const updateReportAttributes: IAction<UpdateReportAttributesParams, void>
   })
 }
 
-export const releaseReportData: IAction<EmptyParam, void> = () => (dispatch, getState) => {
+export const releaseReportData: IAction<void, void> = () => dispatch => {
   dispatch({
     type: actionTypes.RELEASE_REPORTDATA,
   })
 }
 
-export const deleteReportData: IAction<string, void> = buildingID => (dispatch, getState) => {
+export const deleteReportData: IAction<string, void> = buildingID => dispatch => {
   dispatch({
     type: actionTypes.DELETE_REPORTDATA,
     buildingID: buildingID,

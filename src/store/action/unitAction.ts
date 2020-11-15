@@ -5,7 +5,7 @@ import { Unit } from '../../@types'
 
 type ThunkResult<R> = ThunkAction<R, RootState, undefined, UnitActionTypes>
 
-export const setUnit = (unit: Unit): ThunkResult<void> => (dispatch, getState) => {
+export const setUnit = (unit: Unit): ThunkResult<void> => dispatch => {
   dispatch({
     type: actionTypes.SET_UNIT,
     unit: unit,

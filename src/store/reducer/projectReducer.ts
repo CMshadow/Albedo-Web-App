@@ -42,7 +42,9 @@ const _cleanupTransformers = (
   const changedTransformerSerials: string[] = []
   const newTransformers = transformers.map(transformer => {
     if (
-      transformer.linked_combibox_serial_num.some(serial => changedCombiboxSerials.includes(serial)) ||
+      transformer.linked_combibox_serial_num.some(serial =>
+        changedCombiboxSerials.includes(serial)
+      ) ||
       transformer.linked_inverter_serial_num.some(serial => changedInvSerials.includes(serial))
     ) {
       changedTransformerSerials.push(transformer.transformer_serial_num)
@@ -73,8 +75,12 @@ const _cleanupPowercabinets = (
 ) => {
   return powercabinets.map(powercabinet => {
     if (
-      powercabinet.linked_transformer_serial_num.some(serial => changedTransformerSerials.includes(serial)) ||
-      powercabinet.linked_combibox_serial_num.some(serial => changedCombiboxSerials.includes(serial)) ||
+      powercabinet.linked_transformer_serial_num.some(serial =>
+        changedTransformerSerials.includes(serial)
+      ) ||
+      powercabinet.linked_combibox_serial_num.some(serial =>
+        changedCombiboxSerials.includes(serial)
+      ) ||
       powercabinet.linked_inverter_serial_num.some(serial => changedInvSerials.includes(serial))
     ) {
       return {
@@ -152,7 +158,9 @@ const addBuilding: IReducer<AddBuildingAction> = (state, action) => {
 
 const editBuilding: IReducer<EditBuildingAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const spliceIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const spliceIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   const buildingCopy = newBuildings[spliceIndex]
   buildingCopy.buildingName = action.buildingName
@@ -160,7 +168,8 @@ const editBuilding: IReducer<EditBuildingAction> = (state, action) => {
   buildingCopy.reGenReport = true
   if ('combibox' in buildingCopy) {
     buildingCopy.combibox.forEach(
-      (combibox, combiboxIndex) => (combibox.combibox_serial_num = `${buildingCopy.buildingName}-${combiboxIndex + 1}`)
+      (combibox, combiboxIndex) =>
+        (combibox.combibox_serial_num = `${buildingCopy.buildingName}-${combiboxIndex + 1}`)
     )
   }
   newBuildings.splice(spliceIndex, 1, buildingCopy)
@@ -173,7 +182,9 @@ const editBuilding: IReducer<EditBuildingAction> = (state, action) => {
 
 const deleteBuilding: IReducer<DeleteBuildingAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const spliceIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const spliceIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   // 如果项目有变压器，把变压器中所有与房屋有关的逆变器汇流箱都删掉
   let newTransformers = state.transformers || []
@@ -182,12 +193,14 @@ const deleteBuilding: IReducer<DeleteBuildingAction> = (state, action) => {
       ...transformer,
       linked_inverter_serial_num: transformer.linked_inverter_serial_num.filter(val => {
         const buildingName = val.split('-')[0]
-        const buildingID = newBuildings.find(building => building.buildingName === buildingName)?.buildingID
+        const buildingID = newBuildings.find(building => building.buildingName === buildingName)
+          ?.buildingID
         return !(buildingID === action.buildingID)
       }),
       linked_combibox_serial_num: transformer.linked_combibox_serial_num.filter(val => {
         const buildingName = val.split('-')[0]
-        const buildingID = newBuildings.find(building => building.buildingName === buildingName)?.buildingID
+        const buildingID = newBuildings.find(building => building.buildingName === buildingName)
+          ?.buildingID
         return !(buildingID === action.buildingID)
       }),
     }))
@@ -199,12 +212,14 @@ const deleteBuilding: IReducer<DeleteBuildingAction> = (state, action) => {
       ...powercabinet,
       linked_inverter_serial_num: powercabinet.linked_inverter_serial_num.filter(val => {
         const buildingName = val.split('-')[0]
-        const buildingID = newBuildings.find(building => building.buildingName === buildingName)?.buildingID
+        const buildingID = newBuildings.find(building => building.buildingName === buildingName)
+          ?.buildingID
         return !(buildingID === action.buildingID)
       }),
       linked_combibox_serial_num: powercabinet.linked_combibox_serial_num.filter(val => {
         const buildingName = val.split('-')[0]
-        const buildingID = newBuildings.find(building => building.buildingName === buildingName)?.buildingID
+        const buildingID = newBuildings.find(building => building.buildingName === buildingName)
+          ?.buildingID
         return !(buildingID === action.buildingID)
       }),
     }))
@@ -223,7 +238,9 @@ const deleteBuilding: IReducer<DeleteBuildingAction> = (state, action) => {
 const setBuildingReGenReport: IReducer<SetBuildingReGenReportAction> = (state, action) => {
   if (!('buildings' in state)) return state
   if (action.buildingID !== 'overview') {
-    const buildingIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+    const buildingIndex = state.buildings
+      .map(building => building.buildingID)
+      .indexOf(action.buildingID)
     const newBuildings = [...state.buildings]
     newBuildings[buildingIndex].reGenReport = action.reGenReport
     return {
@@ -237,7 +254,9 @@ const setBuildingReGenReport: IReducer<SetBuildingReGenReportAction> = (state, a
 
 const addSubAry: IReducer<AddSubAryAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const buildingIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const buildingIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   newBuildings[buildingIndex].reGenReport = true
   newBuildings[buildingIndex].data.push({
@@ -260,7 +279,9 @@ const addSubAry: IReducer<AddSubAryAction> = (state, action) => {
 
 const editSubAry: IReducer<EditSubAryAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const buildingIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const buildingIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   const editBuilding = newBuildings[buildingIndex]
   const editSpec = editBuilding.data[action.specIndex]
@@ -343,7 +364,9 @@ const editSubAry: IReducer<EditSubAryAction> = (state, action) => {
 
 const deleteSubAry: IReducer<DeleteSubAryAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const buildingIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const buildingIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   const editBuilding = newBuildings[buildingIndex]
   const editSpec = editBuilding.data[action.specIndex]
@@ -387,7 +410,8 @@ const deleteSubAry: IReducer<DeleteSubAryAction> = (state, action) => {
         (trans.linked_inverter_serial_num = trans.linked_inverter_serial_num.map(val => {
           const buildingName = val.split('-')[0]
           const specIndex = Number(val.split('-')[1]) - 1
-          const buildingID = newBuildings.find(building => building.buildingName === buildingName)?.buildingID
+          const buildingID = newBuildings.find(building => building.buildingName === buildingName)
+            ?.buildingID
           if (buildingID === action.buildingID && specIndex > action.specIndex) {
             return `${buildingName}-${specIndex}-${val.split('-')[2]}`
           } else {
@@ -409,16 +433,19 @@ const deleteSubAry: IReducer<DeleteSubAryAction> = (state, action) => {
     // 把所有specIndex后面的汇流箱编号中的specIndex前移一个数字
     newPowercabinets.forEach(
       powercabinet =>
-        (powercabinet.linked_inverter_serial_num = powercabinet.linked_inverter_serial_num.map(val => {
-          const buildingName = val.split('-')[0]
-          const specIndex = Number(val.split('-')[1]) - 1
-          const buildingID = newBuildings.find(building => building.buildingName === buildingName)?.buildingID
-          if (buildingID === action.buildingID && specIndex > action.specIndex) {
-            return `${buildingName}-${specIndex}-${val.split('-')[2]}`
-          } else {
-            return val
+        (powercabinet.linked_inverter_serial_num = powercabinet.linked_inverter_serial_num.map(
+          val => {
+            const buildingName = val.split('-')[0]
+            const specIndex = Number(val.split('-')[1]) - 1
+            const buildingID = newBuildings.find(building => building.buildingName === buildingName)
+              ?.buildingID
+            if (buildingID === action.buildingID && specIndex > action.specIndex) {
+              return `${buildingName}-${specIndex}-${val.split('-')[2]}`
+            } else {
+              return val
+            }
           }
-        }))
+        ))
     )
   }
 
@@ -433,11 +460,14 @@ const deleteSubAry: IReducer<DeleteSubAryAction> = (state, action) => {
 
 const addInverterSpec: IReducer<AddInverterSpecAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const buildingIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const buildingIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   newBuildings[buildingIndex].reGenReport = true
   newBuildings[buildingIndex].data[action.specIndex].inverter_wiring.push({
-    inverter_serial_number: newBuildings[buildingIndex].data[action.specIndex].inverter_wiring.length + 1,
+    inverter_serial_number:
+      newBuildings[buildingIndex].data[action.specIndex].inverter_wiring.length + 1,
     panels_per_string: null,
     string_per_inverter: null,
     ac_cable_len: null,
@@ -453,9 +483,12 @@ const addInverterSpec: IReducer<AddInverterSpecAction> = (state, action) => {
 
 const editInverterSpec: IReducer<EditInverterSpecAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const buildingIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const buildingIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const oldInverterID =
-    state.buildings[buildingIndex].data[action.specIndex].inverter_wiring[action.invIndex].inverter_model.inverterID
+    state.buildings[buildingIndex].data[action.specIndex].inverter_wiring[action.invIndex]
+      .inverter_model.inverterID
   const newBuildings = [...state.buildings]
   const editBuilding = newBuildings[buildingIndex]
   const editSpec = editBuilding.data[action.specIndex]
@@ -468,7 +501,9 @@ const editInverterSpec: IReducer<EditInverterSpecAction> = (state, action) => {
     dc_cable_len: action.dc_cable_len,
     inverter_model: { inverterID: action.inverterID, userID: action.inverter_userID },
   }
-  const changedInvSerials = [`${editBuilding.buildingName}-${action.specIndex + 1}-${action.invIndex + 1}`]
+  const changedInvSerials = [
+    `${editBuilding.buildingName}-${action.specIndex + 1}-${action.invIndex + 1}`,
+  ]
   // 如果更改了逆变器型号并且房屋有汇流箱，把汇流箱中关联的该逆变器去除
   const changedCombiboxSerials: string[] = []
   if (action.inverterID !== oldInverterID && 'combibox' in editBuilding) {
@@ -517,7 +552,9 @@ const editInverterSpec: IReducer<EditInverterSpecAction> = (state, action) => {
 
 const deleteInverterSpec: IReducer<DeleteInverterSpecAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const buildingIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const buildingIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   const editBuilding = newBuildings[buildingIndex]
   const editSpec = editBuilding.data[action.specIndex]
@@ -525,7 +562,9 @@ const deleteInverterSpec: IReducer<DeleteInverterSpecAction> = (state, action) =
   editSpec.inverter_wiring.splice(action.invIndex, 1)
   editSpec.inverter_wiring.forEach((obj, ind) => (obj.inverter_serial_number = ind + 1))
 
-  const changedInvSerials = [`${editBuilding.buildingName}-${action.specIndex + 1}-${action.invIndex + 1}`]
+  const changedInvSerials = [
+    `${editBuilding.buildingName}-${action.specIndex + 1}-${action.invIndex + 1}`,
+  ]
   // 如果房屋有汇流箱，剔除掉该逆变器并把后续逆变器编号往前减一位
   const changedCombiboxSerials: string[] = []
   if ('combibox' in editBuilding) {
@@ -568,7 +607,9 @@ const deleteInverterSpec: IReducer<DeleteInverterSpecAction> = (state, action) =
           const specIndex = Number(val.split('-')[1]) - 1
           const invIndex = Number(val.split('-')[2]) - 1
           if (buildingName === editBuilding.buildingName && specIndex === action.specIndex) {
-            return invIndex >= action.invIndex ? `${buildingName}-${specIndex + 1}-${invIndex}` : val
+            return invIndex >= action.invIndex
+              ? `${buildingName}-${specIndex + 1}-${invIndex}`
+              : val
           } else {
             return val
           }
@@ -587,16 +628,20 @@ const deleteInverterSpec: IReducer<DeleteInverterSpecAction> = (state, action) =
     // 把所有specIndex后面的汇流箱编号中的specIndex前移一个数字
     newPowercabinets.forEach(
       powercabinet =>
-        (powercabinet.linked_inverter_serial_num = powercabinet.linked_inverter_serial_num.map(val => {
-          const buildingName = val.split('-')[0]
-          const specIndex = Number(val.split('-')[1]) - 1
-          const invIndex = Number(val.split('-')[2]) - 1
-          if (buildingName === editBuilding.buildingName && specIndex === action.specIndex) {
-            return invIndex >= action.invIndex ? `${buildingName}-${specIndex + 1}-${invIndex}` : val
-          } else {
-            return val
+        (powercabinet.linked_inverter_serial_num = powercabinet.linked_inverter_serial_num.map(
+          val => {
+            const buildingName = val.split('-')[0]
+            const specIndex = Number(val.split('-')[1]) - 1
+            const invIndex = Number(val.split('-')[2]) - 1
+            if (buildingName === editBuilding.buildingName && specIndex === action.specIndex) {
+              return invIndex >= action.invIndex
+                ? `${buildingName}-${specIndex + 1}-${invIndex}`
+                : val
+            } else {
+              return val
+            }
           }
-        }))
+        ))
     )
   }
 
@@ -611,7 +656,9 @@ const deleteInverterSpec: IReducer<DeleteInverterSpecAction> = (state, action) =
 
 const addCombibox: IReducer<AddCombiboxAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const buildingIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const buildingIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   newBuildings[buildingIndex].reGenReport = true
 
@@ -620,7 +667,9 @@ const addCombibox: IReducer<AddCombiboxAction> = (state, action) => {
     combibox_cable_len: newBuildings[buildingIndex].combibox_cable_len,
     combibox_serial_num:
       'combibox' in newBuildings[buildingIndex]
-        ? `${newBuildings[buildingIndex].buildingName}-${newBuildings[buildingIndex].combibox.length + 1}`
+        ? `${newBuildings[buildingIndex].buildingName}-${
+            newBuildings[buildingIndex].combibox.length + 1
+          }`
         : `${newBuildings[buildingIndex].buildingName}-1`,
     combibox_vac: null,
     linked_inverter_serial_num: [],
@@ -639,14 +688,17 @@ const addCombibox: IReducer<AddCombiboxAction> = (state, action) => {
 
 const editCombibox: IReducer<EditCombiboxAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const buildingIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const buildingIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   newBuildings[buildingIndex].reGenReport = true
 
   const newCombibox = {
     combibox_name: action.combibox_name,
     combibox_cable_len: action.combibox_cable_len,
-    combibox_serial_num: newBuildings[buildingIndex].combibox[action.combiboxIndex].combibox_serial_num,
+    combibox_serial_num:
+      newBuildings[buildingIndex].combibox[action.combiboxIndex].combibox_serial_num,
     combibox_vac: action.combibox_vac,
     linked_inverter_serial_num: action.linked_inverter_serial_num,
   }
@@ -683,7 +735,9 @@ const editCombibox: IReducer<EditCombiboxAction> = (state, action) => {
 
 const deleteCombibox: IReducer<DeleteCombiboxAction> = (state, action) => {
   if (!('buildings' in state)) return state
-  const buildingIndex = state.buildings.map(building => building.buildingID).indexOf(action.buildingID)
+  const buildingIndex = state.buildings
+    .map(building => building.buildingID)
+    .indexOf(action.buildingID)
   const newBuildings = [...state.buildings]
   const editBuilding = newBuildings[buildingIndex]
   editBuilding.reGenReport = true
@@ -691,14 +745,19 @@ const deleteCombibox: IReducer<DeleteCombiboxAction> = (state, action) => {
 
   editBuilding.combibox.splice(action.combiboxIndex, 1)
   editBuilding.combibox.forEach(
-    (combibox, index) => (combibox.combibox_serial_num = `${editBuilding.buildingName}-${index + 1}`)
+    (combibox, index) =>
+      (combibox.combibox_serial_num = `${editBuilding.buildingName}-${index + 1}`)
   )
 
   // 如果项目有变压器，把和combibox关联的变压器数值清零，并把同房屋上后续汇流箱编号往前减一位
   let changedTransformerSerials: string[] = []
   let newTransformers = state.transformers || []
   if ('transformers' in state) {
-    ;[newTransformers, changedTransformerSerials] = _cleanupTransformers(newTransformers, [], changedCombiboxSerials)
+    ;[newTransformers, changedTransformerSerials] = _cleanupTransformers(
+      newTransformers,
+      [],
+      changedCombiboxSerials
+    )
     newTransformers.forEach(
       trans =>
         (trans.linked_combibox_serial_num = trans.linked_combibox_serial_num.map(val => {
@@ -715,7 +774,12 @@ const deleteCombibox: IReducer<DeleteCombiboxAction> = (state, action) => {
   // 如果项目有并网柜，把和combibox关联的或和有变动的变压器有关的并网柜数值清零，并把同房屋上后续汇流箱编号往前减一位
   let newPowercabinets = state.powercabinets || []
   if ('powercabinets' in state) {
-    newPowercabinets = _cleanupPowercabinets(newPowercabinets, [], changedCombiboxSerials, changedTransformerSerials)
+    newPowercabinets = _cleanupPowercabinets(
+      newPowercabinets,
+      [],
+      changedCombiboxSerials,
+      changedTransformerSerials
+    )
     newPowercabinets.forEach(
       pwrcab =>
         (pwrcab.linked_combibox_serial_num = pwrcab.linked_combibox_serial_num.map(val => {
@@ -811,7 +875,9 @@ const deleteTransformer: IReducer<DeleteTransformerAction> = (state, action) => 
   const newTransformers = state.transformers ? [...state.transformers] : []
   const changedTransformerSerials = [`${action.transformerIndex + 1}`]
   newTransformers.splice(action.transformerIndex, 1)
-  newTransformers.forEach((transformer, index) => (transformer.transformer_serial_num = `${index + 1}`))
+  newTransformers.forEach(
+    (transformer, index) => (transformer.transformer_serial_num = `${index + 1}`)
+  )
   // 如果项目有并网柜，把和变压器有关的并网柜数值清零，并把同房屋上后续变压器编号往前减一位
   let newPowercabinets = state.powercabinets || []
   if ('powercabinets' in state) {
@@ -886,7 +952,7 @@ const deletePowercabinet: IReducer<DeletePowercabinetAction> = (state, action) =
   }
 }
 
-const reducer = (state = initialState, action: ProjectActionTypes) => {
+const reducer = (state = initialState, action: ProjectActionTypes): IProjectState => {
   switch (action.type) {
     case actionTypes.SET_PROJECTDATA:
       return setProjectData(state, action)

@@ -8,7 +8,14 @@ import { getPerformanceCurve } from '../../../pages/InverterTable/service'
 
 const { TabPane } = Tabs
 
-export const PerformanceCurve = ({ inverterID, userID, show, setshow, setinverterID, setuserID }) => {
+export const PerformanceCurve = ({
+  inverterID,
+  userID,
+  show,
+  setshow,
+  setinverterID,
+  setuserID,
+}) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const userInv = useSelector(state => state.inverter.data)

@@ -30,7 +30,11 @@ export const CombinerBoxSpecCard = ({
           disabled={editing || editingCombibox !== null}
           type="link"
           shape="circle"
-          icon={<EditTwoTone twoToneColor={editing || editingCombibox !== null ? '#bfbfbf' : '#1890ff'} />}
+          icon={
+            <EditTwoTone
+              twoToneColor={editing || editingCombibox !== null ? '#bfbfbf' : '#1890ff'}
+            />
+          }
           onClick={() => {
             setediting(true)
             seteditingCombibox(combiboxIndex)
@@ -42,7 +46,11 @@ export const CombinerBoxSpecCard = ({
           danger
           icon={
             <DeleteTwoTone
-              twoToneColor={editingCombibox !== null && editingCombibox !== combiboxIndex ? '#bfbfbf' : '#f5222d'}
+              twoToneColor={
+                editingCombibox !== null && editingCombibox !== combiboxIndex
+                  ? '#bfbfbf'
+                  : '#f5222d'
+              }
             />
           }
           disabled={editingCombibox !== null && editingCombibox !== combiboxIndex}

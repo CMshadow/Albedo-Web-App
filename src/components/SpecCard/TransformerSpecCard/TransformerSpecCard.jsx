@@ -7,7 +7,13 @@ import { SpecView } from './SpecView'
 import { deleteTransformer } from '../../../store/action/index'
 import * as styles from './TransformerSpecCard.module.scss'
 
-export const TransformerSpecCard = ({ id, transformerIndex, editingTransformer, seteditingTransformer, ...props }) => {
+export const TransformerSpecCard = ({
+  id,
+  transformerIndex,
+  editingTransformer,
+  seteditingTransformer,
+  ...props
+}) => {
   const dispatch = useDispatch()
   const [editing, setediting] = useState(props.transformer_name === null)
   const [loading, setloading] = useState(false)
@@ -23,7 +29,11 @@ export const TransformerSpecCard = ({ id, transformerIndex, editingTransformer, 
           disabled={editing || editingTransformer !== null}
           type="link"
           shape="circle"
-          icon={<EditTwoTone twoToneColor={editing || editingTransformer !== null ? '#bfbfbf' : '#1890ff'} />}
+          icon={
+            <EditTwoTone
+              twoToneColor={editing || editingTransformer !== null ? '#bfbfbf' : '#1890ff'}
+            />
+          }
           onClick={() => {
             setediting(true)
             seteditingTransformer(transformerIndex)
@@ -36,7 +46,9 @@ export const TransformerSpecCard = ({ id, transformerIndex, editingTransformer, 
           icon={
             <DeleteTwoTone
               twoToneColor={
-                editingTransformer !== null && editingTransformer !== transformerIndex ? '#bfbfbf' : '#f5222d'
+                editingTransformer !== null && editingTransformer !== transformerIndex
+                  ? '#bfbfbf'
+                  : '#f5222d'
               }
             />
           }

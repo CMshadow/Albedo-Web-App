@@ -9,8 +9,7 @@ import { genInitial } from '../../utils/genInitial'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { setSignOut, setUnit } from '../../store/action/index'
-import { RootState, CognitoUserExt } from '../../@types'
-import { testRequest } from '../../services/test'
+import { RootState } from '../../@types'
 
 const { Header } = Layout
 

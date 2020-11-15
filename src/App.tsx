@@ -10,7 +10,7 @@ import Router from './Router'
 
 Amplify.configure(cognitoConfig)
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <Provider store={store}>
       <AntdConfig>

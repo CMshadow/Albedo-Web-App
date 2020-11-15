@@ -18,7 +18,9 @@ export const CommercialEquipmentTable = () => {
   const { t } = useTranslation()
   const projectData = useSelector(state => state.project)
   const unit = useSelector(state => state.unit.unit)
-  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
@@ -36,7 +38,9 @@ export const CommercialEquipmentTable = () => {
   const genInvCount = buildingData =>
     buildingData.data.flatMap(spec =>
       spec.inverter_wiring.map(inverterSpec => ({
-        name: inverterData.find(inverter => inverter.inverterID === inverterSpec.inverter_model.inverterID).name,
+        name: inverterData.find(
+          inverter => inverter.inverterID === inverterSpec.inverter_model.inverterID
+        ).name,
         count: 1,
       }))
     )
@@ -250,7 +254,12 @@ export const CommercialEquipmentTable = () => {
             props: { colSpan: 0 },
           }
         }
-        if (dcReg.test(row.key) || acReg.test(row.key) || combiboxReg.test(row.key) || transformerReg.test(row.key)) {
+        if (
+          dcReg.test(row.key) ||
+          acReg.test(row.key) ||
+          combiboxReg.test(row.key) ||
+          transformerReg.test(row.key)
+        ) {
           return `${m2other(unit, text).toFixed(2)} ${unit}`
         }
         return text

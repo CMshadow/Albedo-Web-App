@@ -1,22 +1,40 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { Map, Marker } from 'react-amap'
 import { amapRevGeocoder } from './service'
 import { notification } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { FormInstance } from 'antd/lib/form'
 
-const AMap = ({ apikey, mapPos, setmapPos, validated, setvalidated, form, webApiKey }) => {
+type AMapProps = {
+  apiKey: string
+  mapPos: { lat: number; lon: number }
+  setmapPos: Dispatch<SetStateAction<{ lat: number; lon: number }>>
+  validated: boolean
+  setvalidated: Dispatch<SetStateAction<boolean>>
+  form: FormInstance
+  webApiKey: string
+}
+
+const AMap: React.FC<AMapProps> = ({
+  apiKey,
+  mapPos,
+  setmapPos,
+  validated,
+  setvalidated,
+  form,
+  webApiKey,
+}) => {
   const { t } = useTranslation()
-  const plugins = ['MapType', 'ToolBar']
 
   return (
     <div style={{ width: '100%', height: '50vh' }} key="aMap">
       <Map
-        amapkey={apikey}
-        plugins={plugins}
+        amapkey={apiKey}
+        plugins={['MapType', 'ToolBar']}
         zoom={14}
         center={{ latitude: mapPos.lat, longitude: mapPos.lon }}
         events={{
-          click: e => {
+          click: (e: { lnglat: { lng: number; lat: number } }) => {
             amapRevGeocoder({ lon: e.lnglat.lng, lat: e.lnglat.lat, key: webApiKey }).then(res => {
               if (res.data.regeocode.formatted_address.length > 0) {
                 setmapPos({ lon: e.lnglat.lng, lat: e.lnglat.lat })

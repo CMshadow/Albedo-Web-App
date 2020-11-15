@@ -5,11 +5,19 @@ interface IFUTS {
 }
 
 interface IFUCS {
-  (allTransformers: Array<Transformer>, allPowercabinets: Array<PowerCabinet>, building: Building): Array<string>
+  (
+    allTransformers: Array<Transformer>,
+    allPowercabinets: Array<PowerCabinet>,
+    building: Building
+  ): Array<string>
 }
 
 interface IFUIS {
-  (allTransformers: Array<Transformer>, allPowercabinets: Array<PowerCabinet>, building: Building): Array<string>
+  (
+    allTransformers: Array<Transformer>,
+    allPowercabinets: Array<PowerCabinet>,
+    building: Building
+  ): Array<string>
 }
 
 interface IUAE {
@@ -18,7 +26,9 @@ interface IUAE {
 
 export const findUnusedTransformerSerial: IFUTS = (allPowercabinets, allTransformers) => {
   const allTranformerSerial = allTransformers.map(transformer => transformer.transformer_serial_num)
-  const allUsedTransformerSerial = allPowercabinets.flatMap(powercabinet => powercabinet.linked_transformer_serial_num)
+  const allUsedTransformerSerial = allPowercabinets.flatMap(
+    powercabinet => powercabinet.linked_transformer_serial_num
+  )
   return allTranformerSerial.filter(serial => !allUsedTransformerSerial.includes(serial))
 }
 
@@ -32,7 +42,9 @@ export const findUnusedCombiboxSerial: IFUCS = (allTransformers, allPowercabinet
 
 export const findUnusedInverterSerial: IFUIS = (allTransformers, allPowercabinets, building) => {
   const allInverterSerial = building.data.flatMap((spec, specIndex) =>
-    spec.inverter_wiring.map(inverter => `${building.buildingName}-${specIndex + 1}-${inverter.inverter_serial_number}`)
+    spec.inverter_wiring.map(
+      inverter => `${building.buildingName}-${specIndex + 1}-${inverter.inverter_serial_number}`
+    )
   )
   const allUsedInverterSerial = allTransformers
     .flatMap(trans => trans.linked_inverter_serial_num)

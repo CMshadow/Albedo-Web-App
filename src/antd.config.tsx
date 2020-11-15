@@ -53,7 +53,10 @@ const AntdConfig: React.FC = props => {
   }
 
   return (
-    <ConfigProvider locale={localeSwitch[locale]} form={{ validateMessages: validateMessages[locale] }}>
+    <ConfigProvider
+      locale={localeSwitch[locale]}
+      form={{ validateMessages: validateMessages[locale] }}
+    >
       {props.children}
     </ConfigProvider>
   )

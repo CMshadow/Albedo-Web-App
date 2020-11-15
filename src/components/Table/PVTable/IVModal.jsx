@@ -27,12 +27,20 @@ export const IVModal = ({ pvID, userID, show, setshow, setpvID, setuserID }) => 
             ivData.push({ current: 0, voltage: res[key].v_oc, irr: key })
             ivData.push({ current: res[key].i_mp, voltage: res[key].v_mp, irr: key })
             ivData.push({ current: res[key].i_x, voltage: res[key].v_oc * 0.5, irr: key })
-            ivData.push({ current: res[key].i_xx, voltage: (res[key].v_oc + res[key].v_mp) * 0.5, irr: key })
+            ivData.push({
+              current: res[key].i_xx,
+              voltage: (res[key].v_oc + res[key].v_mp) * 0.5,
+              irr: key,
+            })
 
             pvData.push({ power: res[key].i_sc * 0, voltage: 0, irr: key })
             pvData.push({ power: 0 * res[key].v_oc, voltage: res[key].v_oc, irr: key })
             pvData.push({ power: res[key].i_mp * res[key].v_mp, voltage: res[key].v_mp, irr: key })
-            pvData.push({ power: res[key].i_x * res[key].v_oc * 0.5, voltage: res[key].v_oc * 0.5, irr: key })
+            pvData.push({
+              power: res[key].i_x * res[key].v_oc * 0.5,
+              voltage: res[key].v_oc * 0.5,
+              irr: key,
+            })
             pvData.push({
               power: res[key].i_xx * (res[key].v_oc + res[key].v_mp) * 0.5,
               voltage: (res[key].v_oc + res[key].v_mp) * 0.5,

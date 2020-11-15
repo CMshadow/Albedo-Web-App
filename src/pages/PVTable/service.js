@@ -8,7 +8,9 @@ export const addPV = ({ values }) => async dispatch => {
     const auth = await Auth.currentAuthenticatedUser()
 
     return axios
-      .post(`/pv/${auth.username}`, values, { headers: { 'COG-TOKEN': auth.signInUserSession.idToken.jwtToken } })
+      .post(`/pv/${auth.username}`, values, {
+        headers: { 'COG-TOKEN': auth.signInUserSession.idToken.jwtToken },
+      })
       .then(res => res.data)
       .catch(err => {
         console.log(err)
@@ -26,7 +28,9 @@ export const getPV = () => async dispatch => {
     const auth = await Auth.currentAuthenticatedUser()
 
     return axios
-      .get(`/pv/${auth.username}`, { headers: { 'COG-TOKEN': auth.signInUserSession.idToken.jwtToken } })
+      .get(`/pv/${auth.username}`, {
+        headers: { 'COG-TOKEN': auth.signInUserSession.idToken.jwtToken },
+      })
       .then(res => res.data)
       .catch(err => {
         console.log(err)

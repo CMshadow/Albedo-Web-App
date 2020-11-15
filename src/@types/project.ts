@@ -75,21 +75,26 @@ export type PowerCabinet = {
   powercabinet_linked_capacity: number | null
 }
 
-export type Project = {
+export type ProjectPreUpload = {
+  projectTitle: number
+  projectAddress: string
+  projectAltitude: number
+  projectCreator: string
+  projectType: 'domestic' | 'commercial'
+  longitude: number
+  latitude: number
+  albedo: number
+  ACVolDropFac: number
+  DCVolDropFac: number
+}
+
+export type Project = Omit<ProjectPreUpload, 'longitude' | 'latitude'> & {
   projectID: string
   userID: string
   createdAt: number
   updatedAt: number
-  projectTitle: string
-  projectAltitude: number
-  albedo: number
-  ACVolDropFac: number
-  DCVolDropFac: number
   E0: number
   projectNote: string
-  projectType: 'domestic' | 'commercial'
-  projectAddress: string
-  projectCreator: string
   projectLon: number
   projectLat: number
   buildings: Array<Building>

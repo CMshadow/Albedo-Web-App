@@ -1,5 +1,5 @@
 import * as actionTypes from '../action/actionTypes'
-import { IAuthState, AuthActionTypes, SetCognitoUserAction, SetSignOutAction } from '../../@types'
+import { IAuthState, AuthActionTypes, SetCognitoUserAction } from '../../@types'
 
 const initialState: IAuthState = {
   cognitoUser: null,
@@ -12,16 +12,16 @@ const setCognitoUser = (state: IAuthState, action: SetCognitoUserAction) => {
   }
 }
 
-const setSignOut = (state: IAuthState, action: SetSignOutAction) => {
+const setSignOut = () => {
   return initialState
 }
 
-const reducer = (state = initialState, action: AuthActionTypes) => {
+const reducer = (state = initialState, action: AuthActionTypes): IAuthState => {
   switch (action.type) {
     case actionTypes.SET_COGNITOUSER:
       return setCognitoUser(state, action)
     case actionTypes.SET_SIGNOUT:
-      return setSignOut(state, action)
+      return setSignOut()
     default:
       return state
   }

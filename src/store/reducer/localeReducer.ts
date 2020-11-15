@@ -12,7 +12,7 @@ const setLocale = (state: ILocalState, action: LocalActionTypes) => {
   }
 }
 
-const reducer = (state = initialState, action: LocalActionTypes) => {
+const reducer = (state = initialState, action: LocalActionTypes): ILocalState => {
   switch (action.type) {
     case actionTypes.SET_LOCALE:
       return setLocale(state, action)

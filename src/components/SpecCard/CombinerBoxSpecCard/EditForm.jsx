@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { Form, Input, Row, Col, Button, Collapse, Checkbox, Select, Tooltip, Divider, Typography } from 'antd'
+import {
+  Form,
+  Input,
+  Row,
+  Col,
+  Button,
+  Collapse,
+  Checkbox,
+  Select,
+  Tooltip,
+  Divider,
+  Typography,
+} from 'antd'
 import { editCombibox } from '../../../store/action/index'
 import { other2m } from '../../../utils/unitConverter'
 import * as styles from './CombinerBoxSpecCard.module.scss'
@@ -53,7 +65,8 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
       spec.inverter_wiring
         .map(inverterSpec =>
           inverterSpec.inverter_model.inverterID
-            ? inverterData.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID).vac
+            ? inverterData.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID)
+                .vac
             : null
         )
         .filter(elem => elem !== null)
@@ -67,7 +80,8 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
       (everyInvVac[specIndex] = spec.inverter_wiring
         .map(inverterSpec =>
           inverterSpec.inverter_model.inverterID
-            ? inverterData.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID).vac
+            ? inverterData.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID)
+                .vac
             : null
         )
         .filter(elem => elem !== null))
@@ -93,8 +107,12 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
     subAryInv.map((inv, index) => ({
       value: `${subAryIndex + 1}-${inv.inverter_serial_number}`,
       label: (
-        <Tooltip title={inverterData.find(obj => obj.inverterID === inv.inverter_model.inverterID).name}>
-          <Text style={{ color: '#faad14' }}>{`S${subAryIndex + 1}-${inv.inverter_serial_number}`}</Text>
+        <Tooltip
+          title={inverterData.find(obj => obj.inverterID === inv.inverter_model.inverterID).name}
+        >
+          <Text style={{ color: '#faad14' }}>{`S${subAryIndex + 1}-${
+            inv.inverter_serial_number
+          }`}</Text>
         </Tooltip>
       ),
       disabled:
@@ -212,7 +230,9 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
     const initValues = { ...combiboxData }
     const initCBValues = splitCombiboxInvSerial()
     Object.keys(initCBValues).forEach(
-      subAryIndex => (initValues[`linked_inverter_serial_num_${Number(subAryIndex) + 1}`] = initCBValues[subAryIndex])
+      subAryIndex =>
+        (initValues[`linked_inverter_serial_num_${Number(subAryIndex) + 1}`] =
+          initCBValues[subAryIndex])
     )
     return initValues
   }
@@ -277,7 +297,11 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
     >
       <Row gutter={rowGutter}>
         <Col span={8}>
-          <FormItem name="combibox_vac" label={t('project.spec.combibox_vac')} rules={[{ required: true }]}>
+          <FormItem
+            name="combibox_vac"
+            label={t('project.spec.combibox_vac')}
+            rules={[{ required: true }]}
+          >
             <Select
               options={[...allVac].map(val => ({
                 label: `${val} V`,
@@ -291,7 +315,11 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
           </FormItem>
         </Col>
         <Col span={8}>
-          <FormItem name="combibox_name" label={t('project.spec.combibox_name')} rules={[{ required: true }]}>
+          <FormItem
+            name="combibox_name"
+            label={t('project.spec.combibox_name')}
+            rules={[{ required: true }]}
+          >
             <Input />
           </FormItem>
         </Col>
@@ -309,10 +337,18 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
 
       <Row gutter={rowGutter}>
         <Col span={24}>
-          <FormItem label={<div style={{ paddingTop: 12 }}>{t('project.spec.linked_inverter_serial_num')}</div>}>
+          <FormItem
+            label={
+              <div style={{ paddingTop: 12 }}>{t('project.spec.linked_inverter_serial_num')}</div>
+            }
+          >
             <Collapse ghost>
               {buildings[buildingIndex].data.map((subAry, subAryIndex) => (
-                <Panel header={`${t('project.spec.subAry')}${subAryIndex + 1}`} key={subAryIndex} forceRender>
+                <Panel
+                  header={`${t('project.spec.subAry')}${subAryIndex + 1}`}
+                  key={subAryIndex}
+                  forceRender
+                >
                   <Checkbox
                     indeterminate={intermediate[subAryIndex]}
                     onChange={() => checkUncheckAll(subAryIndex, subAry.inverter_wiring)}

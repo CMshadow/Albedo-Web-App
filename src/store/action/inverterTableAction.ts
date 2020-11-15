@@ -9,14 +9,14 @@ interface IAction<T> {
   (data: Array<Inverter>): ThunkResult<T>
 }
 
-export const setInverterData: IAction<void> = data => (dispatch, getState) => {
+export const setInverterData: IAction<void> = data => dispatch => {
   dispatch({
     type: actionTypes.SET_INVERTER_DATA,
     data: data,
   })
 }
 
-export const setOfficialInverterData: IAction<void> = data => (dispatch, getState) => {
+export const setOfficialInverterData: IAction<void> = data => dispatch => {
   dispatch({
     type: actionTypes.SET_OFFICIAL_INVERTER_DATA,
     data: data,

@@ -1,4 +1,4 @@
-export type Inverter = {
+export type InverterPreUpload = {
   name: string
   note: string
   inverterLength: number
@@ -50,4 +50,16 @@ export type Inverter = {
   c1: number
   c2: number
   c3: number
+}
+
+export type Inverter = InverterPreUpload & {
+  inverterID: string
+  userID: string
+  createdAt: number
+  updatedAt: number
+  area: number
+  paco_sandia: number
+  pdco_sandia: number
+  pso_sandia: number
+  pdcMax_sandia: number
 }

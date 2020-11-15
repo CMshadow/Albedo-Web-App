@@ -12,7 +12,7 @@ const setUnit = (state: IUnitState, action: UnitActionTypes) => {
   }
 }
 
-const reducer = (state = initialState, action: UnitActionTypes) => {
+const reducer = (state = initialState, action: UnitActionTypes): IUnitState => {
   switch (action.type) {
     case actionTypes.SET_UNIT:
       return setUnit(state, action)

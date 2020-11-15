@@ -3,7 +3,9 @@ export const getInverterWring = buildingData => {
 }
 
 export const getCombiBoxData = buildingReport => {
-  return buildingReport.investment.length > 0 ? buildingReport.investment.find(row => row.key === 4).description : ''
+  return buildingReport.investment.length > 0
+    ? buildingReport.investment.find(row => row.key === 4).description
+    : ''
 }
 
 export const getCombiBoxCableChoice = buildingReport => {
@@ -29,7 +31,9 @@ export const getPVsTableData = (allPV, buildingData, buildingReport) => {
 export const getInverterTableData = (allInverter, buildingData) => {
   return buildingData.data.flatMap((spec, index) =>
     spec.inverter_wiring.map(inverterSpec => {
-      const inverterName = allInverter.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID).name
+      const inverterName = allInverter.find(
+        obj => obj.inverterID === inverterSpec.inverter_model.inverterID
+      ).name
 
       return {
         key: 'inverter: ' + index,

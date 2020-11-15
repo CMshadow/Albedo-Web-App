@@ -53,7 +53,9 @@ const PowerGrid = () => {
                     setTimeout(() => {
                       dispatch(addTransformer())
                       setloading(false)
-                      document.getElementById(`trans${projectTransformers.length}`).scrollIntoView(false)
+                      document
+                        .getElementById(`trans${projectTransformers.length}`)
+                        .scrollIntoView(false)
                     }, 500)
                   }}
                 >
@@ -100,7 +102,9 @@ const PowerGrid = () => {
                     setTimeout(() => {
                       dispatch(addPowercabinet())
                       setloading(false)
-                      document.getElementById(`cabinet${projectPowercabinets.length}`).scrollIntoView(false)
+                      document
+                        .getElementById(`cabinet${projectPowercabinets.length}`)
+                        .scrollIntoView(false)
                     }, 500)
                   }}
                 >
