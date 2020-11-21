@@ -35,85 +35,85 @@ const Router = () => {
       <Suspense fallback={<EmptyLayout />}>
         <ScrollToTop />
         <Switch>
-          <Route path="/user">
+          <Route path='/user'>
             <UserLayout>
               <Switch>
-                <PublicRoute path="/user/login">
+                <PublicRoute path='/user/login'>
                   <Login />
                 </PublicRoute>
-                <PublicRoute path="/user/forget">
+                <PublicRoute path='/user/forget'>
                   <ForgetPassword />
                 </PublicRoute>
-                <PublicRoute path="/user/register">
+                <PublicRoute path='/user/register'>
                   <Register />
                 </PublicRoute>
-                <PublicRoute path="/user/verify">
+                <PublicRoute path='/user/verify'>
                   <Verification />
                 </PublicRoute>
-                <Route path="*">
+                <Route path='*'>
                   <NotFound404 />
                 </Route>
               </Switch>
             </UserLayout>
           </Route>
-          <PrivateRoute path="/project/:projectID">
+          <PrivateRoute path='/project/:projectID'>
             <ProjectLayout>
               <Switch>
-                <PrivateRoute path="/project/:projectID/dashboard">
+                <PrivateRoute path='/project/:projectID/dashboard'>
                   <Dashboard />
                 </PrivateRoute>
-                <PrivateRoute path="/project/:projectID/powergrid">
+                <PrivateRoute path='/project/:projectID/powergrid'>
                   <PowerGrid />
                 </PrivateRoute>
-                <PrivateRoute path="/project/:projectID/params">
+                <PrivateRoute path='/project/:projectID/params'>
                   <ParamsForm />
                 </PrivateRoute>
-                <PrivateRoute path="/project/:projectID/report/:buildingID">
+                <PrivateRoute path='/project/:projectID/report/:buildingID'>
                   <Report />
                 </PrivateRoute>
-                <PrivateRoute path="/project/:projectID/singleLineDiagram/:buildingID">
+                <PrivateRoute path='/project/:projectID/singleLineDiagram/:buildingID'>
                   <SLD />
                 </PrivateRoute>
-                <PrivateRoute path="*">
+                <PrivateRoute path='*'>
                   <NotFound404 />
                 </PrivateRoute>
               </Switch>
             </ProjectLayout>
           </PrivateRoute>
-          <PrivateRoute path="/pv">
+          <PrivateRoute path='/pv'>
             <BasicLayout>
               <PVTable />
             </BasicLayout>
           </PrivateRoute>
-          <PrivateRoute path="/inverter">
+          <PrivateRoute path='/inverter'>
             <BasicLayout>
               <InverterTable />
             </BasicLayout>
           </PrivateRoute>
-          <Route path="/terms">
+          <Route path='/terms'>
             <Term />
           </Route>
-          <Route path="/cookie">
+          <Route path='/cookie'>
             <Cookie />
           </Route>
-          <Route path="/privacy">
+          <Route path='/privacy'>
             <Privacy />
           </Route>
-          <PrivateRoute path="/dashboard">
+          <PrivateRoute path='/dashboard'>
             <BasicLayout>
               <ProjectTable />
             </BasicLayout>
           </PrivateRoute>
-          <Route path="/">
+          <Route path='/'>
             <Switch>
-              <Route path="/cn/tutorial" component={VideoPage} />
-              <Route path="/en/tutorial" component={EnVideoPage} />
-              <Route path="/cn" component={DisplayPage} />
-              <Route path="/en" component={EnDisplayPage} />
-              <Route path="/">
+              <Route path='/cn/tutorial' component={VideoPage} />
+              <Route path='/en/tutorial' component={EnVideoPage} />
+              <Route path='/cn' component={DisplayPage} />
+              <Route path='/en' component={EnDisplayPage} />
+              <Route path='/'>
                 {getLanguage() === 'zh-CN' ? <DisplayPage /> : <EnDisplayPage />}
               </Route>
-              <Route path="*" component={NotFound404} />
+              <Route path='*' component={NotFound404} />
             </Switch>
           </Route>
         </Switch>

@@ -146,7 +146,12 @@ const ForgetPassword = props => {
       password.length > 11
     )
       return 'success'
-    if (checkPsswordLength() && checkPsswordCapLetter() && checkPsswordLowLetter() && checkPsswordNumber())
+    if (
+      checkPsswordLength() &&
+      checkPsswordCapLetter() &&
+      checkPsswordLowLetter() &&
+      checkPsswordNumber()
+    )
       return 'normal'
     return 'exception'
   }
@@ -179,35 +184,35 @@ const ForgetPassword = props => {
         {passwordStatusMap[getPasswordStatus()]}
         {renderPasswordProgress()}
         <div className={styles.popoverContent}>
-          <Row align="middle">
+          <Row align='middle'>
             {checkPsswordLength() ? (
-              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" />
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor='#52c41a' />
             ) : (
-              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d" />
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor='#f5222d' />
             )}
             {t('user.hint.length')}
           </Row>
-          <Row align="middle">
+          <Row align='middle'>
             {checkPsswordLowLetter() ? (
-              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" />
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor='#52c41a' />
             ) : (
-              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d" />
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor='#f5222d' />
             )}
             {t('user.hint.lowLetter')}
           </Row>
-          <Row align="middle">
+          <Row align='middle'>
             {checkPsswordCapLetter() ? (
-              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" />
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor='#52c41a' />
             ) : (
-              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d" />
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor='#f5222d' />
             )}
             {t('user.hint.capLetter')}
           </Row>
-          <Row align="middle">
+          <Row align='middle'>
             {checkPsswordNumber() ? (
-              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" />
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor='#52c41a' />
             ) : (
-              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d" />
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor='#f5222d' />
             )}
             {t('user.hint.number')}
           </Row>
@@ -218,10 +223,10 @@ const ForgetPassword = props => {
   return (
     <div className={styles.main}>
       <h2>{t('user.forget.welcome')}</h2>
-      <Form form={form} name="Login" onFinish={onFinish}>
+      <Form form={form} name='Login' onFinish={onFinish}>
         <Row>{t('user.forget.email')}</Row>
         <FormItem
-          name="mail"
+          name='mail'
           rules={[
             {
               required: true,
@@ -233,7 +238,7 @@ const ForgetPassword = props => {
             },
           ]}
         >
-          <Input disabled={email} size="large" placeholder={t('user.placeholder.email')} />
+          <Input disabled={email} size='large' placeholder={t('user.placeholder.email')} />
         </FormItem>
         {codeSent ? (
           <>
@@ -241,7 +246,7 @@ const ForgetPassword = props => {
             <Row gutter={8}>
               <Col span={16}>
                 <FormItem
-                  name="verification"
+                  name='verification'
                   rules={[
                     {
                       required: true,
@@ -249,19 +254,29 @@ const ForgetPassword = props => {
                     },
                   ]}
                 >
-                  <Input size="large" placeholder={t('user.placeholder.verification')} />
+                  <Input size='large' placeholder={t('user.placeholder.verification')} />
                 </FormItem>
               </Col>
               <Col span={8}>
-                <Button size="large" disabled={!!count} className={styles.verifyBut} onClick={sendVerificationCode}>
+                <Button
+                  size='large'
+                  disabled={!!count}
+                  className={styles.verifyBut}
+                  onClick={sendVerificationCode}
+                >
                   {count ? `${count} s` : t('user.verification.resend')}
                 </Button>
               </Col>
             </Row>
             <Row>{t('user.required.password')}</Row>
-            <Popover content={genPopoverContent} overlayStyle={{ width: 300 }} placement="right" visible={visible}>
+            <Popover
+              content={genPopoverContent}
+              overlayStyle={{ width: 300 }}
+              placement='right'
+              visible={visible}
+            >
               <FormItem
-                name="password"
+                name='password'
                 className={styles.password}
                 rules={[
                   {
@@ -278,17 +293,27 @@ const ForgetPassword = props => {
                   },
                 ]}
               >
-                <Input.Password size="large" type="password" placeholder={t('user.placeholder.password')} />
+                <Input.Password
+                  size='large'
+                  type='password'
+                  placeholder={t('user.placeholder.password')}
+                />
               </FormItem>
             </Popover>
           </>
         ) : null}
 
-        <Link className={styles.floatright} to="/user/register">
+        <Link className={styles.floatright} to='/user/register'>
           {t('user.register.welcome')}
         </Link>
         <FormItem className={styles.submit}>
-          <Button size="large" loading={loading} className={styles.submit} type="primary" htmlType="submit">
+          <Button
+            size='large'
+            loading={loading}
+            className={styles.submit}
+            type='primary'
+            htmlType='submit'
+          >
             {codeSent ? t('user.reset-password') : t('user.forget.send-code')}
           </Button>
         </FormItem>

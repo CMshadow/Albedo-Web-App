@@ -3,6 +3,7 @@ export * from './project'
 export * from './report'
 export * from './pv'
 export * from './inv'
+export * from './PANandOND'
 
 export * from './store'
 export * from './store/auth'

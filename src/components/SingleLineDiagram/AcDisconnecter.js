@@ -32,7 +32,7 @@ const ACDisconnecter = props => {
         y={startY}
         width={minSize[0]}
         height={minSize[1]}
-        stroke="white"
+        stroke='white'
         strokeWidth={3}
       ></Rect>
     )
@@ -43,7 +43,7 @@ const ACDisconnecter = props => {
         x={startX + minSize[0] * 0.25}
         y={startY + minSize[1] * 0.5}
         radius={3}
-        fill="white"
+        fill='white'
       ></Circle>
     )
 
@@ -53,7 +53,7 @@ const ACDisconnecter = props => {
         x={startX + minSize[0] * 0.8}
         y={startY + minSize[1] * 0.5}
         radius={3}
-        fill="white"
+        fill='white'
       ></Circle>
     )
 
@@ -64,10 +64,10 @@ const ACDisconnecter = props => {
       <Line
         key={'Disconnect-AccessPortLine-' + uuidv4()}
         points={[startX + 0.25 * minSize[0], startY + minSize[1] / 2, switchOffsetX, switchOffsetY]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -80,10 +80,10 @@ const ACDisconnecter = props => {
           interConnectAccessPort[0],
           interConnectAccessPort[1],
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -96,10 +96,10 @@ const ACDisconnecter = props => {
           startX + 1.2 * minSize[0],
           startY + minSize[1] / 2,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -110,12 +110,17 @@ const ACDisconnecter = props => {
         y={startY + minSize[1] * 1.05}
         text={'Disconnect'}
         fontSize={16}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
-    dispatch(setServerPanel([startX + 1.2 * minSize[0], startY + minSize[1] / 2], [startX + width * 0.5, startY]))
+    dispatch(
+      setServerPanel(
+        [startX + 1.2 * minSize[0], startY + minSize[1] / 2],
+        [startX + width * 0.5, startY]
+      )
+    )
     return groupOfDisconnecter
   }
 

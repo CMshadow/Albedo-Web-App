@@ -14,7 +14,14 @@ const { Panel } = Collapse
 const mainSpan = { sm: 14, md: 18, lg: 21, xl: 22 }
 const toolbarSpan = { sm: 10, md: 6, lg: 3, xl: 2 }
 
-export const PVSpecCard = ({ id, buildingID, specIndex, collapseActive, setcollapseActive, ...props }) => {
+export const PVSpecCard = ({
+  id,
+  buildingID,
+  specIndex,
+  collapseActive,
+  setcollapseActive,
+  ...props
+}) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [editing, setediting] = useState(props.tilt_angle === null)
@@ -42,7 +49,7 @@ export const PVSpecCard = ({ id, buildingID, specIndex, collapseActive, setcolla
 
   return (
     <Card id={id} className={styles.card} bodyStyle={{ padding: '0px' }} loading={deleteLoading}>
-      <Row justify="center">
+      <Row justify='center'>
         <Col {...mainSpan}>
           <div className={styles.content}>
             {editing ? (
@@ -52,19 +59,23 @@ export const PVSpecCard = ({ id, buildingID, specIndex, collapseActive, setcolla
             )}
           </div>
         </Col>
-        <Col {...toolbarSpan} flex="auto">
-          <Row align="middle" className={styles.toolbar}>
+        <Col {...toolbarSpan} flex='auto'>
+          <Row align='middle' className={styles.toolbar}>
             <Button
               disabled={editing || editingInv !== null}
-              type="link"
-              shape="circle"
-              icon={<EditTwoTone twoToneColor={editing || editingInv !== null ? '#bfbfbf' : '#1890ff'} />}
+              type='link'
+              shape='circle'
+              icon={
+                <EditTwoTone
+                  twoToneColor={editing || editingInv !== null ? '#bfbfbf' : '#1890ff'}
+                />
+              }
               onClick={() => setediting(true)}
             />
             <Divider className={styles.divider} />
             <Button
-              type="link"
-              shape="circle"
+              type='link'
+              shape='circle'
               disabled={editingInv !== null}
               danger
               icon={<DeleteOutlined />}
@@ -84,14 +95,14 @@ export const PVSpecCard = ({ id, buildingID, specIndex, collapseActive, setcolla
         </Col>
       </Row>
       {/* <Divider className={styles.sectionBreak}/> */}
-      <Row gutter={12} justify="center">
+      <Row gutter={12} justify='center'>
         <Col span={24}>
           {editing ? null : (
             <Collapse bordered={false} className={styles.collapse} onChange={collapseOnchange}>
               <Panel
                 className={styles.collapsePanel}
                 header={<h4 style={{ margin: 0 }}>{t('project.spec.inverters')}</h4>}
-                key="1"
+                key='1'
               >
                 {invsSpec.map((invSpec, invIndex) => (
                   <InverterSpecCard
@@ -112,7 +123,7 @@ export const PVSpecCard = ({ id, buildingID, specIndex, collapseActive, setcolla
                   disabled={editing || editingInv !== null}
                   loading={loading}
                   block
-                  type="dashed"
+                  type='dashed'
                   onClick={() => {
                     seteditingInv(invsSpec.length)
                     setloading(true)

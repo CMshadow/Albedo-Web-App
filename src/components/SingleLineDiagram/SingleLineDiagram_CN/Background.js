@@ -9,7 +9,13 @@ const BackgroundGrids = props => {
 
   return (
     <Group>
-      <Rect key={'Backgroud-Rect-' + uuidv4()} x={0} y={0} width={windowWidth} height={windowHeight}></Rect>
+      <Rect
+        key={'Backgroud-Rect-' + uuidv4()}
+        x={0}
+        y={0}
+        width={windowWidth}
+        height={windowHeight}
+      ></Rect>
     </Group>
   )
 }

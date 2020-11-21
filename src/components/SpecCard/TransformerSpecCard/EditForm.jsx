@@ -431,7 +431,7 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
       colon={false}
       form={form}
       hideRequiredMark
-      name="transformerSpec"
+      name='transformerSpec'
       scrollToFirstError
       onFinish={submitForm}
       initialValues={genInitValues()}
@@ -439,7 +439,7 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
       <Row gutter={rowGutter}>
         <Col span={8}>
           <FormItem
-            name="transformer_vac"
+            name='transformer_vac'
             label={t('project.spec.transformer_vac')}
             rules={[{ required: true }]}
           >
@@ -458,7 +458,7 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
         </Col>
         <Col span={8}>
           <FormItem
-            name="transformer_name"
+            name='transformer_name'
             label={t('project.spec.transformer_name')}
             rules={[{ required: true }]}
           >
@@ -467,10 +467,10 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
         </Col>
         <Col span={8}>
           <FormItem
-            name="transformer_linked_capacity"
+            name='transformer_linked_capacity'
             label={t('project.spec.transformer.linked-capacity')}
           >
-            <Input type="number" disabled addonAfter="kVA" />
+            <Input type='number' disabled addonAfter='kVA' />
           </FormItem>
         </Col>
       </Row>
@@ -540,9 +540,9 @@ export const EditForm = ({ transformerIndex, seteditingFalse }) => {
         </Row>
       </TransformerModel>
 
-      <Row align="middle" justify="center">
+      <Row align='middle' justify='center'>
         <FormItem className={styles.submitBut}>
-          <Button type="primary" onClick={handleOk}>
+          <Button type='primary' onClick={handleOk}>
             {t('form.confirm')}
           </Button>
         </FormItem>

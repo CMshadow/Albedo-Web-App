@@ -9,17 +9,17 @@ const { Footer } = Layout
 const DefaultFooter: React.FC = () => {
   return (
     <Footer className={styles.footer}>
-      <img src={logo} alt="logo" height="35px" vertical-align="middle" />
+      <img src={logo} alt='logo' height='35px' vertical-align='middle' />
       <br />
-      <Link href="/terms" target="_blank">
+      <Link href='/terms' target='_blank'>
         服务协议
       </Link>
-      <Divider type="vertical" />
-      <Link href="/cookie" target="_blank">
+      <Divider type='vertical' />
+      <Link href='/cookie' target='_blank'>
         Cookie协议
       </Link>
-      <Divider type="vertical" />
-      <Link href="/privacy" target="_blank">
+      <Divider type='vertical' />
+      <Link href='/privacy' target='_blank'>
         隐私协议
       </Link>
       <br />

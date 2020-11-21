@@ -24,7 +24,15 @@ const EditableRow = ({ index, ...props }) => {
   )
 }
 
-const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
+const EditableCell = ({
+  title,
+  editable,
+  children,
+  dataIndex,
+  record,
+  handleSave,
+  ...restProps
+}) => {
   const [editing, setEditing] = useState(false)
   const inputRef = useRef()
   const form = useContext(EditableContext)
@@ -51,15 +59,21 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
     }
   }
 
-  let childNode = <div className="noneditable">{children}</div>
+  let childNode = <div className='noneditable'>{children}</div>
 
   if (editable) {
     childNode = editing ? (
       <Form.Item style={{ margin: 0, width: '100%' }} name={dataIndex} rules={[{ required: true }]}>
-        <InputNumber style={{ width: '100%' }} ref={inputRef} onPressEnter={save} onBlur={save} min={0} />
+        <InputNumber
+          style={{ width: '100%' }}
+          ref={inputRef}
+          onPressEnter={save}
+          onBlur={save}
+          min={0}
+        />
       </Form.Item>
     ) : (
-      <div className="editable-cell-wrap" onClick={toggleEdit}>
+      <div className='editable-cell-wrap' onClick={toggleEdit}>
         {children}
       </div>
     )
@@ -96,7 +110,9 @@ export const GainTable = ({ buildingID }) => {
       align: 'center',
       width: '10%',
       render: text =>
-        text === 'construction' ? t('gain.name.construction') : t('gain.year.prefix') + text + t('gain.year.suffix'),
+        text === 'construction'
+          ? t('gain.name.construction')
+          : t('gain.year.prefix') + text + t('gain.year.suffix'),
     },
     {
       key: 2,
@@ -210,15 +226,23 @@ export const GainTable = ({ buildingID }) => {
     newData.splice(index, 1, { ...item, ...row })
     // 相关值计算
     newData.slice(index).forEach((record, recordIndex) => {
-      const newCashInFlowToGrid = Number((record['cash-in-flow-togrid'] - record['cash-out-flow-togrid']).toFixed(2))
-      const newCashInFlowSelfUse = Number((record['cash-in-flow-selfuse'] - record['cash-out-flow-selfuse']).toFixed(2))
+      const newCashInFlowToGrid = Number(
+        (record['cash-in-flow-togrid'] - record['cash-out-flow-togrid']).toFixed(2)
+      )
+      const newCashInFlowSelfUse = Number(
+        (record['cash-in-flow-selfuse'] - record['cash-out-flow-selfuse']).toFixed(2)
+      )
       record['net-cash-flow-togrid'] = newCashInFlowToGrid
       record['net-cash-flow-selfuse'] = newCashInFlowSelfUse
       record['acc-net-cash-flow-togrid'] = Number(
-        (newData[index + recordIndex - 1]['acc-net-cash-flow-togrid'] + newCashInFlowToGrid).toFixed(2)
+        (
+          newData[index + recordIndex - 1]['acc-net-cash-flow-togrid'] + newCashInFlowToGrid
+        ).toFixed(2)
       )
       record['acc-net-cash-flow-selfuse'] = Number(
-        (newData[index + recordIndex - 1]['acc-net-cash-flow-selfuse'] + newCashInFlowSelfUse).toFixed(2)
+        (
+          newData[index + recordIndex - 1]['acc-net-cash-flow-selfuse'] + newCashInFlowSelfUse
+        ).toFixed(2)
       )
     })
     dispatch(
@@ -287,7 +311,7 @@ export const GainTable = ({ buildingID }) => {
     }
     return (
       <>
-        <Table.Summary.Row className="summaryRow">
+        <Table.Summary.Row className='summaryRow'>
           <Table.Summary.Cell rowSpan={2} colSpan={2}>
             <Text strong>{t('gain.cash-in-flow.25year')}</Text>
           </Table.Summary.Cell>
@@ -301,7 +325,7 @@ export const GainTable = ({ buildingID }) => {
             <Text strong>{ttlCashInFlowToGrid.toLocaleString()}</Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
-        <Table.Summary.Row className="summaryRow">
+        <Table.Summary.Row className='summaryRow'>
           <Table.Summary.Cell colSpan={2}>
             <Text strong>{t('gain.selfuse')}</Text>
           </Table.Summary.Cell>
@@ -309,7 +333,7 @@ export const GainTable = ({ buildingID }) => {
             <Text strong>{ttlCashInFlowSelfUse.toLocaleString()}</Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
-        <Table.Summary.Row className="summaryRow">
+        <Table.Summary.Row className='summaryRow'>
           <Table.Summary.Cell rowSpan={2} colSpan={2}>
             <Text strong>{t('gain.cash-in-flow.irr')}</Text>
           </Table.Summary.Cell>
@@ -321,7 +345,7 @@ export const GainTable = ({ buildingID }) => {
             <Text strong>{irrToGrid}</Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
-        <Table.Summary.Row className="summaryRow">
+        <Table.Summary.Row className='summaryRow'>
           <Table.Summary.Cell colSpan={2}>
             <Text strong>{t('gain.selfuse')}</Text>
           </Table.Summary.Cell>
@@ -329,7 +353,7 @@ export const GainTable = ({ buildingID }) => {
             <Text strong>{irrSelfUse}</Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
-        <Table.Summary.Row className="summaryRow">
+        <Table.Summary.Row className='summaryRow'>
           <Table.Summary.Cell rowSpan={3} colSpan={2}>
             <Text strong>{t('gain.payback-period')}</Text>
           </Table.Summary.Cell>
@@ -343,7 +367,7 @@ export const GainTable = ({ buildingID }) => {
             <Text strong>{paybackPeriodToGrid}</Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
-        <Table.Summary.Row className="summaryRow">
+        <Table.Summary.Row className='summaryRow'>
           <Table.Summary.Cell colSpan={2}>
             <Text strong>{t('gain.selfuse')}</Text>
           </Table.Summary.Cell>
@@ -351,7 +375,7 @@ export const GainTable = ({ buildingID }) => {
             <Text strong>{paybackPeriodSelfUse}</Text>
           </Table.Summary.Cell>
         </Table.Summary.Row>
-        <Table.Summary.Row className="summaryRow">
+        <Table.Summary.Row className='summaryRow'>
           <Table.Summary.Cell colSpan={2}>
             <Text strong>{t('gain.average')}</Text>
           </Table.Summary.Cell>
@@ -371,7 +395,7 @@ export const GainTable = ({ buildingID }) => {
         </Title>
       }
       hoverable
-      className="card"
+      className='card'
     >
       <Table
         components={components}
@@ -380,7 +404,7 @@ export const GainTable = ({ buildingID }) => {
         dataSource={dataSource}
         columns={formatedColumns}
         pagination={false}
-        size="middle"
+        size='middle'
         title={genHeader}
         summary={genSummary}
       />

@@ -28,7 +28,7 @@ import {
 } from '../../@types'
 import * as actionTypes from '../action/actionTypes'
 
-const initialState = {}
+const initialState = null
 
 interface IReducer<A> {
   (state: IProjectState, action: A): IProjectState
@@ -105,6 +105,7 @@ const setProjectData: IReducer<SetProjectDataAction> = (state, action) => {
 }
 
 const updateProjectAttributes: IReducer<UpdateProjectAttributesAction> = (state, action) => {
+  if (!state) return state
   const preStExUpdateAt = { ...state, updatedAt: '' }
   const newStExUpdateAt = { ...state, ...action.values, updatedAt: '' }
   if (JSON.stringify(preStExUpdateAt) === JSON.stringify(newStExUpdateAt)) {
@@ -118,10 +119,11 @@ const updateProjectAttributes: IReducer<UpdateProjectAttributesAction> = (state,
 }
 
 const releaseProjectData: IReducer<ReleaseProjectDataAction> = () => {
-  return {}
+  return null
 }
 
 const addBuilding: IReducer<AddBuildingAction> = (state, action) => {
+  if (!state) return state
   if ('buildings' in state && state.buildings) {
     return {
       ...state,
@@ -157,7 +159,7 @@ const addBuilding: IReducer<AddBuildingAction> = (state, action) => {
 }
 
 const editBuilding: IReducer<EditBuildingAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const spliceIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -181,7 +183,7 @@ const editBuilding: IReducer<EditBuildingAction> = (state, action) => {
 }
 
 const deleteBuilding: IReducer<DeleteBuildingAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const spliceIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -236,7 +238,7 @@ const deleteBuilding: IReducer<DeleteBuildingAction> = (state, action) => {
 }
 
 const setBuildingReGenReport: IReducer<SetBuildingReGenReportAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   if (action.buildingID !== 'overview') {
     const buildingIndex = state.buildings
       .map(building => building.buildingID)
@@ -253,7 +255,7 @@ const setBuildingReGenReport: IReducer<SetBuildingReGenReportAction> = (state, a
 }
 
 const addSubAry: IReducer<AddSubAryAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const buildingIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -278,7 +280,7 @@ const addSubAry: IReducer<AddSubAryAction> = (state, action) => {
 }
 
 const editSubAry: IReducer<EditSubAryAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const buildingIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -363,7 +365,7 @@ const editSubAry: IReducer<EditSubAryAction> = (state, action) => {
 }
 
 const deleteSubAry: IReducer<DeleteSubAryAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const buildingIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -459,7 +461,7 @@ const deleteSubAry: IReducer<DeleteSubAryAction> = (state, action) => {
 }
 
 const addInverterSpec: IReducer<AddInverterSpecAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const buildingIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -482,7 +484,7 @@ const addInverterSpec: IReducer<AddInverterSpecAction> = (state, action) => {
 }
 
 const editInverterSpec: IReducer<EditInverterSpecAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const buildingIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -551,7 +553,7 @@ const editInverterSpec: IReducer<EditInverterSpecAction> = (state, action) => {
 }
 
 const deleteInverterSpec: IReducer<DeleteInverterSpecAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const buildingIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -655,7 +657,7 @@ const deleteInverterSpec: IReducer<DeleteInverterSpecAction> = (state, action) =
 }
 
 const addCombibox: IReducer<AddCombiboxAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const buildingIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -687,7 +689,7 @@ const addCombibox: IReducer<AddCombiboxAction> = (state, action) => {
 }
 
 const editCombibox: IReducer<EditCombiboxAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const buildingIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -734,7 +736,7 @@ const editCombibox: IReducer<EditCombiboxAction> = (state, action) => {
 }
 
 const deleteCombibox: IReducer<DeleteCombiboxAction> = (state, action) => {
-  if (!('buildings' in state)) return state
+  if (!state || !('buildings' in state)) return state
   const buildingIndex = state.buildings
     .map(building => building.buildingID)
     .indexOf(action.buildingID)
@@ -804,7 +806,7 @@ const deleteCombibox: IReducer<DeleteCombiboxAction> = (state, action) => {
 }
 
 const addTransformer: IReducer<AddTransformerAction> = state => {
-  if (!('transformers' in state)) return state
+  if (!state || !('transformers' in state)) return state
   const newTransformers = state.transformers ? [...state.transformers] : []
   const newTransformer = {
     transformer_name: null,
@@ -834,7 +836,7 @@ const addTransformer: IReducer<AddTransformerAction> = state => {
 }
 
 const editTransformer: IReducer<EditTransformerAction> = (state, action) => {
-  if (!('transformers' in state)) return state
+  if (!state || !('transformers' in state)) return state
   const newTransformers = state.transformers ? [...state.transformers] : []
   const newTransformer = {
     transformer_name: action.transformer_name,
@@ -871,7 +873,7 @@ const editTransformer: IReducer<EditTransformerAction> = (state, action) => {
 }
 
 const deleteTransformer: IReducer<DeleteTransformerAction> = (state, action) => {
-  if (!('transformers' in state)) return state
+  if (!state || !('transformers' in state)) return state
   const newTransformers = state.transformers ? [...state.transformers] : []
   const changedTransformerSerials = [`${action.transformerIndex + 1}`]
   newTransformers.splice(action.transformerIndex, 1)
@@ -899,7 +901,7 @@ const deleteTransformer: IReducer<DeleteTransformerAction> = (state, action) => 
 }
 
 const addPowercabinet: IReducer<AddPowercabinetAction> = state => {
-  if (!('powercabinets' in state)) return state
+  if (!state || !('powercabinets' in state)) return state
   const newPowercabinets = state.powercabinets ? [...state.powercabinets] : []
   const newPowercabinet = {
     powercabinet_name: null,
@@ -920,7 +922,7 @@ const addPowercabinet: IReducer<AddPowercabinetAction> = state => {
 }
 
 const editPowercabinet: IReducer<EditPowercabinetAction> = (state, action) => {
-  if (!('powercabinets' in state)) return state
+  if (!state || !('powercabinets' in state)) return state
   const newPowercabinets = state.powercabinets ? [...state.powercabinets] : []
   const newPowercabinet = {
     powercabinet_name: action.powercabinet_name,
@@ -941,7 +943,7 @@ const editPowercabinet: IReducer<EditPowercabinetAction> = (state, action) => {
 }
 
 const deletePowercabinet: IReducer<DeletePowercabinetAction> = (state, action) => {
-  if (!('powercabinets' in state)) return state
+  if (!state || !('powercabinets' in state)) return state
   const newPowercabinets = state.powercabinets ? [...state.powercabinets] : []
   newPowercabinets.splice(action.powercabinetIndex, 1)
 

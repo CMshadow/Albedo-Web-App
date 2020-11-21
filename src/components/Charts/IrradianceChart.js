@@ -33,7 +33,7 @@ export const IrradianceChart = ({ buildingID }) => {
   const allSetup = uniqueSetupMonthIrr.map(setup => {
     const setupIndex = stringifySetupMonthIrr.indexOf(JSON.stringify(setup))
     return (
-      <Space>
+      <Space key={setupIndex}>
         {`${t('irrTable.tilt')}: ${uniqueTiltAzimuth[setupIndex].tilt}°`}
         {`${t('irrTable.azimuth')}: ${uniqueTiltAzimuth[setupIndex].azimuth}°`}
       </Space>
@@ -73,7 +73,7 @@ export const IrradianceChart = ({ buildingID }) => {
       hoverable
       style={{ cursor: 'unset' }}
     >
-      <Row justify="center">
+      <Row justify='center'>
         <Space>
           <Text strong>{t('irrChart.selectspec')}</Text>
           <Select defaultValue={selSpecIndex} onChange={val => setselSpecIndex(val)}>
@@ -93,9 +93,9 @@ export const IrradianceChart = ({ buildingID }) => {
         interactions={['active-region']}
         padding={[20, 50, 100, 100]}
       >
-        <Axis name="month" title={{ style: titleStyle }} />
-        <Axis name="value" title={{ style: titleStyle }} />
-        <Interval color="#1890ff" position="month*value" />
+        <Axis name='month' title={{ style: titleStyle }} />
+        <Axis name='value' title={{ style: titleStyle }} />
+        <Interval color='#1890ff' position='month*value' />
         <Tooltip shared />
       </Chart>
     </Card>

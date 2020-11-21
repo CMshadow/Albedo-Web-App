@@ -95,12 +95,12 @@ export const EditInverterPlanModal = ({
       style={{ top: 20 }}
     >
       {selPV && selInv ? (
-        <Row gutter={[15, 15]} align="middle" justify="center">
+        <Row gutter={[15, 15]} align='middle' justify='center'>
           <Col span={20}>
             <Row>
               <Col span={7}>
                 <Divider>{t('project.modifyPlan.expected_capacity')}</Divider>
-                <Descriptions bordered size="small" column={2} layout="vertical">
+                <Descriptions bordered size='small' column={2} layout='vertical'>
                   <Descriptions.Item label={t('project.spec.capacity')} span={1}>
                     {`${w2other(capacity * 1000).value} ${w2other(capacity * 1000).unit}`}
                   </Descriptions.Item>
@@ -112,7 +112,7 @@ export const EditInverterPlanModal = ({
 
               <Col offset={1} span={16}>
                 <Divider>{t('project.modifyPlan.actual_capacity')}</Divider>
-                <Descriptions bordered size="small" column={5} layout="vertical">
+                <Descriptions bordered size='small' column={5} layout='vertical'>
                   <Descriptions.Item label={t('project.modifyPlan.actual_dc_capacity')} span={1}>
                     <ChangeHighlight>
                       <div ref={actualCapRef}>
@@ -150,7 +150,7 @@ export const EditInverterPlanModal = ({
             <Row>
               <Col span={15}>
                 <Divider>{t('project.modifyPlan.n1')}</Divider>
-                <Descriptions bordered size="small" column={2} layout="vertical">
+                <Descriptions bordered size='small' column={2} layout='vertical'>
                   <Descriptions.Item label={t('project.modifyPlan.n1_limit_dc')} span={1}>
                     N1 ≤ {N1.N1vdcMax ? N1.N1vdcMax.toFixed(2) : '-'}
                   </Descriptions.Item>
@@ -183,7 +183,7 @@ export const EditInverterPlanModal = ({
 
               <Col offset={1} span={8}>
                 <Divider>{t('project.modifyPlan.n2')}</Divider>
-                <Descriptions bordered size="small" column={1} layout="vertical">
+                <Descriptions bordered size='small' column={1} layout='vertical'>
                   <Descriptions.Item label={t('project.modifyPlan.n2_limit_power')} span={1}>
                     <ChangeHighlight>
                       <div ref={N2Ref}>
@@ -198,7 +198,7 @@ export const EditInverterPlanModal = ({
             </Row>
 
             <Divider>{t('project.modifyPlan.inv')}</Divider>
-            <Descriptions bordered size="small" column={4} layout="vertical">
+            <Descriptions bordered size='small' column={4} layout='vertical'>
               <Descriptions.Item label={t('project.modifyPlan.inv_expected')} span={1}>
                 <ChangeHighlight>
                   <div ref={invReqRef}>
@@ -226,7 +226,7 @@ export const EditInverterPlanModal = ({
             </Descriptions>
 
             <Divider>{t('project.modifyPlan.validation')}</Divider>
-            <Descriptions bordered size="small" column={3} layout="vertical">
+            <Descriptions bordered size='small' column={3} layout='vertical'>
               <Descriptions.Item label={t('project.modifyPlan.power_validation')} span={1}>
                 {curN1 && selInv && curN1 * selPV.vmpo < selInv.vdcMax ? pass : fail}
               </Descriptions.Item>
@@ -247,15 +247,15 @@ export const EditInverterPlanModal = ({
             <Form
               preserve={false}
               form={form}
-              name="edit-inverter-plan"
+              name='edit-inverter-plan'
               scrollToFirstError
               hideRequiredMark
               onFinish={submitForm}
               labelCol={{ span: 6 }}
               wrapperCol={{ span: 18 }}
-              labelAlign="left"
+              labelAlign='left'
             >
-              <Form.Item label="N1" name="N1" rules={[{ required: true }]} validateStatus="warning">
+              <Form.Item label='N1' name='N1' rules={[{ required: true }]} validateStatus='warning'>
                 <InputNumber
                   style={{ width: '100%' }}
                   min={0}
@@ -264,7 +264,7 @@ export const EditInverterPlanModal = ({
                   onChange={val => setcurN1(val)}
                 />
               </Form.Item>
-              <Form.Item label="N2" name="N2" rules={[{ required: true }]} validateStatus="warning">
+              <Form.Item label='N2' name='N2' rules={[{ required: true }]} validateStatus='warning'>
                 <InputNumber
                   style={{ width: '100%' }}
                   min={0}

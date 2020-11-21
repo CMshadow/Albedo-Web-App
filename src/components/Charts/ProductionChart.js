@@ -43,7 +43,9 @@ export const ProductionChart = ({ buildingID }) => {
     const month = date.month() + 1
     const day = mode === 'day' ? date.date() : null
     setloading(true)
-    dispatch(getProductionData({ projectID, buildingID, month, day, dataKey: 'hour_AC_power' })).then(res => {
+    dispatch(
+      getProductionData({ projectID, buildingID, month, day, dataKey: 'hour_AC_power' })
+    ).then(res => {
       const ac_res = day ? w2other(res) : wh2other(res) // 月用wh日用w
       setunit(ac_res.unit)
       const ac_data = ac_res.value.map((val, index) => ({
@@ -53,7 +55,9 @@ export const ProductionChart = ({ buildingID }) => {
         type: t('lossChart.ac'),
       }))
       if (mode === 'day') {
-        dispatch(getProductionData({ projectID, buildingID, month, day, dataKey: 'hour_DC_power' })).then(res2 => {
+        dispatch(
+          getProductionData({ projectID, buildingID, month, day, dataKey: 'hour_DC_power' })
+        ).then(res2 => {
           const dc_res = wh2other(res2)
           const dc_data = dc_res.value.map((val, index) => ({
             key: index,
@@ -96,7 +100,7 @@ export const ProductionChart = ({ buildingID }) => {
       hoverable
       style={{ cursor: 'unset' }}
     >
-      <Row justify="center">
+      <Row justify='center'>
         <Space>
           <Text strong>{t('productionChart.selectdate')}</Text>
           <Radio.Group
@@ -105,11 +109,14 @@ export const ProductionChart = ({ buildingID }) => {
             }}
             value={mode}
           >
-            <Radio value="month">{t('productionChart.monthStatics')}</Radio>
-            <Radio value="day">{t('productionChart.dayStatics')}</Radio>
+            <Radio value='month'>{t('productionChart.monthStatics')}</Radio>
+            <Radio value='day'>{t('productionChart.dayStatics')}</Radio>
           </Radio.Group>
           <DatePicker
-            defaultValue={moment(`${meteonormYear}-${moment().month() + 1}-${moment().date()}`, 'YYYY-MM-DD')}
+            defaultValue={moment(
+              `${meteonormYear}-${moment().month() + 1}-${moment().date()}`,
+              'YYYY-MM-DD'
+            )}
             disabledDate={disabledDate}
             format={mode === 'month' ? monthFormat : dateFormat}
             picker={mode === 'month' ? 'month' : 'date'}
@@ -127,16 +134,26 @@ export const ProductionChart = ({ buildingID }) => {
           data={dataSource}
           interactions={['active-region']}
         >
-          <Legend visible={mode === 'day'} position="bottom" itemName={{ style: legendStyle }} offsetY={-10} />
-          <Axis name="date" title={{ style: titleStyle }} />
-          <Axis name="value" title={{ style: titleStyle }} />
+          <Legend
+            visible={mode === 'day'}
+            position='bottom'
+            itemName={{ style: legendStyle }}
+            offsetY={-10}
+          />
+          <Axis name='date' title={{ style: titleStyle }} />
+          <Axis name='value' title={{ style: titleStyle }} />
           {mode === 'day' ? (
             [
-              <Line key="line" shape="smooth" position="date*value" color={['type', ['#1890ff', '#faad14']]} />,
-              <Point key="point" position="date*value" color={['type', ['#1890ff', '#faad14']]} />,
+              <Line
+                key='line'
+                shape='smooth'
+                position='date*value'
+                color={['type', ['#1890ff', '#faad14']]}
+              />,
+              <Point key='point' position='date*value' color={['type', ['#1890ff', '#faad14']]} />,
             ]
           ) : (
-            <Interval position="date*value" color={['type', ['#1890ff', '#faad14']]} />
+            <Interval position='date*value' color={['type', ['#1890ff', '#faad14']]} />
           )}
         </Chart>
       </Spin>

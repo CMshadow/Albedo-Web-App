@@ -17,10 +17,10 @@ const BackgroundGrids = props => {
         <Line
           key={'Backgroud-Line-' + uuidv4()}
           points={[0, i * averageHori, windowWidth * size_times, i * averageHori]}
-          stroke="#7b7b85"
+          stroke='#7b7b85'
           strokeWidth={1.5}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
     }
@@ -29,10 +29,10 @@ const BackgroundGrids = props => {
         <Line
           key={'Backgroud-Line-' + uuidv4()}
           points={[0, i * averageVeri, windowWidth * size_times, i * averageVeri]}
-          stroke="#3f3f4c"
+          stroke='#3f3f4c'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
     }
@@ -41,10 +41,10 @@ const BackgroundGrids = props => {
         <Line
           key={'Backgroud-Line-' + uuidv4()}
           points={[i * averageHori, 0, i * averageHori, windowHeight * size_times]}
-          stroke="#7b7b85"
+          stroke='#7b7b85'
           strokeWidth={1.5}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
     }
@@ -53,10 +53,10 @@ const BackgroundGrids = props => {
         <Line
           key={'Backgroud-Line-' + uuidv4()}
           points={[i * averageVeri, 0, i * averageVeri, windowHeight * size_times]}
-          stroke="#3f3f4c"
+          stroke='#3f3f4c'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
     }

@@ -36,7 +36,7 @@ const Grid = props => {
         y={startY}
         width={minSize[0]}
         height={minSize[1]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
       ></Rect>
     )
@@ -45,10 +45,10 @@ const Grid = props => {
       <Line
         key={'Grid-ConnectLine-' + uuidv4()}
         points={[startX, startY + minSize[1] / 2, meterAccessPort[0], meterAccessPort[1]]}
-        stroke="white"
+        stroke='white'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -65,10 +65,10 @@ const Grid = props => {
           startX + 0.35 * minSize[0],
           startY + 0.55 * minSize[1],
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -85,10 +85,10 @@ const Grid = props => {
           startX + 0.65 * minSize[0],
           startY + 0.55 * minSize[1],
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -105,10 +105,10 @@ const Grid = props => {
           startX + 0.2 * minSize[0],
           startY + 0.2 * minSize[1],
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         closed={true}
       ></Line>
     )
@@ -122,10 +122,10 @@ const Grid = props => {
           startX + 0.2 * minSize[0],
           startY + 0.3 * minSize[1],
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -138,10 +138,10 @@ const Grid = props => {
           startX + 0.8 * minSize[0],
           startY + 0.3 * minSize[1],
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -158,10 +158,10 @@ const Grid = props => {
           startX + 0.2 * minSize[0],
           startY + 0.45 * minSize[1],
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         closed={true}
       ></Line>
     )
@@ -175,10 +175,10 @@ const Grid = props => {
           startX + 0.2 * minSize[0],
           startY + 0.55 * minSize[1],
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -191,10 +191,10 @@ const Grid = props => {
           startX + 0.8 * minSize[0],
           startY + 0.55 * minSize[1],
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -205,8 +205,8 @@ const Grid = props => {
         y={startY + minSize[1] * 1.05}
         text={'Grid'}
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
     return groupOfGrid

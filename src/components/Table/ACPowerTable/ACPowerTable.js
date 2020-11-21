@@ -12,7 +12,9 @@ export const ACPowerTable = ({ buildingID }) => {
   const reportData = useSelector(state => state.report)
 
   const dataSource = reportData[buildingID].year25_AC_power.map((record, index) => {
-    const dcData = reportData[buildingID].year25_DC_power ? reportData[buildingID].year25_DC_power[index] : null
+    const dcData = reportData[buildingID].year25_DC_power
+      ? reportData[buildingID].year25_DC_power[index]
+      : null
     return {
       key: index,
       year: t('acPowerTable.year.prefix') + `${index + 1}` + t('acPowerTable.year.suffix'),
@@ -56,12 +58,18 @@ export const ACPowerTable = ({ buildingID }) => {
 
   // 生成表单统计数据
   const genSummary = dataSource => {
-    const ttlACPower = wh2other(dataSource.reduce((sum, record) => sum + other2wh(record.acpower, record.acunit), 0))
+    const ttlACPower = wh2other(
+      dataSource.reduce((sum, record) => sum + other2wh(record.acpower, record.acunit), 0)
+    )
     const ttlDCPower = reportData[buildingID].year25_DC_power
-      ? wh2other(dataSource.reduce((sum, record) => sum + other2wh(record.dcpower, record.dcunit), 0))
+      ? wh2other(
+          dataSource.reduce((sum, record) => sum + other2wh(record.dcpower, record.dcunit), 0)
+        )
       : null
     const avgACPower = wh2other(other2wh(ttlACPower.value / 25, ttlACPower.unit))
-    const avgDCPower = ttlDCPower ? wh2other(other2wh(ttlDCPower.value / 25, ttlDCPower.unit)) : null
+    const avgDCPower = ttlDCPower
+      ? wh2other(other2wh(ttlDCPower.value / 25, ttlDCPower.unit))
+      : null
     const ttlKwhOverWkp = dataSource.reduce((sum, record) => sum + record.kwhOverKwp, 0)
     return (
       <>
@@ -130,7 +138,14 @@ export const ACPowerTable = ({ buildingID }) => {
       hoverable
       className={styles.card}
     >
-      <Table bordered dataSource={dataSource} columns={columns} pagination={false} size="middle" summary={genSummary} />
+      <Table
+        bordered
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
+        size='middle'
+        summary={genSummary}
+      />
     </Card>
   )
 }

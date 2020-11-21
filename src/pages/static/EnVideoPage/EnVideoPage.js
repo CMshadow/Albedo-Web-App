@@ -25,11 +25,11 @@ const VideoPage = () => {
       <EnDisplayPageHeader />
       <Content className={styles.content}>
         <Grid fluid>
-          <Row center="xs" xs={12}>
+          <Row center='xs' xs={12}>
             <Title className={styles.title1}>Albedo Quick Start Tutorial</Title>
           </Row>
-          <Row center="xs" xs={12}>
-            <Title level={4} type="secondary" className={styles.title2}>
+          <Row center='xs' xs={12}>
+            <Title level={4} type='secondary' className={styles.title2}>
               Master your design skills within 3 mintues and take it to a new level
             </Title>
             <Player config={config} />

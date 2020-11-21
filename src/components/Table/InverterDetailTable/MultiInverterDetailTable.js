@@ -7,7 +7,9 @@ const Title = Typography.Title
 
 const reduceUnique = data => {
   return data.reduce((acc, val) => {
-    Object.keys(acc).includes(val.inverterID) ? (acc[val.inverterID] += val.count) : (acc[val.inverterID] = val.count)
+    Object.keys(acc).includes(val.inverterID)
+      ? (acc[val.inverterID] += val.count)
+      : (acc[val.inverterID] = val.count)
     return acc
   }, {})
 }
@@ -22,8 +24,9 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
   const genInverterCount = buildingData =>
     buildingData.data.flatMap(spec =>
       spec.inverter_wiring.map(inverterSpec => ({
-        inverterID: inverterData.find(inverter => inverter.inverterID === inverterSpec.inverter_model.inverterID)
-          .inverterID,
+        inverterID: inverterData.find(
+          inverter => inverter.inverterID === inverterSpec.inverter_model.inverterID
+        ).inverterID,
         count: 1,
       }))
     )
@@ -49,7 +52,7 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
   return (
     <Card
       title={
-        <Title className="cardTitle" level={4}>
+        <Title className='cardTitle' level={4}>
           {t('table.title.inverterDetail')}
         </Title>
       }
@@ -58,12 +61,20 @@ export const MultiInverterDetailTable = ({ buildingID }) => {
     >
       <List
         grid={listGrid}
-        itemLayout="horizontal"
+        itemLayout='horizontal'
         dataSource={dataSource}
         renderItem={inverterID => (
           <List.Item>
-            <Card hoverable bodyStyle={{ padding: '5px' }} bordered={false} style={{ cursor: 'unset' }}>
-              <InverterDetailTable inverterID={inverterID} count={uniqueInverterCount[inverterID]} />
+            <Card
+              hoverable
+              bodyStyle={{ padding: '5px' }}
+              bordered={false}
+              style={{ cursor: 'unset' }}
+            >
+              <InverterDetailTable
+                inverterID={inverterID}
+                count={uniqueInverterCount[inverterID]}
+              />
             </Card>
           </List.Item>
         )}

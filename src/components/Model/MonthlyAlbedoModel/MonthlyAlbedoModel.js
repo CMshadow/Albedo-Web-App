@@ -12,7 +12,11 @@ export const MonthlyAlbedoModel = () => {
 
   return (
     <Collapse bordered={false}>
-      <Panel className={styles.collapsePanel} header={t('report.paramsForm.monthly_albedo.help')} forceRender>
+      <Panel
+        className={styles.collapsePanel}
+        header={t('report.paramsForm.monthly_albedo.help')}
+        forceRender
+      >
         {new Array(6)
           .fill(0)
           .map((_, index) => index)

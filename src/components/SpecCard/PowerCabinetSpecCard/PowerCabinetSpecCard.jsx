@@ -26,9 +26,10 @@ export const PowerCabinetSpecCard = ({
       loading={loading}
       actions={[
         <Button
+          key='edit'
           disabled={editing || editingPowercabinet !== null}
-          type="link"
-          shape="circle"
+          type='link'
+          shape='circle'
           icon={
             <EditTwoTone
               twoToneColor={editing || editingPowercabinet !== null ? '#bfbfbf' : '#1890ff'}
@@ -40,8 +41,9 @@ export const PowerCabinetSpecCard = ({
           }}
         />,
         <Button
-          type="link"
-          shape="circle"
+          key='delete'
+          type='link'
+          shape='circle'
           danger
           icon={
             <DeleteTwoTone

@@ -94,10 +94,11 @@ export const InverterTableViewOnly = ({ data, activeData, setactiveData }) => {
     key: 'action',
     fixed: 'right',
     width: 50,
+    // eslint-disable-next-line react/display-name
     render: (value, record) => (
       <Tooltip title={t('InverterTable.table.curve-title')}>
         <Button
-          type="link"
+          type='link'
           icon={<LineChartOutlined />}
           onClick={() => onClickCurve(record.inverterID, record.userID)}
         />
@@ -110,7 +111,7 @@ export const InverterTableViewOnly = ({ data, activeData, setactiveData }) => {
       <Table
         columns={tableCols}
         dataSource={activeData}
-        rowKey="inverterID"
+        rowKey='inverterID'
         pagination={{
           position: ['bottomCenter'],
           total: activeData.length,
@@ -122,11 +123,11 @@ export const InverterTableViewOnly = ({ data, activeData, setactiveData }) => {
       />
       <Drawer
         bodyStyle={{ padding: '0px' }}
-        placement="right"
+        placement='right'
         closable={false}
         onClose={() => setshowDrawer(false)}
         visible={showDrawer}
-        width="50vw"
+        width='50vw'
       >
         <InverterDetailTable inverterID={viewInverterID} />
       </Drawer>

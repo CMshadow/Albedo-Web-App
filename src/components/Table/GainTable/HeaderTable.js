@@ -19,7 +19,15 @@ const EditableRow = ({ index, ...props }) => {
   )
 }
 
-const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
+const EditableCell = ({
+  title,
+  editable,
+  children,
+  dataIndex,
+  record,
+  handleSave,
+  ...restProps
+}) => {
   const [editing, setEditing] = useState(false)
   const inputRef = useRef()
   const form = useContext(EditableContext)
@@ -43,15 +51,24 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
     }
   }
 
-  let childNode = <div className="noneditable">{children}</div>
+  let childNode = <div className='noneditable'>{children}</div>
 
   if (editable) {
     childNode = editing ? (
       <Form.Item style={{ margin: 0, width: '100%' }} name={dataIndex} rules={[{ required: true }]}>
-        <InputNumber style={{ width: '100%' }} ref={inputRef} onPressEnter={save} onBlur={save} min={0} />
+        <InputNumber
+          style={{ width: '100%' }}
+          ref={inputRef}
+          onPressEnter={save}
+          onBlur={save}
+          min={0}
+        />
       </Form.Item>
     ) : (
-      <div className={record[dataIndex] >= 0 ? 'editable-cell-wrap' : 'editable-cell-wrap-empty'} onClick={toggleEdit}>
+      <div
+        className={record[dataIndex] >= 0 ? 'editable-cell-wrap' : 'editable-cell-wrap-empty'}
+        onClick={toggleEdit}
+      >
         {children}
       </div>
     )
@@ -216,7 +233,7 @@ export const HeaderTable = ({ buildingID }) => {
       dataSource={dataSource}
       columns={formatedColumns}
       pagination={false}
-      size="middle"
+      size='middle'
       title={genHeader}
     />
   )

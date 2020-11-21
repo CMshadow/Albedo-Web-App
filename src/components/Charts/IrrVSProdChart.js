@@ -43,10 +43,23 @@ export const IrrVSProdChart = ({ buildingID }) => {
       hoverable
       style={{ cursor: 'unset' }}
     >
-      <Chart scale={scale} height={500} autoFit data={dataSource} interactions={['active-region']} padding="auto">
-        <Axis name="ghi" title={{ style: titleStyle }} />
-        <Axis name="ac" title={{ style: titleStyle }} />
-        <Point position="ghi*ac" shape="circle" size={5} style={{ fillOpacity: 0.85 }} tooltip="ghi*ac" />
+      <Chart
+        scale={scale}
+        height={500}
+        autoFit
+        data={dataSource}
+        interactions={['active-region']}
+        padding='auto'
+      >
+        <Axis name='ghi' title={{ style: titleStyle }} />
+        <Axis name='ac' title={{ style: titleStyle }} />
+        <Point
+          position='ghi*ac'
+          shape='circle'
+          size={5}
+          style={{ fillOpacity: 0.85 }}
+          tooltip='ghi*ac'
+        />
         <Tooltip
           showMarkers
           showTitle={false}

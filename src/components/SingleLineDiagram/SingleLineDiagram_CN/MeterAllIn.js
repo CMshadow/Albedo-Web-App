@@ -19,10 +19,10 @@ const MeterAllIn = props => {
       <Line
         key={'Meter-Line-' + uuidv4()}
         points={[startX, startY - 15, startX, startY - unitHeight * 0.25]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -43,10 +43,10 @@ const MeterAllIn = props => {
       <Line
         key={'Meter-Line-' + uuidv4()}
         points={[position[0] - 2.5, position[1] - 4.5, position[0] + 2.5, position[1] + 0.5]}
-        stroke="black"
+        stroke='black'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -54,10 +54,10 @@ const MeterAllIn = props => {
       <Line
         key={'Meter-Line-' + uuidv4()}
         points={[position[0] + 2.5, position[1] - 4.5, position[0] - 2.5, position[1] + 0.5]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -68,30 +68,40 @@ const MeterAllIn = props => {
         y={position[1] - 4.5}
         text={combiSelect(props.combiboxIe) + 'A'}
         fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
 
     groupOfMeterAllIn.push(
       <Line
         key={'Meter-Line-' + uuidv4()}
-        points={[position[0] - 10, position[1] - 2.5, position[0], position[1] + 0.05 * unitHeight + 2.5]}
-        stroke="#7b7b85"
+        points={[
+          position[0] - 10,
+          position[1] - 2.5,
+          position[0],
+          position[1] + 0.05 * unitHeight + 2.5,
+        ]}
+        stroke='#7b7b85'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
     groupOfMeterAllIn.push(
       <Line
         key={'Meter-Line-' + uuidv4()}
-        points={[position[0], position[1] + 0.05 * unitHeight + 2.5, position[0], position[1] + 0.05 * unitHeight + 10]}
-        stroke="#7b7b85"
+        points={[
+          position[0],
+          position[1] + 0.05 * unitHeight + 2.5,
+          position[0],
+          position[1] + 0.05 * unitHeight + 10,
+        ]}
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
   }
@@ -104,7 +114,7 @@ const MeterAllIn = props => {
         y={accessPort[1] - unitHeight * 0.2}
         width={unitWidth * 0.2}
         height={unitHeight * 0.2}
-        stroke="black"
+        stroke='black'
         strokeWidth={2}
       ></Rect>
     )
@@ -118,20 +128,25 @@ const MeterAllIn = props => {
           accessPort[0] + unitWidth * 0.1,
           accessPort[1] - unitHeight * 0.15,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
     groupOfMeter.push(
       <Arrow
         key={'Meter-Line-All' + uuidv4()}
-        points={[startX, accessPort[1] - unitHeight * 0.2, startX, accessPort[1] - unitHeight * 0.35]}
+        points={[
+          startX,
+          accessPort[1] - unitHeight * 0.2,
+          startX,
+          accessPort[1] - unitHeight * 0.35,
+        ]}
         pointerLength={5}
         pointerWidth={5}
-        stroke="black"
+        stroke='black'
         strokeWidth={1}
       ></Arrow>
     )
@@ -143,8 +158,8 @@ const MeterAllIn = props => {
         y={accessPort[1] - unitHeight * 0.1}
         text={' Wh'}
         fontSize={unitHeight * 0.08 > 15 ? 15 : unitHeight * 0.08}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
 
@@ -156,8 +171,8 @@ const MeterAllIn = props => {
         y={accessPort[1] - unitHeight * 0.2}
         text={' METER'}
         fontSize={font}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
 
@@ -168,8 +183,8 @@ const MeterAllIn = props => {
         y={accessPort[1] - unitHeight * 0.35 - font}
         text={' 公用电网'}
         fontSize={font}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
   }

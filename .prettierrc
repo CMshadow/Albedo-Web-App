@@ -2,10 +2,11 @@
   "tabWidth": 2,
   "useTabs": false,
   "semi": false,
-  "printWidth": 120,
+  "printWidth": 100,
   "singleQuote": true,
   "trailingComma": "es5",
   "bracketSpacing": true,
   "arrowParens": "avoid",
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "jsxSingleQuote": true
 }

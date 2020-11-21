@@ -16,7 +16,11 @@ export const MonthlySystemEffChart = ({ buildingID }) => {
   }))
 
   const minSysEff =
-    1 - reportData[buildingID].p_loss_system_monthly.reduce((max, val) => (max > val ? max : val), -Infinity)
+    1 -
+    reportData[buildingID].p_loss_system_monthly.reduce(
+      (max, val) => (max > val ? max : val),
+      -Infinity
+    )
 
   const scale = {
     month: {
@@ -43,10 +47,17 @@ export const MonthlySystemEffChart = ({ buildingID }) => {
       hoverable
       style={{ cursor: 'unset' }}
     >
-      <Chart scale={scale} height={500} autoFit data={dataSource} interactions={['active-region']} padding="auto">
-        <Axis name="month" title={{ style: titleStyle }} />
-        <Axis name="value" title={{ style: titleStyle }} />
-        <Interval color="#1890ff" position="month*value" />
+      <Chart
+        scale={scale}
+        height={500}
+        autoFit
+        data={dataSource}
+        interactions={['active-region']}
+        padding='auto'
+      >
+        <Axis name='month' title={{ style: titleStyle }} />
+        <Axis name='value' title={{ style: titleStyle }} />
+        <Interval color='#1890ff' position='month*value' />
         <Tooltip shared />
       </Chart>
     </Card>

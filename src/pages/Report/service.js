@@ -49,9 +49,13 @@ export const saveReport = ({ projectID }) => async (dispatch, getState) => {
 
     const reportData = getState().report
     const allPromise = Object.keys(reportData).map(buildingID =>
-      axios.put(`/project/${auth.username}/${projectID}/${buildingID}/report`, reportData[buildingID], {
-        headers: { 'COG-TOKEN': auth.signInUserSession.idToken.jwtToken },
-      })
+      axios.put(
+        `/project/${auth.username}/${projectID}/${buildingID}/report`,
+        reportData[buildingID],
+        {
+          headers: { 'COG-TOKEN': auth.signInUserSession.idToken.jwtToken },
+        }
+      )
     )
     return Promise.all(allPromise)
       .then(res => res.data)
@@ -84,7 +88,10 @@ export const deleteReport = ({ projectID }) => async dispatch => {
   }
 }
 
-export const getProductionData = ({ projectID, buildingID, month, day, dataKey }) => async (dispatch, getState) => {
+export const getProductionData = ({ projectID, buildingID, month, day, dataKey }) => async (
+  dispatch,
+  getState
+) => {
   try {
     const auth = await Auth.currentAuthenticatedUser()
 

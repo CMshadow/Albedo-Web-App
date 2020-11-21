@@ -95,25 +95,26 @@ export const InverterTable = ({
       key: 'action',
       fixed: 'right',
       width: showEditBut ? 175 : 50,
+      // eslint-disable-next-line react/display-name
       render: (value, record) => (
         <div>
           <Tooltip title={t('InverterTable.table.curve-title')}>
             <Button
-              type="link"
+              type='link'
               icon={<LineChartOutlined />}
               onClick={() => onClickCurve(record.inverterID, record.userID)}
             />
           </Tooltip>
-          <Divider type="vertical" />
+          <Divider type='vertical' />
           <Button
-            type="link"
+            type='link'
             icon={<EditOutlined />}
             onClick={() => {
               seteditRecord(record)
               setshowModal(true)
             }}
           />
-          <Divider type="vertical" />
+          <Divider type='vertical' />
           <DeleteAction record={record} setactiveData={setactiveData} />
         </div>
       ),
@@ -125,7 +126,7 @@ export const InverterTable = ({
       <Table
         columns={tableCols}
         dataSource={activeData}
-        rowKey="inverterID"
+        rowKey='inverterID'
         loading={loading}
         pagination={{
           position: ['bottomCenter'],
@@ -138,11 +139,11 @@ export const InverterTable = ({
       />
       <Drawer
         bodyStyle={{ padding: '0px' }}
-        placement="right"
+        placement='right'
         closable={false}
         onClose={() => setshowDrawer(false)}
         visible={showDrawer}
-        width="50vw"
+        width='50vw'
       >
         <InverterDetailTable inverterID={viewInverterID} />
       </Drawer>

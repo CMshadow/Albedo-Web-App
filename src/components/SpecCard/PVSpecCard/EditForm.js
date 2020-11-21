@@ -40,7 +40,9 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
   const unit = useSelector(state => state.unit.unit)
   const projectType = useSelector(state => state.project.projectType)
 
-  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
@@ -69,7 +71,8 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
     buildings.flatMap(building =>
       building.data.flatMap(spec =>
         spec.inverter_wiring.map(
-          inverterSpec => inverterData.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID).vac
+          inverterSpec =>
+            inverterData.find(obj => obj.inverterID === inverterSpec.inverter_model.inverterID).vac
         )
       )
     )
@@ -236,7 +239,7 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
         const btn = (
           <Space>
             <Button
-              type="primary"
+              type='primary'
               onClick={() => {
                 setautoInvPlan({
                   plan: res.autoPlan.plan,
@@ -325,33 +328,35 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
         colon={false}
         form={form}
         hideRequiredMark
-        name="newSpec"
+        name='newSpec'
         scrollToFirstError
         onFinish={submitForm}
         initialValues={genInitValues(spec)}
       >
         <Row gutter={12}>
           <Col span={22}>
-            <FormItem name="pvID" label={t('project.spec.pv')} rules={[{ required: true }]}>
+            <FormItem name='pvID' label={t('project.spec.pv')} rules={[{ required: true }]}>
               <Select
                 showSearch
                 options={pvActiveData.map(record => ({
                   label: record.name,
                   value: record.pvID,
                 }))}
-                filterOption={(value, option) => option.label.toLowerCase().includes(value.toLowerCase())}
+                filterOption={(value, option) =>
+                  option.label.toLowerCase().includes(value.toLowerCase())
+                }
                 onChange={setpvID}
               />
             </FormItem>
           </Col>
           <Col span={2}>
-            <Button shape="circle" icon={<TableOutlined />} onClick={() => setshowPVDrawer(true)} />
+            <Button shape='circle' icon={<TableOutlined />} onClick={() => setshowPVDrawer(true)} />
           </Col>
         </Row>
         <Row gutter={rowGutter}>
           <Col span={12}>
             <FormItem
-              name="tilt_angle"
+              name='tilt_angle'
               label={
                 <Tooltip title={t(`project.spec.tilt_angle.hint`)}>
                   <Space>
@@ -364,12 +369,12 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
               validateStatus={tilt.validateStatus}
               help={tilt.errorMsg || null}
             >
-              <Input addonAfter="°" type="number" value={tilt.value} onChange={tiltChange} />
+              <Input addonAfter='°' type='number' value={tilt.value} onChange={tiltChange} />
             </FormItem>
           </Col>
           <Col span={12}>
             <FormItem
-              name="azimuth"
+              name='azimuth'
               label={
                 <Tooltip title={t(`project.spec.azimuth.hint`)}>
                   <Space>
@@ -382,7 +387,7 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
               validateStatus={azimuth.validateStatus}
               help={azimuth.errorMsg || null}
             >
-              <Input addonAfter="°" type="number" value={azimuth.value} onChange={azimuthChange} />
+              <Input addonAfter='°' type='number' value={azimuth.value} onChange={azimuthChange} />
             </FormItem>
           </Col>
         </Row>
@@ -392,7 +397,7 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
             <Row gutter={rowGutter}>
               <Col span={12}>
                 <FormItem
-                  name="ac_cable_avg_len"
+                  name='ac_cable_avg_len'
                   label={
                     <Tooltip title={t('project.spec.ac_cable_avg_len.hint')}>
                       <Space>
@@ -403,12 +408,12 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
                   }
                   rules={[{ required: true }]}
                 >
-                  <Input addonAfter={unit} type="number" />
+                  <Input addonAfter={unit} type='number' />
                 </FormItem>
               </Col>
               <Col span={12}>
                 <FormItem
-                  name="dc_cable_avg_len"
+                  name='dc_cable_avg_len'
                   label={
                     <Tooltip title={t(`project.spec.dc_cable_avg_len.hint`)}>
                       <Space>
@@ -419,7 +424,7 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
                   }
                   rules={[{ required: true }]}
                 >
-                  <Input addonAfter={unit} type="number" />
+                  <Input addonAfter={unit} type='number' />
                 </FormItem>
               </Col>
             </Row>
@@ -439,10 +444,10 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
         </Divider>
         <Row gutter={8}>
           <Col span={8}>
-            <FormItem name="capacity" label={t('project.spec.capacity')}>
+            <FormItem name='capacity' label={t('project.spec.capacity')}>
               <Input
-                addonAfter="kW"
-                type="number"
+                addonAfter='kW'
+                type='number'
                 value={capacity}
                 onChange={e => {
                   setcapacity(e.target.value)
@@ -453,7 +458,7 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
           </Col>
           <Col span={12} offset={2}>
             <FormItem
-              name="inverterID"
+              name='inverterID'
               label={t('project.spec.inverter')}
               help={
                 projectType === 'commercial'
@@ -478,19 +483,25 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
                   value: record.inverterID,
                 }))}
                 onSelect={genInverterPlan}
-                filterOption={(value, option) => option.label.toLowerCase().includes(value.toLowerCase())}
+                filterOption={(value, option) =>
+                  option.label.toLowerCase().includes(value.toLowerCase())
+                }
               />
             </FormItem>
           </Col>
           <Col span={2}>
-            <Button shape="circle" icon={<TableOutlined />} onClick={() => setshowInvDrawer(true)} />
+            <Button
+              shape='circle'
+              icon={<TableOutlined />}
+              onClick={() => setshowInvDrawer(true)}
+            />
           </Col>
         </Row>
         <Divider style={{ marginTop: 0 }} />
-        <Row align="middle" justify="center">
+        <Row align='middle' justify='center'>
           <FormItem>
             <Space>
-              <Button type="primary" onClick={handleOk}>
+              <Button type='primary' onClick={handleOk}>
                 {autoInvPlan.plan ? t('project.autoInverter.confirm') : t('form.confirm')}
               </Button>
               {autoInvPlan.plan ? (
@@ -510,24 +521,28 @@ export const EditForm = ({ buildingID, specIndex, setediting }) => {
       <Drawer
         bodyStyle={{ padding: '0px' }}
         title={t('PVtable.table')}
-        placement="right"
+        placement='right'
         closable={false}
         onClose={() => setshowPVDrawer(false)}
         visible={showPVDrawer}
-        width="50vw"
+        width='50vw'
       >
         <PVTableViewOnly data={pvData} activeData={pvActiveData} setactiveData={setpvActiveData} />
       </Drawer>
       <Drawer
         bodyStyle={{ padding: '0px' }}
         title={t('InverterTable.table')}
-        placement="right"
+        placement='right'
         closable={false}
         onClose={() => setshowInvDrawer(false)}
         visible={showInvDrawer}
-        width="50vw"
+        width='50vw'
       >
-        <InverterTableViewOnly data={inverterData} activeData={invActiveData} setactiveData={setinvActiveData} />
+        <InverterTableViewOnly
+          data={inverterData}
+          activeData={invActiveData}
+          setactiveData={setinvActiveData}
+        />
       </Drawer>
       <EditInverterPlanModal
         pvID={pvID}

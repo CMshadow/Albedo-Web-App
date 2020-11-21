@@ -25,7 +25,7 @@ const ServerPanel = props => {
         y={startY}
         width={minSize[0]}
         height={minSize[1]}
-        stroke="white"
+        stroke='white'
         strokeWidth={3}
       ></Rect>
     )
@@ -36,7 +36,7 @@ const ServerPanel = props => {
         x={startX + minSize[0] * 0.25}
         y={disconnectAccessPort[1]}
         radius={3}
-        fill="white"
+        fill='white'
       ></Circle>
     )
 
@@ -51,10 +51,10 @@ const ServerPanel = props => {
           startX + minSize[0] * 0.5,
           disconnectAccessPort[1],
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         tension={0.5}
       ></Line>
     )
@@ -65,7 +65,7 @@ const ServerPanel = props => {
         x={startX + minSize[0] * 0.5}
         y={disconnectAccessPort[1]}
         radius={3}
-        fill="white"
+        fill='white'
       ></Circle>
     )
 
@@ -78,10 +78,10 @@ const ServerPanel = props => {
           startX + minSize[0] * 0.375,
           startY + minSize[1] * 0.65,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         dash={[1, 10]}
       ></Line>
     )
@@ -92,7 +92,7 @@ const ServerPanel = props => {
         x={startX + minSize[0] * 0.25}
         y={startY + minSize[1] * 0.75}
         radius={3}
-        fill="white"
+        fill='white'
       ></Circle>
     )
 
@@ -107,10 +107,10 @@ const ServerPanel = props => {
           startX + minSize[0] * 0.5,
           startY + minSize[1] * 0.75,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         tension={0.5}
       ></Line>
     )
@@ -121,7 +121,7 @@ const ServerPanel = props => {
         x={startX + minSize[0] * 0.5}
         y={startY + minSize[1] * 0.75}
         radius={3}
-        fill="white"
+        fill='white'
       ></Circle>
     )
 
@@ -134,10 +134,10 @@ const ServerPanel = props => {
           startX + minSize[0] * 0.65,
           startY + minSize[1] * 0.75,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -150,10 +150,10 @@ const ServerPanel = props => {
           startX + minSize[0] * 0.65,
           startY + minSize[1] * 0.75,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -166,21 +166,26 @@ const ServerPanel = props => {
           startX + minSize[0] * 1.2,
           startY + minSize[1] * 0.15,
         ]} // access port
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
     groupOfServerPanel.push(
       <Line
         key={'ServerPanel-ConnectLine-' + uuidv4()}
-        points={[startX + minSize[0] * 0.25, disconnectAccessPort[1], disconnectAccessPort[0], disconnectAccessPort[1]]}
-        stroke="white"
+        points={[
+          startX + minSize[0] * 0.25,
+          disconnectAccessPort[1],
+          disconnectAccessPort[0],
+          disconnectAccessPort[1],
+        ]}
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -191,12 +196,17 @@ const ServerPanel = props => {
         y={startY + minSize[1] * 1.05}
         text={'Server Panel'}
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
-    dispatch(setMeter([startX + minSize[0] * 1.2, startY + minSize[1] * 0.15], [startX + minSize[0], startY]))
+    dispatch(
+      setMeter(
+        [startX + minSize[0] * 1.2, startY + minSize[1] * 0.15],
+        [startX + minSize[0], startY]
+      )
+    )
 
     return groupOfServerPanel
   }

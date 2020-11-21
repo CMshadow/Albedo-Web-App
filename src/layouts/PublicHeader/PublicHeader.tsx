@@ -14,11 +14,11 @@ const PublicHeader: React.FC = () => {
   return (
     <Header className={styles.header}>
       <Row className={styles.right}>
-        <Space className={styles.space} size="large">
-          <Button type="primary" ghost size="large" onClick={() => history.push('/user/login')}>
+        <Space className={styles.space} size='large'>
+          <Button type='primary' ghost size='large' onClick={() => history.push('/user/login')}>
             {t('header.login')}
           </Button>
-          <Button size="large" onClick={() => history.push('/user/signup')}>
+          <Button size='large' onClick={() => history.push('/user/signup')}>
             {t('header.signup')}
           </Button>
         </Space>

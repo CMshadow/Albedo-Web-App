@@ -102,5 +102,13 @@ export const InverterDetailTable = ({ inverterID, count }) => {
 
   const genHeader = () => <InverterNameDescription inverterID={inverterID} count={count} />
 
-  return <Table bordered dataSource={dataSource} columns={columns} pagination={false} title={genHeader} />
+  return (
+    <Table
+      bordered
+      dataSource={dataSource}
+      columns={columns}
+      pagination={false}
+      title={genHeader}
+    />
+  )
 }

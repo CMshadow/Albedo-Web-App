@@ -26,9 +26,9 @@ export const IVChart = ({ dataSource }) => {
 
   return (
     <Chart scale={scale} padding={[30, 30, 100, 100]} autoFit height={500} data={dataSource}>
-      <Axis name="voltage" title={{ style: titleStyle }} />
-      <Axis name="current" title={{ style: titleStyle }} />
-      <Line shape="smooth" position="voltage*current" color="irr" />
+      <Axis name='voltage' title={{ style: titleStyle }} />
+      <Axis name='current' title={{ style: titleStyle }} />
+      <Line shape='smooth' position='voltage*current' color='irr' />
     </Chart>
   )
 }

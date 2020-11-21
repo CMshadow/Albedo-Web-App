@@ -29,7 +29,15 @@ const EditableRow = ({ index, ...props }) => {
   )
 }
 
-const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
+const EditableCell = ({
+  title,
+  editable,
+  children,
+  dataIndex,
+  record,
+  handleSave,
+  ...restProps
+}) => {
   const [editing, setEditing] = useState(false)
   const inputRef = useRef()
   const form = useContext(EditableContext)
@@ -60,10 +68,20 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
     let inputField
     switch (dataIndex) {
       case 'unitPrice':
-        inputField = <InputNumber style={{ width: '100%' }} ref={inputRef} onPressEnter={save} onBlur={save} min={0} />
+        inputField = (
+          <InputNumber
+            style={{ width: '100%' }}
+            ref={inputRef}
+            onPressEnter={save}
+            onBlur={save}
+            min={0}
+          />
+        )
         break
       default:
-        inputField = <Input style={{ width: '100%' }} ref={inputRef} onPressEnter={save} onBlur={save} />
+        inputField = (
+          <Input style={{ width: '100%' }} ref={inputRef} onPressEnter={save} onBlur={save} />
+        )
     }
     childNode = editing ? (
       <Form.Item style={{ margin: 0, width: '100%' }} name={dataIndex} rules={[{ required: true }]}>
@@ -71,7 +89,9 @@ const EditableCell = ({ title, editable, children, dataIndex, record, handleSave
       </Form.Item>
     ) : (
       <div
-        className={record[dataIndex] !== undefined ? 'editable-cell-wrap' : 'editable-cell-wrap-empty'}
+        className={
+          record[dataIndex] !== undefined ? 'editable-cell-wrap' : 'editable-cell-wrap-empty'
+        }
         onClick={toggleEdit}
       >
         {children}
@@ -94,7 +114,9 @@ export const InvestmentTable = ({ buildingID }) => {
   const dispatch = useDispatch()
   const projectData = useSelector(state => state.project)
   const unit = useSelector(state => state.unit.unit)
-  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
@@ -113,7 +135,9 @@ export const InvestmentTable = ({ buildingID }) => {
   // 统计每种用到的逆变器型号及数量
   const inverterCount = buildingData.data.flatMap(spec =>
     spec.inverter_wiring.map(inverterSpec => ({
-      name: inverterData.find(inverter => inverter.inverterID === inverterSpec.inverter_model.inverterID).name,
+      name: inverterData.find(
+        inverter => inverter.inverterID === inverterSpec.inverter_model.inverterID
+      ).name,
       count: 1,
     }))
   )
@@ -257,7 +281,9 @@ export const InvestmentTable = ({ buildingID }) => {
               key: 10,
               series: 10,
               name: t('investment.name.combibox_wiring'),
-              description: reportData[buildingID] ? `${reportData[buildingID].combibox_wir_choice} (AC)` : null,
+              description: reportData[buildingID]
+                ? `${reportData[buildingID].combibox_wir_choice} (AC)`
+                : null,
               unit: t(`investment.unit.price/${unit}`),
               quantity: buildingData.combibox_cable_len,
               unitPriceEditable: true,
@@ -394,6 +420,7 @@ export const InvestmentTable = ({ buildingID }) => {
       title: t('investment.totalPrice'),
       dataIndex: 'totalPrice',
       width: '125px',
+      // eslint-disable-next-line react/display-name
       render: (text, row, index) => {
         if (disabledRowKeys.includes(row.key)) {
           return {
@@ -469,7 +496,9 @@ export const InvestmentTable = ({ buildingID }) => {
     const avgInvestmentPerKw = (ttlInvestment / (DCCapacityInW / 1000)).toFixed(2)
     // 更新每一行的投资占比
     newData.forEach(row => {
-      row.investmentWeight = row.totalPrice ? ((row.totalPrice / ttlInvestment) * 100).toFixed(2) : null
+      row.investmentWeight = row.totalPrice
+        ? ((row.totalPrice / ttlInvestment) * 100).toFixed(2)
+        : null
     })
     setdataSource(newData)
     dispatch(
@@ -488,7 +517,7 @@ export const InvestmentTable = ({ buildingID }) => {
   const genSummary = () => {
     return (
       <>
-        <Table.Summary.Row className="summaryRow">
+        <Table.Summary.Row className='summaryRow'>
           <Table.Summary.Cell>
             <Text strong>{t('investment.series.two')}</Text>
           </Table.Summary.Cell>
@@ -503,7 +532,7 @@ export const InvestmentTable = ({ buildingID }) => {
           </Table.Summary.Cell>
           <Table.Summary.Cell />
         </Table.Summary.Row>
-        <Table.Summary.Row className="summaryRow">
+        <Table.Summary.Row className='summaryRow'>
           <Table.Summary.Cell>
             <Text strong>{t('investment.series.three')}</Text>
           </Table.Summary.Cell>
@@ -537,7 +566,7 @@ export const InvestmentTable = ({ buildingID }) => {
         </Title>
       }
       hoverable
-      className="card"
+      className='card'
     >
       <Table
         components={components}
@@ -546,7 +575,7 @@ export const InvestmentTable = ({ buildingID }) => {
         dataSource={dataSource}
         columns={formatedColumns}
         pagination={false}
-        size="middle"
+        size='middle'
         title={genHeader}
         summary={genSummary}
       />

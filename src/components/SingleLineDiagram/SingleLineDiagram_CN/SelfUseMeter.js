@@ -27,10 +27,10 @@ const SelfUseMeter = props => {
         y={startY}
         width={unitWidth * 2.2}
         height={unitHeight * 0.7}
-        stroke="black"
+        stroke='black'
         strokeWidth={1}
         dash={[10, 10]}
-        fill="white"
+        fill='white'
       ></Rect>
     )
 
@@ -38,21 +38,26 @@ const SelfUseMeter = props => {
       <Line
         key={'Meter-Line-' + uuidv4()}
         points={[accessPort[0], accessPort[1], accessPort[0], accessPort[1] - unitHeight * 0.1]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
     groupOfMeter.push(
       <Line
         key={'Meter-Line-' + uuidv4()}
-        points={[accessPort[0], accessPort[1] - unitHeight * 0.1, accessPort[0] - 10, accessPort[1] - unitHeight * 0.2]}
-        stroke="#7b7b85"
+        points={[
+          accessPort[0],
+          accessPort[1] - unitHeight * 0.1,
+          accessPort[0] - 10,
+          accessPort[1] - unitHeight * 0.2,
+        ]}
+        stroke='#7b7b85'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -65,10 +70,10 @@ const SelfUseMeter = props => {
           accessPort[0],
           accessPort[1] - unitHeight * 0.3 + 10,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -81,10 +86,10 @@ const SelfUseMeter = props => {
           accessPort[0] + 2.5,
           accessPort[1] - unitHeight * 0.3 + 10 + 2.5,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -97,10 +102,10 @@ const SelfUseMeter = props => {
           accessPort[0] - 2.5,
           accessPort[1] - unitHeight * 0.3 + 10 + 2.5,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -111,8 +116,8 @@ const SelfUseMeter = props => {
         y={accessPort[1] - unitHeight * 0.3 + 10 - 2.5}
         text={combiSelect(props.combiboxIe) + 'A'}
         fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
 
@@ -125,10 +130,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 1.2,
           accessPort[1] - unitHeight * 0.35,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -141,10 +146,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 0.6,
           accessPort[1] - unitHeight * 0.35 + 10,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -154,7 +159,7 @@ const SelfUseMeter = props => {
         x={accessPort[0] + unitWidth * 0.6}
         y={accessPort[1] - unitHeight * 0.35}
         radius={2}
-        fill="black"
+        fill='black'
       ></Circle>
     )
 
@@ -167,10 +172,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 0.6,
           accessPort[1] - unitHeight * 0.35 + 10,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -180,7 +185,7 @@ const SelfUseMeter = props => {
         x={accessPort[0] + unitWidth * 0.63}
         y={accessPort[1] - unitHeight * 0.08}
         radius={2}
-        fill="black"
+        fill='black'
       ></Circle>
     )
     groupOfMeter.push(
@@ -189,7 +194,7 @@ const SelfUseMeter = props => {
         x={accessPort[0] + unitWidth * 0.65}
         y={accessPort[1] - unitHeight * 0.08}
         radius={2}
-        fill="black"
+        fill='black'
       ></Circle>
     )
     groupOfMeter.push(
@@ -198,7 +203,7 @@ const SelfUseMeter = props => {
         x={accessPort[0] + unitWidth * 0.67}
         y={accessPort[1] - unitHeight * 0.08}
         radius={2}
-        fill="black"
+        fill='black'
       ></Circle>
     )
 
@@ -214,10 +219,10 @@ const SelfUseMeter = props => {
       <Line
         key={'Meter-Line-' + uuidv4()}
         points={[position[0] - 2.5, position[1] - 2.5, position[0] + 2.5, position[1] + 2.5]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -225,32 +230,42 @@ const SelfUseMeter = props => {
       <Line
         key={'Meter-Line-' + uuidv4()}
         points={[position[0] + 2.5, position[1] - 2.5, position[0] - 2.5, position[1] + 2.5]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
     groupOfMeter.push(
       <Line
         key={'Meter-Line-' + uuidv4()}
-        points={[position[0] - 10, position[1] - 2.5, position[0], position[1] + 0.05 * unitHeight + 2.5]}
-        stroke="#7b7b85"
+        points={[
+          position[0] - 10,
+          position[1] - 2.5,
+          position[0],
+          position[1] + 0.05 * unitHeight + 2.5,
+        ]}
+        stroke='#7b7b85'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
     groupOfMeter.push(
       <Line
         key={'Meter-Line-' + uuidv4()}
-        points={[position[0], position[1] + 0.05 * unitHeight + 2.5, position[0], position[1] + 0.05 * unitHeight + 10]}
-        stroke="#7b7b85"
+        points={[
+          position[0],
+          position[1] + 0.05 * unitHeight + 2.5,
+          position[0],
+          position[1] + 0.05 * unitHeight + 10,
+        ]}
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
   }
@@ -265,10 +280,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 0.6,
           accessPort[1] - unitHeight * 0.2 + 12.5,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -279,10 +294,10 @@ const SelfUseMeter = props => {
         y={accessPort[1] - unitHeight * 0.35 + 25 + 4}
         radiusX={10}
         radiusY={4}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Ellipse>
     )
 
@@ -299,10 +314,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 0.6 - 20,
           accessPort[1] - unitHeight * 0.3,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -315,10 +330,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 0.9,
           accessPort[1] - unitHeight * 0.2 + 12.5,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -331,10 +346,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 0.4,
           accessPort[1] - unitHeight * 0.15 + 12.5,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -347,10 +362,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 0.55,
           accessPort[1] - unitHeight * 0.15 + 12.5,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -363,10 +378,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 0.75,
           accessPort[1] - unitHeight * 0.15 + 12.5,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -385,10 +400,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 1.2,
           accessPort[1] - unitHeight * 0.35,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
     groupOfMeter.push(
@@ -398,7 +413,7 @@ const SelfUseMeter = props => {
         y={accessPort[1] - unitHeight * 0.5 - 5}
         width={unitWidth * 0.15}
         height={unitHeight * 0.15}
-        stroke="black"
+        stroke='black'
         strokeWidth={2}
       ></Rect>
     )
@@ -412,10 +427,10 @@ const SelfUseMeter = props => {
           accessPort[0] + unitWidth * 1.35 - unitWidth * 0.07,
           accessPort[1] - unitHeight * 0.5,
         ]}
-        stroke="#7b7b85"
+        stroke='#7b7b85'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -430,7 +445,7 @@ const SelfUseMeter = props => {
         ]}
         pointerLength={5}
         pointerWidth={5}
-        stroke="black"
+        stroke='black'
         strokeWidth={1}
       ></Arrow>
     )
@@ -443,8 +458,8 @@ const SelfUseMeter = props => {
         y={accessPort[1] - unitHeight * 0.5 + 5}
         text={' Wh'}
         fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
     groupOfMeter.push(
@@ -454,8 +469,8 @@ const SelfUseMeter = props => {
         y={startY + 10}
         text={'  户用配电设备'}
         fontSize={unitHeight * 0.08 > 16 ? 16 : unitHeight * 0.08}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
 
@@ -466,8 +481,8 @@ const SelfUseMeter = props => {
         y={accessPort[1] - unitHeight * 0.7 - 15}
         text={' 公用电网'}
         fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
 
@@ -478,8 +493,8 @@ const SelfUseMeter = props => {
         y={accessPort[1] - unitHeight * 0.5 - 5}
         text={' METER'}
         fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
   }

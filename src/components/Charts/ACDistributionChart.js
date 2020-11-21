@@ -51,16 +51,18 @@ export const ACDistributionChart = ({ buildingID }) => {
         height={500}
         autoFit
         data={dataSource}
-        padding="auto"
+        padding='auto'
         onTooltipChange={e => {
           const items = e.items
           const bucket = items[0]
-          items[0].value = `${bucket.data.dc.toFixed(2)} ${DCUnit} - ${(bucket.data.dc + step).toFixed(2)} ${DCUnit}`
+          items[0].value = `${bucket.data.dc.toFixed(2)} ${DCUnit} - ${(
+            bucket.data.dc + step
+          ).toFixed(2)} ${DCUnit}`
         }}
       >
-        <Axis name="dc" title={{ style: titleStyle }} />
-        <Axis name="ac" title={{ style: titleStyle }} />
-        <Line shape="hv" position="dc*ac" tooltip="dc*ac" />
+        <Axis name='dc' title={{ style: titleStyle }} />
+        <Axis name='ac' title={{ style: titleStyle }} />
+        <Line shape='hv' position='dc*ac' tooltip='dc*ac' />
         <Tooltip
           showMarkers
           showTitle={false}

@@ -75,5 +75,13 @@ export const PVDetailTable = ({ pvID, count }) => {
 
   const genHeader = () => <PVNameDescription pvID={pvID} count={count} />
 
-  return <Table bordered dataSource={dataSource} columns={columns} pagination={false} title={genHeader} />
+  return (
+    <Table
+      bordered
+      dataSource={dataSource}
+      columns={columns}
+      pagination={false}
+      title={genHeader}
+    />
+  )
 }

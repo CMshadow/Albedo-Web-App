@@ -36,7 +36,8 @@ export const IrradianceTable = ({ buildingID }) => {
     uniqueSetupMonthIrr.forEach(setup => {
       const setupIndex = stringifySetupMonthIrr.indexOf(JSON.stringify(setup))
       record[`setup${setupIndex}irr`] = setup[monthIndex]
-      record[`setup${setupIndex}avgPkHr`] = reportData[buildingID].setup_month_irr_avg_pk_hr[setupIndex][monthIndex]
+      record[`setup${setupIndex}avgPkHr`] =
+        reportData[buildingID].setup_month_irr_avg_pk_hr[setupIndex][monthIndex]
     })
     return record
   })
@@ -46,7 +47,7 @@ export const IrradianceTable = ({ buildingID }) => {
     return {
       key: setupIndex + 1,
       title: (
-        <Space size="large">
+        <Space size='large'>
           {`${t('irrTable.tilt')}: ${uniqueTiltAzimuth[setupIndex].tilt}°`}
           {`${t('irrTable.azimuth')}: ${uniqueTiltAzimuth[setupIndex].azimuth}°`}
         </Space>
@@ -84,7 +85,9 @@ export const IrradianceTable = ({ buildingID }) => {
     dataSource.forEach(record => {
       Object.keys(record).forEach(key => {
         if (regex.test(key)) {
-          setupIrrSum[key] = Object.keys(setupIrrSum).includes(key) ? setupIrrSum[key] + record[key] : record[key]
+          setupIrrSum[key] = Object.keys(setupIrrSum).includes(key)
+            ? setupIrrSum[key] + record[key]
+            : record[key]
         }
       })
     })
@@ -108,14 +111,23 @@ export const IrradianceTable = ({ buildingID }) => {
     <Card
       title={
         <Title className={styles.cardTitle} level={4}>
-          {buildingID === 'overview' ? t('irrTable.title.commercial') : t('irrTable.title.domestic')}
+          {buildingID === 'overview'
+            ? t('irrTable.title.commercial')
+            : t('irrTable.title.domestic')}
         </Title>
       }
       headStyle={{ textAlign: 'center' }}
       hoverable
       className={styles.card}
     >
-      <Table bordered dataSource={dataSource} columns={columns} pagination={false} size="middle" summary={genSummary} />
+      <Table
+        bordered
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
+        size='middle'
+        summary={genSummary}
+      />
     </Card>
   )
 }

@@ -32,7 +32,7 @@ export const SunPositionChart = ({ buildingID }) => {
   const allSetup = uniqueSetupMonthIrr.map(setup => {
     const setupIndex = stringifySetupMonthIrr.indexOf(JSON.stringify(setup))
     return (
-      <Space>
+      <Space key={setupIndex}>
         {`${t('irrTable.tilt')}: ${uniqueTiltAzimuth[setupIndex].tilt}°`}
         {`${t('irrTable.azimuth')}: ${uniqueTiltAzimuth[setupIndex].azimuth}°`}
       </Space>
@@ -46,7 +46,10 @@ export const SunPositionChart = ({ buildingID }) => {
     : null
 
   let horizonData = projectData.horizonData
-    ? [[0, projectData.horizonData.slice(-1)[0][1]], ...JSON.parse(JSON.stringify(projectData.horizonData))]
+    ? [
+        [0, projectData.horizonData.slice(-1)[0][1]],
+        ...JSON.parse(JSON.stringify(projectData.horizonData)),
+      ]
     : null
 
   // 是否北半球
@@ -81,7 +84,9 @@ export const SunPositionChart = ({ buildingID }) => {
     .fill([])
     .map(ary => [])
   reportData[buildingID].sunPosition.forEach((monthData, monthIndex) =>
-    monthData[0].forEach((sunAz, hourIndex) => monthlyData[monthIndex].push([sunAz, monthData[1][hourIndex]]))
+    monthData[0].forEach((sunAz, hourIndex) =>
+      monthlyData[monthIndex].push([sunAz, monthData[1][hourIndex]])
+    )
   )
   // 南半球需要将数据映射到-180°到180°范围
   if (!northHemisphere) {
@@ -100,7 +105,10 @@ export const SunPositionChart = ({ buildingID }) => {
       return secondHalf.concat(firstHalf)
     })
     // 映射地平线数据
-    const firstHalf = horizonData.slice(0, horizonData.indexOf(horizonData.find(val => val[0] > 180)))
+    const firstHalf = horizonData.slice(
+      0,
+      horizonData.indexOf(horizonData.find(val => val[0] > 180))
+    )
     const secondHalf = horizonData.slice(horizonData.indexOf(horizonData.find(val => val[0] > 180)))
     secondHalf.forEach(val => (val[0] = -(360 - val[0])))
     horizonData = secondHalf.concat(firstHalf)
@@ -196,9 +204,9 @@ export const SunPositionChart = ({ buildingID }) => {
               ? `${t(`sunPosition.month.${12}`)} ${t('sunPosition.day.21')}`
               : monthIndex === 6
               ? `${t(`sunPosition.month.${6}`)} ${t('sunPosition.day.21')}`
-              : `${t(`sunPosition.month.${monthIndex}`)}/${t(`sunPosition.month.${12 - monthIndex}`)} ${t(
-                  'sunPosition.day.21'
-                )}`
+              : `${t(`sunPosition.month.${monthIndex}`)}/${t(
+                  `sunPosition.month.${12 - monthIndex}`
+                )} ${t('sunPosition.day.21')}`
           setup.markPoint = {
             data: [
               {
@@ -321,7 +329,7 @@ export const SunPositionChart = ({ buildingID }) => {
       hoverable
       style={{ cursor: 'unset' }}
     >
-      <Row justify="center">
+      <Row justify='center'>
         <Space>
           <Text strong>{t('irrChart.selectspec')}</Text>
           <Select defaultValue={selSpecIndex} onChange={val => setselSpecIndex(val)}>

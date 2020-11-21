@@ -1,6 +1,15 @@
 import React from 'react'
 import { Card, Typography } from 'antd'
-import { Chart, Interval, Tooltip, Axis, Coordinate, Interaction, Annotation, Legend } from 'bizcharts'
+import {
+  Chart,
+  Interval,
+  Tooltip,
+  Axis,
+  Coordinate,
+  Interaction,
+  Annotation,
+  Legend,
+} from 'bizcharts'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { MoneyText } from '../../utils/genMoneyText'
@@ -38,13 +47,17 @@ export const InvestmentChart = ({ buildingID }) => {
       style={{ cursor: 'unset' }}
     >
       <Chart scale={scale} data={dataSource} height={500} autoFit>
-        <Legend position="right" offsetX={-20} itemName={{ style: legendStyle }} />
-        <Coordinate type="theta" radius={0.8} innerRadius={0.65} />
+        <Legend position='right' offsetX={-20} itemName={{ style: legendStyle }} />
+        <Coordinate type='theta' radius={0.8} innerRadius={0.65} />
         <Axis visible={false} />
         <Tooltip showTitle={false} />
-        <Interval adjust="stack" position="value" color="item" shape="sliceShape" />
-        <Interaction type="element-single-selected" />
-        <Annotation.Text position={['50%', '45%']} content={t('investment.name.totalInvestment')} style={lgTextStyle} />
+        <Interval adjust='stack' position='value' color='item' shape='sliceShape' />
+        <Interaction type='element-single-selected' />
+        <Annotation.Text
+          position={['50%', '45%']}
+          content={t('investment.name.totalInvestment')}
+          style={lgTextStyle}
+        />
         <Annotation.Text
           position={['50%', '55%']}
           content={MoneyText({ t: t, money: reportData[buildingID].ttl_investment, abbr: true })}

@@ -26,9 +26,10 @@ export const TransformerSpecCard = ({
       loading={loading}
       actions={[
         <Button
+          key='edit'
           disabled={editing || editingTransformer !== null}
-          type="link"
-          shape="circle"
+          type='link'
+          shape='circle'
           icon={
             <EditTwoTone
               twoToneColor={editing || editingTransformer !== null ? '#bfbfbf' : '#1890ff'}
@@ -40,8 +41,9 @@ export const TransformerSpecCard = ({
           }}
         />,
         <Button
-          type="link"
-          shape="circle"
+          key='delete'
+          type='link'
+          shape='circle'
           danger
           icon={
             <DeleteTwoTone

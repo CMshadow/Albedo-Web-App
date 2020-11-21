@@ -281,7 +281,7 @@ export const CommercialEquipmentTable = () => {
   ]
 
   // 生成表单头
-  const genHeader = () => <TableHeadDescription buildingID="overview" />
+  const genHeader = () => <TableHeadDescription buildingID='overview' />
 
   return (
     <Card
@@ -291,7 +291,7 @@ export const CommercialEquipmentTable = () => {
         </Title>
       }
       hoverable
-      className="card"
+      className='card'
     >
       <Table
         rowClassName={() => 'editable-row'}
@@ -299,7 +299,7 @@ export const CommercialEquipmentTable = () => {
         dataSource={dataSource}
         columns={columns}
         pagination={false}
-        size="middle"
+        size='middle'
         title={genHeader}
       />
     </Card>

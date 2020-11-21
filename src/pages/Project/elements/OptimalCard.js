@@ -16,7 +16,7 @@ export const OptimalCard = ({ loading, ...values }) => {
             title={t('project.optimal.optTilt')}
             value={values.optTilt}
             valueStyle={{ color: '#faad14' }}
-            suffix="°"
+            suffix='°'
           />
         </Card>
       </Col>
@@ -27,7 +27,7 @@ export const OptimalCard = ({ loading, ...values }) => {
             title={t('project.optimal.optAzi')}
             value={values.optAzimuth}
             valueStyle={{ color: '#faad14' }}
-            suffix="°"
+            suffix='°'
           />
         </Card>
       </Col>

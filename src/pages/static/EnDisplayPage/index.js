@@ -33,51 +33,51 @@ const EnDisplayPage = () => (
       <EnDisplayPageHeader />
       <Content className={styles.content}>
         <Grid fluid>
-          <Row center="xs" xs={12}>
-            <Title type="primary">Smart Solar Design on the Cloud</Title>
+          <Row center='xs' xs={12}>
+            <Title type='primary'>Smart Solar Design on the Cloud</Title>
           </Row>
-          <Row center="xs" xs={12}>
-            <Title level={3} type="secondary" style={{ marginTop: 0 }}>
+          <Row center='xs' xs={12}>
+            <Title level={3} type='secondary' style={{ marginTop: 0 }}>
               Immediate project report generation & quick rendering of single line diagram
               <br />
               to fast track solar design process
             </Title>
-            <img src={designDisplay} alt="designDisplay" width="80%" height="100%" />
+            <img src={designDisplay} alt='designDisplay' width='80%' height='100%' />
           </Row>
         </Grid>
 
         <Grid fluid>
-          <Row center="xs" className={styles.part}>
+          <Row center='xs' className={styles.part}>
             <Title level={2}>Design Feature All in One</Title>
           </Row>
-          <Row className={styles.section} round="xs">
+          <Row className={styles.section} round='xs'>
             <Col sm>
-              <Row center="xs" align="middle" className={styles.padSentence}>
+              <Row center='xs' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>Hourly </p>
                 <p className={styles.regularTxt}> weather profile input</p>
               </Row>
-              <Row center="xs" start="sm" align="middle" className={styles.padSentence}>
+              <Row center='xs' start='sm' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>Automated </p>
                 <p className={styles.regularTxt}>solar array wiring solution</p>
               </Row>
-              <Row center="xs" end="sm" align="middle" className={styles.padSentence}>
+              <Row center='xs' end='sm' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>Advanced </p>
                 <p className={styles.regularTxt}>energy loss & production analysis</p>
               </Row>
             </Col>
             <Col sm>
-              <img src={pad} alt="designDisplay" width="100%" />
+              <img src={pad} alt='designDisplay' width='100%' />
             </Col>
             <Col sm>
-              <Row center="xs" start="sm" align="middle" className={styles.padSentence}>
+              <Row center='xs' start='sm' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>Detailed </p>
                 <p className={styles.regularTxt}>statistic of project equipments</p>
               </Row>
-              <Row center="xs" end="sm" align="middle" className={styles.padSentence}>
+              <Row center='xs' end='sm' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>25-year</p>
                 <p className={styles.regularTxt}>lifetime investment & cash flow</p>
               </Row>
-              <Row center="xs" start="sm" align="middle" className={styles.padSentence}>
+              <Row center='xs' start='sm' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>“One-click”</p>
                 <p className={styles.regularTxt}>solution to the single line diagram</p>
               </Row>
@@ -86,13 +86,13 @@ const EnDisplayPage = () => (
         </Grid>
 
         <Grid fluid>
-          <Row center="xs" xs={12} className={styles.part}>
+          <Row center='xs' xs={12} className={styles.part}>
             <Title level={2}>Powerful Software with Most Valued Report</Title>
           </Row>
 
-          <Row align="middle">
+          <Row align='middle'>
             <Col smOffset={1} sm={5}>
-              <img src={earth} alt="designDisplay" width="100%" />
+              <img src={earth} alt='designDisplay' width='100%' />
             </Col>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} hoverable className={styles.card}>
@@ -104,15 +104,16 @@ const EnDisplayPage = () => (
                 </Row>
                 <Row>
                   <p className={styles.regularTxt}>
-                    Acquire hourly weather data for the project location, and automatically compute optimal tilt and
-                    azimuth angle to maximize the irradiance received by the plane of array
+                    Acquire hourly weather data for the project location, and automatically compute
+                    optimal tilt and azimuth angle to maximize the irradiance received by the plane
+                    of array
                   </p>
                 </Row>
               </Card>
             </Col>
           </Row>
 
-          <Row align="middle" className={styles.feature}>
+          <Row align='middle' className={styles.feature}>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} hoverable className={styles.card}>
                 <Row>
@@ -123,20 +124,20 @@ const EnDisplayPage = () => (
                 </Row>
                 <Row>
                   <p className={styles.regularTxt}>
-                    Support PV arrays with multi-orientation and MPPT feature to accurately simulate the solar energy
-                    yield for the entire PV system
+                    Support PV arrays with multi-orientation and MPPT feature to accurately simulate
+                    the solar energy yield for the entire PV system
                   </p>
                 </Row>
               </Card>
             </Col>
             <Col smOffset={1} sm={5}>
-              <img src={elec} alt="designDisplay" width="100%" />
+              <img src={elec} alt='designDisplay' width='100%' />
             </Col>
           </Row>
 
-          <Row align="middle" className={styles.feature}>
+          <Row align='middle' className={styles.feature}>
             <Col smOffset={1} sm={5}>
-              <img src={cloud} alt="designDisplay" width="100%" />
+              <img src={cloud} alt='designDisplay' width='100%' />
             </Col>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} hoverable className={styles.card}>
@@ -148,15 +149,15 @@ const EnDisplayPage = () => (
                 </Row>
                 <Row>
                   <p className={styles.regularTxt}>
-                    Utilizing the “waterfall” loss structure to more precisely analyze the system loss from the
-                    irradiance all the way to the AC end
+                    Utilizing the “waterfall” loss structure to more precisely analyze the system
+                    loss from the irradiance all the way to the AC end
                   </p>
                 </Row>
               </Card>
             </Col>
           </Row>
 
-          <Row align="middle" className={styles.feature}>
+          <Row align='middle' className={styles.feature}>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} hoverable className={styles.card}>
                 <Row>
@@ -167,20 +168,21 @@ const EnDisplayPage = () => (
                 </Row>
                 <Row>
                   <p className={styles.regularTxt}>
-                    Automatically count the utilized equipments utilized in the project, with customizable item costs
-                    and utility rates to quickly analyze the investment & payback
+                    Automatically count the utilized equipments utilized in the project, with
+                    customizable item costs and utility rates to quickly analyze the investment &
+                    payback
                   </p>
                 </Row>
               </Card>
             </Col>
             <Col smOffset={1} sm={5}>
-              <img src={multitasks} alt="designDisplay" width="100%" />
+              <img src={multitasks} alt='designDisplay' width='100%' />
             </Col>
           </Row>
 
-          <Row align="middle" className={styles.feature}>
+          <Row align='middle' className={styles.feature}>
             <Col smOffset={1} sm={5}>
-              <img src={computer} alt="designDisplay" width="100%" />
+              <img src={computer} alt='designDisplay' width='100%' />
             </Col>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} hoverable className={styles.card}>
@@ -192,8 +194,8 @@ const EnDisplayPage = () => (
                 </Row>
                 <Row>
                   <p className={styles.regularTxt}>
-                    Generate project single line diagrams with only “one-click” to save more time & improve design
-                    efficiency
+                    Generate project single line diagrams with only “one-click” to save more time &
+                    improve design efficiency
                   </p>
                 </Row>
               </Card>
@@ -202,7 +204,7 @@ const EnDisplayPage = () => (
         </Grid>
         <Grid fluid>
           {/* <Row justify="center" className={styles.feature}> */}
-          <Row center="sm" sm={8} className={styles.feature}>
+          <Row center='sm' sm={8} className={styles.feature}>
             <Title level={2}>Grow with us, together, we shall “design” a renewable future!</Title>
           </Row>
           <Row className={styles.section}>
@@ -228,16 +230,16 @@ const EnDisplayPage = () => (
                 value={genMockNumber({ base: 1430000, increase: 100 })}
                 valueStyle={{ fontSize: 25, padding: '15px 0px' }}
                 prefix={<ThunderboltOutlined />}
-                suffix="kW"
+                suffix='kW'
               />
             </Col>
           </Row>
           {/* </Row> */}
         </Grid>
         <Grid fluid>
-          <Row align="middle" className={styles.part}>
+          <Row align='middle' className={styles.part}>
             <Col smOffset={3} sm={3}>
-              <img src={pads} alt="designDisplay" width="100%" />
+              <img src={pads} alt='designDisplay' width='100%' />
             </Col>
             <Col osmOffset={1} sm={5}>
               <Card bordered={false} className={styles.card}>
@@ -251,7 +253,9 @@ const EnDisplayPage = () => (
                   <p className={styles.regularTxt}>Email: admin@albedopowered.com</p>
                 </Row>
                 <Row>
-                  <p className={styles.regularTxt}>Address: 2001 E Miraloma AvePlacentia, CA 92870</p>
+                  <p className={styles.regularTxt}>
+                    Address: 2001 E Miraloma AvePlacentia, CA 92870
+                  </p>
                 </Row>
               </Card>
             </Col>

@@ -24,7 +24,7 @@ import {
 } from '../../store/action/actionTypes'
 import { Project } from '../../@types'
 
-export type IProjectState = Project | {}
+export type IProjectState = Project | null
 
 export interface SetProjectDataAction {
   type: typeof SET_PROJECTDATA

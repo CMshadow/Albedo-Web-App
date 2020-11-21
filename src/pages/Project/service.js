@@ -120,7 +120,10 @@ export const manualInverter = ({ projectID, invID, invUserID, pvID, pvUserID, tt
   }
 }
 
-export const inverterLimit = ({ projectID, invID, invUserID, pvID, pvUserID }) => async (dispatch, getState) => {
+export const inverterLimit = ({ projectID, invID, invUserID, pvID, pvUserID }) => async (
+  dispatch,
+  getState
+) => {
   try {
     const auth = await Auth.currentAuthenticatedUser()
 

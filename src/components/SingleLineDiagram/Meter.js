@@ -25,7 +25,7 @@ const Meter = () => {
         y={startY}
         width={minSize[0]}
         height={minSize[1]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
       ></Rect>
     )
@@ -36,7 +36,7 @@ const Meter = () => {
         x={startX + minSize[0] * 0.5}
         y={startY + minSize[1] * 0.5}
         radius={minSize[1] * 0.35}
-        stroke="white"
+        stroke='white'
       ></Circle>
     )
 
@@ -44,10 +44,10 @@ const Meter = () => {
       <Line
         key={'Meter-ConnectLine-' + uuidv4()}
         points={[startX, startY + minSize[1] / 2, serverPanelAccess[0], serverPanelAccess[1]]}
-        stroke="white"
+        stroke='white'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -58,12 +58,14 @@ const Meter = () => {
         y={startY + minSize[1] * 1.05}
         text={'Meter'}
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
-    dispatch(setGrid([startX + minSize[0], startY + minSize[1] * 0.5], [startX + minSize[0], startY]))
+    dispatch(
+      setGrid([startX + minSize[0], startY + minSize[1] * 0.5], [startX + minSize[0], startY])
+    )
     return groupOfMeter
   }
 

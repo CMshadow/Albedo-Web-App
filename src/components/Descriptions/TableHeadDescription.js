@@ -12,7 +12,7 @@ export const TableHeadDescription = ({ buildingID }) => {
   const DCCapacity = reportData[buildingID].ttl_dc_power_capacity
 
   return (
-    <Descriptions column={2} bordered className="tableHeader">
+    <Descriptions column={2} bordered className='tableHeader'>
       <Item label={t('investment.project-title')} span={1}>
         {projectData.projectTitle}
       </Item>

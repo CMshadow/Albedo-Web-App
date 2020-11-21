@@ -12,7 +12,12 @@ import PrivateHeader from '../PrivateHeader/PrivateHeader'
 import PublicHeader from '../PublicHeader/PublicHeader'
 import DefaultFooter from '../Footer/DefaultFooter'
 import EmailSupport from '../../components/TechSupport/EmailSupport'
-import { getProject, saveProject, globalOptTiltAzimuth, allTiltAzimuthPOA } from '../../pages/Project/service'
+import {
+  getProject,
+  saveProject,
+  globalOptTiltAzimuth,
+  allTiltAzimuthPOA,
+} from '../../pages/Project/service'
 import { getPV, getOfficialPV } from '../../pages/PVTable/service'
 import { getInverter, getOfficialInverter } from '../../pages/InverterTable/service'
 import { saveReport, getReport } from '../../pages/Report/service'
@@ -70,9 +75,15 @@ const ProjectLayout = props => {
           )
             disabled = false
           return (
-            <Menu.Item key={`report/${building.buildingID}`} className={styles.menuItem} disabled={disabled}>
+            <Menu.Item
+              key={`report/${building.buildingID}`}
+              className={styles.menuItem}
+              disabled={disabled}
+            >
               <Tooltip title={disabled ? t('sider.report.disabled') : null}>
-                {t('sider.menu.report.prefix') + `${building.buildingName}` + t('sider.menu.report.suffix')}
+                {t('sider.menu.report.prefix') +
+                  `${building.buildingName}` +
+                  t('sider.menu.report.suffix')}
               </Tooltip>
             </Menu.Item>
           )
@@ -97,7 +108,11 @@ const ProjectLayout = props => {
             disabled = false
           }
           return (
-            <Menu.Item key={`singleLineDiagram/${building.buildingID}`} className={styles.menuItem} disabled={disabled}>
+            <Menu.Item
+              key={`singleLineDiagram/${building.buildingID}`}
+              className={styles.menuItem}
+              disabled={disabled}
+            >
               <Tooltip title={disabled ? t('sider.menu.singleLineDiagram.disabled') : null}>
                 {t('sider.menu.singleLineDiagram.prefix') +
                   `${building.buildingName}` +
@@ -110,16 +125,22 @@ const ProjectLayout = props => {
   }
 
   const domesticMenu = (
-    <Menu className={styles.menu} theme="dark" mode="inline" selectedKeys={[selectMenu]} onSelect={menuOnSelect}>
-      <Menu.Item key="dashboard" className={styles.menuItem}>
+    <Menu
+      className={styles.menu}
+      theme='dark'
+      mode='inline'
+      selectedKeys={[selectMenu]}
+      onSelect={menuOnSelect}
+    >
+      <Menu.Item key='dashboard' className={styles.menuItem}>
         {t('sider.menu.projectDetail')}
       </Menu.Item>
-      <Menu.Item key="params" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+      <Menu.Item key='params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
         {t('sider.menu.reportParams')}
       </Menu.Item>
       <SubMenu
         disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
-        key="report"
+        key='report'
         className={styles.menuItem}
         title={t('sider.menu.report')}
       >
@@ -127,7 +148,7 @@ const ProjectLayout = props => {
       </SubMenu>
       <SubMenu
         disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
-        key="singleLineDiag"
+        key='singleLineDiag'
         className={styles.menuItem}
         title={t('sider.menu.singleLineDiagram')}
       >
@@ -137,18 +158,30 @@ const ProjectLayout = props => {
   )
 
   const commercialMenu = (
-    <Menu className={styles.menu} theme="dark" mode="inline" selectedKeys={[selectMenu]} onSelect={menuOnSelect}>
-      <Menu.Item key="dashboard" className={styles.menuItem}>
+    <Menu
+      className={styles.menu}
+      theme='dark'
+      mode='inline'
+      selectedKeys={[selectMenu]}
+      onSelect={menuOnSelect}
+    >
+      <Menu.Item key='dashboard' className={styles.menuItem}>
         {t('sider.menu.projectDetail')}
       </Menu.Item>
-      <Menu.Item key="powergrid" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+      <Menu.Item key='powergrid' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
         {t('sider.menu.commercial')}
       </Menu.Item>
-      <Menu.Item key="params" className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+      <Menu.Item key='params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
         {t('sider.menu.reportParams')}
       </Menu.Item>
-      <Menu.Item key={`report/overview`} className={styles.menuItem} disabled={!usedAllEquipments(projectData)}>
-        <Tooltip title={!usedAllEquipments(projectData) ? t('sider.report.disabled-commercial') : null}>
+      <Menu.Item
+        key={`report/overview`}
+        className={styles.menuItem}
+        disabled={!usedAllEquipments(projectData)}
+      >
+        <Tooltip
+          title={!usedAllEquipments(projectData) ? t('sider.report.disabled-commercial') : null}
+        >
           {t('sider.menu.report')}
         </Tooltip>
       </Menu.Item>
@@ -156,7 +189,12 @@ const ProjectLayout = props => {
   )
 
   const projectLoadingSpin = (
-    <Spin size="large" spinning tip={<Title level={4}>{t('project.loading')}</Title>} indicator={<LoadingOutlined />}>
+    <Spin
+      size='large'
+      spinning
+      tip={<Title level={4}>{t('project.loading')}</Title>}
+      indicator={<LoadingOutlined />}
+    >
       <Card className={styles.loadingSpin} />
     </Spin>
   )
@@ -290,15 +328,15 @@ const ProjectLayout = props => {
   return (
     <>
       <Helmet>
-        <meta charSet="utf-8" />
-        <meta name="description" content={t('user.logo.welcome')} />
+        <meta charSet='utf-8' />
+        <meta name='description' content={t('user.logo.welcome')} />
         <title>{`${projectData.projectTitle || 'Loading'} - ${t('sider.company')}`}</title>
       </Helmet>
       <Layout>
         <EmailSupport />
         <Sider width={250} className={styles.sider}>
-          <Row className={styles.title} align="middle" justify="center">
-            <img alt="logo" className={styles.logo} src={logo} />
+          <Row className={styles.title} align='middle' justify='center'>
+            <img alt='logo' className={styles.logo} src={logo} />
             <div>
               <h1>{t('sider.company')}</h1>
               <h4>
@@ -312,8 +350,8 @@ const ProjectLayout = props => {
               {projectData.projectType === 'domestic' ? domesticMenu : commercialMenu}
               <Button
                 block
-                type="link"
-                size="large"
+                type='link'
+                size='large'
                 className={styles.saveBut}
                 onClick={saveProjectClick}
                 loading={saveLoading}
@@ -323,7 +361,7 @@ const ProjectLayout = props => {
             </div>
           ) : (
             <div className={styles.spin}>
-              <Spin size="large" />
+              <Spin size='large' />
             </div>
           )}
         </Sider>
@@ -331,7 +369,9 @@ const ProjectLayout = props => {
         <Layout className={styles.main}>
           {cognitoUser ? <PrivateHeader /> : <PublicHeader />}
 
-          <Content className={styles.content}>{fetchLoading ? projectLoadingSpin : props.children}</Content>
+          <Content className={styles.content}>
+            {fetchLoading ? projectLoadingSpin : props.children}
+          </Content>
 
           <Footer className={styles.footer}>
             <DefaultFooter />

@@ -7,7 +7,9 @@ export const addInverter = ({ values }) => async dispatch => {
   try {
     const auth = await Auth.currentAuthenticatedUser()
     return axios
-      .post(`/inverter/${auth.username}`, values, { headers: { 'COG-TOKEN': auth.signInUserSession.idToken.jwtToken } })
+      .post(`/inverter/${auth.username}`, values, {
+        headers: { 'COG-TOKEN': auth.signInUserSession.idToken.jwtToken },
+      })
       .then(res => res.data)
       .catch(err => {
         console.log(err)
@@ -25,7 +27,9 @@ export const getInverter = () => async dispatch => {
     const auth = await Auth.currentAuthenticatedUser()
 
     return axios
-      .get(`/inverter/${auth.username}`, { headers: { 'COG-TOKEN': auth.signInUserSession.idToken.jwtToken } })
+      .get(`/inverter/${auth.username}`, {
+        headers: { 'COG-TOKEN': auth.signInUserSession.idToken.jwtToken },
+      })
       .then(res => res.data)
       .catch(err => {
         console.log(err)

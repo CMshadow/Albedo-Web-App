@@ -9,7 +9,7 @@ export const LossTiltAzimuthDescription = ({ buildingID }) => {
   const reportData = useSelector(state => state.report)
 
   return (
-    <Descriptions column={2} bordered className="tableHeader">
+    <Descriptions column={2} bordered className='tableHeader'>
       <Item label={t('lossTable.p_loss_tilt_azimuth')} span={2}>
         {`${((1 - reportData[buildingID].p_loss_tilt_azimuth) * 100).toFixed(2)} %`}
       </Item>

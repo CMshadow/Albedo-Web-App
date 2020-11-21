@@ -220,7 +220,7 @@ export const TransformerModel = ({
     <>
       <Row gutter={rowGutter}>
         <Col span={8}>
-          <FormItem name="Ut" label={t(`project.spec.transformer.Ut`)} rules={[{ required: true }]}>
+          <FormItem name='Ut' label={t(`project.spec.transformer.Ut`)} rules={[{ required: true }]}>
             <Select onChange={onChangeUt}>
               <Option value={6000}>6 kV</Option>
               <Option value={10000}>10 kV</Option>
@@ -231,15 +231,15 @@ export const TransformerModel = ({
 
         <Col span={8}>
           <FormItem
-            name="transformer_type"
+            name='transformer_type'
             label={t('project.spec.transformer.type')}
             rules={[{ required: true }]}
           >
             <Select onChange={val => autoField(val)}>
-              <Option value="oil-immersed">
+              <Option value='oil-immersed'>
                 {t('project.spec.transformer.type.oil-immersed')}
               </Option>
-              <Option value="dry-type" disabled={disableDryType}>
+              <Option value='dry-type' disabled={disableDryType}>
                 {t('project.spec.transformer.type.dry-type')}
               </Option>
             </Select>
@@ -248,13 +248,13 @@ export const TransformerModel = ({
 
         <Col span={8}>
           <FormItem
-            name="transformer_cable_len"
+            name='transformer_cable_len'
             label={t('project.spec.transformer_cable_len')}
             normalize={val => (val ? Number(val) : val)}
             rules={[{ required: true, type: 'number', min: 0 }]}
           >
             <Input
-              type="number"
+              type='number'
               addonAfter={unit}
               onChange={val => autoWiringChoice(null, null, Number(val.target.value))}
             />
@@ -269,7 +269,7 @@ export const TransformerModel = ({
       <Row gutter={rowGutter}>
         <Col span={8}>
           <FormItem
-            name="transformer_capacity"
+            name='transformer_capacity'
             label={
               <Tooltip title={t('project.spec.transformer.capacity')}>
                 S<sub>e</sub> <QuestionCircleOutlined />
@@ -279,19 +279,19 @@ export const TransformerModel = ({
             rules={[{ required: true, type: 'number', min: 0 }]}
           >
             <Input
-              type="number"
+              type='number'
               onChange={val => {
                 autoField(null, Number(val.target.value))
                 autoWiringChoice(null, Number(val.target.value))
               }}
-              addonAfter="kVA"
+              addonAfter='kVA'
             />
           </FormItem>
         </Col>
 
         <Col span={8}>
           <FormItem
-            name="transformer_no_load_loss"
+            name='transformer_no_load_loss'
             label={
               <Tooltip title={t('project.spec.transformer.power_loss.no_load_loss')}>
                 ΔP<sub>0</sub> <QuestionCircleOutlined />
@@ -300,13 +300,13 @@ export const TransformerModel = ({
             normalize={val => (val ? Number(val) : val)}
             rules={[{ required: true, type: 'number', min: 0 }]}
           >
-            <Input type="number" addonAfter="W" />
+            <Input type='number' addonAfter='W' />
           </FormItem>
         </Col>
 
         <Col span={8}>
           <FormItem
-            name="transformer_short_circuit_loss"
+            name='transformer_short_circuit_loss'
             label={
               <Tooltip title={t('project.spec.transformer.power_loss.short_circuit_loss')}>
                 P<sub>k</sub> <QuestionCircleOutlined />
@@ -315,7 +315,7 @@ export const TransformerModel = ({
             normalize={val => (val ? Number(val) : val)}
             rules={[{ required: true, type: 'number', min: 0 }]}
           >
-            <Input type="number" addonAfter="W" />
+            <Input type='number' addonAfter='W' />
           </FormItem>
         </Col>
       </Row>
@@ -324,7 +324,7 @@ export const TransformerModel = ({
       <Row gutter={rowGutter}>
         <Col span={8}>
           <FormItem
-            name="transformer_power"
+            name='transformer_power'
             label={
               <Tooltip title={t('project.spec.transformer.consumption_loss.power')}>
                 S<sub>c</sub> <QuestionCircleOutlined />
@@ -333,7 +333,7 @@ export const TransformerModel = ({
             normalize={val => (val ? Number(val) : val)}
             rules={[{ required: true, type: 'number', min: 0 }]}
           >
-            <Input type="number" addonAfter="W" />
+            <Input type='number' addonAfter='W' />
           </FormItem>
         </Col>
       </Row>
@@ -343,7 +343,7 @@ export const TransformerModel = ({
         <Row gutter={rowGutter}>
           <Col span={8} offset={2}>
             <FormItem
-              name="transformer_ACVolDropFac"
+              name='transformer_ACVolDropFac'
               label={t('project.spec.transformer.ACVolDropFac')}
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
@@ -360,7 +360,7 @@ export const TransformerModel = ({
 
           <Col span={10} offset={3}>
             <FormItem
-              name="transformer_high_voltage_cable_Ib"
+              name='transformer_high_voltage_cable_Ib'
               label={t('project.spec.transformer.transformer_high_voltage_cable_Ib')}
               rules={[{ required: true }]}
               labelCol={{ span: 24 }}
@@ -380,24 +380,24 @@ export const TransformerModel = ({
         <Row gutter={rowGutter}>
           <Col offset={4} span={16}>
             <FormItem label={t('project.spec.transformer.transformer_wir_choice')}>
-              <Row gutter={rowGutter} align="top">
+              <Row gutter={rowGutter} align='top'>
                 <Col span={8}>
                   <FormItem
-                    name="transformer_wir_num"
-                    label=""
+                    name='transformer_wir_num'
+                    label=''
                     rules={[
                       { required: true, type: 'number', min: 1, transform: val => Number(val) },
                     ]}
                   >
                     <Input
-                      type="number"
+                      type='number'
                       addonAfter={t('project.spec.transformer.transformer_wir_num')}
                     />
                   </FormItem>
                 </Col>
                 <Col span={16}>
                   <FormItem
-                    name="transformer_wir_choice"
+                    name='transformer_wir_choice'
                     rules={[{ required: true }]}
                     wrapperCol={{ span: 24 }}
                   >

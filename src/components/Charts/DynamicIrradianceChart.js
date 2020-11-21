@@ -125,7 +125,7 @@ export const DynamicIrradianceChart = () => {
       hoverable
       style={{ cursor: 'unset' }}
     >
-      <Row justify="center">
+      <Row justify='center'>
         <Space>
           <Text strong>{t('irrChart.selectspec')}</Text>
           <Select defaultValue={selSpecIndex} onChange={val => setselSpecIndex(val)}>
@@ -135,7 +135,7 @@ export const DynamicIrradianceChart = () => {
               </Option>
             ))}
           </Select>
-          <Divider type="vertical" />
+          <Divider type='vertical' />
           <Text strong>{t('productionChart.selectdate')}</Text>
           <Radio.Group
             onChange={e => {
@@ -143,11 +143,14 @@ export const DynamicIrradianceChart = () => {
             }}
             value={mode}
           >
-            <Radio value="month">{t('productionChart.monthStatics')}</Radio>
-            <Radio value="day">{t('productionChart.dayStatics')}</Radio>
+            <Radio value='month'>{t('productionChart.monthStatics')}</Radio>
+            <Radio value='day'>{t('productionChart.dayStatics')}</Radio>
           </Radio.Group>
           <DatePicker
-            defaultValue={moment(`${meteonormYear}-${moment().month() + 1}-${moment().date()}`, 'YYYY-MM-DD')}
+            defaultValue={moment(
+              `${meteonormYear}-${moment().month() + 1}-${moment().date()}`,
+              'YYYY-MM-DD'
+            )}
             disabledDate={disabledDate}
             format={mode === 'month' ? monthFormat : dateFormat}
             picker={mode === 'month' ? 'month' : 'date'}
@@ -165,15 +168,15 @@ export const DynamicIrradianceChart = () => {
           data={dataSource}
           interactions={['active-region']}
         >
-          <Axis name="date" title={{ style: titleStyle }} />
-          <Axis name="value" title={{ style: titleStyle }} />
+          <Axis name='date' title={{ style: titleStyle }} />
+          <Axis name='value' title={{ style: titleStyle }} />
           {mode === 'day' ? (
             [
-              <Line key="line" color="#1890ff" shape="smooth" position="date*value" />,
-              <Point key="point" position="date*value" />,
+              <Line key='line' color='#1890ff' shape='smooth' position='date*value' />,
+              <Point key='point' position='date*value' />,
             ]
           ) : (
-            <Interval color="#1890ff" position="date*value" />
+            <Interval color='#1890ff' position='date*value' />
           )}
         </Chart>
       </Spin>

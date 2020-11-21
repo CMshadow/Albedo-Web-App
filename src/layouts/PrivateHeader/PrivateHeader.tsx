@@ -29,7 +29,7 @@ const PrivateHeader: React.FC = () => {
 
   const menuHeaderDropdown = (
     <Menu className={styles.menu} selectedKeys={[]}>
-      <Menu.Item key="logout" onClick={signOut}>
+      <Menu.Item key='logout' onClick={signOut}>
         <LogoutOutlined />
         {t('header.logout')}
       </Menu.Item>
@@ -40,8 +40,8 @@ const PrivateHeader: React.FC = () => {
     <Header className={styles.header}>
       {projectExist && (
         <Button
-          type="link"
-          size="large"
+          type='link'
+          size='large'
           icon={<ArrowLeftOutlined />}
           onClick={() => {
             history.push('/dashboard')
@@ -50,19 +50,19 @@ const PrivateHeader: React.FC = () => {
           {t('sider.menu.back-project')}
         </Button>
       )}
-      <Row className={styles.right} align="middle">
+      <Row className={styles.right} align='middle'>
         <Space>
           {t('header.unit')}
           <Switch
-            checkedChildren="m"
-            unCheckedChildren="ft"
+            checkedChildren='m'
+            unCheckedChildren='ft'
             checked={unit === 'm'}
             onChange={checked => dispatch(setUnit(checked ? 'm' : 'ft'))}
           />
         </Space>
         <Dropdown overlay={menuHeaderDropdown}>
           <div className={styles.item}>
-            <Avatar className={styles.avatar} alt="avatar" icon={<UserOutlined />} />
+            <Avatar className={styles.avatar} alt='avatar' icon={<UserOutlined />} />
             {cognitoUser && genInitial(cognitoUser)}
           </div>
         </Dropdown>

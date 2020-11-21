@@ -27,7 +27,7 @@ const AMap: React.FC<AMapProps> = ({
   const { t } = useTranslation()
 
   return (
-    <div style={{ width: '100%', height: '50vh' }} key="aMap">
+    <div style={{ width: '100%', height: '50vh' }} key='aMap'>
       <Map
         amapkey={apiKey}
         plugins={['MapType', 'ToolBar']}

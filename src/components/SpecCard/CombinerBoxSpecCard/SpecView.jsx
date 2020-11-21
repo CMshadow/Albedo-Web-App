@@ -31,7 +31,7 @@ export const SpecView = ({ buildingID, combiboxIndex }) => {
 
   return (
     <>
-      <Descriptions column={6} bordered layout="vertical" style={{ borderBottom: 0 }}>
+      <Descriptions column={6} bordered layout='vertical' style={{ borderBottom: 0 }}>
         <Item label={t('project.spec.combibox_serial')} span={3}>
           <Text className={styles.serial}>C{combiboxData.combibox_serial_num.split('-')[1]}</Text>
         </Item>

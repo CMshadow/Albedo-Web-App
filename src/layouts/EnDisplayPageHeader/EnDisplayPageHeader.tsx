@@ -32,32 +32,32 @@ const EnDisplayPageHeader: React.FC = () => {
     <Header className={headerClass}>
       <Row>
         <Col className={styles.logo} xs={8} sm={6}>
-          <Link to="/en">
-            <img src={logo} alt="logo" height="45px" />
+          <Link to='/en'>
+            <img src={logo} alt='logo' height='45px' />
           </Link>
         </Col>
         <Col xs={4} sm={6}>
-          <Menu className={styles.nav} mode="horizontal" selectedKeys={[navKey]}>
-            <Menu.Item key="home">
-              <Link to="/en">Product</Link>
+          <Menu className={styles.nav} mode='horizontal' selectedKeys={[navKey]}>
+            <Menu.Item key='home'>
+              <Link to='/en'>Product</Link>
             </Menu.Item>
-            <Menu.Item key="tutorial">
-              <Link to="/en/tutorial">Tutorial</Link>
+            <Menu.Item key='tutorial'>
+              <Link to='/en/tutorial'>Tutorial</Link>
             </Menu.Item>
           </Menu>
         </Col>
         <Col className={styles.right} xs={12}>
           {cognitoUser ? (
-            <Button type="primary">
-              <Link to="/dashboard">Dashboard</Link>
+            <Button type='primary'>
+              <Link to='/dashboard'>Dashboard</Link>
             </Button>
           ) : (
             <Space>
-              <Button type="primary">
-                <Link to="/user/register">Free Register</Link>
+              <Button type='primary'>
+                <Link to='/user/register'>Free Register</Link>
               </Button>
               <Button>
-                <Link to="/user/login">Login</Link>
+                <Link to='/user/login'>Login</Link>
               </Button>
             </Space>
           )}

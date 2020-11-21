@@ -9,11 +9,11 @@ const NoFoundPage: React.FC = () => {
 
   return (
     <Result
-      status="404"
-      title="404"
+      status='404'
+      title='404'
       subTitle={t('error.404')}
       extra={
-        <Button type="primary" onClick={() => history.push('/')}>
+        <Button type='primary' onClick={() => history.push('/')}>
           {t('error.backhome')}
         </Button>
       }

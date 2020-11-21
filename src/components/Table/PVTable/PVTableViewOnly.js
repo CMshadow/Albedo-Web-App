@@ -112,9 +112,14 @@ export const PVTableViewOnly = ({ data, activeData, setactiveData }) => {
     key: 'action',
     fixed: 'right',
     width: 50,
+    // eslint-disable-next-line react/display-name
     render: (value, record) => (
       <Tooltip title={t('PVtable.table.iv-curve')}>
-        <Button type="link" icon={<LineChartOutlined />} onClick={() => onClickIVCurve(record.pvID, record.userID)} />
+        <Button
+          type='link'
+          icon={<LineChartOutlined />}
+          onClick={() => onClickIVCurve(record.pvID, record.userID)}
+        />
       </Tooltip>
     ),
   })
@@ -124,7 +129,7 @@ export const PVTableViewOnly = ({ data, activeData, setactiveData }) => {
       <Table
         columns={tableCols}
         dataSource={activeData}
-        rowKey="pvID"
+        rowKey='pvID'
         pagination={{
           position: ['bottomCenter'],
           total: activeData.length,
@@ -136,11 +141,11 @@ export const PVTableViewOnly = ({ data, activeData, setactiveData }) => {
       />
       <Drawer
         bodyStyle={{ padding: '0px' }}
-        placement="right"
+        placement='right'
         closable={false}
         onClose={() => setshowDrawer(false)}
         visible={showDrawer}
-        width="50vw"
+        width='50vw'
       >
         <PVDetailTable pvID={viewPVID} />
       </Drawer>

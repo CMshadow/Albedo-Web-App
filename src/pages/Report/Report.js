@@ -83,7 +83,8 @@ const Report = () => {
     } else {
       if (
         (buildingID === 'overview' && projectData.reGenReport) ||
-        (buildingID !== 'overview' && projectData.buildings.find(b => b.buildingID === buildingID).reGenReport)
+        (buildingID !== 'overview' &&
+          projectData.buildings.find(b => b.buildingID === buildingID).reGenReport)
       ) {
         dispatch(saveProject(projectID))
           .then(res => {
@@ -112,7 +113,7 @@ const Report = () => {
   ])
 
   return (
-    <Spin indicator={<LoadingOutlined spin />} size="large" spinning={loading}>
+    <Spin indicator={<LoadingOutlined spin />} size='large' spinning={loading}>
       {loading || !reportData[buildingID] ? (
         <Card loading />
       ) : (
@@ -130,19 +131,23 @@ const Report = () => {
                   className={styles.menu}
                   onClick={e => setmenuKey(e.key)}
                   selectedKeys={[menuKey]}
-                  mode="horizontal"
+                  mode='horizontal'
                 >
-                  <Menu.Item key="1">{t('report.irrTable')}</Menu.Item>
-                  <Menu.Item key="2">{t('report.acPowerTable')}</Menu.Item>
-                  <Menu.Item key="3">{t('report.lossTable')}</Menu.Item>
-                  {buildingID !== 'overview' ? <Menu.Item key="4">{t('report.investmentTable')}</Menu.Item> : null}
-                  {buildingID !== 'overview' ? <Menu.Item key="5">{t('report.gainTable')}</Menu.Item> : null}
-                  {buildingID === 'overview' ? (
-                    <Menu.Item key="9">{t('report.commercialEquipmentTable')}</Menu.Item>
+                  <Menu.Item key='1'>{t('report.irrTable')}</Menu.Item>
+                  <Menu.Item key='2'>{t('report.acPowerTable')}</Menu.Item>
+                  <Menu.Item key='3'>{t('report.lossTable')}</Menu.Item>
+                  {buildingID !== 'overview' ? (
+                    <Menu.Item key='4'>{t('report.investmentTable')}</Menu.Item>
                   ) : null}
-                  <Menu.Item key="6">{t('report.pvDetail')}</Menu.Item>
-                  <Menu.Item key="7">{t('report.inverterDetail')}</Menu.Item>
-                  <Menu.Item key="8">{t('report.emissionReduction')}</Menu.Item>
+                  {buildingID !== 'overview' ? (
+                    <Menu.Item key='5'>{t('report.gainTable')}</Menu.Item>
+                  ) : null}
+                  {buildingID === 'overview' ? (
+                    <Menu.Item key='9'>{t('report.commercialEquipmentTable')}</Menu.Item>
+                  ) : null}
+                  <Menu.Item key='6'>{t('report.pvDetail')}</Menu.Item>
+                  <Menu.Item key='7'>{t('report.inverterDetail')}</Menu.Item>
+                  <Menu.Item key='8'>{t('report.emissionReduction')}</Menu.Item>
                 </Menu>
                 {component}
               </Card>

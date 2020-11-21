@@ -3,7 +3,19 @@ import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { amapGeocoder, googleGeocoder, getApiKey, createProject } from './service'
-import { Tabs, Form, Input, Select, Modal, Divider, Button, notification, Tooltip, Collapse, Slider } from 'antd'
+import {
+  Tabs,
+  Form,
+  Input,
+  Select,
+  Modal,
+  Divider,
+  Button,
+  notification,
+  Tooltip,
+  Collapse,
+  Slider,
+} from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { genFullName } from '../../utils/genFullName'
 import GoogleMap from './GoogleMap'
@@ -38,7 +50,9 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
   const [googleMapKey, setgoogleMapKey] = useState(null)
   const [aMapKey, setaMapKey] = useState(null)
   const [aMapWebKey, setaMapWebKey] = useState(null)
-  const [selectedMap, setselectedMap] = useState(cognitoUser.attributes.locale === 'zh-CN' ? 'aMap' : 'googleMap')
+  const [selectedMap, setselectedMap] = useState(
+    cognitoUser.attributes.locale === 'zh-CN' ? 'aMap' : 'googleMap'
+  )
   const [form] = Form.useForm()
 
   // albedo几个预设值
@@ -195,10 +209,10 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
       <Tabs
         defaultActiveKey={selectedMap}
         animated={false}
-        type="card"
+        type='card'
         onChange={activeKey => setselectedMap(activeKey)}
       >
-        <TabPane tab={t(`project.map.aMap`)} key="aMap" forceRender>
+        <TabPane tab={t(`project.map.aMap`)} key='aMap' forceRender>
           {aMapWebKey ? (
             <AMap
               mapPos={mapPos}
@@ -211,7 +225,7 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
             />
           ) : null}
         </TabPane>
-        <TabPane tab={t(`project.map.googleMap`)} key="googleMap" forceRender>
+        <TabPane tab={t(`project.map.googleMap`)} key='googleMap' forceRender>
           {googleMapKey ? (
             <GoogleMap
               mapPos={mapPos}
@@ -233,18 +247,22 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
         form={form}
         className={styles.form}
         initialValues={initValues}
-        name="create-Project"
+        name='create-Project'
         scrollToFirstError
         labelCol={labelCol}
         wrapperCol={wrapperCol}
         hideRequiredMark
         onFinish={submitForm}
       >
-        <FormItem name="projectTitle" label={t('project.create.title')} rules={[{ required: true }]}>
+        <FormItem
+          name='projectTitle'
+          label={t('project.create.title')}
+          rules={[{ required: true }]}
+        >
           <Input placeholder={t('project.create.title.placeholder')} />
         </FormItem>
         <FormItem
-          name="projectAddress"
+          name='projectAddress'
           label={
             <div>
               <Tooltip title={t(`project.create.address.hint`)}>
@@ -259,34 +277,53 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
             onSearch={() => validateAddress()}
             enterButton={
               <Button danger={!validated}>
-                {validated ? t('project.create.validation.finished') : t('project.create.validation.unfinished')}
+                {validated
+                  ? t('project.create.validation.finished')
+                  : t('project.create.validation.unfinished')}
               </Button>
             }
             placeholder={t('project.create.address.placeholder')}
           />
         </FormItem>
-        <FormItem name="projectAltitude" label={t('project.create.projectAltitude')} rules={[{ required: true }]}>
+        <FormItem
+          name='projectAltitude'
+          label={t('project.create.projectAltitude')}
+          rules={[{ required: true }]}
+        >
           <Input placeholder={t('project.create.projectAltitude.placeholder')} suffix={unit} />
         </FormItem>
-        <FormItem name="projectType" label={t('project.create.type')} rules={[{ required: true }]}>
+        <FormItem name='projectType' label={t('project.create.type')} rules={[{ required: true }]}>
           <Select>
-            <Option key="domestic" value="domestic">
+            <Option key='domestic' value='domestic'>
               {t(`project.type.domestic`)}
             </Option>
-            <Option key="commercial" value="commercial">
+            <Option key='commercial' value='commercial'>
               {t(`project.type.commercial`)}
             </Option>
           </Select>
         </FormItem>
         <Collapse bordered={false}>
-          <Panel className={styles.collapsePanel} header={t('project.create.proParams')} key="pro" forceRender>
-            <FormItem name="albedo" label={t('project.create.albedo')} rules={[{ required: true }]}>
+          <Panel
+            className={styles.collapsePanel}
+            header={t('project.create.proParams')}
+            key='pro'
+            forceRender
+          >
+            <FormItem name='albedo' label={t('project.create.albedo')} rules={[{ required: true }]}>
               <Slider marks={albedoMarks} step={0.05} max={1} />
             </FormItem>
-            <FormItem name="DCVolDropFac" label={t('project.create.DCVolDropFac')} rules={[{ required: true }]}>
+            <FormItem
+              name='DCVolDropFac'
+              label={t('project.create.DCVolDropFac')}
+              rules={[{ required: true }]}
+            >
               <Slider marks={DCVolDropFacMarks} step={0.05} min={0.1} max={2} />
             </FormItem>
-            <FormItem name="ACVolDropFac" label={t('project.create.ACVolDropFac')} rules={[{ required: true }]}>
+            <FormItem
+              name='ACVolDropFac'
+              label={t('project.create.ACVolDropFac')}
+              rules={[{ required: true }]}
+            >
               <Slider marks={ACVolDropFacMarks} step={0.05} min={0.1} max={5} />
             </FormItem>
           </Panel>

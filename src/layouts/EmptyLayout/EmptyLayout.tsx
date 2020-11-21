@@ -21,8 +21,8 @@ const ProjectLayout: React.FC = () => {
     <Layout>
       <EmailSupport />
       <Sider width={250} className={styles.sider}>
-        <Row className={styles.title} align="middle" justify="center">
-          <img alt="logo" className={styles.logo} src={logo} />
+        <Row className={styles.title} align='middle' justify='center'>
+          <img alt='logo' className={styles.logo} src={logo} />
           <div>
             <h1>{t('sider.company')}</h1>
             <h4>
@@ -32,7 +32,7 @@ const ProjectLayout: React.FC = () => {
           </div>
         </Row>
         <div className={styles.spin}>
-          <Spin size="large" />
+          <Spin size='large' />
         </div>
       </Sider>
       <Layout className={styles.main}>

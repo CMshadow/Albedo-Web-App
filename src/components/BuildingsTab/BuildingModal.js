@@ -7,7 +7,13 @@ import { addBuilding, editBuilding } from '../../store/action/index'
 import { other2m, m2other } from '../../utils/unitConverter'
 const FormItem = Form.Item
 
-export const BuildingModal = ({ showModal, setshowModal, editRecord, seteditRecord, setactiveKey }) => {
+export const BuildingModal = ({
+  showModal,
+  setshowModal,
+  editRecord,
+  seteditRecord,
+  setactiveKey,
+}) => {
   const { t } = useTranslation()
   const projectType = useSelector(state => state.project.projectType)
   const dispatch = useDispatch()
@@ -58,13 +64,16 @@ export const BuildingModal = ({ showModal, setshowModal, editRecord, seteditReco
     form.setFieldsValue(defaultValues || null)
   }, [editRecord, form, unit])
 
-  const titleText = () => (projectType === 'domestic' ? t('project.add.building') : t('project.add.unit'))
+  const titleText = () =>
+    projectType === 'domestic' ? t('project.add.building') : t('project.add.unit')
 
   const buildingNameText = () =>
     projectType === 'domestic' ? t('project.add.buildingName') : t('project.add.unitName')
 
   const combibox_cable_lenText = () =>
-    projectType === 'domestic' ? t('project.add.combibox_cable_len') : t('project.add.combibox_cable_avg_len')
+    projectType === 'domestic'
+      ? t('project.add.combibox_cable_len')
+      : t('project.add.combibox_cable_avg_len')
 
   return (
     <Modal
@@ -75,17 +84,24 @@ export const BuildingModal = ({ showModal, setshowModal, editRecord, seteditReco
       title={titleText()}
       afterClose={onClose}
     >
-      <Form colon={false} form={form} hideRequiredMark name={uuidv1()} scrollToFirstError onFinish={submitForm}>
-        <FormItem name="buildingName" label={buildingNameText()} rules={[{ required: true }]}>
+      <Form
+        colon={false}
+        form={form}
+        hideRequiredMark
+        name={uuidv1()}
+        scrollToFirstError
+        onFinish={submitForm}
+      >
+        <FormItem name='buildingName' label={buildingNameText()} rules={[{ required: true }]}>
           <Input />
         </FormItem>
         <FormItem
-          name="combibox_cable_len"
+          name='combibox_cable_len'
           label={combibox_cable_lenText()}
           normalize={val => (val ? Number(val) : val)}
           rules={[{ required: true, type: 'number', min: 0 }]}
         >
-          <Input type="number" addonAfter={unit} />
+          <Input type='number' addonAfter={unit} />
         </FormItem>
       </Form>
     </Modal>

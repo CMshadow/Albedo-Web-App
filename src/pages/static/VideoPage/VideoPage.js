@@ -8,7 +8,8 @@ import * as styles from './VideoPage.module.scss'
 const { Content } = Layout
 const { Title } = Typography
 const config = {
-  source: 'https://albedo-tutorial.oss-cn-shanghai.aliyuncs.com/Albedo%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B.mp4',
+  source:
+    'https://albedo-tutorial.oss-cn-shanghai.aliyuncs.com/Albedo%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B.mp4',
   height: '600px',
   autoplay: true,
   isLive: false,
@@ -25,13 +26,13 @@ const VideoPage = () => {
       <DisplayPageHeader />
       <Content className={styles.content}>
         <Grid fluid>
-          <Row center="xs" xs={12}>
+          <Row center='xs' xs={12}>
             <Title level={2} className={styles.title1}>
               Albedo 快速上手教程
             </Title>
           </Row>
-          <Row center="xs" xs={12}>
-            <Title level={4} type="secondary" className={styles.title2}>
+          <Row center='xs' xs={12}>
+            <Title level={4} type='secondary' className={styles.title2}>
               三分钟快速上手，带你玩转光伏设计
             </Title>
             <Player config={config} />

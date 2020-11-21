@@ -41,10 +41,10 @@ const PanelArrayCollection = props => {
         y={startPosition[1] + 1.2 * unitHeight}
         width={inverterWidth + InvOffset}
         height={0.4 * unitHeight}
-        stroke="black"
+        stroke='black'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Rect>
     )
 
@@ -57,10 +57,10 @@ const PanelArrayCollection = props => {
           startPosition[0] + unitWidth * 5.135 + InvOffset * 0.5,
           startPosition[1] + 1.4 * unitHeight,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -73,7 +73,9 @@ const PanelArrayCollection = props => {
     const fixedOffset = unitWidth / 4
     const unitArrayWidth = (unitWidth * 2.97 - fixedOffset) / 4
     const unitPortWidth =
-      numOfArray > 1 ? (unitWidth * 2.97 - offSet) / (numOfArray - 1) : (unitWidth * 2.97 - offSet) / 2
+      numOfArray > 1
+        ? (unitWidth * 2.97 - offSet) / (numOfArray - 1)
+        : (unitWidth * 2.97 - offSet) / 2
     for (let index = 0; index < numOfArray; index++) {
       if (numOfArray === 1) index = 1
       groupOfPvArray.push(
@@ -85,10 +87,10 @@ const PanelArrayCollection = props => {
             startPosition[0] + unitWidth * 2.165 + index * unitPortWidth + offSet * 0.5,
             startPosition[1] + 1.4 * unitHeight + 10,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
 
@@ -101,10 +103,10 @@ const PanelArrayCollection = props => {
             startPosition[0] + unitWidth * 2.165 + index * unitPortWidth + offSet * 0.5 + 2.5,
             startPosition[1] + 1.4 * unitHeight + 12.5,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={2}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
 
@@ -117,10 +119,10 @@ const PanelArrayCollection = props => {
             startPosition[0] + unitWidth * 2.165 + index * unitPortWidth + offSet * 0.5 - 2.5,
             startPosition[1] + 1.4 * unitHeight + 12.5,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={2}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
 
@@ -138,10 +140,10 @@ const PanelArrayCollection = props => {
             startPosition[0] + unitWidth * 2.165 + index * unitPortWidth + offSet * 0.5 + 2.5,
             endPoint,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1.5}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
 
@@ -153,15 +155,18 @@ const PanelArrayCollection = props => {
           y={startPosition[1] + 1.4 * unitHeight + 10}
           text={combiSelect(currentACIe) + 'A'}
           fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
-          fontFamily="Arial"
-          fill="Black"
+          fontFamily='Arial'
+          fill='Black'
         ></Text>
       )
 
       inverterAccessPorts.push([index * unitPortWidth + offSet * 0.5 + 2.5, endPoint])
 
       drawSingleArray(
-        [startPosition[0] + unitWidth * 2.165 + index * unitPortWidth + offSet * 0.5 + 2.5, endPoint],
+        [
+          startPosition[0] + unitWidth * 2.165 + index * unitPortWidth + offSet * 0.5 + 2.5,
+          endPoint,
+        ],
         unitArrayWidth,
         index
       )
@@ -173,7 +178,7 @@ const PanelArrayCollection = props => {
             x={startPosition[0] + unitWidth * 2.165 + 3.4 * unitPortWidth + offSet * 0.5 + 2.5}
             y={endPoint - unitHeight * 0.05}
             radius={2}
-            fill="black"
+            fill='black'
           ></Circle>
         )
         groupOfPvArray.push(
@@ -182,7 +187,7 @@ const PanelArrayCollection = props => {
             x={startPosition[0] + unitWidth * 2.165 + 3.45 * unitPortWidth + offSet * 0.5 + 2.5}
             y={endPoint - unitHeight * 0.05}
             radius={2}
-            fill="black"
+            fill='black'
           ></Circle>
         )
         groupOfPvArray.push(
@@ -191,7 +196,7 @@ const PanelArrayCollection = props => {
             x={startPosition[0] + unitWidth * 2.165 + 3.5 * unitPortWidth + offSet * 0.5 + 2.5}
             y={endPoint - unitHeight * 0.05}
             radius={2}
-            fill="black"
+            fill='black'
           ></Circle>
         )
 
@@ -201,7 +206,7 @@ const PanelArrayCollection = props => {
             x={startPosition[0] + unitWidth * 2.165 + 3.4 * unitPortWidth + offSet * 0.5 + 2.5}
             y={endPoint + unitHeight * 0.2}
             radius={2}
-            fill="black"
+            fill='black'
           ></Circle>
         )
         groupOfPvArray.push(
@@ -210,7 +215,7 @@ const PanelArrayCollection = props => {
             x={startPosition[0] + unitWidth * 2.165 + 3.45 * unitPortWidth + offSet * 0.5 + 2.5}
             y={endPoint + unitHeight * 0.2}
             radius={2}
-            fill="black"
+            fill='black'
           ></Circle>
         )
         groupOfPvArray.push(
@@ -219,7 +224,7 @@ const PanelArrayCollection = props => {
             x={startPosition[0] + unitWidth * 2.165 + 3.5 * unitPortWidth + offSet * 0.5 + 2.5}
             y={endPoint + unitHeight * 0.2}
             radius={2}
-            fill="black"
+            fill='black'
           ></Circle>
         )
       }
@@ -234,10 +239,10 @@ const PanelArrayCollection = props => {
           startPosition[0] + unitWidth * 2 + inverterWidth * 0.5,
           startPosition[1] + 1.25 * unitHeight,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -250,10 +255,10 @@ const PanelArrayCollection = props => {
           startPosition[0] + unitWidth * 2 + inverterWidth * 0.5 + 2.5,
           startPosition[1] + 1.25 * unitHeight + 2.5,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1.5}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -266,10 +271,10 @@ const PanelArrayCollection = props => {
           startPosition[0] + unitWidth * 2 + inverterWidth * 0.5 - 2.5,
           startPosition[1] + 1.25 * unitHeight + 2.5,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1.5}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -282,10 +287,10 @@ const PanelArrayCollection = props => {
           startPosition[0] + unitWidth * 2 + inverterWidth * 0.5,
           startPosition[1] + 1.35 * unitHeight,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1.5}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -296,8 +301,8 @@ const PanelArrayCollection = props => {
         y={startPosition[1] + 1.25 * unitHeight}
         text={combiSelect(props.combiboxIe) + 'A'}
         fontSize={unitHeight * 0.08 > 12 ? 12 : unitHeight * 0.08}
-        fontFamily="Arial"
-        fill="black"
+        fontFamily='Arial'
+        fill='black'
       ></Text>
     )
 
@@ -310,10 +315,10 @@ const PanelArrayCollection = props => {
           startPosition[0] + unitWidth * 2 + inverterWidth * 0.5,
           startPosition[1] + 1.4 * unitHeight,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -326,10 +331,10 @@ const PanelArrayCollection = props => {
           startPosition[0] + unitWidth * 2 + inverterWidth * 0.5,
           startPosition[1] + 0.8 * unitHeight,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -346,10 +351,10 @@ const PanelArrayCollection = props => {
           startPosition[0] + unitWidth * 2 + inverterWidth * 0.5 - 5,
           startPosition[1] + 1.15 * unitHeight,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         closed={true}
       ></Line>
     )
@@ -367,16 +372,19 @@ const PanelArrayCollection = props => {
           startPosition[0] + unitWidth * 2 + inverterWidth * 0.5 - 5,
           startPosition[1] + 1 * unitHeight - 5,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         closed={true}
       ></Line>
     )
     if (props.index === 1) {
       dispatch(
-        setMeterAccess([startPosition[0] + unitWidth * 2 + inverterWidth * 0.5, startPosition[1] + 0.8 * unitHeight])
+        setMeterAccess([
+          startPosition[0] + unitWidth * 2 + inverterWidth * 0.5,
+          startPosition[1] + 0.8 * unitHeight,
+        ])
       )
     } else if (props.index === 2) {
       dispatch(
@@ -396,10 +404,10 @@ const PanelArrayCollection = props => {
       <Line
         key={'PV-Array-Line-' + uuidv4()}
         points={[startPoint[0], startPoint[1], startPoint[0], startPoint[1] + 0.3 * unitHeight]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -416,10 +424,10 @@ const PanelArrayCollection = props => {
           startPoint[0] - 5,
           startPoint[1] + 0.05 * unitHeight + 5,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1.5}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         closed={true}
       ></Line>
     )
@@ -437,10 +445,10 @@ const PanelArrayCollection = props => {
           startPoint[0] - 5,
           startPoint[1] + 0.25 * unitHeight,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={1.5}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         closed={true}
       ></Line>
     )
@@ -456,8 +464,8 @@ const PanelArrayCollection = props => {
             : props.allPVArray[index].inverter_serial_number
         }`}
         fontSize={12}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
 
@@ -468,10 +476,10 @@ const PanelArrayCollection = props => {
         y={startPoint[1] + 0.3 * unitHeight}
         width={unitW * 0.8}
         height={0.2 * unitHeight}
-        stroke="black"
+        stroke='black'
         strokeWidth={2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Rect>
     )
 
@@ -484,10 +492,10 @@ const PanelArrayCollection = props => {
           startPoint[0] - unitW * 0.4,
           startPoint[1] + 0.5 * unitHeight,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={0.5}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         closed={true}
       ></Line>
     )
@@ -499,8 +507,8 @@ const PanelArrayCollection = props => {
         y={startPoint[1] + 0.3 * unitHeight}
         text={'AC'}
         fontSize={10}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
 
@@ -511,8 +519,8 @@ const PanelArrayCollection = props => {
         y={startPoint[1] + 0.5 * unitHeight - 8}
         text={'DC'}
         fontSize={8}
-        fontFamily="Arial"
-        fill="Black"
+        fontFamily='Arial'
+        fill='Black'
       ></Text>
     )
 
@@ -526,10 +534,10 @@ const PanelArrayCollection = props => {
           startPoint[0] + 0.2 * unitW,
           startPoint[1] + 0.3 * unitHeight + 12 + DCOffset,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={0.5}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -542,10 +550,10 @@ const PanelArrayCollection = props => {
           startPoint[0] + 0.2 * unitW,
           startPoint[1] + 0.3 * unitHeight + 15 + DCOffset,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={0.5}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -562,17 +570,19 @@ const PanelArrayCollection = props => {
           startPoint[0] - unitW * 0.2 + 5,
           startPoint[1] + 0.3 * unitHeight + 12,
         ]}
-        stroke="black"
+        stroke='black'
         strokeWidth={0.5}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         tension={0.5}
       ></Line>
     )
 
     let offset = 5
     const string_per_inverter =
-      props.allPVArray[index].string_per_inverter > 4 ? 4 : props.allPVArray[index].string_per_inverter
+      props.allPVArray[index].string_per_inverter > 4
+        ? 4
+        : props.allPVArray[index].string_per_inverter
     for (let string = 0; string < string_per_inverter; string++) {
       offset = string_per_inverter > 3 ? 5 : (0.8 * unitW) / (string_per_inverter + 1)
       if (string === 3 && string_per_inverter > 3) offset = unitArrayWidth * 0.75
@@ -586,10 +596,10 @@ const PanelArrayCollection = props => {
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
             startPoint[1] + 0.8 * unitHeight,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           closed={true}
         ></Line>
       )
@@ -607,10 +617,10 @@ const PanelArrayCollection = props => {
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
             startPoint[1] + 0.55 * unitHeight,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1.5}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           closed={true}
         ></Line>
       )
@@ -628,10 +638,10 @@ const PanelArrayCollection = props => {
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5,
             startPoint[1] + 0.725 * unitHeight,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1.5}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           closed={true}
         ></Line>
       )
@@ -643,10 +653,10 @@ const PanelArrayCollection = props => {
           y={startPoint[1] + 0.8 * unitHeight}
           width={10}
           height={0.2 * unitHeight}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Rect>
       )
 
@@ -661,10 +671,10 @@ const PanelArrayCollection = props => {
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
             startPoint[1] + 0.8 * unitHeight,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           closed={true}
         ></Line>
       )
@@ -676,8 +686,8 @@ const PanelArrayCollection = props => {
           y={startPoint[1] + 0.86 * unitHeight}
           text={'1'}
           fontSize={12}
-          fontFamily="Arial"
-          fill="Black"
+          fontFamily='Arial'
+          fill='Black'
         ></Text>
       )
 
@@ -690,10 +700,10 @@ const PanelArrayCollection = props => {
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
             startPoint[1] + 1.05 * unitHeight,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           closed={true}
         ></Line>
       )
@@ -705,10 +715,10 @@ const PanelArrayCollection = props => {
           y={startPoint[1] + 1.05 * unitHeight}
           width={10}
           height={0.2 * unitHeight}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Rect>
       )
 
@@ -723,10 +733,10 @@ const PanelArrayCollection = props => {
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
             startPoint[1] + 1.05 * unitHeight,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           closed={true}
         ></Line>
       )
@@ -738,8 +748,8 @@ const PanelArrayCollection = props => {
           y={startPoint[1] + 1.15 * unitHeight}
           text={'2'}
           fontSize={12}
-          fontFamily="Arial"
-          fill="Black"
+          fontFamily='Arial'
+          fill='Black'
         ></Text>
       )
 
@@ -752,10 +762,10 @@ const PanelArrayCollection = props => {
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset,
             startPoint[1] + 1.38 * unitHeight,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           closed={true}
         ></Line>
       )
@@ -766,7 +776,7 @@ const PanelArrayCollection = props => {
           x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
           y={startPoint[1] + 1.29 * unitHeight}
           radius={1}
-          fill="black"
+          fill='black'
         ></Circle>
       )
       groupOfPvArray.push(
@@ -775,7 +785,7 @@ const PanelArrayCollection = props => {
           x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
           y={startPoint[1] + 1.31 * unitHeight}
           radius={1}
-          fill="black"
+          fill='black'
         ></Circle>
       )
       groupOfPvArray.push(
@@ -784,7 +794,7 @@ const PanelArrayCollection = props => {
           x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 7}
           y={startPoint[1] + 1.33 * unitHeight}
           radius={1}
-          fill="black"
+          fill='black'
         ></Circle>
       )
 
@@ -799,10 +809,10 @@ const PanelArrayCollection = props => {
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 3,
             startPoint[1] + 1.3 * unitHeight + 5,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
       groupOfPvArray.push(
@@ -816,10 +826,10 @@ const PanelArrayCollection = props => {
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 3,
             startPoint[1] + 1.32 * unitHeight + 5,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
 
@@ -830,10 +840,10 @@ const PanelArrayCollection = props => {
           y={startPoint[1] + 1.38 * unitHeight}
           width={10}
           height={0.2 * unitHeight}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Rect>
       )
 
@@ -848,10 +858,10 @@ const PanelArrayCollection = props => {
             startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset + 5,
             startPoint[1] + 1.38 * unitHeight,
           ]}
-          stroke="black"
+          stroke='black'
           strokeWidth={1}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           closed={true}
         ></Line>
       )
@@ -863,8 +873,8 @@ const PanelArrayCollection = props => {
           y={startPoint[1] + 1.44 * unitHeight}
           text={'N'}
           fontSize={11}
-          fontFamily="Arial"
-          fill="black"
+          fontFamily='Arial'
+          fill='black'
         ></Text>
       )
 
@@ -875,8 +885,8 @@ const PanelArrayCollection = props => {
           y={startPoint[1] + 1.6 * unitHeight}
           text={props.allPVArray[index].string_per_inverter > 4 && string === 3 ? 'N' : string + 1}
           fontSize={11}
-          fontFamily="Arial"
-          fill="black"
+          fontFamily='Arial'
+          fill='black'
         ></Text>
       )
 
@@ -887,7 +897,7 @@ const PanelArrayCollection = props => {
             x={startPoint[0] - 0.4 * unitW + 2.05 * unitArrayWidth + offset}
             y={startPoint[1] + 1.48 * unitHeight}
             radius={1}
-            fill="black"
+            fill='black'
           ></Circle>
         )
         groupOfPvArray.push(
@@ -896,7 +906,7 @@ const PanelArrayCollection = props => {
             x={startPoint[0] - 0.4 * unitW + 2.15 * unitArrayWidth + offset}
             y={startPoint[1] + 1.48 * unitHeight}
             radius={1}
-            fill="black"
+            fill='black'
           ></Circle>
         )
         groupOfPvArray.push(
@@ -905,7 +915,7 @@ const PanelArrayCollection = props => {
             x={startPoint[0] - 0.4 * unitW + 2.25 * unitArrayWidth + offset}
             y={startPoint[1] + 1.48 * unitHeight}
             radius={1}
-            fill="black"
+            fill='black'
           ></Circle>
         )
       }

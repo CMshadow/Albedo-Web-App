@@ -162,7 +162,7 @@ export const LossTable = ({ buildingID }) => {
         dataSource={dataSource}
         columns={columns}
         pagination={false}
-        size="middle"
+        size='middle'
         title={genHeader}
       />
     </Card>

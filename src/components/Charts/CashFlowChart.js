@@ -68,10 +68,10 @@ export const CashFlowChart = ({ buildingID }) => {
         interactions={['active-region']}
         padding={[30, 30, 100, 100]}
       >
-        <Legend position="bottom" itemName={{ style: legendStyle }} offsetY={-10} />
-        <Axis name="year" title={{ style: titleStyle }} />
-        <Axis name="value" title={{ style: titleStyle }} />
-        <Interval adjust={adjust} color={color} position="year*value" />
+        <Legend position='bottom' itemName={{ style: legendStyle }} offsetY={-10} />
+        <Axis name='year' title={{ style: titleStyle }} />
+        <Axis name='value' title={{ style: titleStyle }} />
+        <Interval adjust={adjust} color={color} position='year*value' />
         <Tooltip shared />
       </Chart>
     </Card>

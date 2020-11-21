@@ -14,8 +14,8 @@ const UserLayout: React.FC = ({ children }) => {
   return (
     <>
       <Helmet>
-        <meta charSet="utf-8" />
-        <meta name="description" content={t('user.logo.welcome')} />
+        <meta charSet='utf-8' />
+        <meta name='description' content={t('user.logo.welcome')} />
         <title>{t('sider.company')}</title>
       </Helmet>
       <Layout className={styles.container}>
@@ -26,11 +26,11 @@ const UserLayout: React.FC = ({ children }) => {
           <div className={styles.top}>
             <div className={styles.header}>
               <a href={getLanguage() === 'zh-CN' ? '/cn' : '/en'}>
-                <img alt="logo" className={styles.logo} src={logo} />
+                <img alt='logo' className={styles.logo} src={logo} />
               </a>
             </div>
             <div>
-              <Text type="warning">
+              <Text type='warning'>
                 {t('sider.edition')}
                 {process.env.REACT_APP_VERSION}
               </Text>

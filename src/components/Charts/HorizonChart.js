@@ -93,7 +93,8 @@ export const HorizonChart = ({ data }) => {
                 })
                 instance.dispatchAction({ type: 'showTip', seriesIndex: 0, dataIndex: index })
               },
-              onmousemove: e => instance.dispatchAction({ type: 'showTip', seriesIndex: 0, dataIndex: index }),
+              onmousemove: e =>
+                instance.dispatchAction({ type: 'showTip', seriesIndex: 0, dataIndex: index }),
               onmouseout: e => instance.dispatchAction({ type: 'hideTip' }),
             })),
           })

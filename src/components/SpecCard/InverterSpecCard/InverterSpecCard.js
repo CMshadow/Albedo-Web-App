@@ -30,7 +30,9 @@ export const InverterSpecCard = ({
   const buildingIndex = buildings.map(building => building.buildingID).indexOf(buildingID)
   const specData = buildings[buildingIndex].data[specIndex]
 
-  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
   const inverterData = useSelector(state => state.inverter.data).concat(
     useSelector(state => state.inverter.officialData)
   )
@@ -60,7 +62,9 @@ export const InverterSpecCard = ({
           setloading(false)
           const invLimits = {}
           res.inverterPlans.forEach(limit =>
-            limit.pps in invLimits ? invLimits[limit.pps].push(limit.spi) : (invLimits[limit.pps] = [limit.spi])
+            limit.pps in invLimits
+              ? invLimits[limit.pps].push(limit.spi)
+              : (invLimits[limit.pps] = [limit.spi])
           )
           Object.keys(invLimits).forEach(key => invLimits[key].sort())
           setinvLimits(invLimits)
@@ -78,9 +82,10 @@ export const InverterSpecCard = ({
       hoverable
       actions={[
         <Button
+          key='edit'
           disabled={disableEdit}
-          type="link"
-          shape="circle"
+          type='link'
+          shape='circle'
           icon={<EditTwoTone twoToneColor={disableEdit ? '#bfbfbf' : '#1890ff'} />}
           onClick={() => {
             onClickEdit(invIndex)
@@ -88,9 +93,10 @@ export const InverterSpecCard = ({
           }}
         />,
         <Button
+          key='delete'
           disabled={disableDelete}
-          type="link"
-          shape="circle"
+          type='link'
+          shape='circle'
           danger
           icon={<DeleteOutlined />}
           onClick={() => {
@@ -117,7 +123,12 @@ export const InverterSpecCard = ({
             onClickEndEdit={onClickEndEdit}
           />
         ) : (
-          <SpecView initInvLimits={invLimits} buildingID={buildingID} specIndex={specIndex} invIndex={invIndex} />
+          <SpecView
+            initInvLimits={invLimits}
+            buildingID={buildingID}
+            specIndex={specIndex}
+            invIndex={invIndex}
+          />
         )}
       </div>
     </Card>

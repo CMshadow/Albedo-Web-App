@@ -26,7 +26,10 @@ const Dashboard = () => {
       </Row>
       <Row gutter={rowGutter}>
         <Col span={24}>
-          <Equipments loading={!projectData.projectTitle || !projectData.tiltAzimuthPOA} {...projectData} />
+          <Equipments
+            loading={!projectData.projectTitle || !projectData.tiltAzimuthPOA}
+            {...projectData}
+          />
         </Col>
       </Row>
     </div>

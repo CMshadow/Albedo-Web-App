@@ -50,10 +50,10 @@ const Login = props => {
   return (
     <div className={styles.main}>
       <h2>{t('user.login.welcome')}</h2>
-      <Form form={form} name="Login" onFinish={onFinish}>
+      <Form form={form} name='Login' onFinish={onFinish}>
         <Row>{t('user.required.email')}</Row>
         <FormItem
-          name="mail"
+          name='mail'
           rules={[
             {
               required: true,
@@ -65,11 +65,11 @@ const Login = props => {
             },
           ]}
         >
-          <Input size="large" placeholder={t('user.placeholder.email')} />
+          <Input size='large' placeholder={t('user.placeholder.email')} />
         </FormItem>
         <Row>{t('user.required.password')}</Row>
         <FormItem
-          name="password"
+          name='password'
           className={styles.password}
           rules={[
             {
@@ -78,20 +78,26 @@ const Login = props => {
             },
           ]}
         >
-          <Input size="large" type="password" placeholder={t('user.required.password')} />
+          <Input size='large' type='password' placeholder={t('user.required.password')} />
         </FormItem>
         <Checkbox className={styles.floatleft} checked={check} onChange={e => setcheck(!check)}>
           {t('user.save-login')}
         </Checkbox>
-        <Link className={styles.floatright} to="/user/forget">
+        <Link className={styles.floatright} to='/user/forget'>
           {t('user.forget-password')}
         </Link>
         <FormItem className={styles.submit}>
-          <Button size="large" loading={loading} className={styles.submit} type="primary" htmlType="submit">
+          <Button
+            size='large'
+            loading={loading}
+            className={styles.submit}
+            type='primary'
+            htmlType='submit'
+          >
             {t('user.login')}
           </Button>
         </FormItem>
-        <Link className={styles.floatright} to="/user/register">
+        <Link className={styles.floatright} to='/user/register'>
           {t('user.to-sign-up')}
         </Link>
       </Form>

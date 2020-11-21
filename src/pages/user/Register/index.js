@@ -110,7 +110,12 @@ const Register = props => {
       password.length > 11
     )
       return 'success'
-    if (checkPsswordLength() && checkPsswordCapLetter() && checkPsswordLowLetter() && checkPsswordNumber())
+    if (
+      checkPsswordLength() &&
+      checkPsswordCapLetter() &&
+      checkPsswordLowLetter() &&
+      checkPsswordNumber()
+    )
       return 'normal'
     return 'exception'
   }
@@ -143,35 +148,35 @@ const Register = props => {
         {passwordStatusMap[getPasswordStatus()]}
         {renderPasswordProgress()}
         <div className={styles.popoverContent}>
-          <Row align="middle">
+          <Row align='middle'>
             {checkPsswordLength() ? (
-              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" />
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor='#52c41a' />
             ) : (
-              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d" />
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor='#f5222d' />
             )}
             {t('user.hint.length')}
           </Row>
-          <Row align="middle">
+          <Row align='middle'>
             {checkPsswordLowLetter() ? (
-              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" />
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor='#52c41a' />
             ) : (
-              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d" />
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor='#f5222d' />
             )}
             {t('user.hint.lowLetter')}
           </Row>
-          <Row align="middle">
+          <Row align='middle'>
             {checkPsswordCapLetter() ? (
-              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" />
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor='#52c41a' />
             ) : (
-              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d" />
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor='#f5222d' />
             )}
             {t('user.hint.capLetter')}
           </Row>
-          <Row align="middle">
+          <Row align='middle'>
             {checkPsswordNumber() ? (
-              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor="#52c41a" />
+              <CheckCircleTwoTone className={styles.popoverIcon} twoToneColor='#52c41a' />
             ) : (
-              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor="#f5222d" />
+              <CloseCircleTwoTone className={styles.popoverIcon} twoToneColor='#f5222d' />
             )}
             {t('user.hint.number')}
           </Row>
@@ -182,10 +187,10 @@ const Register = props => {
   return (
     <div className={styles.main}>
       <h2>{t('user.register.welcome')}</h2>
-      <Form form={form} name="UserRegister" onFinish={onFinish}>
+      <Form form={form} name='UserRegister' onFinish={onFinish}>
         <Row>{t('user.required.fullname')}</Row>
         <FormItem
-          name="firstname"
+          name='firstname'
           className={styles.firstname}
           rules={[
             {
@@ -194,10 +199,10 @@ const Register = props => {
             },
           ]}
         >
-          <Input size="large" placeholder={t('user.placeholder.firstname')} />
+          <Input size='large' placeholder={t('user.placeholder.firstname')} />
         </FormItem>
         <FormItem
-          name="lastname"
+          name='lastname'
           className={styles.lastname}
           rules={[
             {
@@ -206,11 +211,11 @@ const Register = props => {
             },
           ]}
         >
-          <Input size="large" placeholder={t('user.placeholder.lastname')} />
+          <Input size='large' placeholder={t('user.placeholder.lastname')} />
         </FormItem>
         <Row>{t('user.required.email')}</Row>
         <FormItem
-          name="mail"
+          name='mail'
           rules={[
             {
               required: true,
@@ -222,12 +227,17 @@ const Register = props => {
             },
           ]}
         >
-          <Input size="large" placeholder={t('user.placeholder.email')} />
+          <Input size='large' placeholder={t('user.placeholder.email')} />
         </FormItem>
         <Row>{t('user.required.password')}</Row>
-        <Popover content={genPopoverContent} overlayStyle={{ width: 300 }} placement="right" visible={visible}>
+        <Popover
+          content={genPopoverContent}
+          overlayStyle={{ width: 300 }}
+          placement='right'
+          visible={visible}
+        >
           <FormItem
-            name="password"
+            name='password'
             className={styles.password}
             rules={[
               {
@@ -244,14 +254,24 @@ const Register = props => {
               },
             ]}
           >
-            <Input.Password size="large" type="password" placeholder={t('user.placeholder.password')} />
+            <Input.Password
+              size='large'
+              type='password'
+              placeholder={t('user.placeholder.password')}
+            />
           </FormItem>
         </Popover>
         <FormItem>
-          <Button size="large" loading={loading} className={styles.submit} type="primary" htmlType="submit">
+          <Button
+            size='large'
+            loading={loading}
+            className={styles.submit}
+            type='primary'
+            htmlType='submit'
+          >
             {t('user.register')}
           </Button>
-          <Link className={styles.login} to="/user/login">
+          <Link className={styles.login} to='/user/login'>
             {t('user.to-sign-in')}
           </Link>
         </FormItem>

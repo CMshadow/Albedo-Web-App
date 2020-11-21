@@ -13,7 +13,7 @@ export const SpecView = ({ powercabinetIndex }) => {
 
   return (
     <>
-      <Descriptions column={4} bordered layout="vertical">
+      <Descriptions column={4} bordered layout='vertical'>
         <Item label={t('project.spec.powercabinet.powercabinet_serial_num')} span={1}>
           <Text className={styles.powercabinetSerial}>
             P{powercabinetData.powercabinet_serial_num}

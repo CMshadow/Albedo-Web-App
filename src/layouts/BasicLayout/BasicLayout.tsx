@@ -37,25 +37,25 @@ const BasicLayout: React.FC = props => {
     const fetchData = async () => {
       const fetchPromises = []
       fetchPromises.push(
-        getPV()
+        getPV({})
           .then(res => dispatch(setPVData(res)))
           .catch(() => history.push('/dashboard'))
       )
       fetchPromises.push(
-        getOfficialPV(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US')
+        getOfficialPV({ region: cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US' })
           .then(res => dispatch(setOfficialPVData(res)))
           .catch(() => history.push('/dashboard'))
       )
-      fetchPromises.push(
-        getInverter()
-          .then(res => dispatch(setInverterData(res)))
-          .catch(() => history.push('/dashboard'))
-      )
-      fetchPromises.push(
-        getOfficialInverter(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US')
-          .then(res => dispatch(setOfficialInverterData(res)))
-          .catch(() => history.push('/dashboard'))
-      )
+      // fetchPromises.push(
+      //   getInverter()
+      //     .then(res => dispatch(setInverterData(res)))
+      //     .catch(() => history.push('/dashboard'))
+      // )
+      // fetchPromises.push(
+      //   getOfficialInverter(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US')
+      //     .then(res => dispatch(setOfficialInverterData(res)))
+      //     .catch(() => history.push('/dashboard'))
+      // )
       await Promise.all(fetchPromises)
     }
 
@@ -66,15 +66,15 @@ const BasicLayout: React.FC = props => {
   return (
     <>
       <Helmet>
-        <meta charSet="utf-8" />
-        <meta name="description" content={t('user.logo.welcome')} />
+        <meta charSet='utf-8' />
+        <meta name='description' content={t('user.logo.welcome')} />
         <title>{t('sider.company')}</title>
       </Helmet>
       <Layout>
         <EmailSupport />
         <Sider width={250} className={styles.sider}>
-          <Row className={styles.title} align="middle" justify="center">
-            <img alt="logo" className={styles.logo} src={logo} />
+          <Row className={styles.title} align='middle' justify='center'>
+            <img alt='logo' className={styles.logo} src={logo} />
             <div>
               <h1>{t('sider.company')}</h1>
               <h4>
@@ -84,18 +84,18 @@ const BasicLayout: React.FC = props => {
             </div>
           </Row>
           <Menu
-            theme="dark"
-            mode="inline"
+            theme='dark'
+            mode='inline'
             selectedKeys={[selectMenu]}
             onSelect={({ key }) => history.push(`/${key}`)}
           >
-            <Menu.Item key="dashboard" className={styles.menuItem}>
+            <Menu.Item key='dashboard' className={styles.menuItem}>
               {t('sider.menu.project')}
             </Menu.Item>
-            <Menu.Item key="pv" className={styles.menuItem}>
+            <Menu.Item key='pv' className={styles.menuItem}>
               {t('sider.menu.pv')}
             </Menu.Item>
-            <Menu.Item key="inverter" className={styles.menuItem}>
+            <Menu.Item key='inverter' className={styles.menuItem}>
               {t('sider.menu.inverter')}
             </Menu.Item>
           </Menu>

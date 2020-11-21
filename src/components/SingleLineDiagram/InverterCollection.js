@@ -35,7 +35,7 @@ const InverterCollection = props => {
         y={startY}
         width={minSize[0]}
         height={minSize[1]}
-        stroke="white"
+        stroke='white'
         strokeWidth={3}
         onMouseOver={() => {
           toolKitTriggr = !toolKitTriggr
@@ -49,18 +49,23 @@ const InverterCollection = props => {
           x={startX}
           y={accessPorts[i][j - 1][1]}
           radius={5}
-          fill="white"
+          fill='white'
         ></Circle>
       )
 
       groupOfInverter.push(
         <Line
           key={'Inverter-Line-' + uuidv4()}
-          points={[startX, accessPorts[i][j - 1][1], accessPorts[i][j - 1][0], accessPorts[i][j - 1][1]]}
-          stroke="white"
+          points={[
+            startX,
+            accessPorts[i][j - 1][1],
+            accessPorts[i][j - 1][0],
+            accessPorts[i][j - 1][1],
+          ]}
+          stroke='white'
           strokeWidth={stroke_Width}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
 
@@ -70,11 +75,13 @@ const InverterCollection = props => {
           x={0.45 * (startX + accessPorts[i][j - 1][0])}
           y={accessPorts[i][j - 1][1] + 5}
           text={
-            props.numOfArray > 3 && i === 2 ? pvTable[props.numOfArray - 1].dc_cable_choice : pvTable[i].dc_cable_choice
+            props.numOfArray > 3 && i === 2
+              ? pvTable[props.numOfArray - 1].dc_cable_choice
+              : pvTable[i].dc_cable_choice
           }
           fontSize={font_size}
-          fontFamily="Arial"
-          fill="white"
+          fontFamily='Arial'
+          fill='white'
         ></Text>
       )
     }
@@ -82,10 +89,10 @@ const InverterCollection = props => {
       <Line
         key={'Inverter-Line-' + uuidv4()}
         points={[startX + minSize[0], startY, startX, startY + minSize[1]]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -98,10 +105,10 @@ const InverterCollection = props => {
           startX + minSize[0] * 0.5,
           startY + minSize[1] * 0.1,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         dash={[1, 5]}
       ></Line>
     )
@@ -115,10 +122,10 @@ const InverterCollection = props => {
           startX + minSize[0] * 0.5,
           startY + minSize[1] * 0.15,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         // dash={[1, 5]}
       ></Line>
     )
@@ -132,10 +139,10 @@ const InverterCollection = props => {
           startX + minSize[0] * 0.5,
           startY + minSize[1] * 0.15,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -152,10 +159,10 @@ const InverterCollection = props => {
           startX + minSize[0] * 0.85,
           startY + minSize[1] * 0.75,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         tension={0.5}
       ></Line>
     )
@@ -169,10 +176,10 @@ const InverterCollection = props => {
           startX + minSize[0] + (i + 1) * unitAccessPortDist,
           startY + minSize[1] * 0.5,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -185,8 +192,8 @@ const InverterCollection = props => {
         y={startY + minSize[1] * 1.05}
         text={inverterTable[i].inverter_model}
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -196,11 +203,13 @@ const InverterCollection = props => {
         x={startX + minSize[0] + 10}
         y={startY + minSize[1] * 0.5 + 5}
         text={
-          props.numOfArray > 3 && i === 2 ? pvTable[props.numOfArray - 1].ac_cable_choice : pvTable[i].ac_cable_choice
+          props.numOfArray > 3 && i === 2
+            ? pvTable[props.numOfArray - 1].ac_cable_choice
+            : pvTable[i].ac_cable_choice
         }
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -223,11 +232,16 @@ const InverterCollection = props => {
     groupOfInverter.push(
       <Line
         key={'Inverter-Line-' + uuidv4()}
-        points={[startPanelPointX, startPanelPointY, startPanelPointX, startPanelPointY + minSize[1] * 0.3]}
-        stroke="white"
+        points={[
+          startPanelPointX,
+          startPanelPointY,
+          startPanelPointX,
+          startPanelPointY + minSize[1] * 0.3,
+        ]}
+        stroke='white'
         strokeWidth={stroke_Width * 2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         dash={[1, 10]}
       ></Line>
     )

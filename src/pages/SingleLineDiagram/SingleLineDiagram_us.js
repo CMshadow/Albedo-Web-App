@@ -37,8 +37,11 @@ const SingleLineDiagUS = () => {
   const stringPanels = spec.map(i => i.panels_per_string)
   const panelsInverter = spec.map(i => i.string_per_inverter)
   const numOfInverter = spec.length
-  const combiboxName = buildingReport && buildingReport.investment ? DataGenerator.getCombiBoxData(buildingReport) : ''
-  const combiboxCableChoice = buildingReport ? DataGenerator.getCombiBoxCableChoice(buildingReport) : ''
+  const combiboxName =
+    buildingReport && buildingReport.investment ? DataGenerator.getCombiBoxData(buildingReport) : ''
+  const combiboxCableChoice = buildingReport
+    ? DataGenerator.getCombiBoxCableChoice(buildingReport)
+    : ''
 
   // 创建 module table数据
   const allPV = userPV.concat(officialPV)
@@ -57,11 +60,11 @@ const SingleLineDiagUS = () => {
 
   return (
     <div className={classes.SLD}>
-      <Tooltip title="Equipment Table">
+      <Tooltip title='Equipment Table'>
         <Button
           className={classes.triggerButton}
-          shape="circle"
-          size="large"
+          shape='circle'
+          size='large'
           icon={<ProfileOutlined />}
           onClick={tableTriggerHandler}
         />
@@ -75,7 +78,7 @@ const SingleLineDiagUS = () => {
           marginBottom: 0,
         }}
       >
-        <TabPane tab="Module" key="1">
+        <TabPane tab='Module' key='1'>
           <Table
             columns={[
               {
@@ -124,7 +127,7 @@ const SingleLineDiagUS = () => {
             scroll={{ x: 100, y: 200 }}
           />
         </TabPane>
-        <TabPane tab="Inverter" key="2">
+        <TabPane tab='Inverter' key='2'>
           <Table
             columns={[
               {
@@ -193,7 +196,11 @@ const SingleLineDiagUS = () => {
                   combiTable={combiboxCableChoice}
                   numOfArray={numOfInverter}
                 />
-                <ServerPanel width={stageWidth} height={stageHeight} combiTable={combiboxCableChoice} />
+                <ServerPanel
+                  width={stageWidth}
+                  height={stageHeight}
+                  combiTable={combiboxCableChoice}
+                />
                 <Meter width={stageWidth} height={stageHeight} />
                 <Grid width={stageWidth} height={stageHeight} />
               </Layer>

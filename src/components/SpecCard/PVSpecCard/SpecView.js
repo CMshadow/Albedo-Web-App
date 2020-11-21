@@ -11,7 +11,9 @@ export const SpecView = ({ buildingID, specIndex }) => {
   const unit = useSelector(state => state.unit.unit)
   const projectType = useSelector(state => state.project.projectType)
   const buildings = useSelector(state => state.project.buildings)
-  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
 
   const buildingIndex = buildings.map(building => building.buildingID).indexOf(buildingID)
   const spec = buildings[buildingIndex].data[specIndex].pv_panel_parameters
@@ -73,7 +75,9 @@ export const SpecView = ({ buildingID, specIndex }) => {
           </Item>
         </>
       )}
-      <Item label={t('project.spec.capacity')}>{`${w2other(capacity).value} ${w2other(capacity).unit}`}</Item>
+      <Item label={t('project.spec.capacity')}>{`${w2other(capacity).value} ${
+        w2other(capacity).unit
+      }`}</Item>
       <Item label={t('project.spec.pvNum')}>{pvNum}</Item>
       <Item label={t('project.spec.celltemp-model')}>{genCelltempText()}</Item>
     </Descriptions>

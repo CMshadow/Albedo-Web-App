@@ -15,7 +15,7 @@ export const SpecView = ({ transformerIndex }) => {
 
   return (
     <>
-      <Descriptions column={4} bordered layout="vertical">
+      <Descriptions column={4} bordered layout='vertical'>
         <Item label={t('project.spec.transformer_serial_num')} span={2}>
           <Text className={styles.transformerSerial}>
             T{transformerData.transformer_serial_num}

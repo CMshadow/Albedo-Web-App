@@ -32,12 +32,14 @@ export const DeleteAction = ({ record, setdata, setactiveData, setloading }) => 
     <Popconfirm
       title={t('warning.delete')}
       onConfirm={onDelete}
-      onCancel={() => {}}
+      onCancel={() => {
+        return
+      }}
       okText={t('action.confirm')}
       cancelText={t('action.cancel')}
-      placement="topRight"
+      placement='topRight'
     >
-      <Button type="link" danger icon={<DeleteOutlined />} />
+      <Button type='link' danger icon={<DeleteOutlined />} />
     </Popconfirm>
   )
 }

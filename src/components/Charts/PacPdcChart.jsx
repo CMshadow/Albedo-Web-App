@@ -22,9 +22,9 @@ export const PacPdcChart = ({ dataSource }) => {
 
   return (
     <Chart scale={scale} padding={[30, 30, 100, 100]} autoFit height={500} data={dataSource}>
-      <Axis name="pdc" title={{ style: titleStyle }} />
-      <Axis name="pac" title={{ style: titleStyle }} />
-      <Line shape="smooth" position="pdc*pac" color="vdc" />
+      <Axis name='pdc' title={{ style: titleStyle }} />
+      <Axis name='pac' title={{ style: titleStyle }} />
+      <Line shape='smooth' position='pdc*pac' color='vdc' />
     </Chart>
   )
 }

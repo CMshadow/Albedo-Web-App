@@ -80,7 +80,7 @@ const PanelArrayCollection = props => {
         y={startY}
         width={minSize[0]}
         height={minSize[1]}
-        stroke="white"
+        stroke='white'
         strokeWidth={3}
         dash={[15, 5]}
       ></Rect>
@@ -93,7 +93,7 @@ const PanelArrayCollection = props => {
         y={startPanelPointY}
         width={firstPanelWidth}
         height={firstPanelHeight}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
       ></Rect>
     )
@@ -109,10 +109,10 @@ const PanelArrayCollection = props => {
           startPanelPointX,
           startPanelPointY + firstPanelHeight,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -121,10 +121,10 @@ const PanelArrayCollection = props => {
         key={'PanelArray-Text-' + uuidv4()}
         x={startPanelPointX + firstPanelWidth * 0.5}
         y={startPanelPointY + firstPanelHeight * 0.1}
-        text="1"
+        text='1'
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -137,10 +137,10 @@ const PanelArrayCollection = props => {
           startPanelPointX + firstPanelWidth * 1.3,
           startPanelPointY + firstPanelHeight * 0.5,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -151,7 +151,7 @@ const PanelArrayCollection = props => {
         y={secondPanelStartPointY}
         width={secondPanelWidth}
         height={secondPanelHeight}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
       ></Rect>
     )
@@ -167,10 +167,10 @@ const PanelArrayCollection = props => {
           secondPanelStartPointX,
           secondPanelStartPointY + secondPanelHeight,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -179,10 +179,10 @@ const PanelArrayCollection = props => {
         key={'PanelArray-Text-' + uuidv4()}
         x={secondPanelStartPointX + secondPanelWidth * 0.5}
         y={secondPanelStartPointY + secondPanelHeight * 0.1}
-        text="2"
+        text='2'
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -195,10 +195,10 @@ const PanelArrayCollection = props => {
           secondPanelStartPointX + secondPanelWidth * 1.8,
           secondPanelStartPointY + secondPanelHeight * 0.5,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -209,7 +209,7 @@ const PanelArrayCollection = props => {
         y={lastPanelStartPointY}
         width={lastPanelWidth}
         height={lastPanelHeight}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
       ></Rect>
     )
@@ -225,10 +225,10 @@ const PanelArrayCollection = props => {
           lastPanelStartPointX,
           lastPanelStartPointY + lastPanelHeight,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -239,8 +239,8 @@ const PanelArrayCollection = props => {
         y={lastPanelStartPointY + lastPanelHeight * 0.1}
         text={stringOfPanels[index]}
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -251,8 +251,8 @@ const PanelArrayCollection = props => {
         y={startPanelPointY + firstPanelHeight * 1.5}
         text={'String Count: ' + panelsOfInverter[index]}
         fontSize={font_size * 0.85}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -263,8 +263,8 @@ const PanelArrayCollection = props => {
         y={startPanelPointY + firstPanelHeight * 1.5 + font_size}
         text={'Module Count: ' + stringOfPanels[index] * panelsOfInverter[index]}
         fontSize={font_size * 0.85}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -274,11 +274,13 @@ const PanelArrayCollection = props => {
         x={startX}
         y={startY + minSize[1] * 1.1}
         text={
-          props.numOfArray > 3 && index === 2 ? pvTable[props.numOfArray - 1].module_model : pvTable[index].module_model
+          props.numOfArray > 3 && index === 2
+            ? pvTable[props.numOfArray - 1].module_model
+            : pvTable[index].module_model
         }
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -292,15 +294,18 @@ const PanelArrayCollection = props => {
             startPanelPointX + 3,
             startPanelPointY + firstPanelHeight * 1.5 + font_size + 18,
           ]}
-          stroke="white"
+          stroke='white'
           strokeWidth={stroke_Width * 2}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           dash={[1, 10]}
         ></Line>
       )
 
-    accessPorts.push([lastPanelStartPointX + lastPanelWidth, lastPanelStartPointY + lastPanelHeight * 0.5])
+    accessPorts.push([
+      lastPanelStartPointX + lastPanelWidth,
+      lastPanelStartPointY + lastPanelHeight * 0.5,
+    ])
   }
 
   const drawSecondRowOfSanelArray = (accessPorts, index) => {
@@ -326,7 +331,7 @@ const PanelArrayCollection = props => {
         y={startY}
         width={minSize[0]}
         height={minSize[1]}
-        stroke="white"
+        stroke='white'
         strokeWidth={3}
         dash={[15, 5]}
       ></Rect>
@@ -339,7 +344,7 @@ const PanelArrayCollection = props => {
         y={startPanelPointY}
         width={firstPanelWidth}
         height={firstPanelHeight}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
       ></Rect>
     )
@@ -355,10 +360,10 @@ const PanelArrayCollection = props => {
           startPanelPointX,
           startPanelPointY + firstPanelHeight,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -367,10 +372,10 @@ const PanelArrayCollection = props => {
         key={'PanelArray-Text-' + uuidv4()}
         x={startPanelPointX + firstPanelWidth * 0.5}
         y={startPanelPointY + firstPanelHeight * 0.1}
-        text="1"
+        text='1'
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -383,10 +388,10 @@ const PanelArrayCollection = props => {
           startPanelPointX + firstPanelWidth * 1.3,
           startPanelPointY + firstPanelHeight * 0.5,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -397,7 +402,7 @@ const PanelArrayCollection = props => {
         y={secondPanelStartPointY}
         width={secondPanelWidth}
         height={secondPanelHeight}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
       ></Rect>
     )
@@ -413,10 +418,10 @@ const PanelArrayCollection = props => {
           secondPanelStartPointX,
           secondPanelStartPointY + secondPanelHeight,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -425,10 +430,10 @@ const PanelArrayCollection = props => {
         key={'PanelArray-Text-' + uuidv4()}
         x={secondPanelStartPointX + secondPanelWidth * 0.5}
         y={secondPanelStartPointY + secondPanelHeight * 0.1}
-        text="2"
+        text='2'
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -441,10 +446,10 @@ const PanelArrayCollection = props => {
           secondPanelStartPointX + secondPanelWidth * 1.8,
           secondPanelStartPointY + secondPanelHeight * 0.5,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 
@@ -455,7 +460,7 @@ const PanelArrayCollection = props => {
         y={lastPanelStartPointY}
         width={lastPanelWidth}
         height={lastPanelHeight}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
       ></Rect>
     )
@@ -471,10 +476,10 @@ const PanelArrayCollection = props => {
           lastPanelStartPointX,
           lastPanelStartPointY + lastPanelHeight,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
     groupOfPancelsArray.push(
@@ -484,12 +489,15 @@ const PanelArrayCollection = props => {
         y={lastPanelStartPointY + lastPanelHeight * 0.1}
         text={stringOfPanels[index]}
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
-    accessPorts.push([lastPanelStartPointX + lastPanelWidth, lastPanelStartPointY + lastPanelHeight * 0.5])
+    accessPorts.push([
+      lastPanelStartPointX + lastPanelWidth,
+      lastPanelStartPointY + lastPanelHeight * 0.5,
+    ])
   }
 
   const drawDashLine = (startPanelPointX, startPanelPointY) => {
@@ -502,10 +510,10 @@ const PanelArrayCollection = props => {
           startPanelPointX,
           startPanelPointY + minSize[1] * 0.5,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width * 2}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
         dash={[1, 10]}
       ></Line>
     )

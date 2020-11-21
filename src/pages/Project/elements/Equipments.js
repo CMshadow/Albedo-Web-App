@@ -14,18 +14,23 @@ export const Equipments = ({ loading, ...values }) => {
   const [showModal, setshowModal] = useState(false)
   const [editRecord, seteditRecord] = useState(null)
 
-  const addBuildingText = () => (projectType === 'domestic' ? t('project.add.building') : t('project.add.unit'))
+  const addBuildingText = () =>
+    projectType === 'domestic' ? t('project.add.building') : t('project.add.unit')
 
   return (
     <Spin
-      size="large"
+      size='large'
       spinning={loading}
       tip={<Title level={4}>{t('project.loading.analyze')}</Title>}
       indicator={<LoadingOutlined />}
     >
-      <Card loading={loading} title={t('project.dashboard.title')} headStyle={{ textAlign: 'center' }}>
+      <Card
+        loading={loading}
+        title={t('project.dashboard.title')}
+        headStyle={{ textAlign: 'center' }}
+      >
         {!values.buildings || values.buildings.length === 0 ? (
-          <Button className={styles.addSpec} block type="dashed" onClick={() => setshowModal(true)}>
+          <Button className={styles.addSpec} block type='dashed' onClick={() => setshowModal(true)}>
             {addBuildingText()}
           </Button>
         ) : (

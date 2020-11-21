@@ -26,9 +26,9 @@ export const InverterEfficiencyChart = ({ dataSource }) => {
 
   return (
     <Chart scale={scale} padding={[30, 30, 100, 100]} autoFit height={500} data={dataSource}>
-      <Axis name="pac_percent" title={{ style: titleStyle }} />
-      <Axis name="eff" title={{ style: titleStyle }} />
-      <Line shape="smooth" position="pac_percent*eff" color="vdc" />
+      <Axis name='pac_percent' title={{ style: titleStyle }} />
+      <Axis name='eff' title={{ style: titleStyle }} />
+      <Line shape='smooth' position='pac_percent*eff' color='vdc' />
     </Chart>
   )
 }

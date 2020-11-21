@@ -30,8 +30,8 @@ export const SingleBuildingTab = ({ building }) => {
   }
 
   return (
-    <Tabs defaultActiveKey="1" centered>
-      <TabPane tab={t('project.spec.sub-array')} key="1">
+    <Tabs defaultActiveKey='1' centered>
+      <TabPane tab={t('project.spec.sub-array')} key='1'>
         <Row gutter={rowGutter}>
           <Col span={21}>
             {building.data.map((spec, specIndex) => (
@@ -49,7 +49,7 @@ export const SingleBuildingTab = ({ building }) => {
               className={styles.addSpec}
               loading={loading}
               block
-              type="dashed"
+              type='dashed'
               onClick={() => {
                 setloading(true)
                 setTimeout(() => {
@@ -89,7 +89,7 @@ export const SingleBuildingTab = ({ building }) => {
         </Row>
       </TabPane>
       {projectType === 'domestic' ? null : (
-        <TabPane tab={t('project.spec.combiner_box')} key="2">
+        <TabPane tab={t('project.spec.combiner_box')} key='2'>
           <Row gutter={rowGutter}>
             <Col span={22}>
               {building.combibox.map((combibox, combiboxIndex) => (
@@ -108,7 +108,7 @@ export const SingleBuildingTab = ({ building }) => {
                 loading={loading}
                 disabled={editingCombibox !== null}
                 block
-                type="dashed"
+                type='dashed'
                 onClick={() => {
                   setloading(true)
                   setTimeout(() => {

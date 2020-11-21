@@ -58,7 +58,7 @@ export const IVModal = ({ pvID, userID, show, setshow, setpvID, setuserID }) => 
   return (
     <Modal
       visible={show}
-      width="50vw"
+      width='50vw'
       onCancel={() => {
         setpvID(false)
         setuserID(false)
@@ -70,11 +70,11 @@ export const IVModal = ({ pvID, userID, show, setshow, setpvID, setuserID }) => 
       destroyOnClose
     >
       <Spin spinning={loading}>
-        <Tabs defaultActiveKey="1" centered>
-          <TabPane tab={t('PVtable.table.iv-curve')} key="1">
+        <Tabs defaultActiveKey='1' centered>
+          <TabPane tab={t('PVtable.table.iv-curve')} key='1'>
             <IVChart dataSource={ivDataSrc} />
           </TabPane>
-          <TabPane tab={t('PVtable.table.pv-curve')} key="2">
+          <TabPane tab={t('PVtable.table.pv-curve')} key='2'>
             <PVChart dataSource={pvDataSrc} />
           </TabPane>
         </Tabs>

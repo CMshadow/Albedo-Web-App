@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Form, Input, Select, Row, Col, Modal, Divider, message, Collapse, Upload, Button } from 'antd'
+import {
+  Form,
+  Input,
+  Select,
+  Row,
+  Col,
+  Modal,
+  Divider,
+  message,
+  Collapse,
+  Upload,
+  Button,
+} from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import * as styles from './Modal.module.scss'
 import { addPV, getPV, updatePV, parsePAN } from './service'
@@ -47,7 +59,11 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
   const formSelectKeys = [
     [
       ['siliconMaterial', 'c', ['mc-Si', 'c-Si']],
-      ['moduleMaterial', 'c', ['glass/cell/glass', 'glass/cell/polymer-sheet', 'polymer/thin-film/steel']],
+      [
+        'moduleMaterial',
+        'c',
+        ['glass/cell/glass', 'glass/cell/polymer-sheet', 'polymer/thin-film/steel'],
+      ],
     ],
   ]
   // PV表单进阶信息[key，类型，单位]
@@ -105,7 +121,7 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
           </Select>
         )
       case 'n':
-        return <Input addonAfter={`${unit}`} type="number" className={styles.input} />
+        return <Input addonAfter={`${unit}`} type='number' className={styles.input} />
       case 's':
       default:
         return <Input />
@@ -202,7 +218,9 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
     action
       .then(() => {
         dispatch(getPV()).then(data => {
-          editRecord ? message.success(t('PV.success.updatePV')) : message.success(t('PV.success.createPV'))
+          editRecord
+            ? message.success(t('PV.success.updatePV'))
+            : message.success(t('PV.success.createPV'))
           setloading(false)
           setshowModal(false)
           dispatch(setPVData(data))
@@ -239,7 +257,7 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
         preserve={false}
         form={form}
         className={styles.form}
-        name="add-PV"
+        name='add-PV'
         scrollToFirstError
         labelCol={labelCol}
         wrapperCol={wrapperCol}
@@ -249,9 +267,13 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
           <>
             <Row>
               <Col span={24}>
-                <FormItem label={t('PV.uploadpan')} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                <FormItem
+                  label={t('PV.uploadpan')}
+                  labelCol={{ span: 4 }}
+                  wrapperCol={{ span: 20 }}
+                >
                   <Upload
-                    accept=".pan"
+                    accept='.pan'
                     fileList={uploadFileList}
                     customRequest={uploadPAN}
                     onChange={({ fileList }) => setuploadFileList(fileList.slice(-1))}
@@ -270,7 +292,12 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
         <Divider />
         {genFormItems(formAdvancedKeys, 3)}
         <Collapse bordered={false}>
-          <Panel className={styles.collapsePanel} header={t('PVtable.proParams')} key="pro" forceRender>
+          <Panel
+            className={styles.collapsePanel}
+            header={t('PVtable.proParams')}
+            key='pro'
+            forceRender
+          >
             {genFormItems(formProKeys, 2)}
           </Panel>
         </Collapse>

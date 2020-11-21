@@ -84,7 +84,14 @@ export const WeatherAnalysisTable = ({ buildingID }) => {
       hoverable
       style={{ cursor: 'unset' }}
     >
-      <Table bordered dataSource={dataSource} columns={columns} pagination={false} rowKey="month" size="middle" />
+      <Table
+        bordered
+        dataSource={dataSource}
+        columns={columns}
+        pagination={false}
+        rowKey='month'
+        size='middle'
+      />
     </Card>
   )
 }

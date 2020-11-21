@@ -541,7 +541,7 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
       colon={false}
       form={form}
       hideRequiredMark
-      name="powercabinateSpec"
+      name='powercabinateSpec'
       scrollToFirstError
       onFinish={submitForm}
       initialValues={genInitValues()}
@@ -549,7 +549,7 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
       <Row gutter={rowGutter}>
         <Col span={8}>
           <FormItem
-            name="Ub"
+            name='Ub'
             label={t('project.spec.powercabinet.Ub')}
             rules={[{ required: true }]}
           >
@@ -567,7 +567,7 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
         </Col>
         <Col span={8}>
           <FormItem
-            name="powercabinet_name"
+            name='powercabinet_name'
             label={t('project.spec.powercabinet.powercabinet_name')}
             rules={[{ required: true }]}
           >
@@ -576,10 +576,10 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
         </Col>
         <Col span={8}>
           <FormItem
-            name="powercabinet_linked_capacity"
+            name='powercabinet_linked_capacity'
             label={t('project.spec.powercabinet.linked-capacity')}
           >
-            <Input type="number" disabled addonAfter="kVA" />
+            <Input type='number' disabled addonAfter='kVA' />
           </FormItem>
         </Col>
       </Row>
@@ -667,9 +667,9 @@ export const EditForm = ({ powercabinetIndex, seteditingFalse }) => {
         </Col>
       </Row>
 
-      <Row align="middle" justify="center">
+      <Row align='middle' justify='center'>
         <FormItem className={styles.submitBut}>
-          <Button type="primary" onClick={handleOk}>
+          <Button type='primary' onClick={handleOk}>
             {t('form.confirm')}
           </Button>
         </FormItem>

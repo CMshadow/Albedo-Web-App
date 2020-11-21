@@ -14,7 +14,9 @@ export const SearchString = ({ colKey, data, onClick, setactiveData }) => {
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     setactiveData(
-      data.filter(record => record[colKey].toString().toLowerCase().includes(selectedKeys[0].toLowerCase()))
+      data.filter(record =>
+        record[colKey].toString().toLowerCase().includes(selectedKeys[0].toLowerCase())
+      )
     )
     confirm()
     setsearchedCol(dataIndex)
@@ -30,7 +32,7 @@ export const SearchString = ({ colKey, data, onClick, setactiveData }) => {
   const nameOrCompany = (record, children) =>
     colKey !== 'companyName' ? (
       <Button
-        type="link"
+        type='link'
         onClick={() => {
           onClick(record.pvID || record.inverterID)
         }}
@@ -42,6 +44,7 @@ export const SearchString = ({ colKey, data, onClick, setactiveData }) => {
     )
 
   return {
+    // eslint-disable-next-line react/display-name
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div className={styles.searchBox}>
         <Input
@@ -57,21 +60,23 @@ export const SearchString = ({ colKey, data, onClick, setactiveData }) => {
         <Space>
           <Button
             className={styles.button}
-            type="primary"
+            type='primary'
             onClick={() => handleSearch(selectedKeys, confirm, colKey)}
             icon={<SearchOutlined />}
-            size="small"
+            size='small'
           >
             {t('filter.search')}
           </Button>
-          <Button className={styles.button} onClick={() => handleReset(clearFilters)} size="small">
+          <Button className={styles.button} onClick={() => handleReset(clearFilters)} size='small'>
             {t('filter.reset')}
           </Button>
         </Space>
       </div>
     ),
+    // eslint-disable-next-line react/display-name
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) => record[colKey].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilter: (value, record) =>
+      record[colKey].toString().toLowerCase().includes(value.toLowerCase()),
     onFilterDropdownVisibleChange: visible => {
       if (visible) {
         setTimeout(() => searchInputRef.select())
@@ -106,7 +111,9 @@ export const SearchRange = ({ colKey, data, setactiveData }) => {
   }, [colKey, data])
 
   const onFilter = confirm => {
-    setactiveData(data.filter(record => record[colKey] >= selectedVal[0] && record[colKey] <= selectedVal[1]))
+    setactiveData(
+      data.filter(record => record[colKey] >= selectedVal[0] && record[colKey] <= selectedVal[1])
+    )
     setfiltered(true)
     confirm()
   }
@@ -118,17 +125,24 @@ export const SearchRange = ({ colKey, data, setactiveData }) => {
   }
 
   return {
+    // eslint-disable-next-line react/display-name
     filterDropdown: ({ confirm, clearFilters }) => {
       return (
         <div className={styles.searchBox}>
-          <Slider range min={colMin} max={colMax} onChange={values => setselectedVal(values)} value={selectedVal} />
+          <Slider
+            range
+            min={colMin}
+            max={colMax}
+            onChange={values => setselectedVal(values)}
+            value={selectedVal}
+          />
           <Row>
             <Space>
               <InputNumber
                 className={styles.button}
                 min={colMin}
                 max={selectedVal[1]}
-                size="small"
+                size='small'
                 value={selectedVal[0]}
                 onChange={value => setselectedVal([value, selectedVal[1]])}
               />
@@ -136,7 +150,7 @@ export const SearchRange = ({ colKey, data, setactiveData }) => {
                 className={styles.button}
                 min={selectedVal[0]}
                 max={colMax}
-                size="small"
+                size='small'
                 value={selectedVal[1]}
                 onChange={value => setselectedVal([selectedVal[0], value])}
               />
@@ -146,14 +160,14 @@ export const SearchRange = ({ colKey, data, setactiveData }) => {
             <Space>
               <Button
                 className={styles.button}
-                type="primary"
+                type='primary'
                 onClick={() => onFilter(confirm)}
                 icon={<FilterOutlined />}
-                size="small"
+                size='small'
               >
                 {t('filter.filter')}
               </Button>
-              <Button className={styles.button} onClick={() => onReset(clearFilters)} size="small">
+              <Button className={styles.button} onClick={() => onReset(clearFilters)} size='small'>
                 {t('filter.reset')}
               </Button>
             </Space>

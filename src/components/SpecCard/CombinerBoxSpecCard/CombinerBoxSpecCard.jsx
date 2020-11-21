@@ -27,9 +27,10 @@ export const CombinerBoxSpecCard = ({
       loading={loading}
       actions={[
         <Button
+          key='edit'
           disabled={editing || editingCombibox !== null}
-          type="link"
-          shape="circle"
+          type='link'
+          shape='circle'
           icon={
             <EditTwoTone
               twoToneColor={editing || editingCombibox !== null ? '#bfbfbf' : '#1890ff'}
@@ -41,8 +42,9 @@ export const CombinerBoxSpecCard = ({
           }}
         />,
         <Button
-          type="link"
-          shape="circle"
+          key='delete'
+          type='link'
+          shape='circle'
           danger
           icon={
             <DeleteTwoTone

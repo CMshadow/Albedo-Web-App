@@ -34,11 +34,16 @@ export const ReportHeadDescription = ({ buildingID }) => {
     <Card loading={!curBuildingReport}>
       <Descriptions title={title} column={3}>
         <Item label={t('project.descriptions.projectCreator')}>{projectData.projectCreator}</Item>
-        <Item label={t('project.descriptions.projectType')}>{t(`project.type.${projectData.projectType}`)}</Item>
+        <Item label={t('project.descriptions.projectType')}>
+          {t(`project.type.${projectData.projectType}`)}
+        </Item>
         <Item label={t('project.descriptions.projectAddress')}>{projectData.projectAddress}</Item>
         {buildingID !== 'overview' ? (
           <Item label={t('report.head.buildingName')}>
-            {projectData.buildings.find(building => building.buildingID === buildingID).buildingName}
+            {
+              projectData.buildings.find(building => building.buildingID === buildingID)
+                .buildingName
+            }
           </Item>
         ) : null}
         <Item label={t('report.head.ttl_dc_power_capacity')}>
@@ -47,18 +52,24 @@ export const ReportHeadDescription = ({ buildingID }) => {
           }`}
         </Item>
         <Item label={t('report.head.year_AC_power')}>
-          {`${curBuildingReport.year_AC_power.value.toFixed(2)} ${curBuildingReport.year_AC_power.unit}`}
+          {`${curBuildingReport.year_AC_power.value.toFixed(2)} ${
+            curBuildingReport.year_AC_power.unit
+          }`}
         </Item>
         <Item label={t('report.head.system_efficiency')}>
           {`${(curBuildingReport.system_efficiency * 100).toFixed(2)} %`}
         </Item>
-        <Item label={t('report.head.kWh_over_kWp')}>{`${curBuildingReport.kWh_over_kWp.toFixed(0)} h`}</Item>
-        {buildingID !== 'overview' ? <Item label={t('report.head.ttl_investment')}>{ttl_investment}</Item> : null}
+        <Item label={t('report.head.kWh_over_kWp')}>{`${curBuildingReport.kWh_over_kWp.toFixed(
+          0
+        )} h`}</Item>
+        {buildingID !== 'overview' ? (
+          <Item label={t('report.head.ttl_investment')}>{ttl_investment}</Item>
+        ) : null}
         <Item label={t('report.head.download_csv')}>
           <Button
-            size="small"
-            shape="circle"
-            type="link"
+            size='small'
+            shape='circle'
+            type='link'
             icon={csvLoading ? <LoadingOutlined /> : <CloudDownloadOutlined />}
             onClick={() => {
               setcsvLoading(true)

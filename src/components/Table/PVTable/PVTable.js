@@ -112,23 +112,28 @@ export const PVTable = ({
     key: 'action',
     fixed: 'right',
     width: showEditBut ? 175 : 50,
+    // eslint-disable-next-line react/display-name
     render: (value, record) => (
       <div>
         <Tooltip title={t('PVtable.table.iv-curve')}>
-          <Button type="link" icon={<LineChartOutlined />} onClick={() => onClickIVCurve(record.pvID, record.userID)} />
+          <Button
+            type='link'
+            icon={<LineChartOutlined />}
+            onClick={() => onClickIVCurve(record.pvID, record.userID)}
+          />
         </Tooltip>
         {showEditBut ? (
           <>
-            <Divider type="vertical" />
+            <Divider type='vertical' />
             <Button
-              type="link"
+              type='link'
               icon={<EditOutlined />}
               onClick={() => {
                 seteditRecord(record)
                 setshowModal(true)
               }}
             />
-            <Divider type="vertical" />
+            <Divider type='vertical' />
             <DeleteAction record={record} setactiveData={setactiveData} />
           </>
         ) : null}
@@ -141,7 +146,7 @@ export const PVTable = ({
       <Table
         columns={tableCols}
         dataSource={activeData}
-        rowKey="pvID"
+        rowKey='pvID'
         loading={loading}
         pagination={{
           position: ['bottomCenter'],
@@ -154,11 +159,11 @@ export const PVTable = ({
       />
       <Drawer
         bodyStyle={{ padding: '0px' }}
-        placement="right"
+        placement='right'
         closable={false}
         onClose={() => setshowDrawer(false)}
         visible={showDrawer}
-        width="50vw"
+        width='50vw'
       >
         <PVDetailTable pvID={viewPVID} />
       </Drawer>

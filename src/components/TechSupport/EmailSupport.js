@@ -116,8 +116,8 @@ const EmailSupport = () => {
       <Tooltip title={t('techsupport.contactus')}>
         <Button
           className={classes.triggerButton}
-          type="primary"
-          shape="circle"
+          type='primary'
+          shape='circle'
           icon={<MessageOutlined className={classes.MessageOutlined} />}
           size={'large'}
           onClick={turnOnTriggerHandler}
@@ -133,7 +133,7 @@ const EmailSupport = () => {
         maskStyle={{ ...maskstyle }}
         onCancel={turnOffTriggerHandler}
       >
-        <Form {...layout} name="EmailSupportForm" onFinish={sendEmail}>
+        <Form {...layout} name='EmailSupportForm' onFinish={sendEmail}>
           <Title level={4} className={classes.formTitle}>
             {t('techsupport.contactus')}
           </Title>
@@ -141,17 +141,17 @@ const EmailSupport = () => {
             {...layout}
             className={classes.formItem}
             rules={[{ required: true, type: 'email' }]}
-            name="EmailAddress"
+            name='EmailAddress'
           >
             <Input addonBefore={t('techsupport.email')} />
           </Form.Item>
 
-          <Form.Item className={classes.formItem} rules={[{ required: true }]} name="UserName">
+          <Form.Item className={classes.formItem} rules={[{ required: true }]} name='UserName'>
             <Input addonBefore={t('techsupport.name')} />
           </Form.Item>
 
           <Text className={classes.formItem}>{t('techsupport.description')}</Text>
-          <Form.Item className={classes.formItem} rules={[{ required: true }]} name="Question">
+          <Form.Item className={classes.formItem} rules={[{ required: true }]} name='Question'>
             <TextArea rows={6} />
           </Form.Item>
 
@@ -165,15 +165,15 @@ const EmailSupport = () => {
                 setcustFileList(newFileList)
               }}
             >
-              <p className="ant-upload-drag-icon">
+              <p className='ant-upload-drag-icon'>
                 <InboxOutlined />
               </p>
-              <p className="ant-upload-text">{t('techsupport.attachment')}</p>
+              <p className='ant-upload-text'>{t('techsupport.attachment')}</p>
             </Dragger>
           </Form.Item>
 
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit" disabled={loading}>
+            <Button type='primary' htmlType='submit' disabled={loading}>
               {t('techsupport.sendemail')}
             </Button>
           </Form.Item>

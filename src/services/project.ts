@@ -1,6 +1,6 @@
 import axios from '../axios.config'
-import withAuth from './withAuth'
-import { IRequest, Project, ProjectPreUpload } from '../@types'
+import injectAuth from './injectAuth'
+import { IAxiosRequest, Project, ProjectPreUpload } from '../@types'
 
 type APIKeyType = {
   GOOGLE_MAP_API_KEY: string
@@ -8,47 +8,42 @@ type APIKeyType = {
   A_MAP_WEB_API_KEY: string
 }
 
-const getApiKeyRequest = (username: string, jwtToken: string) =>
+const getApiKeyRequest: IAxiosRequest<{ jwtToken: string }, APIKeyType> = args =>
   axios
     .get<APIKeyType>('/apikeysender', {
-      headers: { 'COG-TOKEN': jwtToken },
+      headers: { 'COG-TOKEN': args.jwtToken },
     })
     .then(res => res.data)
 
-const createProjectRequest = (
-  values: ProjectPreUpload,
-  username: string,
-  jwtToken: string
-): Promise<Project> =>
+const createProjectRequest: IAxiosRequest<
+  { values: ProjectPreUpload; username: string; jwtToken: string },
+  Project
+> = args =>
   axios
-    .post<Project>(`/project/${username}`, values, {
-      headers: { 'COG-TOKEN': jwtToken },
+    .post<Project>(`/project/${args.username}`, args.values, {
+      headers: { 'COG-TOKEN': args.jwtToken },
     })
     .then(res => res.data)
 
-const getProjectRequest = (username: string, jwtToken: string): Promise<Project[]> =>
+const getProjectRequest: IAxiosRequest<{ username: string; jwtToken: string }, Project[]> = args =>
   axios
-    .get<Project[]>(`/project/${username}`, {
-      headers: { 'COG-TOKEN': jwtToken },
+    .get<Project[]>(`/project/${args.username}`, {
+      headers: { 'COG-TOKEN': args.jwtToken },
     })
     .then(res => res.data)
 
-const deleteProjectRequest = (
-  username: string,
-  jwtToken: string,
-  projectID: string
-): Promise<void> =>
+const deleteProjectRequest: IAxiosRequest<
+  { projectID: string; username: string; jwtToken: string },
+  Project[]
+> = args =>
   axios
-    .delete<void>(`/project/${username}`, {
-      params: { projectID: projectID },
-      headers: { 'COG-TOKEN': jwtToken },
+    .delete<Project[]>(`/project/${args.username}`, {
+      params: { projectID: args.projectID },
+      headers: { 'COG-TOKEN': args.jwtToken },
     })
     .then(res => res.data)
 
-export const getApiKey = () =>
-  withAuth(({ username, jwtToken }) => getApiKeyRequest(username, jwtToken))
-export const createProject = (values: ProjectPreUpload) =>
-  withAuth(({ username, jwtToken }) => createProjectRequest(values, username, jwtToken))
-export const getProject: IRequest<void, Project[]> = () => withAuth(getProjectRequest)
-export const deleteProject: IRequest<string, void> = projectID =>
-  withAuth(deleteProjectRequest, projectID)
+export const getApiKey = injectAuth(getApiKeyRequest)
+export const createProject = injectAuth(createProjectRequest)
+export const getProject = injectAuth(getProjectRequest)
+export const deleteProject = injectAuth(deleteProjectRequest)

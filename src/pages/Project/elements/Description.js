@@ -20,7 +20,9 @@ export const Description = ({ loading }) => {
     <Card loading={loading}>
       <Descriptions title={title} column={2}>
         <Item label={t('project.descriptions.projectCreator')}>{projectData.projectCreator}</Item>
-        <Item label={t('project.descriptions.projectType')}>{t(`project.type.${projectData.projectType}`)}</Item>
+        <Item label={t('project.descriptions.projectType')}>
+          {t(`project.type.${projectData.projectType}`)}
+        </Item>
         <Item label={t('project.descriptions.createdAt')}>
           {new Date(projectData.createdAt * 1000).toLocaleString()}
         </Item>

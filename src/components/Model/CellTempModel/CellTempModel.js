@@ -11,7 +11,9 @@ const rowGutter = { xs: 8, sm: 16, md: 32, lg: 48, xl: 64, xxl: 128 }
 
 export const CellTempModel = ({ form, pvID, initModel }) => {
   const { t } = useTranslation()
-  const pvData = useSelector(state => state.pv.data).concat(useSelector(state => state.pv.officialData))
+  const pvData = useSelector(state => state.pv.data).concat(
+    useSelector(state => state.pv.officialData)
+  )
   const [celltempModel, setcelltempModel] = useState(initModel ? initModel.split(',')[0] : '')
   const [customParams, setcustomParams] = useState(false)
   const pvModuleMaterial = pvID ? pvData.find(pv => pv.pvID === pvID).moduleMaterial : ''
@@ -30,7 +32,7 @@ export const CellTempModel = ({ form, pvID, initModel }) => {
     <>
       <Col md={12} lg={8}>
         <FormItem
-          name="a"
+          name='a'
           rules={[{ required: true }]}
           label={
             <Tooltip title={t('project.spec.celltemp_a.help')}>
@@ -43,7 +45,7 @@ export const CellTempModel = ({ form, pvID, initModel }) => {
       </Col>
       <Col md={12} lg={8}>
         <FormItem
-          name="b"
+          name='b'
           rules={[{ required: true }]}
           label={
             <Tooltip title={t('project.spec.celltemp_b.help')}>
@@ -62,7 +64,7 @@ export const CellTempModel = ({ form, pvID, initModel }) => {
             </Tooltip>
           }
         >
-          <FormItem name="dtc" rules={[{ required: true }]} noStyle>
+          <FormItem name='dtc' rules={[{ required: true }]} noStyle>
             <InputNumber disabled={!customParams} />
           </FormItem>
           <Text> ℃</Text>
@@ -81,7 +83,7 @@ export const CellTempModel = ({ form, pvID, initModel }) => {
             </Tooltip>
           }
         >
-          <FormItem name="uc" rules={[{ required: true }]} noStyle>
+          <FormItem name='uc' rules={[{ required: true }]} noStyle>
             <InputNumber disabled={!customParams} />
           </FormItem>
           <Text> W/㎡⋅k</Text>
@@ -95,7 +97,7 @@ export const CellTempModel = ({ form, pvID, initModel }) => {
             </Tooltip>
           }
         >
-          <FormItem name="uv" rules={[{ required: true }]} noStyle>
+          <FormItem name='uv' rules={[{ required: true }]} noStyle>
             <InputNumber disabled={!customParams} />
           </FormItem>
           <Text> W/㎡⋅k / m/s</Text>
@@ -109,7 +111,7 @@ export const CellTempModel = ({ form, pvID, initModel }) => {
             </Tooltip>
           }
         >
-          <FormItem name="v" rules={[{ required: true }]} noStyle>
+          <FormItem name='v' rules={[{ required: true }]} noStyle>
             <InputNumber disabled={!customParams} />
           </FormItem>
           <Text> m/s</Text>
@@ -122,7 +124,7 @@ export const CellTempModel = ({ form, pvID, initModel }) => {
     <>
       <Row gutter={rowGutter}>
         <Col sm={24} md={24} lg={24} xl={12}>
-          <FormItem name="celltemp_model" label={null} rules={[{ required: true }]}>
+          <FormItem name='celltemp_model' label={null} rules={[{ required: true }]}>
             <Select
               onSelect={value => {
                 const model = value.split(',')[0]
@@ -142,41 +144,45 @@ export const CellTempModel = ({ form, pvID, initModel }) => {
             >
               <OptGroup label={t('project.spec.celltemp_sandia')}>
                 <Option
-                  value="sandia,glass/cell/glass,open-rack"
+                  value='sandia,glass/cell/glass,open-rack'
                   title={`${t('PV.glass/cell/glass')}, ${t('project.spec.mount.open-rack')}`}
                   disabled={pvModuleMaterial !== 'glass/cell/glass'}
                 >
                   {t('PV.glass/cell/glass')}, {t('project.spec.mount.open-rack')}
                 </Option>
                 <Option
-                  value="sandia,glass/cell/glass,insulated-back"
+                  value='sandia,glass/cell/glass,insulated-back'
                   title={`${t('PV.glass/cell/glass')}, ${t('project.spec.mount.insulated-back')}`}
                   disabled={pvModuleMaterial !== 'glass/cell/glass'}
                 >
                   {t('PV.glass/cell/glass')}, {t('project.spec.mount.insulated-back')}
                 </Option>
                 <Option
-                  value="sandia,glass/cell/polymer-sheet,open-rack"
-                  title={`${t('PV.glass/cell/polymer-sheet')}, ${t('project.spec.mount.open-rack')}`}
+                  value='sandia,glass/cell/polymer-sheet,open-rack'
+                  title={`${t('PV.glass/cell/polymer-sheet')}, ${t(
+                    'project.spec.mount.open-rack'
+                  )}`}
                   disabled={pvModuleMaterial !== 'glass/cell/polymer-sheet'}
                 >
                   {t('PV.glass/cell/polymer-sheet')}, {t('project.spec.mount.open-rack')}
                 </Option>
                 <Option
-                  value="sandia,glass/cell/polymer-sheet,insulated-back"
-                  title={`${t('PV.glass/cell/polymer-sheet')}, ${t('project.spec.mount.insulated-back')}`}
+                  value='sandia,glass/cell/polymer-sheet,insulated-back'
+                  title={`${t('PV.glass/cell/polymer-sheet')}, ${t(
+                    'project.spec.mount.insulated-back'
+                  )}`}
                   disabled={pvModuleMaterial !== 'glass/cell/polymer-sheet'}
                 >
                   {t('PV.glass/cell/polymer-sheet')}, {t('project.spec.mount.insulated-back')}
                 </Option>
                 <Option
-                  value="sandia,polymer/thin-film/steel,open-rack"
+                  value='sandia,polymer/thin-film/steel,open-rack'
                   title={`${t('PV.polymer/thin-film/steel')}, ${t('project.spec.mount.open-rack')}`}
                   disabled={pvModuleMaterial !== 'polymer/thin-film/steel'}
                 >
                   {t('PV.polymer/thin-film/steel')}, {t('project.spec.mount.open-rack')}
                 </Option>
-                <Option value="sandia,custom" title={t('project.spec.custom')}>
+                <Option value='sandia,custom' title={t('project.spec.custom')}>
                   {t('project.spec.custom')}
                 </Option>
               </OptGroup>
@@ -184,10 +190,13 @@ export const CellTempModel = ({ form, pvID, initModel }) => {
                 <Option value={'pvsyst,open-rack'} title={t('project.spec.mount.open-rack')}>
                   {t('project.spec.mount.open-rack')}
                 </Option>
-                <Option value={'pvsyst,insulated-back'} title={t('project.spec.mount.insulated-back')}>
+                <Option
+                  value={'pvsyst,insulated-back'}
+                  title={t('project.spec.mount.insulated-back')}
+                >
                   {t('project.spec.mount.insulated-back')}
                 </Option>
-                <Option value="pvsyst,custom" title={t('project.spec.custom')}>
+                <Option value='pvsyst,custom' title={t('project.spec.custom')}>
                   {t('project.spec.custom')}
                 </Option>
               </OptGroup>
@@ -195,7 +204,9 @@ export const CellTempModel = ({ form, pvID, initModel }) => {
           </FormItem>
         </Col>
       </Row>
-      <Row gutter={rowGutter}>{celltempModel === 'pvsyst' ? pvsystCelltempParamField : sandiaCelltempParamField}</Row>
+      <Row gutter={rowGutter}>
+        {celltempModel === 'pvsyst' ? pvsystCelltempParamField : sandiaCelltempParamField}
+      </Row>
     </>
   )
 }

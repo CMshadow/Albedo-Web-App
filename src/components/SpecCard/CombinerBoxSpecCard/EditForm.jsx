@@ -290,7 +290,7 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
       colon={false}
       form={form}
       hideRequiredMark
-      name="combiboxSpec"
+      name='combiboxSpec'
       scrollToFirstError
       onFinish={submitForm}
       initialValues={genInitValues()}
@@ -298,7 +298,7 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
       <Row gutter={rowGutter}>
         <Col span={8}>
           <FormItem
-            name="combibox_vac"
+            name='combibox_vac'
             label={t('project.spec.combibox_vac')}
             rules={[{ required: true }]}
           >
@@ -316,7 +316,7 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
         </Col>
         <Col span={8}>
           <FormItem
-            name="combibox_name"
+            name='combibox_name'
             label={t('project.spec.combibox_name')}
             rules={[{ required: true }]}
           >
@@ -325,12 +325,12 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
         </Col>
         <Col span={8}>
           <FormItem
-            name="combibox_cable_len"
+            name='combibox_cable_len'
             label={t('project.spec.combibox_cable_len')}
             normalize={val => (val ? Number(val) : val)}
             rules={[{ required: true, type: 'number', min: 0 }]}
           >
-            <Input type="number" addonAfter={unit} />
+            <Input type='number' addonAfter={unit} />
           </FormItem>
         </Col>
       </Row>
@@ -372,9 +372,9 @@ export const EditForm = ({ buildingID, combiboxIndex, seteditingFalse }) => {
           </FormItem>
         </Col>
       </Row>
-      <Row align="middle" justify="center">
+      <Row align='middle' justify='center'>
         <FormItem className={styles.submitBut}>
-          <Button type="primary" onClick={handleOk}>
+          <Button type='primary' onClick={handleOk}>
             {t('form.confirm')}
           </Button>
         </FormItem>

@@ -32,6 +32,7 @@ const ProjectTable = props => {
       fixed: 'left',
       width: 250,
       ...SearchString({ colKey: 'projectTitle', data, setactiveData }),
+      // eslint-disable-next-line react/display-name
       render: (val, record) => <Link to={`/project/${record.projectID}/dashboard`}>{val}</Link>,
     },
     {
@@ -63,17 +64,23 @@ const ProjectTable = props => {
       key: 'action',
       fixed: 'right',
       width: 125,
+      // eslint-disable-next-line react/display-name
       render: (value, record) => (
         <div>
           <Button
-            type="link"
+            type='link'
             icon={<DashboardTwoTone />}
             onClick={() => {
               history.push(`project/${record.projectID}/dashboard`)
             }}
           />
-          <Divider type="vertical" />
-          <DeleteAction record={record} setdata={setdata} setactiveData={setactiveData} setloading={setloading} />
+          <Divider type='vertical' />
+          <DeleteAction
+            record={record}
+            setdata={setdata}
+            setactiveData={setactiveData}
+            setloading={setloading}
+          />
         </div>
       ),
     },
@@ -105,7 +112,7 @@ const ProjectTable = props => {
       <Table
         columns={tableCols}
         dataSource={validData}
-        rowKey="projectID"
+        rowKey='projectID'
         loading={loading}
         pagination={{
           position: ['bottomCenter'],
@@ -121,15 +128,25 @@ const ProjectTable = props => {
 
   return (
     <Card bodyStyle={{ padding: '20px 12px' }}>
-      <Button className={styles.leftBut} type="primary" size="large" onClick={() => setshowModal(true)}>
+      <Button
+        className={styles.leftBut}
+        type='primary'
+        size='large'
+        onClick={() => setshowModal(true)}
+      >
         {t('project.create-project')}
       </Button>
-      <Button className={styles.rightBut} shape="circle" onClick={fetchData} icon={<SyncOutlined spin={loading} />} />
-      <Tabs defaultActiveKey="1" centered>
-        <TabPane tab={t('project.type.domestic')} key="1">
+      <Button
+        className={styles.rightBut}
+        shape='circle'
+        onClick={fetchData}
+        icon={<SyncOutlined spin={loading} />}
+      />
+      <Tabs defaultActiveKey='1' centered>
+        <TabPane tab={t('project.type.domestic')} key='1'>
           {genTable('domestic')}
         </TabPane>
-        <TabPane tab={t('project.type.commercial')} key="2">
+        <TabPane tab={t('project.type.commercial')} key='2'>
           {genTable('commercial')}
         </TabPane>
       </Tabs>

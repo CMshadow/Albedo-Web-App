@@ -11,7 +11,7 @@ const GlobalAlert = props => {
       className={styles.alert}
       message={t('warning.dev.message')}
       description={t('warning.dev.description')}
-      type="info"
+      type='info'
       showIcon
       closable
     />

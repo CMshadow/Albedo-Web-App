@@ -27,8 +27,8 @@ const PowerGrid = () => {
       <GlobalAlert />
       <Card title={t('project.powergrid.title')} headStyle={{ textAlign: 'center' }}>
         <UnusedCombiboxInverterCard />
-        <Tabs defaultActiveKey="1" centered tabBarStyle={{ textAlign: 'center' }}>
-          <TabPane tab={t('project.transformer.title')} key="1">
+        <Tabs defaultActiveKey='1' centered tabBarStyle={{ textAlign: 'center' }}>
+          <TabPane tab={t('project.transformer.title')} key='1'>
             <Row gutter={rowGutter}>
               <Col span={22}>
                 {projectTransformers.map((transformer, transformerIndex) => (
@@ -46,7 +46,7 @@ const PowerGrid = () => {
                   loading={loading}
                   disabled={editingTransformer !== null}
                   block
-                  type="dashed"
+                  type='dashed'
                   onClick={() => {
                     seteditingTransformer(projectTransformers.length)
                     setloading(true)
@@ -77,7 +77,7 @@ const PowerGrid = () => {
             </Row>
           </TabPane>
 
-          <TabPane tab={t('project.powerCabinet.title')} key="2">
+          <TabPane tab={t('project.powerCabinet.title')} key='2'>
             <Row gutter={rowGutter}>
               <Col span={22}>
                 {projectPowercabinets.map((powercabinet, powercabinetIndex) => (
@@ -95,7 +95,7 @@ const PowerGrid = () => {
                   loading={loading}
                   disabled={editingPowercabinet !== null}
                   block
-                  type="dashed"
+                  type='dashed'
                   onClick={() => {
                     seteditingPowercabinet(projectPowercabinets.length)
                     setloading(true)

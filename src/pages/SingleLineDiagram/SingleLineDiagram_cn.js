@@ -54,18 +54,28 @@ const SingleLineDiagCN = () => {
 
   const reportData = useSelector(state => state.report)
   const buildingReport = reportData[buildingID]
-  const combiboxCableChoice = buildingReport ? DataGenerator.getCombiBoxCableChoice(buildingReport) : ''
+  const combiboxCableChoice = buildingReport
+    ? DataGenerator.getCombiBoxCableChoice(buildingReport)
+    : ''
   const acCableChoice = buildingReport ? buildingReport.setup_ac_wir_choice.flatMap(ary => ary) : []
-  acCableChoice.forEach((cableChoiceAry, index) => (allPVArray[index].acCableChoice = cableChoiceAry))
-  const dcCableChoice = buildingReport ? buildingReport.setup_dc_wir_choice.flatMap(ary => ary.map(ary2 => ary2)) : []
-  dcCableChoice.forEach((cableChoiceAry, index) => (allPVArray[index].dcCableChoice = cableChoiceAry))
+  acCableChoice.forEach(
+    (cableChoiceAry, index) => (allPVArray[index].acCableChoice = cableChoiceAry)
+  )
+  const dcCableChoice = buildingReport
+    ? buildingReport.setup_dc_wir_choice.flatMap(ary => ary.map(ary2 => ary2))
+    : []
+  dcCableChoice.forEach(
+    (cableChoiceAry, index) => (allPVArray[index].dcCableChoice = cableChoiceAry)
+  )
 
-  const combiboxIe = buildingReport && buildingReport.combibox_Ie ? buildingReport.combibox_Ie.toFixed(0) : ''
+  const combiboxIe =
+    buildingReport && buildingReport.combibox_Ie ? buildingReport.combibox_Ie.toFixed(0) : ''
   const acIe =
     buildingReport && buildingReport.setup_ac_Ie
       ? buildingReport.setup_ac_Ie.flatMap(ary => ary.map(val => val.toFixed(0)))
       : []
-  const combiboxName = buildingReport && buildingReport.investment ? DataGenerator.getCombiBoxData(buildingReport) : ''
+  const combiboxName =
+    buildingReport && buildingReport.investment ? DataGenerator.getCombiBoxData(buildingReport) : ''
   let newWidth = useSelector(state => state.SLD.diagramWidth)
   let newHeight = useSelector(state => state.SLD.diagramHeight)
 

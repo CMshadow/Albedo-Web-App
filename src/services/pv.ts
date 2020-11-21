@@ -1,38 +1,93 @@
 import axios from '../axios.config'
-import withAuth from './withAuth'
-import { PV, IAxiosRequest, IRequest, PVPreUpload } from '../@types'
+import injectAuth from './injectAuth'
+import { PV, PVPreUpload, IAxiosRequest, PAN } from '../@types'
 
-const addPVRequest: IAxiosRequest<PVPreUpload, PV> = (username, jwtToken, values) =>
+const addPVRequest: IAxiosRequest<
+  { values: PVPreUpload; username: string; jwtToken: string },
+  PV
+> = args =>
   axios
-    .post<PV>(`/pv/${username}`, values, { headers: { 'COG-TOKEN': jwtToken } })
+    .post<PV>(`/pv/${args.username}`, args.values, { headers: { 'COG-TOKEN': args.jwtToken } })
     .then(res => res.data)
 
-const getPVRequest: IAxiosRequest<null, Array<PV>> = (username, jwtToken) =>
+const getPVRequest: IAxiosRequest<{ username: string; jwtToken: string }, PV[]> = args =>
   axios
-    .get<Array<PV>>(`/pv/${username}`, { headers: { 'COG-TOKEN': jwtToken } })
+    .get<PV[]>(`/pv/${args.username}`, { headers: { 'COG-TOKEN': args.jwtToken } })
     .then(res => res.data)
 
-const getOfficialPVRequest: IAxiosRequest<string, Array<PV>> = (username, jwtToken, region) =>
+const getOfficialPVRequest: IAxiosRequest<{ region: string; jwtToken: string }, PV[]> = args =>
   axios
-    .get<Array<PV>>(`/pv/official`, {
-      params: { region: region },
-      headers: { 'COG-TOKEN': jwtToken },
+    .get<PV[]>(`/pv/official`, {
+      params: { region: args.region },
+      headers: { 'COG-TOKEN': args.jwtToken },
     })
     .then(res => res.data)
 
-const deletePVRequest: IAxiosRequest<string, void> = (username, jwtToken, pvID) =>
+const deletePVRequest: IAxiosRequest<
+  { pvID: string; username: string; jwtToken: string },
+  void
+> = args =>
   axios
-    .delete<void>(`/pv/${username}`, {
-      params: { pvID: pvID },
-      headers: { 'COG-TOKEN': jwtToken },
+    .delete<void>(`/pv/${args.username}`, {
+      params: { pvID: args.pvID },
+      headers: { 'COG-TOKEN': args.jwtToken },
     })
     .then(res => res.data)
 
-export const addPV: IRequest<PVPreUpload, PV> = values => withAuth(addPVRequest, values)
+const updatePVRequest: IAxiosRequest<
+  { pvID: string; values: PV; username: string; jwtToken: string },
+  PV
+> = args =>
+  axios
+    .put<PV>(`/pv/${args.username}`, args.values, {
+      params: { pvID: args.pvID },
+      headers: { 'COG-TOKEN': args.jwtToken },
+    })
+    .then(res => res.data)
 
-export const getPV: IRequest<null, Array<PV>> = () => withAuth(getPVRequest)
+type IVCruve = {
+  1000: number[]
+  800: number[]
+  600: number[]
+  400: number[]
+  200: number[]
+}
 
-export const getOfficialPV: IRequest<string, Array<PV>> = region =>
-  withAuth(getOfficialPVRequest, region)
+const getIVCurveRequest: IAxiosRequest<
+  { pvID: string; userID: string; jwtToken: string },
+  IVCruve
+> = args =>
+  axios
+    .get<IVCruve>(`/pv/ivcurve`, {
+      params: { pvID: args.pvID, userID: args.userID },
+      headers: { 'COG-TOKEN': args.jwtToken },
+    })
+    .then(res => res.data)
 
-export const deletePV: IRequest<string, void> = pvID => withAuth(deletePVRequest, pvID)
+type parsePANArgs = {
+  fileText: string | ArrayBuffer
+  jwtToken: string
+  onUploadProgress: (args: { total: number; loaded: number }) => void
+}
+
+const parsePANRequest: IAxiosRequest<parsePANArgs, PAN> = args =>
+  axios
+    .post<PAN>(`/parsepan`, args.fileText, {
+      onUploadProgress: args.onUploadProgress,
+      headers: { 'COG-TOKEN': args.jwtToken },
+    })
+    .then(res => res.data)
+
+export const addPV = injectAuth(addPVRequest)
+
+export const getPV = injectAuth(getPVRequest)
+
+export const getOfficialPV = injectAuth(getOfficialPVRequest)
+
+export const deletePV = injectAuth(deletePVRequest)
+
+export const updatePV = injectAuth(updatePVRequest)
+
+export const getIVCurve = injectAuth(getIVCurveRequest)
+
+export const parsePAN = injectAuth(parsePANRequest)

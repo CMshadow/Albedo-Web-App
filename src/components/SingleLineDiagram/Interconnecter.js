@@ -28,7 +28,7 @@ const InterConnecter = props => {
         y={startY}
         width={minSize[0]}
         height={minSize[1]}
-        stroke="white"
+        stroke='white'
         strokeWidth={3}
       ></Rect>
     )
@@ -40,7 +40,7 @@ const InterConnecter = props => {
           x={startX}
           y={startY + (minSize[1] / (numOfInverter + 1)) * i}
           radius={5}
-          fill="white"
+          fill='white'
         ></Circle>
       )
 
@@ -56,10 +56,10 @@ const InterConnecter = props => {
               inverterAccessPorts[i - 1][0],
               inverterAccessPorts[i - 1][1],
             ]}
-            stroke="white"
+            stroke='white'
             strokeWidth={stroke_Width}
-            lineCap="round"
-            lineJoin="round"
+            lineCap='round'
+            lineJoin='round'
           ></Line>
         )
       } else {
@@ -74,10 +74,10 @@ const InterConnecter = props => {
               inverterAccessPorts[i - 1][0],
               inverterAccessPorts[i - 1][1],
             ]}
-            stroke="white"
+            stroke='white'
             strokeWidth={stroke_Width}
-            lineCap="round"
-            lineJoin="round"
+            lineCap='round'
+            lineJoin='round'
           ></Line>
         )
       }
@@ -90,10 +90,10 @@ const InterConnecter = props => {
             startX + minSize[0] * 0.2,
             startY + (minSize[1] / (numOfInverter + 1)) * i,
           ]}
-          stroke="white"
+          stroke='white'
           strokeWidth={stroke_Width}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           tension={0.5}
         ></Line>
       )
@@ -104,7 +104,7 @@ const InterConnecter = props => {
           x={startX + minSize[0] * 0.2}
           y={startY + (minSize[1] / (numOfInverter + 1)) * i}
           radius={3}
-          fill="white"
+          fill='white'
         ></Circle>
       )
 
@@ -114,7 +114,7 @@ const InterConnecter = props => {
           x={startX + minSize[0] * 0.35}
           y={startY + (minSize[1] / (numOfInverter + 1)) * i}
           radius={3}
-          fill="white"
+          fill='white'
         ></Circle>
       )
 
@@ -129,10 +129,10 @@ const InterConnecter = props => {
             startX + minSize[0] * 0.35,
             startY + (minSize[1] / (numOfInverter + 1)) * i,
           ]}
-          stroke="white"
+          stroke='white'
           strokeWidth={stroke_Width}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           tension={0.5}
         ></Line>
       )
@@ -147,10 +147,10 @@ const InterConnecter = props => {
               startX + minSize[0] * 0.275,
               startY + (minSize[1] / (numOfInverter + 1)) * i + 30,
             ]}
-            stroke="white"
+            stroke='white'
             strokeWidth={stroke_Width}
-            lineCap="round"
-            lineJoin="round"
+            lineCap='round'
+            lineJoin='round'
             dash={[1, 5]}
           ></Line>
         ) : null
@@ -165,10 +165,10 @@ const InterConnecter = props => {
             startX + minSize[0] * 0.5,
             startY + (minSize[1] / (numOfInverter + 1)) * i,
           ]}
-          stroke="white"
+          stroke='white'
           strokeWidth={stroke_Width}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           tension={0.5}
         ></Line>
       )
@@ -184,10 +184,10 @@ const InterConnecter = props => {
             startX + minSize[0] * 0.5,
             startY + (minSize[1] / (numOfInverter + 1)) * i,
           ]}
-          stroke="white"
+          stroke='white'
           strokeWidth={stroke_Width}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
 
@@ -197,7 +197,7 @@ const InterConnecter = props => {
           x={startX + minSize[0] * 0.65}
           y={startY + minSize[1] * 0.15}
           radius={3}
-          fill="white"
+          fill='white'
         ></Circle>
       )
 
@@ -212,10 +212,10 @@ const InterConnecter = props => {
             startX + minSize[0] * 0.85,
             startY + minSize[1] * 0.15,
           ]}
-          stroke="white"
+          stroke='white'
           strokeWidth={stroke_Width}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
           tension={0.5}
         ></Line>
       )
@@ -226,7 +226,7 @@ const InterConnecter = props => {
           x={startX + minSize[0] * 0.85}
           y={startY + minSize[1] * 0.15}
           radius={3}
-          fill="white"
+          fill='white'
         ></Circle>
       )
 
@@ -239,10 +239,10 @@ const InterConnecter = props => {
             startX + minSize[0] * 1.2,
             startY + minSize[1] * 0.15,
           ]}
-          stroke="white"
+          stroke='white'
           strokeWidth={1.5}
-          lineCap="round"
-          lineJoin="round"
+          lineCap='round'
+          lineJoin='round'
         ></Line>
       )
     }
@@ -253,8 +253,8 @@ const InterConnecter = props => {
         y={startY + minSize[1] * 1.05}
         text={interConnectName}
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -265,8 +265,8 @@ const InterConnecter = props => {
         y={startY + minSize[1] * 0.55}
         text={props.combiTable}
         fontSize={font_size}
-        fontFamily="Arial"
-        fill="white"
+        fontFamily='Arial'
+        fill='white'
       ></Text>
     )
 
@@ -276,7 +276,7 @@ const InterConnecter = props => {
         x={startX + minSize[0] * 1.2}
         y={startY + minSize[1] * 0.15}
         radius={5}
-        fill="white"
+        fill='white'
       ></Circle>
     )
 
@@ -291,10 +291,10 @@ const InterConnecter = props => {
           startX + minSize[0] * 1.35,
           startY + minSize[1] * 0.55,
         ]}
-        stroke="white"
+        stroke='white'
         strokeWidth={stroke_Width}
-        lineCap="round"
-        lineJoin="round"
+        lineCap='round'
+        lineJoin='round'
       ></Line>
     )
 

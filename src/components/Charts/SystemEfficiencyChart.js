@@ -69,10 +69,15 @@ export const SystemEfficiencyChart = ({ buildingID }) => {
         }}
         forceFit
       >
-        <Coordinate type="polar" radius={0.75} startAngle={(-9 / 8) * Math.PI} endAngle={(1 / 8) * Math.PI} />
-        <Axis name="1" />
+        <Coordinate
+          type='polar'
+          radius={0.75}
+          startAngle={(-9 / 8) * Math.PI}
+          endAngle={(1 / 8) * Math.PI}
+        />
+        <Axis name='1' />
         <Axis
-          name="value"
+          name='value'
           line={null}
           label={{
             offset: -36,
@@ -92,9 +97,9 @@ export const SystemEfficiencyChart = ({ buildingID }) => {
           grid={null}
         />
         <Point
-          position="value*1"
-          color="#faad14"
-          shape="pointer"
+          position='value*1'
+          color='#faad14'
+          shape='pointer'
           animate={{
             appear: {
               animation: 'fade-in',

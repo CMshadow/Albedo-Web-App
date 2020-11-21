@@ -32,7 +32,7 @@ export const BuildingsTab = ({ buildings, ...props }) => {
   }
 
   const addBuildingButton = (
-    <Button className={styles.addBuilding} onClick={() => setshowModal(true)} type="dashed">
+    <Button className={styles.addBuilding} onClick={() => setshowModal(true)} type='dashed'>
       {projectType === 'domestic' ? t('project.add.building') : t('project.add.unit')}
     </Button>
   )
@@ -40,8 +40,8 @@ export const BuildingsTab = ({ buildings, ...props }) => {
   return (
     <>
       <Tabs
-        type="editable-card"
-        size="large"
+        type='editable-card'
+        size='large'
         activeKey={activeKey}
         tabBarGutter={12}
         hideAdd={true}
@@ -52,7 +52,7 @@ export const BuildingsTab = ({ buildings, ...props }) => {
         {buildings.map(building => (
           <TabPane
             tab={
-              <Space size="middle">
+              <Space size='middle'>
                 {building.buildingName}
                 <SettingOutlined
                   className={styles.icon}

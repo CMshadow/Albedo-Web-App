@@ -43,7 +43,10 @@ export const LossChart = ({ buildingID }) => {
   let systemStatus = 100
   const dataSource = []
   keys.forEach(([key, cat]) => {
-    systemStatus = systemStatus - buildingReport[key] * 100 || systemStatus - (100 - projectData[key]) || systemStatus
+    systemStatus =
+      systemStatus - buildingReport[key] * 100 ||
+      systemStatus - (100 - projectData[key]) ||
+      systemStatus
     dataSource.push({
       cat: t(`lossChart.${cat}`),
       value: buildingReport[key] * 100 || 0,
@@ -73,7 +76,8 @@ export const LossChart = ({ buildingID }) => {
       style: titleStyle,
       offset: 10,
       content: originData => {
-        if (originData.type === t(`lossChart.opt_irr`) && originData.stage === 'loss') return originData.type
+        if (originData.type === t(`lossChart.opt_irr`) && originData.stage === 'loss')
+          return originData.type
         else if (originData.stage === 'new') return null
         else return `-${originData.value.toFixed(2)}% ${originData.type}`
       },
@@ -114,11 +118,25 @@ export const LossChart = ({ buildingID }) => {
       hoverable
       style={{ cursor: 'unset' }}
     >
-      <Chart pure scale={scale} height={500} data={dataSource.reverse()} autoFit padding={[0, 30, 0, 80]}>
+      <Chart
+        pure
+        scale={scale}
+        height={500}
+        data={dataSource.reverse()}
+        autoFit
+        padding={[0, 30, 0, 80]}
+      >
         <Coordinate transpose />
-        <Axis name="type" label={null} tickLine={null} line={false} />
-        <Axis name="value" label={null} grid={null} />
-        <Interval type="interval" position="type*value" size={20} adjust={adjust} label={label} color={color} />
+        <Axis name='type' label={null} tickLine={null} line={false} />
+        <Axis name='value' label={null} grid={null} />
+        <Interval
+          type='interval'
+          position='type*value'
+          size={20}
+          adjust={adjust}
+          label={label}
+          color={color}
+        />
         <Annotation.Text
           top
           position={[t('lossChart.p_loss_ac_wiring'), 0]}

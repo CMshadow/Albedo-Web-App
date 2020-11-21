@@ -58,7 +58,7 @@ export const PerformanceCurve = ({
   return (
     <Modal
       visible={show}
-      width="50vw"
+      width='50vw'
       onCancel={() => {
         setinverterID(false)
         setshow(false)
@@ -69,11 +69,11 @@ export const PerformanceCurve = ({
       destroyOnClose
     >
       <Spin spinning={loading}>
-        <Tabs defaultActiveKey="1" centered>
-          <TabPane tab={t('InverterTable.table.pdc-pac-curve')} key="1">
+        <Tabs defaultActiveKey='1' centered>
+          <TabPane tab={t('InverterTable.table.pdc-pac-curve')} key='1'>
             <PacPdcChart dataSource={pacpdcDataSrc} />
           </TabPane>
-          <TabPane tab={t('InverterTable.table.inverter-efficiency-curve')} key="2">
+          <TabPane tab={t('InverterTable.table.inverter-efficiency-curve')} key='2'>
             <InverterEfficiencyChart dataSource={pdceffDataSrc} />
           </TabPane>
         </Tabs>

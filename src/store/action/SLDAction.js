@@ -23,7 +23,10 @@ export const InverterDataExport = newAccessPorts => (dispatch, getState) => {
   })
 }
 
-export const setInterConnectData = (newAccessPorts, newStartPosition, newSize) => (dispatch, getState) => {
+export const setInterConnectData = (newAccessPorts, newStartPosition, newSize) => (
+  dispatch,
+  getState
+) => {
   return dispatch({
     type: ActionTypes.SET_INTERCONNECT_DATA,
     startPosition: newStartPosition,

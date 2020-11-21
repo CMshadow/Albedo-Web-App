@@ -37,7 +37,13 @@ const initValues = {
   radiator: 'forcedConvection',
 }
 
-export const InverterModal = ({ showModal, setshowModal, setactiveData, editRecord, seteditRecord }) => {
+export const InverterModal = ({
+  showModal,
+  setshowModal,
+  setactiveData,
+  editRecord,
+  seteditRecord,
+}) => {
   const { t } = useTranslation()
   const [loading, setloading] = useState(false)
   const [uploadFileList, setuploadFileList] = useState([])
@@ -154,7 +160,7 @@ export const InverterModal = ({ showModal, setshowModal, setactiveData, editReco
           </Select>
         )
       case 'n':
-        return <Input addonAfter={`${unit}`} type="number" className={styles.input} />
+        return <Input addonAfter={`${unit}`} type='number' className={styles.input} />
       case 's':
       default:
         return <Input />
@@ -315,7 +321,7 @@ export const InverterModal = ({ showModal, setshowModal, setactiveData, editReco
         preserve={false}
         form={form}
         className={styles.form}
-        name="Inverter"
+        name='Inverter'
         scrollToFirstError
         labelCol={labelCol}
         wrapperCol={wrapperCol}
@@ -325,9 +331,13 @@ export const InverterModal = ({ showModal, setshowModal, setactiveData, editReco
           <>
             <Row>
               <Col span={24}>
-                <FormItem label={t('PV.uploadond')} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                <FormItem
+                  label={t('PV.uploadond')}
+                  labelCol={{ span: 4 }}
+                  wrapperCol={{ span: 20 }}
+                >
                   <Upload
-                    accept=".ond"
+                    accept='.ond'
                     fileList={uploadFileList}
                     customRequest={uploadOND}
                     onChange={({ fileList }) => setuploadFileList(fileList.slice(-1))}
@@ -347,7 +357,12 @@ export const InverterModal = ({ showModal, setshowModal, setactiveData, editReco
         {genFormItems(formBoolKeys, 4)}
         <Divider />
         <Collapse bordered={false}>
-          <Panel className={styles.collapsePanel} header={t('InverterTable.proParams')} key="pro" forceRender>
+          <Panel
+            className={styles.collapsePanel}
+            header={t('InverterTable.proParams')}
+            key='pro'
+            forceRender
+          >
             {genFormItems(formProKeys, 4)}
           </Panel>
         </Collapse>

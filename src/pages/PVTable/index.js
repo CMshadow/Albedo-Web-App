@@ -34,14 +34,19 @@ const PVTablePage = props => {
 
   return (
     <Card bodyStyle={{ padding: '20px 12px' }}>
-      <Tabs defaultActiveKey="1" type="card">
-        <TabPane tab={t('PVTable.my')} key="1">
-          <Button className={styles.leftBut} type="primary" size="large" onClick={() => setshowModal(true)}>
+      <Tabs defaultActiveKey='1' type='card'>
+        <TabPane tab={t('PVTable.my')} key='1'>
+          <Button
+            className={styles.leftBut}
+            type='primary'
+            size='large'
+            onClick={() => setshowModal(true)}
+          >
             {t('PVtable.add-PV')}
           </Button>
           <Button
             className={styles.rightBut}
-            shape="circle"
+            shape='circle'
             onClick={fetchData}
             icon={<SyncOutlined spin={loading} />}
           />
@@ -62,7 +67,7 @@ const PVTablePage = props => {
             seteditRecord={seteditRecord}
           />
         </TabPane>
-        <TabPane tab={t('PVTable.official')} key="2">
+        <TabPane tab={t('PVTable.official')} key='2'>
           <PVTableViewOnly
             loading={loading}
             data={officialData}

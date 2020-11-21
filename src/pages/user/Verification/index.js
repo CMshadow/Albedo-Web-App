@@ -78,12 +78,12 @@ const Verification = props => {
   return (
     <div className={styles.main}>
       <h2>{t('user.verification.welcome')}</h2>
-      <Form form={form} name="Verification" onFinish={onFinish}>
+      <Form form={form} name='Verification' onFinish={onFinish}>
         <Row>{t('user.required.verification')}</Row>
         <Row gutter={8}>
           <Col span={16}>
             <FormItem
-              name="verification"
+              name='verification'
               rules={[
                 {
                   required: true,
@@ -91,17 +91,28 @@ const Verification = props => {
                 },
               ]}
             >
-              <Input size="large" placeholder={t('user.placeholder.verification')} />
+              <Input size='large' placeholder={t('user.placeholder.verification')} />
             </FormItem>
           </Col>
           <Col span={8}>
-            <Button size="large" disabled={!!count} className={styles.verifyBut} onClick={getVerification}>
+            <Button
+              size='large'
+              disabled={!!count}
+              className={styles.verifyBut}
+              onClick={getVerification}
+            >
               {count ? `${count} s` : t('user.verification.resend')}
             </Button>
           </Col>
         </Row>
         <FormItem wrapperCol={{ span: 10, offset: 7 }}>
-          <Button size="large" loading={loading} className={styles.submit} type="primary" htmlType="submit">
+          <Button
+            size='large'
+            loading={loading}
+            className={styles.submit}
+            type='primary'
+            htmlType='submit'
+          >
             {t('user.verification.confirm')}
           </Button>
         </FormItem>

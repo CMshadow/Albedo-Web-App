@@ -33,14 +33,14 @@ const DisplayPage = () => (
       <DisplayPageHeader />
       <Content className={styles.content}>
         <Grid fluid>
-          <Row center="xs" xs={12}>
-            <Title type="primary">智能化云端光伏设计</Title>
+          <Row center='xs' xs={12}>
+            <Title type='primary'>智能化云端光伏设计</Title>
           </Row>
-          <Row center="xs" xs={12}>
-            <Title level={3} type="secondary" style={{ marginTop: 0 }}>
+          <Row center='xs' xs={12}>
+            <Title level={3} type='secondary' style={{ marginTop: 0 }}>
               极速生成报告、一键出图，简单高效的设计模式，开创光伏设计新维度
             </Title>
-            <img src={designDisplay} alt="designDisplay" width="80%" height="100%" />
+            <img src={designDisplay} alt='designDisplay' width='80%' height='100%' />
           </Row>
         </Grid>
 
@@ -49,39 +49,39 @@ const DisplayPage = () => (
       </Row> */}
 
         <Grid fluid>
-          <Row center="xs" className={styles.part}>
+          <Row center='xs' className={styles.part}>
             <Title level={2}>多项功能，统一整合</Title>
           </Row>
-          <Row className={styles.section} around="sm" round="xs">
+          <Row className={styles.section} around='sm' round='xs'>
             <Col sm>
-              <Row end="xs" align="middle" className={styles.padSentence}>
+              <Row end='xs' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>每小时</p>
                 <p className={styles.regularTxt}>精度天气数据</p>
               </Row>
-              <Row center="xs" start="sm" align="middle" className={styles.padSentence}>
+              <Row center='xs' start='sm' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>自动化</p>
                 <p className={styles.regularTxt}>光伏阵列排布</p>
               </Row>
-              <Row end="xs" align="middle" className={styles.padSentence}>
+              <Row end='xs' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>系统产能</p>
                 <p className={styles.regularTxt}>计算及损耗分析</p>
               </Row>
             </Col>
             <Col sm>
-              <img src={pad} alt="designDisplay" width="100%" />
+              <img src={pad} alt='designDisplay' width='100%' />
             </Col>
 
             <Col sm>
-              <Row start="xs" align="middle" className={styles.padSentence}>
+              <Row start='xs' align='middle' className={styles.padSentence}>
                 <p className={styles.regularTxt}>系统设备</p>
                 <p className={styles.highlightTxt}>自动化</p>
                 <p className={styles.regularTxt}>统计</p>
               </Row>
-              <Row center="xs" end="sm" align="middle" className={styles.padSentence}>
+              <Row center='xs' end='sm' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>25年</p>
                 <p className={styles.regularTxt}>生命周期投资收益分析</p>
               </Row>
-              <Row end="xs" start="sm" align="middle" className={styles.padSentence}>
+              <Row end='xs' start='sm' align='middle' className={styles.padSentence}>
                 <p className={styles.highlightTxt}>一键</p>
                 <p className={styles.regularTxt}>生成系统电气主接线图</p>
               </Row>
@@ -90,13 +90,13 @@ const DisplayPage = () => (
         </Grid>
 
         <Grid fluid>
-          <Row center="xs" xs={12} className={styles.part}>
+          <Row center='xs' xs={12} className={styles.part}>
             <Title level={2}>丰富强大的报告内核</Title>
           </Row>
 
-          <Row align="middle">
+          <Row align='middle'>
             <Col smOffset={1} sm={5}>
-              <img src={earth} alt="designDisplay" width="100%" />
+              <img src={earth} alt='designDisplay' width='100%' />
             </Col>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} hoverable className={styles.card}>
@@ -116,7 +116,7 @@ const DisplayPage = () => (
             </Col>
           </Row>
 
-          <Row align="middle" className={styles.feature}>
+          <Row align='middle' className={styles.feature}>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} hoverable className={styles.card}>
                 <Row>
@@ -134,13 +134,13 @@ const DisplayPage = () => (
               </Card>
             </Col>
             <Col smOffset={1} sm={5}>
-              <img src={elec} alt="designDisplay" width="100%" />
+              <img src={elec} alt='designDisplay' width='100%' />
             </Col>
           </Row>
 
-          <Row align="middle" className={styles.feature}>
+          <Row align='middle' className={styles.feature}>
             <Col smOffset={1} sm={5}>
-              <img src={cloud} alt="designDisplay" width="100%" />
+              <img src={cloud} alt='designDisplay' width='100%' />
             </Col>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} hoverable className={styles.card}>
@@ -160,7 +160,7 @@ const DisplayPage = () => (
             </Col>
           </Row>
 
-          <Row align="middle" className={styles.feature}>
+          <Row align='middle' className={styles.feature}>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} hoverable className={styles.card}>
                 <Row>
@@ -178,13 +178,13 @@ const DisplayPage = () => (
               </Card>
             </Col>
             <Col smOffset={1} sm={5}>
-              <img src={multitasks} alt="designDisplay" width="100%" />
+              <img src={multitasks} alt='designDisplay' width='100%' />
             </Col>
           </Row>
 
-          <Row align="middle" className={styles.feature}>
+          <Row align='middle' className={styles.feature}>
             <Col smOffset={1} sm={5}>
-              <img src={computer} alt="designDisplay" width="100%" />
+              <img src={computer} alt='designDisplay' width='100%' />
             </Col>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} hoverable className={styles.card}>
@@ -196,7 +196,8 @@ const DisplayPage = () => (
                 </Row>
                 <Row>
                   <p className={styles.regularTxt}>
-                    根据用户电气接入配置，自动生成光伏系统电气接线图， 轻松实现一键出图，为设计师省时增效
+                    根据用户电气接入配置，自动生成光伏系统电气接线图，
+                    轻松实现一键出图，为设计师省时增效
                   </p>
                 </Row>
               </Card>
@@ -205,7 +206,7 @@ const DisplayPage = () => (
         </Grid>
         <Grid fluid>
           {/*<Row justify="center" className={styles.feature}>*/}
-          <Row center="sm" sm={8} className={styles.feature}>
+          <Row center='sm' sm={8} className={styles.feature}>
             <Title level={2}>与我们一起成长，为光伏设计添砖加瓦</Title>
           </Row>
           <Row className={styles.section}>
@@ -231,16 +232,16 @@ const DisplayPage = () => (
                 value={genMockNumber({ base: 1430000, increase: 100 })}
                 valueStyle={{ fontSize: 25, padding: '15px 0px' }}
                 prefix={<ThunderboltOutlined />}
-                suffix="kW"
+                suffix='kW'
               />
             </Col>
           </Row>
           {/*</Row>*/}
         </Grid>
         <Grid fluid>
-          <Row align="middle" className={styles.part}>
+          <Row align='middle' className={styles.part}>
             <Col smOffset={2} sm={3}>
-              <img src={pads} alt="designDisplay" width="100%" />
+              <img src={pads} alt='designDisplay' width='100%' />
             </Col>
             <Col smOffset={1} sm={5}>
               <Card bordered={false} className={styles.card}>
@@ -254,7 +255,9 @@ const DisplayPage = () => (
                   <p className={styles.regularTxt}>邮箱: admin-cn@albedopowered.com</p>
                 </Row>
                 <Row>
-                  <p className={styles.regularTxt}>公司地址: 北京市丰台区方庄顺八条8号院三区6号楼</p>
+                  <p className={styles.regularTxt}>
+                    公司地址: 北京市丰台区方庄顺八条8号院三区6号楼
+                  </p>
                 </Row>
               </Card>
             </Col>

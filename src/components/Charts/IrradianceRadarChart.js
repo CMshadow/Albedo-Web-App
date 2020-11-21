@@ -25,8 +25,14 @@ export const IrradianceRadarChart = ({ buildingID }) => {
   }, {})
 
   const poaMax = Math.max(
-    aggregatedByTilt[tiltPickedPrim].reduce((max, val) => (val.poa > max ? val.poa : max), -Infinity),
-    aggregatedByTilt[tiltPickedScnd].reduce((max, val) => (val.poa > max ? val.poa : max), -Infinity)
+    aggregatedByTilt[tiltPickedPrim].reduce(
+      (max, val) => (val.poa > max ? val.poa : max),
+      -Infinity
+    ),
+    aggregatedByTilt[tiltPickedScnd].reduce(
+      (max, val) => (val.poa > max ? val.poa : max),
+      -Infinity
+    )
   )
 
   const dataSource = aggregatedByTilt[tiltPickedPrim]
@@ -74,17 +80,25 @@ export const IrradianceRadarChart = ({ buildingID }) => {
       hoverable
       style={{ cursor: 'unset' }}
     >
-      <Row justify="center">
-        <Space size="large">
+      <Row justify='center'>
+        <Space size='large'>
           <Text strong>{t('irrRadarChart.selectTilt')}</Text>
-          <Select style={{ width: 100 }} defaultValue={`${tiltPickedPrim}°`} onChange={val => settiltPickedPrim(val)}>
+          <Select
+            style={{ width: 100 }}
+            defaultValue={`${tiltPickedPrim}°`}
+            onChange={val => settiltPickedPrim(val)}
+          >
             {Object.keys(aggregatedByTilt).map(tilt => (
               <Option key={tilt} value={tilt}>
                 {tilt}°
               </Option>
             ))}
           </Select>
-          <Select style={{ width: 100 }} defaultValue={`${tiltPickedScnd}°`} onChange={val => settiltPickedScnd(val)}>
+          <Select
+            style={{ width: 100 }}
+            defaultValue={`${tiltPickedScnd}°`}
+            onChange={val => settiltPickedScnd(val)}
+          >
             {Object.keys(aggregatedByTilt).map(tilt => (
               <Option key={tilt} value={tilt}>
                 {tilt}°
@@ -101,14 +115,18 @@ export const IrradianceRadarChart = ({ buildingID }) => {
         padding={[50, 0, 60, 0]}
         interactions={['legend-highlight']}
       >
-        <Coordinate type="polar" style={{ fontSize: 25 }} />
-        <Axis name="azimuth" label={{ offset: 20, style: { fontSize: 14 } }} />
-        <Axis name="poaPercent" label={{ style: { fontSize: 14 } }} />
+        <Coordinate type='polar' style={{ fontSize: 25 }} />
+        <Axis name='azimuth' label={{ offset: 20, style: { fontSize: 14 } }} />
+        <Axis name='poaPercent' label={{ style: { fontSize: 14 } }} />
         <Tooltip shared />
-        <Point position="azimuth*poaPercent" color="tilt" shape="circle" size={0} />
-        <Line position="azimuth*poaPercent" size={3} color={['tilt', ['#096dd9', '#fa8c16']]} />
-        <Area position="azimuth*poaPercent" tooltip={false} color={['tilt', ['#bae7ff', '#ffd591']]} />
-        <Legend position="bottom" offsetY={0} />
+        <Point position='azimuth*poaPercent' color='tilt' shape='circle' size={0} />
+        <Line position='azimuth*poaPercent' size={3} color={['tilt', ['#096dd9', '#fa8c16']]} />
+        <Area
+          position='azimuth*poaPercent'
+          tooltip={false}
+          color={['tilt', ['#bae7ff', '#ffd591']]}
+        />
+        <Legend position='bottom' offsetY={0} />
       </Chart>
     </Card>
   )

@@ -145,7 +145,11 @@ const ParamsForm = () => {
             <FormItem
               name={key}
               label={t(`report.paramsForm.${key}`)}
-              rules={step !== 'disabled' && step !== 'pv' && step !== 'albedo' ? [{ required: true }] : null}
+              rules={
+                step !== 'disabled' && step !== 'pv' && step !== 'albedo'
+                  ? [{ required: true }]
+                  : null
+              }
             >
               {genFormInputArea(key, step, min, max, marks)}
             </FormItem>
@@ -203,7 +207,9 @@ const ParamsForm = () => {
       new Array(12)
         .fill(0)
         .map((_, index) => index + 1)
-        .forEach(month => (initValues[`monthly_albedo-${month}`] = initValues.monthly_albedo[month - 1]))
+        .forEach(
+          month => (initValues[`monthly_albedo-${month}`] = initValues.monthly_albedo[month - 1])
+        )
       form.setFieldsValue(initValues)
     } else {
       form.setFieldsValue(genInitValues(projectData))
@@ -214,14 +220,14 @@ const ParamsForm = () => {
     <Card className={styles.card} hoverable title={t('report.paramsForm.title')}>
       <Form
         form={form}
-        name="report-params"
+        name='report-params'
         scrollToFirstError
-        labelAlign="left"
+        labelAlign='left'
         labelCol={labelCol}
         wrapperCol={wrapperCol}
         hideRequiredMark
         onFinish={submitForm}
-        size="large"
+        size='large'
       >
         <Divider>{t('report.paramsForm.irradiance')}</Divider>
         {genFormItems(irrandianceKeys, 2)}
@@ -233,8 +239,8 @@ const ParamsForm = () => {
         {genFormItems(gridKeys, 2)}
         <HorizonChart data={horizonData} />
         <br />
-        <Row justify="center">
-          <Button loading={loading} type="primary" htmlType="submit">
+        <Row justify='center'>
+          <Button loading={loading} type='primary' htmlType='submit'>
             {t('form.confirm')}
           </Button>
         </Row>
