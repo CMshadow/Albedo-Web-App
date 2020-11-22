@@ -28,7 +28,7 @@ export type IProjectState = Project | null
 
 export interface SetProjectDataAction {
   type: typeof SET_PROJECTDATA
-  data: Project
+  data: Partial<Project>
 }
 
 export interface UpdateProjectAttributesAction {

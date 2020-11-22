@@ -29,6 +29,7 @@ module.exports = {
   plugins: ['react', '@typescript-eslint'],
   rules: {
     'react/prop-types': 'off',
+    'react/display-name': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/explicit-module-boundary-types': 'off',

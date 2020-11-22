@@ -43,7 +43,29 @@ const deleteProjectRequest: IAxiosRequest<
     })
     .then(res => res.data)
 
+const getProjectSingleRequest: IAxiosRequest<
+  { projectID: string; username: string; jwtToken: string },
+  Project
+> = args =>
+  axios
+    .get<Project>(`/project/${args.username}/${args.projectID}`, {
+      headers: { 'COG-TOKEN': args.jwtToken },
+    })
+    .then(res => res.data)
+
+const saveProjectRequest: IAxiosRequest<
+  { projectID: string; values: Project; username: string; jwtToken: string },
+  { Attributes: Project }
+> = args =>
+  axios
+    .put<{ Attributes: Project }>(`/project/${args.username}/${args.projectID}`, args.values, {
+      headers: { 'COG-TOKEN': args.jwtToken },
+    })
+    .then(res => res.data)
+
 export const getApiKey = injectAuth(getApiKeyRequest)
 export const createProject = injectAuth(createProjectRequest)
 export const getProject = injectAuth(getProjectRequest)
 export const deleteProject = injectAuth(deleteProjectRequest)
+export const getProjectSingle = injectAuth(getProjectSingleRequest)
+export const saveProject = injectAuth(saveProjectRequest)

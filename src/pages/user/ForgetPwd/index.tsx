@@ -1,47 +1,87 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import styles from './style.module.scss'
-import { useHistory } from 'react-router-dom'
-import { Signup } from '../service'
-import { Form, Button, Input, Popover, Progress, Row, notification } from 'antd'
+import { useHistory, Link } from 'react-router-dom'
+import { Form, Button, Input, Row, Col, notification, Popover, Progress } from 'antd'
 import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons'
+import { SendForgotPasswordVerification, SubmitForgotPassword } from '../../../services'
+import styles from './style.module.scss'
+import { Rule } from 'antd/lib/form'
+
 const FormItem = Form.Item
 
-const Register = props => {
+const ForgetPassword: React.FC = () => {
   const { t } = useTranslation()
   const history = useHistory()
-  const [visible, setvisible] = useState(false)
-  const [popover, setpopover] = useState(false)
-  const [loading, setloading] = useState(false)
   const [form] = Form.useForm()
+  // 验证码按钮倒计时
+  const [count, setcount] = useState<number>(0)
+  // 正在与后台交互
+  const [loading, setloading] = useState<boolean>(false)
+  // 是否已点击发送验证码按钮
+  const [codeSent, setcodeSent] = useState<boolean>(false)
+  // 用户输入的邮箱
+  const [email, setemail] = useState<string>()
+  const [visible, setvisible] = useState<boolean>(false)
+  const [popover, setpopover] = useState<boolean>(false)
+  let interval: number
 
-  const onFinish = values => {
+  const onFinish = (values: { mail: string; verification: string; password: string }) => {
+    if (!codeSent) {
+      sendVerificationCode(values.mail)
+    } else {
+      submitNewPassword(values.verification, values.password)
+    }
+  }
+
+  const submitNewPassword = (code: string, password: string) => {
+    if (!email) {
+      return
+    }
     setloading(true)
-    Signup({
-      email: values.mail,
-      password: values.password,
-      lastname: values.lastname,
-      firstname: values.firstname,
-    })
-      .then(res => {
-        setloading(false)
-        history.push({
-          pathname: '/user/verify',
-          state: { username: values.mail, password: values.password },
-        })
+    SubmitForgotPassword({ username: email, code, newPassword: password })
+      .then(() => {
+        setTimeout(() => {
+          setloading(false)
+          history.push('/user/login')
+        }, 2000)
       })
       .catch(err => {
-        console.log(err)
+        setloading(false)
         notification.error({
-          message: t('user.error.register'),
+          message: t('user.error.reset-password'),
           description: t(`user.error.${err.code}`),
         })
-        setloading(false)
       })
   }
 
-  const passwordLengthValidator = (rule, value) => {
+  const sendVerificationCode = (email: string) => {
+    setloading(true)
+    SendForgotPasswordVerification({ username: email })
+      .then(() => {
+        setloading(false)
+        setcodeSent(true)
+        setemail(email)
+        // 按钮冷却60秒
+        let counts = 59
+        setcount(counts)
+        interval = window.setInterval(() => {
+          counts -= 1
+          setcount(counts)
+          if (counts === 0) {
+            clearInterval(interval)
+          }
+        }, 1000)
+      })
+      .catch(err => {
+        setloading(false)
+        notification.error({
+          message: t('user.error.send-code-fail'),
+          description: err.code,
+        })
+      })
+  }
+
+  const passwordLengthValidator = (rule: Rule, value: string) => {
     const promise = Promise
     if (!value) {
       setvisible(!!value)
@@ -56,21 +96,21 @@ const Register = props => {
     return promise.resolve()
   }
 
-  const passwordCapLetterValidator = (rule, value) => {
+  const passwordCapLetterValidator = (rule: Rule, value: string) => {
     const promise = Promise
     setpopover(!popover)
     if (value === value.toLowerCase()) return promise.reject('')
     return promise.resolve()
   }
 
-  const passwordLowLetterValidator = (rule, value) => {
+  const passwordLowLetterValidator = (rule: Rule, value: string) => {
     const promise = Promise
     setpopover(!popover)
     if (value === value.toUpperCase()) return promise.reject('')
     return promise.resolve()
   }
 
-  const passwordNumberValidator = (rule, value) => {
+  const passwordNumberValidator = (rule: Rule, value: string) => {
     const promise = Promise
     setpopover(!popover)
     if (/\d/.test(value)) return promise.resolve()
@@ -186,34 +226,9 @@ const Register = props => {
 
   return (
     <div className={styles.main}>
-      <h2>{t('user.register.welcome')}</h2>
-      <Form form={form} name='UserRegister' onFinish={onFinish}>
-        <Row>{t('user.required.fullname')}</Row>
-        <FormItem
-          name='firstname'
-          className={styles.firstname}
-          rules={[
-            {
-              required: true,
-              message: t('user.required'),
-            },
-          ]}
-        >
-          <Input size='large' placeholder={t('user.placeholder.firstname')} />
-        </FormItem>
-        <FormItem
-          name='lastname'
-          className={styles.lastname}
-          rules={[
-            {
-              required: true,
-              message: t('user.required'),
-            },
-          ]}
-        >
-          <Input size='large' placeholder={t('user.placeholder.lastname')} />
-        </FormItem>
-        <Row>{t('user.required.email')}</Row>
+      <h2>{t('user.forget.welcome')}</h2>
+      <Form form={form} name='Login' onFinish={onFinish}>
+        <Row>{t('user.forget.email')}</Row>
         <FormItem
           name='mail'
           rules={[
@@ -227,41 +242,79 @@ const Register = props => {
             },
           ]}
         >
-          <Input size='large' placeholder={t('user.placeholder.email')} />
+          <Input
+            disabled={email ? true : false}
+            size='large'
+            placeholder={t('user.placeholder.email')}
+          />
         </FormItem>
-        <Row>{t('user.required.password')}</Row>
-        <Popover
-          content={genPopoverContent}
-          overlayStyle={{ width: 300 }}
-          placement='right'
-          visible={visible}
-        >
-          <FormItem
-            name='password'
-            className={styles.password}
-            rules={[
-              {
-                validator: passwordLengthValidator,
-              },
-              {
-                validator: passwordCapLetterValidator,
-              },
-              {
-                validator: passwordLowLetterValidator,
-              },
-              {
-                validator: passwordNumberValidator,
-              },
-            ]}
-          >
-            <Input.Password
-              size='large'
-              type='password'
-              placeholder={t('user.placeholder.password')}
-            />
-          </FormItem>
-        </Popover>
-        <FormItem>
+        {codeSent ? (
+          <>
+            <Row>{t('user.required.verification')}</Row>
+            <Row gutter={8}>
+              <Col span={16}>
+                <FormItem
+                  name='verification'
+                  rules={[
+                    {
+                      required: true,
+                      message: t('user.required.verification'),
+                    },
+                  ]}
+                >
+                  <Input size='large' placeholder={t('user.placeholder.verification')} />
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <Button
+                  size='large'
+                  disabled={!!count}
+                  className={styles.verifyBut}
+                  onClick={() => (email ? sendVerificationCode(email) : null)}
+                >
+                  {count ? `${count} s` : t('user.verification.resend')}
+                </Button>
+              </Col>
+            </Row>
+            <Row>{t('user.required.password')}</Row>
+            <Popover
+              content={genPopoverContent}
+              overlayStyle={{ width: 300 }}
+              placement='right'
+              visible={visible}
+            >
+              <FormItem
+                name='password'
+                className={styles.password}
+                rules={[
+                  {
+                    validator: passwordLengthValidator,
+                  },
+                  {
+                    validator: passwordCapLetterValidator,
+                  },
+                  {
+                    validator: passwordLowLetterValidator,
+                  },
+                  {
+                    validator: passwordNumberValidator,
+                  },
+                ]}
+              >
+                <Input.Password
+                  size='large'
+                  type='password'
+                  placeholder={t('user.placeholder.password')}
+                />
+              </FormItem>
+            </Popover>
+          </>
+        ) : null}
+
+        <Link className={styles.floatright} to='/user/register'>
+          {t('user.register.welcome')}
+        </Link>
+        <FormItem className={styles.submit}>
           <Button
             size='large'
             loading={loading}
@@ -269,15 +322,12 @@ const Register = props => {
             type='primary'
             htmlType='submit'
           >
-            {t('user.register')}
+            {codeSent ? t('user.reset-password') : t('user.forget.send-code')}
           </Button>
-          <Link className={styles.login} to='/user/login'>
-            {t('user.to-sign-in')}
-          </Link>
         </FormItem>
       </Form>
     </div>
   )
 }
 
-export default Register
+export default ForgetPassword

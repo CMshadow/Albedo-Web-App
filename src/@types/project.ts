@@ -76,7 +76,7 @@ export type PowerCabinet = {
 }
 
 export type ProjectPreUpload = {
-  projectTitle: number
+  projectTitle: string
   projectAddress: string
   projectAltitude: number
   projectCreator: string
@@ -102,4 +102,15 @@ export type Project = Omit<ProjectPreUpload, 'longitude' | 'latitude'> & {
   powercabinets?: Array<PowerCabinet>
   reGenReport?: boolean
   weatherFile?: boolean
+  tiltAzimuthPOA?: [number, number, number][]
+  horizonData?: [number, number][]
+  monthly_albedo?: number[]
+  optAzimuth?: number
+  optPOA?: number
+  optTilt?: number
+  p_loss_availability?: number
+  p_loss_connection?: number
+  p_loss_mismatch_betweenstrings?: number
+  p_loss_mismatch_withinstring?: number
+  p_loss_soiling?: number
 }

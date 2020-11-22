@@ -1,62 +1,63 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
 import { Button, Table, Divider, Card, Tabs } from 'antd'
-import { DashboardTwoTone } from '@ant-design/icons'
-import { SyncOutlined } from '@ant-design/icons'
+import { DashboardTwoTone, SyncOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useHistory, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { CreateProjectModal } from './Modal'
-import { getProject } from './service'
+import { getProject } from '../../services'
 import { DeleteAction } from './Actions'
 import { SearchString } from '../../components/Table/TableColFilters/TableColSearch'
-import * as styles from './ProjectTable.module.scss'
+import styles from './ProjectTable.module.scss'
+import { Project } from '../../@types'
+import { ColumnsType } from 'antd/lib/table'
 
 const { TabPane } = Tabs
 
-const ProjectTable = props => {
+const ProjectTable: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const history = useHistory()
-  const [data, setdata] = useState([])
-  const [activeData, setactiveData] = useState([])
+  const [data, setdata] = useState<Project[]>([])
+  const [activeData, setactiveData] = useState<Project[]>([])
   const [loading, setloading] = useState(false)
   const [showModal, setshowModal] = useState(false)
 
-  const tableCols = [
+  const tableCols: ColumnsType<Project> = [
     {
       title: t('project.create.title'),
       dataIndex: 'projectTitle',
       key: 'projectTitle',
-      sorter: (a, b) => a.projectTitle.localeCompare(b.projectTitle),
+      sorter: (a: Project, b: Project) => a.projectTitle.localeCompare(b.projectTitle),
       fixed: 'left',
       width: 250,
       ...SearchString({ colKey: 'projectTitle', data, setactiveData }),
-      // eslint-disable-next-line react/display-name
-      render: (val, record) => <Link to={`/project/${record.projectID}/dashboard`}>{val}</Link>,
+      render: (val: string, record: Project) => (
+        <Link to={`/project/${record.projectID}/dashboard`}>{val}</Link>
+      ),
     },
     {
       title: t('project.create.address'),
       dataIndex: 'projectAddress',
       key: 'projectAddress',
       width: 250,
-      sorter: (a, b) => a.projectAddress.localeCompare(b.projectAddress),
+      sorter: (a: Project, b: Project) => a.projectAddress.localeCompare(b.projectAddress),
     },
     {
       title: t('project.createdAt'),
       dataIndex: 'createdAt',
       key: 'createdAt',
-      sorter: (a, b) => a.createdAt - b.createdAt,
+      sorter: (a: Project, b: Project) => a.createdAt - b.createdAt,
       width: 200,
-      render: val => new Date(val * 1000).toLocaleString(),
+      render: (val: number) => new Date(val * 1000).toLocaleString(),
     },
     {
       title: t('project.updatedAt'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
-      sorter: (a, b) => a.updatedAt - b.updatedAt,
+      sorter: (a: Project, b: Project) => a.updatedAt - b.updatedAt,
       width: 200,
-      render: val => new Date(val * 1000).toLocaleString(),
+      render: (val: number) => new Date(val * 1000).toLocaleString(),
     },
     {
       title: t('table.action'),
@@ -64,8 +65,7 @@ const ProjectTable = props => {
       key: 'action',
       fixed: 'right',
       width: 125,
-      // eslint-disable-next-line react/display-name
-      render: (value, record) => (
+      render: (value: void, record: Project) => (
         <div>
           <Button
             type='link'
@@ -89,7 +89,7 @@ const ProjectTable = props => {
   // 手动触发更新列表数据
   const fetchData = () => {
     setloading(true)
-    dispatch(getProject()).then(data => {
+    getProject({}).then(data => {
       setdata(data)
       setactiveData(data)
       setloading(false)
@@ -99,14 +99,14 @@ const ProjectTable = props => {
   // 组件渲染后自动获取表单数据
   useEffect(() => {
     setloading(true)
-    dispatch(getProject()).then(data => {
+    getProject({}).then(data => {
       setdata(data)
       setactiveData(data)
       setloading(false)
     })
   }, [dispatch])
 
-  const genTable = projectType => {
+  const genTable = (projectType: 'domestic' | 'commercial') => {
     const validData = activeData.filter(data => data.projectType === projectType)
     return (
       <Table
@@ -155,10 +155,4 @@ const ProjectTable = props => {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    cognitoUser: state.auth.cognitoUser,
-  }
-}
-
-export default connect(mapStateToProps)(ProjectTable)
+export default ProjectTable

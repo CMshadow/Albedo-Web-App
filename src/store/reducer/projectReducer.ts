@@ -25,10 +25,11 @@ import {
   DeletePowercabinetAction,
   Transformer,
   PowerCabinet,
+  Project,
 } from '../../@types'
 import * as actionTypes from '../action/actionTypes'
 
-const initialState = null
+const initialState: IProjectState = null
 
 interface IReducer<A> {
   (state: IProjectState, action: A): IProjectState
@@ -101,7 +102,7 @@ const setProjectData: IReducer<SetProjectDataAction> = (state, action) => {
   return {
     ...state,
     ...action.data,
-  }
+  } as Project
 }
 
 const updateProjectAttributes: IReducer<UpdateProjectAttributesAction> = (state, action) => {
@@ -954,7 +955,10 @@ const deletePowercabinet: IReducer<DeletePowercabinetAction> = (state, action) =
   }
 }
 
-const reducer = (state = initialState, action: ProjectActionTypes): IProjectState => {
+const reducer = (
+  state: IProjectState = initialState,
+  action: ProjectActionTypes
+): IProjectState => {
   switch (action.type) {
     case actionTypes.SET_PROJECTDATA:
       return setProjectData(state, action)

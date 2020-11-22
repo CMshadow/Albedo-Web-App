@@ -36,10 +36,10 @@ const deletePVRequest: IAxiosRequest<
 
 const updatePVRequest: IAxiosRequest<
   { pvID: string; values: PV; username: string; jwtToken: string },
-  PV
+  void
 > = args =>
   axios
-    .put<PV>(`/pv/${args.username}`, args.values, {
+    .put<void>(`/pv/${args.username}`, args.values, {
       params: { pvID: args.pvID },
       headers: { 'COG-TOKEN': args.jwtToken },
     })

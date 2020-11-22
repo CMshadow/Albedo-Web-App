@@ -4,29 +4,29 @@ import { SyncOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { InverterModal } from './Modal'
-import { getInverter } from './service'
+import { getInverter } from '../../services'
 import { InverterTable } from '../../components/Table/InverterTable/InverterTable'
 import { InverterTableViewOnly } from '../../components/Table/InverterTable/InverterTableViewOnly'
 import { setInverterData } from '../../store/action/index'
-import * as styles from './index.module.scss'
+import styles from './index.module.scss'
+import { Inverter, RootState } from '../../@types'
 const { TabPane } = Tabs
 
-const InverterTablePage = props => {
+const InverterTablePage: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  const myData = useSelector(state => state.inverter.data)
+  const myData = useSelector((state: RootState) => state.inverter.data)
   const [activeMyData, setactiveMyData] = useState(myData)
-  const officialData = useSelector(state => state.inverter.officialData)
+  const officialData = useSelector((state: RootState) => state.inverter.officialData)
   const [activeOfficialData, setactiveOfficialData] = useState(officialData)
   const [loading, setloading] = useState(false)
   const [showModal, setshowModal] = useState(false)
-  const [editRecord, seteditRecord] = useState(null)
+  const [editRecord, seteditRecord] = useState<Inverter | null>(null)
 
   // 手动触发更新列表数据
   const fetchData = () => {
     setloading(true)
-    const response = dispatch(getInverter())
-    response.then(data => {
+    getInverter({}).then(data => {
       dispatch(setInverterData(data))
       setactiveMyData(data)
       setloading(false)
@@ -70,7 +70,6 @@ const InverterTablePage = props => {
         </TabPane>
         <TabPane tab={t('InverterTable.official')} key='2'>
           <InverterTableViewOnly
-            loading={loading}
             data={officialData}
             activeData={activeOfficialData}
             setactiveData={setactiveOfficialData}

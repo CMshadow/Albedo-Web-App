@@ -46,16 +46,16 @@ const BasicLayout: React.FC = props => {
           .then(res => dispatch(setOfficialPVData(res)))
           .catch(() => history.push('/dashboard'))
       )
-      // fetchPromises.push(
-      //   getInverter()
-      //     .then(res => dispatch(setInverterData(res)))
-      //     .catch(() => history.push('/dashboard'))
-      // )
-      // fetchPromises.push(
-      //   getOfficialInverter(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US')
-      //     .then(res => dispatch(setOfficialInverterData(res)))
-      //     .catch(() => history.push('/dashboard'))
-      // )
+      fetchPromises.push(
+        getInverter({})
+          .then(res => dispatch(setInverterData(res)))
+          .catch(() => history.push('/dashboard'))
+      )
+      fetchPromises.push(
+        getOfficialInverter({ region: cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US' })
+          .then(res => dispatch(setOfficialInverterData(res)))
+          .catch(() => history.push('/dashboard'))
+      )
       await Promise.all(fetchPromises)
     }
 

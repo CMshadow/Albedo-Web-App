@@ -40,11 +40,11 @@ const deleteInvRequest: IAxiosRequest<
     .then(res => res.data)
 
 const updateInvRequest: IAxiosRequest<
-  { inverterID: string; values: Inverter; username: string; jwtToken: string },
-  Inverter
+  { inverterID: string; values: InverterPreUpload; username: string; jwtToken: string },
+  void
 > = args =>
   axios
-    .put<Inverter>(`/inverter/${args.username}`, args.values, {
+    .put<void>(`/inverter/${args.username}`, args.values, {
       params: { inverterID: args.inverterID },
       headers: { 'COG-TOKEN': args.jwtToken },
     })

@@ -1,26 +1,29 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, Dispatch } from 'react'
 import { Helmet } from 'react-helmet'
 import { useBeforeunload } from 'react-beforeunload'
-import { Layout, Menu, Row, Button, Spin, Tooltip, notification, Card, Typography } from 'antd'
+import { Layout, Menu, Row, Button, Spin, Tooltip, notification, Card } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useParams, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import * as promiseRetry from 'promise-retry'
+import promiseRetry from 'promise-retry'
 import logo from '../../assets/logo-no-text.png'
 import PrivateHeader from '../PrivateHeader/PrivateHeader'
 import PublicHeader from '../PublicHeader/PublicHeader'
 import DefaultFooter from '../Footer/DefaultFooter'
 import EmailSupport from '../../components/TechSupport/EmailSupport'
 import {
-  getProject,
+  getPV,
+  getOfficialPV,
+  getInverter,
+  getOfficialInverter,
+  getProjectSingle,
   saveProject,
   globalOptTiltAzimuth,
   allTiltAzimuthPOA,
-} from '../../pages/Project/service'
-import { getPV, getOfficialPV } from '../../pages/PVTable/service'
-import { getInverter, getOfficialInverter } from '../../pages/InverterTable/service'
-import { saveReport, getReport } from '../../pages/Report/service'
+  saveReport,
+  getReport,
+} from '../../services'
 import { usedAllEquipments } from '../../utils/checkUnusedEquipments'
 import {
   setProjectData,
@@ -32,44 +35,51 @@ import {
   updateProjectAttributes,
   releaseProjectData,
 } from '../../store/action/index'
+import { Params, RootState, Project } from '../../@types'
 
-import * as styles from './ProjectLayout.module.scss'
+import styles from './ProjectLayout.module.scss'
 
 const { Sider, Content, Footer } = Layout
 const { SubMenu } = Menu
-const { Title } = Typography
 
-const ProjectLayout = props => {
+const ProjectLayout: React.FC = props => {
   const history = useHistory()
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { projectID } = useParams()
-  const [saveLoading, setsaveLoading] = useState(false)
-  const [fetchLoading, setfetchLoading] = useState(true)
-  const projectData = useSelector(state => state.project)
-  const cognitoUser = useSelector(state => state.auth.cognitoUser)
+  const { projectID } = useParams<Params>()
+  const [saveLoading, setsaveLoading] = useState<boolean>(false)
+  const [fetchLoading, setfetchLoading] = useState<boolean>(true)
+  const projectData = useSelector((state: RootState) => state.project)
+  const reportData = useSelector((state: RootState) => state.report)
+  const cognitoUser = useSelector((state: RootState) => state.auth.cognitoUser)
   const selectMenu = history.location.pathname.split('/').slice(3).join('/')
   const basePath = useLocation().pathname.split('/').slice(0, 3).join('/')
   const fullPath = useLocation().pathname
 
-  const menuOnSelect = item => {
+  const menuOnSelect = (key: React.ReactText) => {
     history.push({
-      pathname: `${basePath}/${item.key}`,
+      pathname: `${basePath}/${key}`,
       state: { buildingID: fullPath.split('/').slice(4)[0] },
     })
   }
 
   const genReportSubMenu = () => {
     return (
+      projectData &&
       projectData.buildings &&
       projectData.buildings
         .filter(building => building.data.length > 0 && building.data[0].inverter_wiring.length > 0)
         .map(building => {
           let disabled = true
           if (
-            building.data.every(obj => obj.pv_panel_parameters.tilt_angle >= 0) &&
+            building.data.every(
+              obj => obj.pv_panel_parameters.tilt_angle && obj.pv_panel_parameters.tilt_angle >= 0
+            ) &&
             building.data.every(obj =>
-              obj.inverter_wiring.every(inverterSpec => inverterSpec.panels_per_string >= 0)
+              obj.inverter_wiring.every(
+                inverterSpec =>
+                  inverterSpec.panels_per_string && inverterSpec.panels_per_string >= 0
+              )
             ) &&
             projectData.tiltAzimuthPOA
           )
@@ -93,15 +103,21 @@ const ProjectLayout = props => {
 
   const genSLDSubMen = () => {
     return (
+      projectData &&
       projectData.buildings &&
       projectData.buildings
         .filter(building => building.data.length > 0 && building.data[0].inverter_wiring.length > 0)
         .map(building => {
           let disabled = true
           if (
-            building.data.every(obj => obj.pv_panel_parameters.tilt_angle >= 0) &&
+            building.data.every(
+              obj => obj.pv_panel_parameters.tilt_angle && obj.pv_panel_parameters.tilt_angle >= 0
+            ) &&
             building.data.every(obj =>
-              obj.inverter_wiring.every(inverterSpec => inverterSpec.panels_per_string >= 0)
+              obj.inverter_wiring.every(
+                inverterSpec =>
+                  inverterSpec.panels_per_string && inverterSpec.panels_per_string >= 0
+              )
             ) &&
             !building.reGenReport
           ) {
@@ -130,16 +146,20 @@ const ProjectLayout = props => {
       theme='dark'
       mode='inline'
       selectedKeys={[selectMenu]}
-      onSelect={menuOnSelect}
+      onSelect={({ key }) => menuOnSelect(key)}
     >
       <Menu.Item key='dashboard' className={styles.menuItem}>
         {t('sider.menu.projectDetail')}
       </Menu.Item>
-      <Menu.Item key='params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+      <Menu.Item
+        key='params'
+        className={styles.menuItem}
+        disabled={!projectData || !projectData.tiltAzimuthPOA}
+      >
         {t('sider.menu.reportParams')}
       </Menu.Item>
       <SubMenu
-        disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
+        disabled={!projectData || !projectData.tiltAzimuthPOA || !projectData.buildings}
         key='report'
         className={styles.menuItem}
         title={t('sider.menu.report')}
@@ -147,7 +167,7 @@ const ProjectLayout = props => {
         {genReportSubMenu()}
       </SubMenu>
       <SubMenu
-        disabled={!projectData.tiltAzimuthPOA || !projectData.buildings}
+        disabled={!projectData || !projectData.tiltAzimuthPOA || !projectData.buildings}
         key='singleLineDiag'
         className={styles.menuItem}
         title={t('sider.menu.singleLineDiagram')}
@@ -163,24 +183,36 @@ const ProjectLayout = props => {
       theme='dark'
       mode='inline'
       selectedKeys={[selectMenu]}
-      onSelect={menuOnSelect}
+      onSelect={({ key }) => menuOnSelect(key)}
     >
       <Menu.Item key='dashboard' className={styles.menuItem}>
         {t('sider.menu.projectDetail')}
       </Menu.Item>
-      <Menu.Item key='powergrid' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+      <Menu.Item
+        key='powergrid'
+        className={styles.menuItem}
+        disabled={!projectData || !projectData.tiltAzimuthPOA}
+      >
         {t('sider.menu.commercial')}
       </Menu.Item>
-      <Menu.Item key='params' className={styles.menuItem} disabled={!projectData.tiltAzimuthPOA}>
+      <Menu.Item
+        key='params'
+        className={styles.menuItem}
+        disabled={!projectData || !projectData.tiltAzimuthPOA}
+      >
         {t('sider.menu.reportParams')}
       </Menu.Item>
       <Menu.Item
         key={`report/overview`}
         className={styles.menuItem}
-        disabled={!usedAllEquipments(projectData)}
+        disabled={!projectData || !usedAllEquipments(projectData)}
       >
         <Tooltip
-          title={!usedAllEquipments(projectData) ? t('sider.report.disabled-commercial') : null}
+          title={
+            !projectData || !usedAllEquipments(projectData)
+              ? t('sider.report.disabled-commercial')
+              : null
+          }
         >
           {t('sider.menu.report')}
         </Tooltip>
@@ -189,25 +221,25 @@ const ProjectLayout = props => {
   )
 
   const projectLoadingSpin = (
-    <Spin
-      size='large'
-      spinning
-      tip={<Title level={4}>{t('project.loading')}</Title>}
-      indicator={<LoadingOutlined />}
-    >
+    <Spin size='large' spinning tip={t('project.loading')} indicator={<LoadingOutlined />}>
       <Card className={styles.loadingSpin} />
     </Spin>
   )
 
   const saveProjectClick = () => {
+    if (!projectData) return
     setsaveLoading(true)
-    dispatch(saveProject(projectID))
+    saveProject({ projectID, values: projectData })
       .then(async res => {
-        dispatch(saveReport({ projectID }))
+        await Promise.all(
+          Object.keys(reportData).map(buildingID =>
+            saveReport({ projectID, buildingID, values: reportData[buildingID] })
+          )
+        )
         dispatch(updateProjectAttributes({ updatedAt: res.Attributes.updatedAt }))
         setsaveLoading(false)
       })
-      .catch(err => {
+      .catch(() => {
         notification.error({
           message: t('error.save'),
         })
@@ -215,46 +247,47 @@ const ProjectLayout = props => {
       })
   }
 
-  const saveProjectOnExit = useCallback(() => {
-    dispatch(saveProject(projectID))
-    dispatch(saveReport({ projectID }))
-    dispatch(setProjectData(null))
-    dispatch(releaseProjectData())
-  }, [dispatch, projectID])
-
   // 读pv 逆变器 项目数据 最佳倾角朝向
   useEffect(() => {
     const fetchData = async () => {
       setfetchLoading(true)
       const fetchPromises = []
       fetchPromises.push(
-        dispatch(getPV())
+        dispatch(getPV({}))
           .then(res => dispatch(setPVData(res)))
-          .catch(err => history.push('/dashboard'))
+          .catch(() => history.push('/dashboard'))
       )
       fetchPromises.push(
-        dispatch(getOfficialPV(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US'))
+        dispatch(
+          getOfficialPV({
+            region: cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US',
+          })
+        )
           .then(res => dispatch(setOfficialPVData(res)))
-          .catch(err => history.push('/dashboard'))
+          .catch(() => history.push('/dashboard'))
       )
       fetchPromises.push(
-        dispatch(getInverter())
+        dispatch(getInverter({}))
           .then(res => dispatch(setInverterData(res)))
-          .catch(err => history.push('/dashboard'))
+          .catch(() => history.push('/dashboard'))
       )
       fetchPromises.push(
-        dispatch(getOfficialInverter(cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US'))
+        dispatch(
+          getOfficialInverter({
+            region: cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US',
+          })
+        )
           .then(res => dispatch(setOfficialInverterData(res)))
-          .catch(err => history.push('/dashboard'))
+          .catch(() => history.push('/dashboard'))
       )
       await Promise.all(fetchPromises)
 
-      let projectData
+      let projectData: Project
       promiseRetry(
         retry => {
-          return dispatch(getProject({ projectID: projectID })).then(res => {
+          return dispatch(getProjectSingle({ projectID: projectID })).then(res => {
             if (!res.weatherFile) {
-              retry()
+              retry(null)
             } else {
               projectData = res
               dispatch(setProjectData(res))
@@ -279,20 +312,20 @@ const ProjectLayout = props => {
           setfetchLoading(false)
 
           if (
-            !(projectData.optTilt >= 0) ||
-            !(projectData.optAzimuth >= 0) ||
+            !(projectData.optTilt && projectData.optTilt >= 0) ||
+            !(projectData.optAzimuth && projectData.optAzimuth >= 0) ||
             !projectData.optPOA ||
             !projectData.tiltAzimuthPOA ||
             projectData.tiltAzimuthPOA.length === 0
           ) {
-            dispatch(globalOptTiltAzimuth({ projectID: projectID })).then(optSpec => {
-              dispatch(setProjectData(optSpec))
+            globalOptTiltAzimuth({ projectID: projectID }).then(optSpec => {
+              dispatch(setProjectData({ ...optSpec }))
             })
             const allTiltAziPOA = [
-              dispatch(allTiltAzimuthPOA({ projectID: projectID, startAzi: 0, endAzi: 90 })),
-              dispatch(allTiltAzimuthPOA({ projectID: projectID, startAzi: 90, endAzi: 180 })),
-              dispatch(allTiltAzimuthPOA({ projectID: projectID, startAzi: 180, endAzi: 270 })),
-              dispatch(allTiltAzimuthPOA({ projectID: projectID, startAzi: 270, endAzi: 360 })),
+              allTiltAzimuthPOA({ projectID: projectID, startAzi: 0, endAzi: 90 }),
+              allTiltAzimuthPOA({ projectID: projectID, startAzi: 90, endAzi: 180 }),
+              allTiltAzimuthPOA({ projectID: projectID, startAzi: 180, endAzi: 270 }),
+              allTiltAzimuthPOA({ projectID: projectID, startAzi: 270, endAzi: 360 }),
             ]
             Promise.all(allTiltAziPOA).then(allPOARes => {
               notification.success({
@@ -306,23 +339,40 @@ const ProjectLayout = props => {
             })
           }
         })
-        .catch(err => {
-          dispatch(setProjectData(null))
+        .catch(() => {
+          dispatch(releaseProjectData())
           history.push('/dashboard')
         })
+    }
+
+    const saveProjectOnExit = () => async (dispatch: Dispatch<unknown>, getState: RootState) => {
+      const projectData = getState.project
+      const reportData = getState.report
+      if (projectData) await saveProject({ projectID, values: projectData })
+      const allPromise = Object.keys(reportData).map(buildingID =>
+        saveReport({ projectID, buildingID, values: reportData[buildingID] })
+      )
+      await Promise.all(allPromise)
+      return dispatch(releaseProjectData())
     }
 
     fetchData()
 
     return () => {
-      saveProjectOnExit()
+      dispatch(saveProjectOnExit())
     }
-  }, [cognitoUser.attributes.locale, dispatch, history, projectID, saveProjectOnExit, t])
+  }, [cognitoUser, dispatch, history, projectID, t])
 
-  useBeforeunload(event => {
+  useBeforeunload(async event => {
+    if (!projectData) return
     event.preventDefault()
-    dispatch(saveProject(projectID))
-    dispatch(saveReport({ projectID }))
+    const allPromise: Promise<unknown>[] = []
+    allPromise.push(saveProject({ projectID, values: projectData }))
+    Object.keys(reportData).forEach(buildingID =>
+      allPromise.push(saveReport({ projectID, buildingID, values: reportData[buildingID] }))
+    )
+    await Promise.all(allPromise)
+    return
   })
 
   return (
@@ -330,7 +380,9 @@ const ProjectLayout = props => {
       <Helmet>
         <meta charSet='utf-8' />
         <meta name='description' content={t('user.logo.welcome')} />
-        <title>{`${projectData.projectTitle || 'Loading'} - ${t('sider.company')}`}</title>
+        <title>{`${(projectData && projectData.projectTitle) || 'Loading'} - ${t(
+          'sider.company'
+        )}`}</title>
       </Helmet>
       <Layout>
         <EmailSupport />
@@ -345,7 +397,7 @@ const ProjectLayout = props => {
               </h4>
             </div>
           </Row>
-          {Object.keys(projectData).length !== 0 ? (
+          {projectData && Object.keys(projectData).length !== 0 ? (
             <div>
               {projectData.projectType === 'domestic' ? domesticMenu : commercialMenu}
               <Button

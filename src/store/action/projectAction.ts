@@ -24,7 +24,7 @@ interface IAction<P, T> {
   (param: P): ThunkResult<T>
 }
 
-export const setProjectData: IAction<Project, void> = data => dispatch => {
+export const setProjectData: IAction<Partial<Project>, void> = data => dispatch => {
   dispatch({
     type: actionTypes.SET_PROJECTDATA,
     data: data,

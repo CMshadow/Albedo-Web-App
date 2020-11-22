@@ -3,20 +3,21 @@ import { Form, Row, Col, Slider, Divider, Typography, Button, Card, Space, Input
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateProjectAttributes } from '../../store/action/index'
-import { useHistory } from 'react-router-dom'
-import { saveProject } from '../Project/service'
+import { useHistory, useParams } from 'react-router-dom'
+import { saveProject } from '../../services'
 import { HorizonChart } from '../../components/Charts/HorizonChart'
 import { MonthlyAlbedoModel } from '../../components/Model/MonthlyAlbedoModel/MonthlyAlbedoModel'
-import * as styles from './ParamsForm.module.scss'
+import { Project, RootState, Params, ParamsFormRedirectState } from '../../@types'
+import styles from './ParamsForm.module.scss'
 const FormItem = Form.Item
 const { Text } = Typography
 
-const rowGutter = { xs: [8, 12], sm: [16, 12] }
+const rowGutter: [number, number] = [8, 12]
 const labelCol = { span: 16, offset: 4 }
 const wrapperCol = { span: 16, offset: 4 }
 
-const genInitValues = projectData => {
-  const initValues = {
+const genInitValues = (projectData: Project) => {
+  const initValues: Record<string, number> = {
     p_loss_soiling: 2,
     p_loss_connection: 0.5,
     p_loss_mismatch_withinstring: 2,
@@ -24,26 +25,35 @@ const genInitValues = projectData => {
     system_availability: 100,
     Ub: 380,
     p_loss_availability: 0.5,
+    monthly_albedo_1: projectData.albedo,
+    monthly_albedo_2: projectData.albedo,
+    monthly_albedo_3: projectData.albedo,
+    monthly_albedo_4: projectData.albedo,
+    monthly_albedo_5: projectData.albedo,
+    monthly_albedo_6: projectData.albedo,
+    monthly_albedo_7: projectData.albedo,
+    monthly_albedo_8: projectData.albedo,
+    monthly_albedo_9: projectData.albedo,
+    monthly_albedo_10: projectData.albedo,
+    monthly_albedo_11: projectData.albedo,
+    monthly_albedo_12: projectData.albedo,
   }
-  new Array(12)
-    .fill(0)
-    .map((_, index) => index + 1)
-    .forEach(month => (initValues[`monthly_albedo-${month}`] = projectData.albedo))
   return initValues
 }
 
-const ParamsForm = () => {
+const ParamsForm: React.FC = () => {
   const { t } = useTranslation()
-  const history = useHistory()
+  const history = useHistory<ParamsFormRedirectState>()
   const dispatch = useDispatch()
-  const projectData = useSelector(state => state.project)
+  const projectData = useSelector((state: RootState) => state.project)
   const [loading, setloading] = useState(false)
   const [form] = Form.useForm()
-  const projectID = history.location.pathname.split('/')[2]
+  const { projectID } = useParams<Params>()
 
-  let horizonData = projectData.horizonData
-    ? JSON.parse(JSON.stringify(projectData.horizonData))
-    : new Array(24).fill([]).map((val, index) => [(index + 1) * 15, 0])
+  const horizonData =
+    projectData && projectData.horizonData
+      ? JSON.parse(JSON.stringify(projectData.horizonData))
+      : new Array(24).fill([]).map((val, index) => [(index + 1) * 15, 0])
 
   // 滑动输入条标识style
   const markStyle = { overflow: 'hidden', whiteSpace: 'nowrap' }
@@ -74,7 +84,13 @@ const ParamsForm = () => {
     1: { style: markStyle, label: t('report.paramsForm.loss_1') },
   }
 
-  const irrandianceKeys = [
+  const irrandianceKeys: [
+    string,
+    number | string,
+    number | string,
+    (number | string)?,
+    Record<React.ReactText, string | { style: Record<string, string>; label: string }>?
+  ][][] = [
     [
       ['p_loss_soiling', 0.1, 0, 5, pLossSoilingMarks],
       ['p_loss_tilt_azimuth', 'disabled', 'disabled'],
@@ -85,7 +101,13 @@ const ParamsForm = () => {
     ],
   ]
 
-  const dcKeys = [
+  const dcKeys: [
+    string,
+    number | string,
+    number | string,
+    (number | string)?,
+    Record<React.ReactText, string | { style: Record<string, string>; label: string }>?
+  ][][] = [
     [['p_loss_connection', 0.01, 0, 1, pLossConnectionMarks]],
     [
       ['p_loss_mismatch_withinstring', 0.1, 0, 5, pLossMismatchWithinStringMarks],
@@ -101,9 +123,15 @@ const ParamsForm = () => {
     ],
   ]
 
-  const acKeys = [[['p_loss_conversion', 'disabled', 'disabled']]]
+  const acKeys: [string, string, string][][] = [[['p_loss_conversion', 'disabled', 'disabled']]]
 
-  const gridKeys = [
+  const gridKeys: [
+    string,
+    number | string,
+    number | string,
+    (number | string)?,
+    Record<React.ReactText, string | { style: Record<string, string>; label: string }>?
+  ][][] = [
     [['p_loss_availability', 0.1, 0, 5, pLossAvailabilityMarks]],
     [
       ['p_loss_ac_wiring', 'disabled', 'disabled'],
@@ -111,7 +139,13 @@ const ParamsForm = () => {
     ],
   ]
 
-  const genFormInputArea = (key, step, min, max, marks) => {
+  const genFormInputArea = (
+    key: string,
+    step: string | number,
+    min: string | number,
+    max?: string | number,
+    marks?: Record<React.ReactText, string | { style: Record<string, string>; label: string }>
+  ) => {
     switch (step) {
       case 'disabled':
         return (
@@ -132,12 +166,21 @@ const ParamsForm = () => {
           </Space>
         )
       default:
-        return <Slider marks={marks} step={step} min={min} max={max} />
+        return <Slider marks={marks} step={Number(step)} min={Number(min)} max={Number(max)} />
     }
   }
 
   // 动态生成表单字段组件
-  const genFormItems = (keys, itemsPerRow) =>
+  const genFormItems = (
+    keys: [
+      string,
+      number | string,
+      number | string,
+      (number | string)?,
+      Record<React.ReactText, string | { style: Record<string, string>; label: string }>?
+    ][][],
+    itemsPerRow: number
+  ) =>
     keys.map((keysInRow, index) => (
       <Row gutter={rowGutter} key={index}>
         {keysInRow.map(([key, step, min, max, marks]) => (
@@ -148,7 +191,7 @@ const ParamsForm = () => {
               rules={
                 step !== 'disabled' && step !== 'pv' && step !== 'albedo'
                   ? [{ required: true }]
-                  : null
+                  : undefined
               }
             >
               {genFormInputArea(key, step, min, max, marks)}
@@ -159,7 +202,10 @@ const ParamsForm = () => {
     ))
 
   // 表单提交
-  const submitForm = async values => {
+  const submitForm = async (
+    values: Record<string, string | number> & { monthly_albedo: number[] }
+  ) => {
+    if (!projectData) return
     setloading(true)
     // 去除values中所有undefined properties
     Object.keys(values).forEach(key => {
@@ -167,12 +213,12 @@ const ParamsForm = () => {
     })
     // 特殊处理首年和次年后光致衰减
     if ('year1Decay' in values) {
-      values['year1Decay'].length > 0
+      Number(values['year1Decay']) >= 0
         ? (values['year1Decay'] = Number(values['year1Decay']))
         : delete values['year1Decay']
     }
     if ('year2To25Decay' in values) {
-      values['year2To25Decay'].length > 0
+      Number(values['year2To25Decay']) >= 0
         ? (values['year2To25Decay'] = Number(values['year2To25Decay']))
         : delete values['year2To25Decay']
     }
@@ -184,13 +230,13 @@ const ParamsForm = () => {
       .fill(0)
       .map((_, index) => index + 1)
       .forEach(month => {
-        values.monthly_albedo.push(values[`monthly_albedo-${month}`])
-        delete values[`monthly_albedo-${month}`]
+        values.monthly_albedo.push(Number(values[`monthly_albedo_${month}`]))
+        delete values[`monthly_albedo_${month}`]
       })
     // 更新redux中项目数据后更新后端的项目数据
     await dispatch(updateProjectAttributes(values))
 
-    dispatch(saveProject(projectID)).then(res => {
+    saveProject({ projectID, values: projectData }).then(() => {
       setloading(false)
       if (history.location.state && history.location.state.buildingID) {
         history.replace(`/project/${projectID}/report/${history.location.state.buildingID}`)
@@ -202,16 +248,23 @@ const ParamsForm = () => {
 
   // 组间渲染后设置表单默认值
   useEffect(() => {
-    if (projectData.p_loss_soiling >= 0) {
-      const initValues = { ...projectData }
+    if (
+      projectData &&
+      projectData.p_loss_soiling !== undefined &&
+      projectData.p_loss_soiling >= 0
+    ) {
+      const initValues: Record<string, Project[keyof Project]> = { ...projectData }
       new Array(12)
         .fill(0)
         .map((_, index) => index + 1)
         .forEach(
-          month => (initValues[`monthly_albedo-${month}`] = initValues.monthly_albedo[month - 1])
+          month =>
+            (initValues[`monthly_albedo_${month}`] = projectData.monthly_albedo
+              ? projectData.monthly_albedo[month - 1]
+              : projectData.albedo)
         )
       form.setFieldsValue(initValues)
-    } else {
+    } else if (projectData) {
       form.setFieldsValue(genInitValues(projectData))
     }
   }, [form, projectData])

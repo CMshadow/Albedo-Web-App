@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import styles from './style.module.scss'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { Form, Button, Input, Row, Checkbox, notification } from 'antd'
-import { SignIn } from '../service'
+import { SignIn } from '../../../services'
 import { setCognitoUser } from '../../../store/action/index'
+import styles from './style.module.scss'
+
 const FormItem = Form.Item
 
-const Login = props => {
+type LoginType = {
+  mail: string
+  password: string
+}
+
+const Login: React.FC = () => {
   const { t } = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
@@ -17,12 +22,12 @@ const Login = props => {
   const [check, setcheck] = useState(true)
   const [loading, setloading] = useState(false)
 
-  const onFinish = values => {
+  const onFinish = (values: LoginType) => {
     setloading(true)
     SignIn({ username: values.mail, password: values.password })
       .then(cognitoUser => {
         setloading(false)
-        return new Promise((resolve, reject) => {
+        return new Promise<void>(resolve => {
           dispatch(setCognitoUser(cognitoUser))
           resolve()
         }).then(() => {
@@ -80,7 +85,7 @@ const Login = props => {
         >
           <Input size='large' type='password' placeholder={t('user.required.password')} />
         </FormItem>
-        <Checkbox className={styles.floatleft} checked={check} onChange={e => setcheck(!check)}>
+        <Checkbox className={styles.floatleft} checked={check} onChange={() => setcheck(!check)}>
           {t('user.save-login')}
         </Checkbox>
         <Link className={styles.floatright} to='/user/forget'>

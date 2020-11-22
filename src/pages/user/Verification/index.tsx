@@ -2,21 +2,28 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import styles from './style.module.scss'
 import { Form, Button, Input, Row, Col, notification } from 'antd'
-import { ConfirmSignUp, SignIn, ResendVerification } from '../service'
+import { ConfirmSignUp, SignIn, ResendVerification } from '../../../services'
 import { setCognitoUser } from '../../../store/action/index'
+import { VerificationRedirectState } from '../../../@types'
+import styles from './style.module.scss'
+
 const FormItem = Form.Item
 
-const Verification = props => {
-  const location = useLocation()
+type VerificationType = {
+  username: string
+  verification: string
+}
+
+const Verification: React.FC = () => {
+  const location = useLocation<VerificationRedirectState>()
   const history = useHistory()
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const [count, setcount] = useState(0)
   const [loading, setloading] = useState(false)
   const [form] = Form.useForm()
-  let interval = null
+  let interval: number
 
   useEffect(() => {
     if (!location.state) {
@@ -24,19 +31,19 @@ const Verification = props => {
     }
   })
 
-  const onFinish = values => {
+  const onFinish = (values: VerificationType) => {
     setloading(true)
     ConfirmSignUp({
       username: location.state.username,
       verification: values.verification,
     })
-      .then(res => {
+      .then(() => {
         SignIn({
           username: location.state.username,
           password: location.state.password,
         }).then(cognitoUser => {
           setloading(false)
-          return new Promise((resolve, reject) => {
+          return new Promise<void>(resolve => {
             dispatch(setCognitoUser(cognitoUser))
             resolve()
           }).then(() => {
@@ -57,7 +64,7 @@ const Verification = props => {
 
   const getVerification = () => {
     ResendVerification({ username: location.state.username })
-      .then(res => {
+      .then(() => {
         // 按钮冷却60秒
         let counts = 59
         setcount(counts)

@@ -17,10 +17,12 @@ import {
   Button,
 } from 'antd'
 import { QuestionCircleOutlined, UploadOutlined } from '@ant-design/icons'
-import * as styles from './Modal.module.scss'
-import { addInverter, getInverter, updateInverter, parseOND } from './service'
+import styles from './Modal.module.scss'
+import { addInverter, getInverter, updateInverter, parseOND } from '../../services'
 import { setInverterData } from '../../store/action/index'
 import { getLanguage } from '../../utils/getLanguage'
+import { Inverter, InverterPreUpload } from '../../@types'
+import { UploadFile } from 'antd/lib/upload/interface'
 const FormItem = Form.Item
 const { Option } = Select
 const { Panel } = Collapse
@@ -37,7 +39,15 @@ const initValues = {
   radiator: 'forcedConvection',
 }
 
-export const InverterModal = ({
+type InverterModalProps = {
+  showModal: boolean
+  setshowModal: React.Dispatch<React.SetStateAction<boolean>>
+  setactiveData: React.Dispatch<React.SetStateAction<Inverter[]>>
+  editRecord: Inverter | null
+  seteditRecord: React.Dispatch<React.SetStateAction<Inverter | null>>
+}
+
+export const InverterModal: React.FC<InverterModalProps> = ({
   showModal,
   setshowModal,
   setactiveData,
@@ -46,12 +56,12 @@ export const InverterModal = ({
 }) => {
   const { t } = useTranslation()
   const [loading, setloading] = useState(false)
-  const [uploadFileList, setuploadFileList] = useState([])
+  const [uploadFileList, setuploadFileList] = useState<UploadFile[]>([])
   const [form] = Form.useForm()
   const dispatch = useDispatch()
 
   // Inverter表单基本信息[key，类型，单位]
-  const formBasicKeys = [
+  const formBasicKeys: [keyof InverterPreUpload, 'b' | 'c' | 'n' | 's', string][][] = [
     [
       ['name', 's', ''],
       ['note', 's', ''],
@@ -64,7 +74,11 @@ export const InverterModal = ({
     ],
   ]
   // Inverter表单进阶信息[key，类型，单位]
-  const formAdvancedKeys = [
+  const formAdvancedKeys: [
+    keyof InverterPreUpload,
+    'b' | 'c' | 'n' | 's',
+    string | string[]
+  ][][] = [
     [
       ['vdcMin', 'n', 'V'],
       ['vdcMax', 'n', 'V'],
@@ -121,7 +135,7 @@ export const InverterModal = ({
     ],
   ]
   // Inverter表单勾选信息[key，类型，可选项]
-  const formBoolKeys = [
+  const formBoolKeys: [keyof InverterPreUpload, 'b' | 'c' | 'n' | 's', string][][] = [
     [
       ['grdTrblDetect', 'b', ''],
       ['overloadProtect', 'b', ''],
@@ -135,7 +149,7 @@ export const InverterModal = ({
     ],
   ]
   // Inverter表单高级参数[key，类型，可选项，有提示文本]
-  const formProKeys = [
+  const formProKeys: [keyof InverterPreUpload, 'b' | 'c' | 'n' | 's', string, string][][] = [
     [
       ['c0', 'n', '1/W', 'description'],
       ['c1', 'n', '1/V', 'description'],
@@ -145,18 +159,19 @@ export const InverterModal = ({
   ]
 
   // 根据 类型，单位/选择项 生成表单的用户输入组件
-  const genFormItemInput = (type, unit) => {
+  const genFormItemInput = (type: 'b' | 'c' | 'n' | 's', unit: string | string[]) => {
     switch (type) {
       case 'b':
         return <Checkbox />
       case 'c':
         return (
           <Select>
-            {unit.map(choice => (
-              <Option key={choice} value={choice}>
-                {t(`Inverter.${choice}`)}
-              </Option>
-            ))}
+            {Array.isArray(unit) &&
+              unit.map(choice => (
+                <Option key={choice} value={choice}>
+                  {t(`Inverter.${choice}`)}
+                </Option>
+              ))}
           </Select>
         )
       case 'n':
@@ -168,7 +183,7 @@ export const InverterModal = ({
   }
 
   //根据 类型，是否有提示文本生成表单字段的不同label
-  const genFormItemLabel = (key, note) => {
+  const genFormItemLabel = (key: string, note?: string) => {
     if (!note) {
       return t(`Inverter.${key}`)
     } else {
@@ -184,7 +199,10 @@ export const InverterModal = ({
   }
 
   // 生成表单字段组件
-  const genFormItems = (keys, itemsPerRow) =>
+  const genFormItems = (
+    keys: [string, 'b' | 'c' | 'n' | 's', string | string[], string?][][],
+    itemsPerRow: number
+  ) =>
     keys.map((keysInRow, index) => (
       <Row key={index}>
         {keysInRow.map(([key, type, unit, note]) => (
@@ -197,7 +215,7 @@ export const InverterModal = ({
                   ? t(`${getLanguage()}`) + genFormItemLabel(key, note)
                   : genFormItemLabel(key, note)
               }
-              rules={type !== 'b' ? [{ required: true }] : null}
+              rules={type !== 'b' ? [{ required: true }] : undefined}
             >
               {genFormItemInput(type, unit)}
             </FormItem>
@@ -205,31 +223,6 @@ export const InverterModal = ({
         ))}
       </Row>
     ))
-
-  const uploadOND = params => {
-    const reader = new FileReader()
-    reader.readAsText(params.file)
-    reader.onload = event => {
-      dispatch(
-        parseOND(event.target.result, {
-          onUploadProgress: ({ total, loaded }) =>
-            params.onProgress(() => ({
-              percent: Math.round((loaded / total) * 100).toFixed(2),
-            })),
-        })
-      )
-        .then(res => {
-          form.setFieldsValue(res)
-          params.onSuccess('success message')
-        })
-        .catch(err => {
-          params.onError(err)
-        })
-    }
-    reader.onerror = err => {
-      params.onError(err)
-    }
-  }
 
   // modal被关闭后回调
   const onClose = () => {
@@ -247,7 +240,7 @@ export const InverterModal = ({
     // 验证表单，如果通过提交表单
     form
       .validateFields()
-      .then(success => {
+      .then(() => {
         setloading(true)
         form.submit()
       })
@@ -258,30 +251,34 @@ export const InverterModal = ({
   }
 
   // 表单提交
-  const submitForm = values => {
+  const submitForm = (values: Record<keyof InverterPreUpload, unknown>) => {
     // 根据colKey的类型转换格式
-    ;[]
-      .concat(...formBasicKeys)
-      .concat([].concat(...formAdvancedKeys))
-      .concat([].concat(...formBoolKeys))
-      .concat([].concat(...formProKeys))
-      .forEach(([key, type]) => {
-        if (type === 'n') values[key] = Number(values[key])
-        else if (type === 'b') {
-          values[key] = values[key] ? true : false
-        }
-      })
+    const allKeys = [
+      ...formBasicKeys.flatMap(val => val),
+      ...formAdvancedKeys.flatMap(val => val),
+      ...formBoolKeys.flatMap(val => val),
+      ...formProKeys.flatMap(val => val),
+    ]
+    allKeys.forEach(([key, type]) => {
+      if (type === 'n') values[key] = Number(values[key])
+      else if (type === 'b') {
+        values[key] = values[key] ? true : false
+      }
+    })
 
     // 发送 创建/更新Inverter 后端请求
-    let action
+    let action: Promise<void | Inverter>
     if (editRecord) {
-      action = dispatch(updateInverter({ inverterID: editRecord.inverterID, values: values }))
+      action = updateInverter({
+        inverterID: editRecord.inverterID,
+        values: values as InverterPreUpload,
+      })
     } else {
-      action = dispatch(addInverter({ values }))
+      action = addInverter({ values: values as InverterPreUpload })
     }
     action
       .then(() => {
-        dispatch(getInverter()).then(data => {
+        getInverter({}).then(data => {
           setloading(false)
           setshowModal(false)
           editRecord
@@ -291,7 +288,7 @@ export const InverterModal = ({
           setactiveData(data)
         })
       })
-      .catch(err => {
+      .catch(() => {
         setloading(false)
       })
   }
@@ -339,7 +336,36 @@ export const InverterModal = ({
                   <Upload
                     accept='.ond'
                     fileList={uploadFileList}
-                    customRequest={uploadOND}
+                    customRequest={params => {
+                      const reader = new FileReader()
+                      reader.readAsText(params.file)
+                      reader.onload = event => {
+                        if (!event.target || !event.target.result) {
+                          params.onError(Error('Failed to load File'))
+                          return
+                        }
+                        parseOND({
+                          fileText: event.target && event.target.result,
+                          onUploadProgress: ({ total, loaded }) =>
+                            params.onProgress(
+                              {
+                                percent: Number(Math.round((loaded / total) * 100).toFixed(2)),
+                              },
+                              params.file
+                            ),
+                        })
+                          .then(res => {
+                            form.setFieldsValue(res)
+                            params.onSuccess({}, params.file)
+                          })
+                          .catch(err => {
+                            params.onError(err)
+                          })
+                      }
+                      reader.onerror = () => {
+                        params.onError(Error('Failed to read file'))
+                      }
+                    }}
                     onChange={({ fileList }) => setuploadFileList(fileList.slice(-1))}
                   >
                     <Button icon={<UploadOutlined />}>{t('PV.uploadBut')} .ond</Button>

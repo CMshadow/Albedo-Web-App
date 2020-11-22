@@ -1,13 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Input, Button, Space, Slider, InputNumber, Row, Tag } from 'antd'
 import { useTranslation } from 'react-i18next'
 import Highlighter from 'react-highlight-words'
 import { SearchOutlined, FilterFilled, FilterOutlined } from '@ant-design/icons'
-import * as styles from './TabelColSearch.module.scss'
+import styles from './TabelColSearch.module.scss'
 import { getMin, getMax } from '../../../utils/getObjectsMinMax'
+import { Project, Inverter, PV } from '../../../@types'
+import { FilterDropdownProps } from 'antd/lib/table/interface'
 
-export const SearchString = ({ colKey, data, onClick, setactiveData }) => {
-  let searchInputRef
+type SearchStringType<T> = {
+  colKey: keyof T
+  data: T[]
+  onClick?: (p: string | undefined) => void
+  setactiveData: React.Dispatch<React.SetStateAction<T[]>>
+}
+
+export const SearchString = <T extends Project>(props: SearchStringType<T>) => {
+  const { colKey, data, onClick, setactiveData } = props
+  const searchInputRef = useRef<Input>(null)
   const { t } = useTranslation()
   const [searchedCol, setsearchedCol] = useState('')
   const [searchedText, setsearchedText] = useState('')
@@ -34,7 +44,7 @@ export const SearchString = ({ colKey, data, onClick, setactiveData }) => {
       <Button
         type='link'
         onClick={() => {
-          onClick(record.pvID || record.inverterID)
+          onClick && onClick(record.pvID || record.inverterID)
         }}
       >
         {children}
@@ -44,14 +54,16 @@ export const SearchString = ({ colKey, data, onClick, setactiveData }) => {
     )
 
   return {
-    // eslint-disable-next-line react/display-name
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }: FilterDropdownProps) => (
       <div className={styles.searchBox}>
         <Input
           className={styles.input}
-          ref={node => {
-            searchInputRef = node
-          }}
+          ref={searchInputRef}
           placeholder={`${t('filter.search')} ${t(`table.${colKey}`)}`}
           value={selectedKeys[0]}
           onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
@@ -73,16 +85,20 @@ export const SearchString = ({ colKey, data, onClick, setactiveData }) => {
         </Space>
       </div>
     ),
-    // eslint-disable-next-line react/display-name
-    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
-      record[colKey].toString().toLowerCase().includes(value.toLowerCase()),
-    onFilterDropdownVisibleChange: visible => {
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
+    onFilter: (value: string, record: T) =>
+      ((record[colKey] as unknown) as string | number | boolean)
+        .toString()
+        .toLowerCase()
+        .includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: (visible: boolean) => {
       if (visible) {
-        setTimeout(() => searchInputRef.select())
+        setTimeout(() => searchInputRef.current && searchInputRef.current.select())
       }
     },
-    render: (text, record) =>
+    render: (text: string, record: T) =>
       searchedCol === colKey
         ? nameOrCompany(
             record,
