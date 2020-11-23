@@ -25,6 +25,8 @@ export type PVPreUpload = {
   tPrime: number
   tenYDecay: number
   twentyfiveYDecay: number
+  year1Decay: number
+  year2To25Decay: number
 }
 
 export type PV = PVPreUpload & {

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { Map, Marker } from 'react-amap'
-import { amapRevGeocoder } from './service'
+import { amapRevGeocoder } from '../../services'
 import { notification } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { FormInstance } from 'antd/lib/form'
@@ -36,9 +36,9 @@ const AMap: React.FC<AMapProps> = ({
         events={{
           click: (e: { lnglat: { lng: number; lat: number } }) => {
             amapRevGeocoder({ lon: e.lnglat.lng, lat: e.lnglat.lat, key: webApiKey }).then(res => {
-              if (res.data.regeocode.formatted_address.length > 0) {
+              if (res.regeocode.formatted_address.length > 0) {
                 setmapPos({ lon: e.lnglat.lng, lat: e.lnglat.lat })
-                form.setFieldsValue({ projectAddress: res.data.regeocode.formatted_address })
+                form.setFieldsValue({ projectAddress: res.regeocode.formatted_address })
                 setvalidated(true)
               } else {
                 notification.error({ message: t('project.error.invalid-address.amap') })

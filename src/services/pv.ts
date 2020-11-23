@@ -35,7 +35,7 @@ const deletePVRequest: IAxiosRequest<
     .then(res => res.data)
 
 const updatePVRequest: IAxiosRequest<
-  { pvID: string; values: PV; username: string; jwtToken: string },
+  { pvID: string; values: PVPreUpload; username: string; jwtToken: string },
   void
 > = args =>
   axios

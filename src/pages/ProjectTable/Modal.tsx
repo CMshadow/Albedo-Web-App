@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { amapGeocoder, googleGeocoder, getApiKey, createProject } from './service'
+import { amapGeocoder, googleGeocoder, getApiKey, createProject } from '../../services'
 import {
   Tabs,
   Form,
@@ -20,7 +20,8 @@ import { QuestionCircleOutlined } from '@ant-design/icons'
 import { genFullName } from '../../utils/genFullName'
 import GoogleMap from './GoogleMap'
 import AMap from './AMap'
-import * as styles from './Modal.module.scss'
+import styles from './Modal.module.scss'
+import { ProjectPreUpload, RootState } from '../../@types'
 
 const FormItem = Form.Item
 const { Option } = Select
@@ -38,20 +39,26 @@ const initValues = {
   ACVolDropFac: 2,
 }
 
-export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
+type CreateProjectModalProps = {
+  showModal: boolean
+  setshowModal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
+  const { showModal, setshowModal } = props
   const { t } = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
-  const cognitoUser = useSelector(state => state.auth.cognitoUser)
-  const unit = useSelector(state => state.unit.unit)
+  const cognitoUser = useSelector((state: RootState) => state.auth.cognitoUser)
+  const unit = useSelector((state: RootState) => state.unit.unit)
   const [loading, setloading] = useState(false)
   const [validated, setvalidated] = useState(false)
   const [mapPos, setmapPos] = useState({ lon: -117.843687, lat: 33.676542 })
-  const [googleMapKey, setgoogleMapKey] = useState(null)
-  const [aMapKey, setaMapKey] = useState(null)
-  const [aMapWebKey, setaMapWebKey] = useState(null)
-  const [selectedMap, setselectedMap] = useState(
-    cognitoUser.attributes.locale === 'zh-CN' ? 'aMap' : 'googleMap'
+  const [googleMapKey, setgoogleMapKey] = useState<string>()
+  const [aMapKey, setaMapKey] = useState<string>()
+  const [aMapWebKey, setaMapWebKey] = useState<string>()
+  const [selectedMap, setselectedMap] = useState<string>(
+    cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'aMap' : 'googleMap'
   )
   const [form] = Form.useForm()
 
@@ -78,10 +85,11 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
 
   // 高德的地理编码解析
   const amapDecode = () => {
+    if (!aMapWebKey) return
     const address = form.getFieldValue('projectAddress')
     amapGeocoder({ address: address, key: aMapWebKey })
       .then(res => {
-        const payload = res.data.geocodes
+        const payload = res.geocodes
         if (payload.length === 0) {
           setvalidated(false)
           if (selectedMap === 'aMap') {
@@ -93,12 +101,12 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
           form.setFieldsValue({ address: payload[0].formatted_address })
           setvalidated(true)
           setmapPos({
-            lon: payload[0].location.split(',')[0],
-            lat: payload[0].location.split(',')[1],
+            lon: Number(payload[0].location.split(',')[0]),
+            lat: Number(payload[0].location.split(',')[1]),
           })
         }
       })
-      .catch(err => {
+      .catch(() => {
         setvalidated(false)
         notification.error({ message: t(`error.http`) })
       })
@@ -106,10 +114,11 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
 
   // 谷歌的地理编码解析
   const googleDecode = () => {
+    if (!googleMapKey) return
     const address = form.getFieldValue('projectAddress')
     googleGeocoder({ address: address, key: googleMapKey })
       .then(res => {
-        const payload = res.data.results
+        const payload = res.results
         if (payload.length === 0) {
           setvalidated(false)
           notification.error({ message: t('project.error.invalid-address') })
@@ -156,15 +165,18 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
   }
 
   // 表单提交
-  const submitForm = values => {
-    dispatch(
-      createProject({
+  const submitForm = (
+    values: Omit<ProjectPreUpload, 'projectCreator' | 'longitude' | 'latitude'>
+  ) => {
+    if (!cognitoUser) return
+    createProject({
+      values: {
         ...values,
-        projectCreator: genFullName(cognitoUser),
+        projectCreator: genFullName(cognitoUser) || '',
         longitude: Number(mapPos.lon),
         latitude: Number(mapPos.lat),
-      })
-    )
+      },
+    })
       .then(data => {
         setTimeout(() => {
           setloading(false)
@@ -172,7 +184,7 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
           history.push(`project/${data.projectID}/dashboard`)
         }, 10000)
       })
-      .catch(err => {
+      .catch(() => {
         setloading(false)
       })
   }
@@ -184,7 +196,7 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
         setmapPos({ lon: pos.coords.longitude, lat: pos.coords.latitude })
       })
     }
-    dispatch(getApiKey()).then(data => {
+    getApiKey({}).then(data => {
       setgoogleMapKey(data.GOOGLE_MAP_API_KEY)
       setaMapKey(data.A_MAP_API_KEY)
       setaMapWebKey(data.A_MAP_WEB_API_KEY)
@@ -213,7 +225,7 @@ export const CreateProjectModal = ({ showModal, setshowModal, google }) => {
         onChange={activeKey => setselectedMap(activeKey)}
       >
         <TabPane tab={t(`project.map.aMap`)} key='aMap' forceRender>
-          {aMapWebKey ? (
+          {aMapWebKey && aMapKey ? (
             <AMap
               mapPos={mapPos}
               setmapPos={setmapPos}

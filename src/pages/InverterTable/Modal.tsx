@@ -345,7 +345,7 @@ export const InverterModal: React.FC<InverterModalProps> = ({
                           return
                         }
                         parseOND({
-                          fileText: event.target && event.target.result,
+                          fileText: event.target.result,
                           onUploadProgress: ({ total, loaded }) =>
                             params.onProgress(
                               {
@@ -364,6 +364,7 @@ export const InverterModal: React.FC<InverterModalProps> = ({
                       }
                       reader.onerror = () => {
                         params.onError(Error('Failed to read file'))
+                        return
                       }
                     }}
                     onChange={({ fileList }) => setuploadFileList(fileList.slice(-1))}

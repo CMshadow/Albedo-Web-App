@@ -34,10 +34,10 @@ const getProjectRequest: IAxiosRequest<{ username: string; jwtToken: string }, P
 
 const deleteProjectRequest: IAxiosRequest<
   { projectID: string; username: string; jwtToken: string },
-  Project[]
+  void
 > = args =>
   axios
-    .delete<Project[]>(`/project/${args.username}`, {
+    .delete<void>(`/project/${args.username}`, {
       params: { projectID: args.projectID },
       headers: { 'COG-TOKEN': args.jwtToken },
     })

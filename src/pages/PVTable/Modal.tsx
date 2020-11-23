@@ -15,9 +15,11 @@ import {
   Button,
 } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
-import * as styles from './Modal.module.scss'
-import { addPV, getPV, updatePV, parsePAN } from './service'
+import styles from './Modal.module.scss'
+import { addPV, getPV, updatePV, parsePAN } from '../../services'
 import { setPVData } from '../../store/action/index'
+import { PV, PVPreUpload } from '../../@types'
+import { UploadFile } from 'antd/lib/upload/interface'
 const FormItem = Form.Item
 const { Option } = Select
 const { Panel } = Collapse
@@ -35,15 +37,26 @@ const initValues = {
   twentyfiveYDecay: Number((2.5 + 0.7 * 24).toFixed(2)),
 }
 
-export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, seteditRecord }) => {
+type PVModalProps = {
+  showModal: boolean
+  setactiveData: React.Dispatch<React.SetStateAction<PV[]>>
+  setshowModal: React.Dispatch<React.SetStateAction<boolean>>
+  editRecord: PV | null
+  seteditRecord: React.Dispatch<React.SetStateAction<PV | null>>
+}
+
+type FormItemType = 's' | 'n' | 'c' | 'b'
+
+export const PVModal: React.FC<PVModalProps> = props => {
+  const { showModal, setactiveData, setshowModal, editRecord, seteditRecord } = props
   const { t } = useTranslation()
   const [loading, setloading] = useState(false)
-  const [uploadFileList, setuploadFileList] = useState([])
+  const [uploadFileList, setuploadFileList] = useState<UploadFile[]>([])
   const [form] = Form.useForm()
   const dispatch = useDispatch()
 
   // PV表单基本信息[key，类型，单位]
-  const formBasicKeys = [
+  const formBasicKeys: [keyof PVPreUpload, FormItemType, string][][] = [
     [
       ['name', 's', ''],
       ['note', 's', ''],
@@ -56,7 +69,7 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
     ],
   ]
   // PV表单选择项[key，类型，可选项]
-  const formSelectKeys = [
+  const formSelectKeys: [keyof PVPreUpload, FormItemType, string | string[]][][] = [
     [
       ['siliconMaterial', 'c', ['mc-Si', 'c-Si']],
       [
@@ -67,7 +80,7 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
     ],
   ]
   // PV表单进阶信息[key，类型，单位]
-  const formAdvancedKeys = [
+  const formAdvancedKeys: [keyof PVPreUpload, FormItemType, string][][] = [
     [
       ['pmax', 'n', 'Wp'],
       ['seriesCell', 'n', ''],
@@ -100,7 +113,7 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
     ],
   ]
   // PV表单高级参数[key，类型，单位]
-  const formProKeys = [
+  const formProKeys: [keyof PVPreUpload, FormItemType, string][][] = [
     [
       ['year1Decay', 'n', '%'],
       ['year2To25Decay', 'n', '%'],
@@ -108,16 +121,22 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
   ]
 
   // 根据 类型，单位/选择项 生成表单的用户输入组件
-  const genFormItemInput = (type, unit) => {
+  const genFormItemInput = (type: FormItemType, unit: string | string[]) => {
     switch (type) {
       case 'c':
         return (
           <Select>
-            {unit.map(choice => (
-              <Option key={choice} value={choice}>
-                {t(`PV.${choice}`)}
+            {typeof unit === 'string' ? (
+              <Option key={unit} value={unit}>
+                {unit}
               </Option>
-            ))}
+            ) : (
+              unit.map(choice => (
+                <Option key={choice} value={choice}>
+                  {t(`PV.${choice}`)}
+                </Option>
+              ))
+            )}
           </Select>
         )
       case 'n':
@@ -128,16 +147,19 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
     }
   }
   // 生成表单字段组件
-  const genFormItems = (keys, itemsPerRow) =>
+  const genFormItems = (
+    keys: [keyof PVPreUpload, FormItemType, string | string[]][][],
+    itemsPerRow: number
+  ) =>
     keys.map((keysInRow, index) => (
       <Row key={index}>
-        {keysInRow.map(([key, type, unit, note]) => (
+        {keysInRow.map(([key, type, unit]) => (
           <Col offset={1} span={24 / itemsPerRow - 1} key={key}>
             <FormItem
               valuePropName={type === 'b' ? 'checked' : 'value'}
               name={key}
               label={t(`PV.${key}`)}
-              rules={type !== 'b' ? [{ required: true }] : null}
+              rules={type !== 'b' ? [{ required: true }] : undefined}
             >
               {genFormItemInput(type, unit)}
             </FormItem>
@@ -145,31 +167,6 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
         ))}
       </Row>
     ))
-
-  const uploadPAN = params => {
-    const reader = new FileReader()
-    reader.readAsText(params.file)
-    reader.onload = event => {
-      dispatch(
-        parsePAN(event.target.result, {
-          onUploadProgress: ({ total, loaded }) =>
-            params.onProgress(() => ({
-              percent: Math.round((loaded / total) * 100).toFixed(2),
-            })),
-        })
-      )
-        .then(res => {
-          form.setFieldsValue(res)
-          params.onSuccess('success message')
-        })
-        .catch(err => {
-          params.onError(err)
-        })
-    }
-    reader.onerror = err => {
-      params.onError(err)
-    }
-  }
 
   // modal被关闭后回调
   const onClose = () => {
@@ -187,7 +184,7 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
     // 验证表单，如果通过提交表单
     form
       .validateFields()
-      .then(success => {
+      .then(() => {
         setloading(true)
         form.submit()
       })
@@ -198,26 +195,31 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
   }
 
   // 表单提交
-  const submitForm = values => {
+  const submitForm = (values: Record<keyof PVPreUpload, unknown>) => {
     // 根据colKey的类型转换格式
-    ;[]
-      .concat(...formBasicKeys)
-      .concat([].concat(...formAdvancedKeys))
-      .concat([].concat(...formProKeys))
-      .forEach(([key, type]) => {
-        if (type === 'n') values[key] = Number(values[key])
-      })
+    const allKeys = [
+      ...formBasicKeys.flatMap(val => val),
+      ...formSelectKeys.flatMap(val => val),
+      ...formAdvancedKeys.flatMap(val => val),
+      ...formProKeys.flatMap(val => val),
+    ]
+    allKeys.forEach(([key, type]) => {
+      if (type === 'n') values[key] = Number(values[key])
+      else if (type === 'b') {
+        values[key] = values[key] ? true : false
+      }
+    })
 
     // 发送 创建/更新PV 后端请求
-    let action
+    let action: Promise<void | PV>
     if (editRecord) {
-      action = dispatch(updatePV({ pvID: editRecord.pvID, values: values }))
+      action = updatePV({ pvID: editRecord.pvID, values: values as PVPreUpload })
     } else {
-      action = dispatch(addPV({ values }))
+      action = addPV({ values: values as PVPreUpload })
     }
     action
       .then(() => {
-        dispatch(getPV()).then(data => {
+        getPV({}).then(data => {
           editRecord
             ? message.success(t('PV.success.updatePV'))
             : message.success(t('PV.success.createPV'))
@@ -227,7 +229,7 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
           setactiveData(data)
         })
       })
-      .catch(err => {
+      .catch(() => {
         setloading(false)
       })
   }
@@ -275,7 +277,37 @@ export const PVModal = ({ showModal, setactiveData, setshowModal, editRecord, se
                   <Upload
                     accept='.pan'
                     fileList={uploadFileList}
-                    customRequest={uploadPAN}
+                    customRequest={params => {
+                      const reader = new FileReader()
+                      reader.readAsText(params.file)
+                      reader.onload = event => {
+                        if (!event.target || !event.target.result) {
+                          params.onError(Error('Failed to load File'))
+                          return
+                        }
+                        parsePAN({
+                          fileText: event.target.result,
+                          onUploadProgress: ({ total, loaded }) =>
+                            params.onProgress(
+                              {
+                                percent: Number(Math.round((loaded / total) * 100).toFixed(2)),
+                              },
+                              params.file
+                            ),
+                        })
+                          .then(res => {
+                            form.setFieldsValue(res)
+                            params.onSuccess({}, params.file)
+                          })
+                          .catch(err => {
+                            params.onError(err)
+                          })
+                      }
+                      reader.onerror = () => {
+                        params.onError(Error('Failed to read file'))
+                        return
+                      }
+                    }}
                     onChange={({ fileList }) => setuploadFileList(fileList.slice(-1))}
                   >
                     <Button icon={<UploadOutlined />}>{t('PV.uploadBut')} .pan</Button>

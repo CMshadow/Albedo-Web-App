@@ -1,9 +1,11 @@
 import axios from '../axios.config'
 
 type GoogleGeocoderType = {
-  results: { geometry: { formatted_address: string; location: { lng: number; lat: number } } }[]
+  results: { formatted_address: string; geometry: { location: { lng: number; lat: number } } }[]
 }
-type GoogleRevGeocoderType = { googleRevGeocoder: { formatted_address: string }[] }
+type GoogleRevGeocoderType = {
+  results: { formatted_address: string; geometry: { location: { lng: number; lat: number } } }[]
+}
 type AMapGeocoderType = { geocodes: { formatted_address: string; location: string }[] }
 type AMapRevGeocoderType = { regeocode: { formatted_address: string } }
 

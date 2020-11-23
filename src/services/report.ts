@@ -107,6 +107,20 @@ const getIrradianceDataRequest: IAxiosRequest<
     })
     .then(res => res.data)
 
+const deleteIrradianceDataRequest: IAxiosRequest<
+  {
+    projectID: string
+    username: string
+    jwtToken: string
+  },
+  void
+> = args =>
+  axios
+    .delete(`/project/${args.username}/${args.projectID}/_/irradiance`, {
+      headers: { 'COG-TOKEN': args.jwtToken },
+    })
+    .then(res => res.data)
+
 const downloadReportCSVRequest: IAxiosRequest<
   {
     projectID: string
@@ -129,4 +143,5 @@ export const saveReport = injectAuth(saveReportRequest)
 export const getProductionData = injectAuth(getProductionDataRequest)
 export const deleteProductionData = injectAuth(deleteProductionDataRequest)
 export const getIrradianceData = injectAuth(getIrradianceDataRequest)
+export const deleteIrradianceData = injectAuth(deleteIrradianceDataRequest)
 export const downloadReportCSV = injectAuth(downloadReportCSVRequest)
