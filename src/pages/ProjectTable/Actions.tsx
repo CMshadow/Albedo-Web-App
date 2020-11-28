@@ -14,12 +14,11 @@ import {
 type DeleteActionType = {
   record: Project
   setdata: React.Dispatch<React.SetStateAction<Project[]>>
-  setactiveData: React.Dispatch<React.SetStateAction<Project[]>>
   setloading: React.Dispatch<React.SetStateAction<boolean>>
 }
 // Project列表中触发删除一个Project
 export const DeleteAction = (props: DeleteActionType) => {
-  const { record, setdata, setactiveData, setloading } = props
+  const { record, setdata, setloading } = props
   const { t } = useTranslation()
 
   const onDelete = async () => {
@@ -34,7 +33,6 @@ export const DeleteAction = (props: DeleteActionType) => {
     message.success(t('project.success.deleteProject'))
     getProject({}).then(data => {
       setdata(data)
-      setactiveData(data)
       setloading(false)
     })
   }

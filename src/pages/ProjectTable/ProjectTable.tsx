@@ -1,25 +1,83 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Table, Divider, Card, Tabs } from 'antd'
-import { DashboardTwoTone, SyncOutlined } from '@ant-design/icons'
+import { Button, Table, Divider, Card, Tabs, Input, Space } from 'antd'
+import { DashboardTwoTone, SyncOutlined, SearchOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useHistory, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import Highlighter from 'react-highlight-words'
 import { CreateProjectModal } from './Modal'
 import { getProject } from '../../services'
 import { DeleteAction } from './Actions'
-import { SearchString } from '../../components/Table/TableColFilters/TableColSearch'
 import styles from './ProjectTable.module.scss'
 import { Project } from '../../@types'
 import { ColumnsType } from 'antd/lib/table'
+import { FilterDropdownProps } from 'antd/lib/table/interface'
 
 const { TabPane } = Tabs
+
+export const SearchString = (colKey: keyof Project) => {
+  const { t } = useTranslation()
+  const [searchedText, setsearchedText] = useState('')
+
+  const handleSearch = (selectedKeys: React.Key[], confirm: () => void) => {
+    confirm()
+    setsearchedText(selectedKeys[0].toString())
+  }
+
+  const handleReset = (clearFilters?: () => void) => {
+    clearFilters && clearFilters()
+    setsearchedText('')
+  }
+
+  return {
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }: FilterDropdownProps) => (
+      <div className={styles.searchBox}>
+        <Input
+          className={styles.input}
+          placeholder={`${t('filter.search')} ${t(`table.${colKey}`)}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm)}
+        />
+        <Space>
+          <Button
+            className={styles.button}
+            type='primary'
+            onClick={() => handleSearch(selectedKeys, confirm)}
+            icon={<SearchOutlined />}
+            size='small'
+          >
+            {t('filter.search')}
+          </Button>
+          <Button className={styles.button} onClick={() => handleReset(clearFilters)} size='small'>
+            {t('filter.reset')}
+          </Button>
+        </Space>
+      </div>
+    ),
+    render: (text: string, record: Project) => (
+      <Link to={`/project/${record.projectID}/dashboard`}>
+        <Highlighter
+          highlightClassName={styles.highlight}
+          searchWords={[searchedText]}
+          autoEscape={true}
+          textToHighlight={text.toString()}
+        />
+      </Link>
+    ),
+  }
+}
 
 const ProjectTable: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const history = useHistory()
   const [data, setdata] = useState<Project[]>([])
-  const [activeData, setactiveData] = useState<Project[]>([])
   const [loading, setloading] = useState(false)
   const [showModal, setshowModal] = useState(false)
 
@@ -31,10 +89,12 @@ const ProjectTable: React.FC = () => {
       sorter: (a: Project, b: Project) => a.projectTitle.localeCompare(b.projectTitle),
       fixed: 'left',
       width: 250,
-      ...SearchString({ colKey: 'projectTitle', data, setactiveData }),
-      render: (val: string, record: Project) => (
-        <Link to={`/project/${record.projectID}/dashboard`}>{val}</Link>
+      ...SearchString('projectTitle'),
+      filterIcon: filtered => (
+        <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
       ),
+      onFilter: (value, record) =>
+        record.projectTitle.toString().toLowerCase().includes(value.toString().toLowerCase()),
     },
     {
       title: t('project.create.address'),
@@ -75,12 +135,7 @@ const ProjectTable: React.FC = () => {
             }}
           />
           <Divider type='vertical' />
-          <DeleteAction
-            record={record}
-            setdata={setdata}
-            setactiveData={setactiveData}
-            setloading={setloading}
-          />
+          <DeleteAction record={record} setdata={setdata} setloading={setloading} />
         </div>
       ),
     },
@@ -91,7 +146,6 @@ const ProjectTable: React.FC = () => {
     setloading(true)
     getProject({}).then(data => {
       setdata(data)
-      setactiveData(data)
       setloading(false)
     })
   }
@@ -101,13 +155,12 @@ const ProjectTable: React.FC = () => {
     setloading(true)
     getProject({}).then(data => {
       setdata(data)
-      setactiveData(data)
       setloading(false)
     })
   }, [dispatch])
 
   const genTable = (projectType: 'domestic' | 'commercial') => {
-    const validData = activeData.filter(data => data.projectType === projectType)
+    const validData = data.filter(d => d.projectType === projectType)
     return (
       <Table
         columns={tableCols}

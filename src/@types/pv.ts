@@ -65,4 +65,6 @@ export type PV = PVPreUpload & {
   betaVmpo_sandia: number
   mbvoc: number
   mbvmp: number
+  companyName?: string
+  theme?: string
 }

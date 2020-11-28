@@ -251,32 +251,28 @@ const ProjectLayout: React.FC = props => {
   useEffect(() => {
     const fetchData = async () => {
       setfetchLoading(true)
-      const fetchPromises = []
+      const fetchPromises: Promise<unknown>[] = []
       fetchPromises.push(
-        dispatch(getPV({}))
+        getPV({})
           .then(res => dispatch(setPVData(res)))
           .catch(() => history.push('/dashboard'))
       )
       fetchPromises.push(
-        dispatch(
-          getOfficialPV({
-            region: cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US',
-          })
-        )
+        getOfficialPV({
+          region: cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US',
+        })
           .then(res => dispatch(setOfficialPVData(res)))
           .catch(() => history.push('/dashboard'))
       )
       fetchPromises.push(
-        dispatch(getInverter({}))
+        getInverter({})
           .then(res => dispatch(setInverterData(res)))
           .catch(() => history.push('/dashboard'))
       )
       fetchPromises.push(
-        dispatch(
-          getOfficialInverter({
-            region: cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US',
-          })
-        )
+        getOfficialInverter({
+          region: cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US',
+        })
           .then(res => dispatch(setOfficialInverterData(res)))
           .catch(() => history.push('/dashboard'))
       )
@@ -285,7 +281,7 @@ const ProjectLayout: React.FC = props => {
       let projectData: Project
       promiseRetry(
         retry => {
-          return dispatch(getProjectSingle({ projectID: projectID })).then(res => {
+          return getProjectSingle({ projectID: projectID }).then(res => {
             if (!res.weatherFile) {
               retry(null)
             } else {
@@ -299,13 +295,13 @@ const ProjectLayout: React.FC = props => {
         .then(async () => {
           const getReportPromises = projectData.buildings
             .map(building => {
-              return dispatch(getReport({ projectID, buildingID: building.buildingID })).then(res =>
-                dispatch(setReportData({ buildingID: building.buildingID, data: res }))
+              return getReport({ projectID, buildingID: building.buildingID }).then(res =>
+                setReportData({ buildingID: building.buildingID, data: res })
               )
             })
             .concat([
-              dispatch(getReport({ projectID, buildingID: 'overview' })).then(res =>
-                dispatch(setReportData({ buildingID: 'overview', data: res }))
+              getReport({ projectID, buildingID: 'overview' }).then(res =>
+                setReportData({ buildingID: 'overview', data: res })
               ),
             ])
           await Promise.all(getReportPromises)
@@ -345,9 +341,12 @@ const ProjectLayout: React.FC = props => {
         })
     }
 
-    const saveProjectOnExit = () => async (dispatch: Dispatch<unknown>, getState: RootState) => {
-      const projectData = getState.project
-      const reportData = getState.report
+    const saveProjectOnExit = () => async (
+      dispatch: Dispatch<unknown>,
+      getState: () => RootState
+    ) => {
+      const projectData = getState().project
+      const reportData = getState().report
       if (projectData) await saveProject({ projectID, values: projectData })
       const allPromise = Object.keys(reportData).map(buildingID =>
         saveReport({ projectID, buildingID, values: reportData[buildingID] })

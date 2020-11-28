@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 import { Table, Drawer, Button, Tooltip } from 'antd'
-import { LineChartOutlined } from '@ant-design/icons'
+import { LineChartOutlined, SearchOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { SearchString, SearchRange } from '../TableColFilters/TableColSearch'
 import { PVDetailTable } from '../PVDetailTable/PVDetailTable'
 import { IVModal } from './IVModal'
+import { PV } from '../../../@types'
+import { ColumnsType } from 'antd/lib/table'
+
+type ShownCol = 'pmax' | 'vmpo' | 'impo' | 'isco' | 'voco'
 
 // 表单中的数字columns和单位
 // 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
-const colKeys = [
+const colKeys: [ShownCol, 'n' | 's', string, number][] = [
   ['pmax', 'n', 'Wp', 150],
   ['vmpo', 'n', 'V', 175],
   ['impo', 'n', 'A', 175],
@@ -16,21 +20,31 @@ const colKeys = [
   ['voco', 'n', 'V', 150],
 ]
 
-export const PVTableViewOnly = ({ data, activeData, setactiveData }) => {
+type PVTableViewOnlyProps = {
+  data: PV[]
+  activeData: PV[]
+  setactiveData: React.Dispatch<React.SetStateAction<PV[]>>
+}
+
+export const PVTableViewOnly: React.FC<PVTableViewOnlyProps> = ({
+  data,
+  activeData,
+  setactiveData,
+}) => {
   const { t } = useTranslation()
   const [showDrawer, setshowDrawer] = useState(false)
-  const [viewPVID, setviewPVID] = useState(false)
-  const [viewPVUserID, setviewPVUserID] = useState(false)
+  const [viewPVID, setviewPVID] = useState<string>()
+  const [viewPVUserID, setviewPVUserID] = useState<string>()
   const [showIVModal, setshowIVModal] = useState(false)
 
   // 点击组件名显示详细信息
-  const onClickName = pvID => {
+  const onClickName = (pvID: string) => {
     setviewPVID(pvID)
     setshowDrawer(true)
   }
 
   // 点击IV曲线图标
-  const onClickIVCurve = (pvID, pv_userID) => {
+  const onClickIVCurve = (pvID: string, pv_userID: string) => {
     setviewPVID(pvID)
     setviewPVUserID(pv_userID)
     setshowIVModal(true)
@@ -53,20 +67,20 @@ export const PVTableViewOnly = ({ data, activeData, setactiveData }) => {
   ]
 
   // 生成表单所有数字列属性
-  const tableCols = colKeys.map(([key, type, unit, width], index) => {
+  const tableCols: ColumnsType<PV> = colKeys.map(([key, type, unit, width], index) => {
     return {
       title: t(`PVtable.table.${key}`),
       dataIndex: key,
       key: key,
       render: value => `${value} ${unit}`,
-      sorter: (a, b) => a[key] - b[key],
+      sorter: (a, b) => +a[key] - +b[key],
       multiple: index,
       width: width,
-      ...SearchRange({
-        colKey: key,
-        data,
-        setactiveData,
-      }),
+      // ...SearchRange({
+      //   colKey: key,
+      //   data,
+      //   setactiveData,
+      // }),
     }
   })
   // 生成表单组件提供商
@@ -74,9 +88,13 @@ export const PVTableViewOnly = ({ data, activeData, setactiveData }) => {
     title: t('PVtable.table.companyName'),
     dataIndex: 'companyName',
     key: 'companyName',
-    sorter: (a, b) => a.companyName - b.companyName,
+    sorter: (a, b) =>
+      !a.companyName || !b.companyName ? 0 : a.companyName.localeCompare(b.companyName),
     width: 150,
     ...SearchString({ colKey: 'companyName', data, setactiveData }),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
   })
   // 生成表单组件备注列属性
   tableCols.splice(0, 0, {
@@ -90,10 +108,13 @@ export const PVTableViewOnly = ({ data, activeData, setactiveData }) => {
     title: t('PVtable.table.name'),
     dataIndex: 'name',
     key: 'name',
-    sorter: (a, b) => a.name - b.name,
+    sorter: (a, b) => a.name.localeCompare(b.name),
     fixed: 'left',
     width: 250,
-    ...SearchString({ colKey: 'name', onClick: onClickName, data, setactiveData }),
+    ...SearchString({ colKey: 'name', data, setactiveData }),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
   })
   // 生成表单组件材质列属性
   tableCols.push({
@@ -102,7 +123,7 @@ export const PVTableViewOnly = ({ data, activeData, setactiveData }) => {
     key: 'moduleMaterial',
     render: value => t(`PV.${value}`),
     filters: moduleMaterialFilters,
-    onFilter: (value, record) => record.moduleMaterial.indexOf(value) === 0,
+    onFilter: (value, record) => record.moduleMaterial.indexOf(value.toString()) === 0,
     width: 200,
   })
   // 生成表单操作列属性
@@ -147,7 +168,7 @@ export const PVTableViewOnly = ({ data, activeData, setactiveData }) => {
         visible={showDrawer}
         width='50vw'
       >
-        <PVDetailTable pvID={viewPVID} />
+        <PVDetailTable pvID={viewPVID} count={0} />
       </Drawer>
       <IVModal
         pvID={viewPVID}
