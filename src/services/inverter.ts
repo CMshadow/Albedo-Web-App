@@ -50,7 +50,7 @@ const updateInvRequest: IAxiosRequest<
     })
     .then(res => res.data)
 
-type PerformanceCurve = { pdc: number[]; pac: number[]; eff: number[] }
+type PerformanceCurve = { pdc: number[]; pac: number[][]; eff: number[][] }
 
 const getPerformanceCurveRequest: IAxiosRequest<
   { inverterID: string; userID: string; jwtToken: string },

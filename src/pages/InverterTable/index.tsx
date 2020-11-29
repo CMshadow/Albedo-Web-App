@@ -7,7 +7,7 @@ import { InverterModal } from './Modal'
 import { getInverter } from '../../services'
 import { InverterTable } from '../../components/Table/InverterTable/InverterTable'
 import { InverterTableViewOnly } from '../../components/Table/InverterTable/InverterTableViewOnly'
-import { setInverterData } from '../../store/action/index'
+import { setInverterData } from '../../store/action'
 import styles from './index.module.scss'
 import { Inverter, RootState } from '../../@types'
 const { TabPane } = Tabs
@@ -16,9 +16,7 @@ const InverterTablePage: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const myData = useSelector((state: RootState) => state.inverter.data)
-  const [activeMyData, setactiveMyData] = useState(myData)
   const officialData = useSelector((state: RootState) => state.inverter.officialData)
-  const [activeOfficialData, setactiveOfficialData] = useState(officialData)
   const [loading, setloading] = useState(false)
   const [showModal, setshowModal] = useState(false)
   const [editRecord, seteditRecord] = useState<Inverter | null>(null)
@@ -28,7 +26,6 @@ const InverterTablePage: React.FC = () => {
     setloading(true)
     getInverter({}).then(data => {
       dispatch(setInverterData(data))
-      setactiveMyData(data)
       setloading(false)
     })
   }
@@ -54,26 +51,19 @@ const InverterTablePage: React.FC = () => {
           <InverterTable
             loading={loading}
             data={myData}
-            activeData={activeMyData}
-            setactiveData={setactiveMyData}
-            setshowModal={setshowModal}
+            setshowEditModal={setshowModal}
             seteditRecord={seteditRecord}
             showEditBut
           />
           <InverterModal
             showModal={showModal}
             setshowModal={setshowModal}
-            setactiveData={setactiveMyData}
             editRecord={editRecord}
             seteditRecord={seteditRecord}
           />
         </TabPane>
         <TabPane tab={t('InverterTable.official')} key='2'>
-          <InverterTableViewOnly
-            data={officialData}
-            activeData={activeOfficialData}
-            setactiveData={setactiveOfficialData}
-          />
+          <InverterTableViewOnly data={officialData} />
         </TabPane>
       </Tabs>
     </Card>

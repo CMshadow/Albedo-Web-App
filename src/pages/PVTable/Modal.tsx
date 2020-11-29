@@ -39,7 +39,6 @@ const initValues = {
 
 type PVModalProps = {
   showModal: boolean
-  setactiveData: React.Dispatch<React.SetStateAction<PV[]>>
   setshowModal: React.Dispatch<React.SetStateAction<boolean>>
   editRecord: PV | null
   seteditRecord: React.Dispatch<React.SetStateAction<PV | null>>
@@ -48,7 +47,7 @@ type PVModalProps = {
 type FormItemType = 's' | 'n' | 'c' | 'b'
 
 export const PVModal: React.FC<PVModalProps> = props => {
-  const { showModal, setactiveData, setshowModal, editRecord, seteditRecord } = props
+  const { showModal, setshowModal, editRecord, seteditRecord } = props
   const { t } = useTranslation()
   const [loading, setloading] = useState(false)
   const [uploadFileList, setuploadFileList] = useState<UploadFile[]>([])
@@ -226,7 +225,6 @@ export const PVModal: React.FC<PVModalProps> = props => {
           setloading(false)
           setshowModal(false)
           dispatch(setPVData(data))
-          setactiveData(data)
         })
       })
       .catch(() => {

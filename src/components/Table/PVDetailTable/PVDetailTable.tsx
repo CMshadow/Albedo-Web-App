@@ -3,14 +3,21 @@ import { Table } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { PVNameDescription } from '../../Descriptions/PVNameDescription'
+import { RootState, PV } from '../../../@types'
+import styles from './index.module.scss'
 
-export const PVDetailTable = ({ pvID, count }) => {
+type PVDetailTableProps = {
+  pvID: string
+  count: number
+}
+
+export const PVDetailTable: React.FC<PVDetailTableProps> = ({ pvID, count }) => {
   const { t } = useTranslation()
-  const pvRedux = useSelector(state => state.pv)
+  const pvRedux = useSelector((state: RootState) => state.pv)
   const pvData = pvRedux.data.concat(pvRedux.officialData)
   const pvSpec = pvData.find(pv => pv.pvID === pvID)
 
-  const KeysAndUnits = [
+  const KeysAndUnits: [keyof PV | 'size', string][] = [
     ['pmax', 'Wp'],
     ['voco', 'V'],
     ['isco', 'A'],
@@ -30,18 +37,25 @@ export const PVDetailTable = ({ pvID, count }) => {
   ]
 
   const dataSource = KeysAndUnits.map(([key, unit], index) => {
-    const data = {
+    const data: {
+      key: number
+      series: number
+      paramName: string
+      unit: string
+      param: unknown
+    } = {
       key: index + 1,
       series: index + 1,
-      paramName: t(`PV.${key}`),
+      paramName: t(`PV.${key.toString()}`),
       unit: unit,
+      param: '',
     }
     if (key === 'size') {
-      data.param = `${pvSpec.panelLength} x ${pvSpec.panelWidth} x ${pvSpec.panelHeight}`
+      data.param = `${pvSpec?.panelLength} x ${pvSpec?.panelWidth} x ${pvSpec?.panelHeight}`
     } else if (key === 'moduleMaterial') {
-      data.param = t(`PV.${pvSpec[key]}`)
+      data.param = t(`PV.${pvSpec?.moduleMaterial}`)
     } else {
-      data.param = pvSpec[key]
+      data.param = pvSpec ? pvSpec[key] : ''
     }
     return data
   })
@@ -51,25 +65,25 @@ export const PVDetailTable = ({ pvID, count }) => {
       key: 0,
       title: t('table.series'),
       dataIndex: 'series',
-      align: 'center',
+      align: 'center' as const,
     },
     {
       key: 1,
       title: t('table.paramName'),
       dataIndex: 'paramName',
-      align: 'center',
+      align: 'center' as const,
     },
     {
       key: 2,
       title: t('table.unit'),
       dataIndex: 'unit',
-      align: 'center',
+      align: 'center' as const,
     },
     {
       key: 3,
       title: t('table.param'),
       dataIndex: 'param',
-      align: 'center',
+      align: 'center' as const,
     },
   ]
 
@@ -77,6 +91,7 @@ export const PVDetailTable = ({ pvID, count }) => {
 
   return (
     <Table
+      className={styles.pvTable}
       bordered
       dataSource={dataSource}
       columns={columns}

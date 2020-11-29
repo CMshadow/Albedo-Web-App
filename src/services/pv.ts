@@ -45,12 +45,10 @@ const updatePVRequest: IAxiosRequest<
     })
     .then(res => res.data)
 
+type IVEntry = { i_sc: number; i_mp: number; v_mp: number; v_oc: number; i_xx: number; i_x: number }
+
 type IVCruve = {
-  1000: number[]
-  800: number[]
-  600: number[]
-  400: number[]
-  200: number[]
+  [key: string]: IVEntry
 }
 
 const getIVCurveRequest: IAxiosRequest<

@@ -1,60 +1,42 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input, Button, Space, Slider, InputNumber, Row, Tag } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import Highlighter from 'react-highlight-words'
-import { SearchOutlined, FilterFilled, FilterOutlined } from '@ant-design/icons'
+import { SearchOutlined, FilterOutlined } from '@ant-design/icons'
 import styles from './TabelColSearch.module.scss'
 import { getMin, getMax } from '../../../utils/getObjectsMinMax'
 import { FilterDropdownProps } from 'antd/lib/table/interface'
-import { Project, Inverter, PV } from '../../../@types'
 
-type SearchStringType<T> = {
-  colKey: keyof T
-  data: T[]
-  onClick?: (p: string | undefined) => void
-  setactiveData: React.Dispatch<React.SetStateAction<T[]>>
-}
-
-export const SearchString = <T extends Record<string, any>>(props: SearchStringType<T>) => {
-  const { colKey, data, onClick, setactiveData } = props
-  const searchInputRef = useRef<Input>(null)
+export const SearchString = <T extends Record<string, unknown>>(
+  colKey: keyof T,
+  renderType?: 'tag' | 'text'
+) => {
   const { t } = useTranslation()
-  const [searchedCol, setsearchedCol] = useState<keyof T>()
-  const [searchedText, setsearchedText] = useState<string>('')
+  const [searchedText, setsearchedText] = useState('')
 
-  const handleSearch = (selectedKeys: React.Key[], confirm: () => void, dataIndex: keyof T) => {
-    setactiveData(
-      data.filter(record =>
-        (record[colKey] as any)
-          .toString()
-          .toLowerCase()
-          .includes(selectedKeys[0].toString().toLowerCase())
-      )
-    )
+  const handleSearch = (selectedKeys: React.Key[], confirm: () => void) => {
     confirm()
-    setsearchedCol(dataIndex)
-    setsearchedText(selectedKeys[0].toString())
+    setsearchedText(selectedKeys[0] ? selectedKeys[0].toString() : '')
   }
 
   const handleReset = (clearFilters?: () => void) => {
-    setactiveData(data)
     clearFilters && clearFilters()
     setsearchedText('')
   }
 
-  const nameOrCompany = (record: T, children: React.ReactNode) =>
-    colKey !== 'companyName' ? (
-      <Button
-        type='link'
-        onClick={() => {
-          onClick && onClick(record.pvID || record.inverterID)
-        }}
-      >
-        {children}
-      </Button>
-    ) : (
-      <Tag color={record.theme}>{children}</Tag>
-    )
+  const renderTag = (children: React.ReactNode, theme?: string) => (
+    <Tag color={theme}>{children}</Tag>
+  )
+
+  const renderText = (text: string) => (
+    <Highlighter
+      highlightClassName={styles.highlight}
+      searchWords={[searchedText]}
+      autoEscape={true}
+      textToHighlight={text.toString()}
+    />
+  )
 
   return {
     filterDropdown: ({
@@ -66,17 +48,16 @@ export const SearchString = <T extends Record<string, any>>(props: SearchStringT
       <div className={styles.searchBox}>
         <Input
           className={styles.input}
-          ref={searchInputRef}
           placeholder={`${t('filter.search')} ${t(`table.${colKey}`)}`}
           value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys, confirm, colKey)}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [''])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm)}
         />
         <Space>
           <Button
             className={styles.button}
             type='primary'
-            onClick={() => handleSearch(selectedKeys, confirm, colKey)}
+            onClick={() => handleSearch(selectedKeys, confirm)}
             icon={<SearchOutlined />}
             size='small'
           >
@@ -88,44 +69,29 @@ export const SearchString = <T extends Record<string, any>>(props: SearchStringT
         </Space>
       </div>
     ),
-    filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-    ),
-    onFilter: (value: string | number | boolean, record: T) =>
-      (record[colKey] as any).toString().toLowerCase().includes(value.toString().toLowerCase()),
-    onFilterDropdownVisibleChange: (visible: boolean) => {
-      if (visible) {
-        setTimeout(() => searchInputRef.current && searchInputRef.current.select())
+    render: (text: string, record: T) => {
+      if ('projectID' in record && text === 'projectTitle') {
+        return <Link to={`/project/${record.projectID}/dashboard`}>{renderText(text)}</Link>
+      } else if ('theme' in record && renderType === 'tag') {
+        return renderTag(text, record.theme as string)
+      } else {
+        return renderText(text)
       }
     },
-    render: (text: string, record: T) =>
-      searchedCol === colKey
-        ? nameOrCompany(
-            record,
-            <Highlighter
-              highlightClassName={styles.highlight}
-              searchWords={[searchedText]}
-              autoEscape={true}
-              textToHighlight={text.toString()}
-            />
-          )
-        : nameOrCompany(record, text),
   }
 }
 
 type SearchRangeProps<T> = {
   colKey: string
   data: T[]
-  setactiveData: React.Dispatch<React.SetStateAction<T[]>>
 }
 
-export const SearchRange = <T extends Record<string, number>>(props: SearchRangeProps<T>) => {
-  const { colKey, data, setactiveData } = props
+export const SearchRange = <T extends Record<string, unknown>>(props: SearchRangeProps<T>) => {
+  const { colKey, data } = props
   const { t } = useTranslation()
   const colMin = Math.floor(getMin(data, colKey))
   const colMax = Math.ceil(getMax(data, colKey))
   const [selectedVal, setselectedVal] = useState<[number, number]>([colMin, colMax])
-  const [filtered, setfiltered] = useState(false)
 
   useEffect(() => {
     const colMin = Math.floor(getMin(data, colKey))
@@ -133,30 +99,18 @@ export const SearchRange = <T extends Record<string, number>>(props: SearchRange
     setselectedVal([colMin, colMax])
   }, [colKey, data])
 
-  const onFilter = (confirm: () => void) => {
-    setactiveData(
-      data.filter(record => record[colKey] >= selectedVal[0] && record[colKey] <= selectedVal[1])
-    )
-    setfiltered(true)
-    confirm()
-  }
-
-  const onReset = (clearFilters?: () => void) => {
-    setactiveData(data)
-    setfiltered(false)
-    clearFilters && clearFilters()
-  }
-
   return {
-    // eslint-disable-next-line react/display-name
-    filterDropdown: ({ confirm, clearFilters }: FilterDropdownProps) => {
+    filterDropdown: ({ confirm, clearFilters, setSelectedKeys }: FilterDropdownProps) => {
       return (
         <div className={styles.searchBox}>
           <Slider
             range
             min={colMin}
             max={colMax}
-            onChange={values => setselectedVal(values)}
+            onChange={values => {
+              setSelectedKeys(values)
+              setselectedVal(values)
+            }}
             value={selectedVal}
           />
           <Row>
@@ -167,7 +121,10 @@ export const SearchRange = <T extends Record<string, number>>(props: SearchRange
                 max={selectedVal[1]}
                 size='small'
                 value={selectedVal[0]}
-                onChange={value => setselectedVal([Number(value), selectedVal[1]])}
+                onChange={value => {
+                  setSelectedKeys([Number(value), selectedVal[1]])
+                  setselectedVal([Number(value), selectedVal[1]])
+                }}
               />
               <InputNumber
                 className={styles.button}
@@ -175,7 +132,10 @@ export const SearchRange = <T extends Record<string, number>>(props: SearchRange
                 max={colMax}
                 size='small'
                 value={selectedVal[1]}
-                onChange={value => setselectedVal([selectedVal[0], Number(value)])}
+                onChange={value => {
+                  setSelectedKeys([selectedVal[0], Number(value)])
+                  setselectedVal([selectedVal[0], Number(value)])
+                }}
               />
             </Space>
           </Row>
@@ -184,13 +144,13 @@ export const SearchRange = <T extends Record<string, number>>(props: SearchRange
               <Button
                 className={styles.button}
                 type='primary'
-                onClick={() => onFilter(confirm)}
+                onClick={confirm}
                 icon={<FilterOutlined />}
                 size='small'
               >
                 {t('filter.filter')}
               </Button>
-              <Button className={styles.button} onClick={() => onReset(clearFilters)} size='small'>
+              <Button className={styles.button} onClick={clearFilters} size='small'>
                 {t('filter.reset')}
               </Button>
             </Space>
@@ -198,6 +158,7 @@ export const SearchRange = <T extends Record<string, number>>(props: SearchRange
         </div>
       )
     },
-    filterIcon: <FilterFilled style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value: string | number | boolean, record: T) =>
+      Number(record[colKey]) >= selectedVal[0] && Number(record[colKey]) <= selectedVal[1],
   }
 }

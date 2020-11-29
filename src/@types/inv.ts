@@ -62,4 +62,6 @@ export type Inverter = InverterPreUpload & {
   pdco_sandia: number
   pso_sandia: number
   pdcMax_sandia: number
+  companyName?: string
+  theme?: string
 }

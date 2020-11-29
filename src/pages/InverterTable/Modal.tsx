@@ -42,18 +42,12 @@ const initValues = {
 type InverterModalProps = {
   showModal: boolean
   setshowModal: React.Dispatch<React.SetStateAction<boolean>>
-  setactiveData: React.Dispatch<React.SetStateAction<Inverter[]>>
   editRecord: Inverter | null
   seteditRecord: React.Dispatch<React.SetStateAction<Inverter | null>>
 }
 
-export const InverterModal: React.FC<InverterModalProps> = ({
-  showModal,
-  setshowModal,
-  setactiveData,
-  editRecord,
-  seteditRecord,
-}) => {
+export const InverterModal: React.FC<InverterModalProps> = props => {
+  const { showModal, setshowModal, editRecord, seteditRecord } = props
   const { t } = useTranslation()
   const [loading, setloading] = useState(false)
   const [uploadFileList, setuploadFileList] = useState<UploadFile[]>([])
@@ -285,7 +279,6 @@ export const InverterModal: React.FC<InverterModalProps> = ({
             ? message.success(t('Inverter.success.updateInverter'))
             : message.success(t('Inverter.success.createInverter'))
           dispatch(setInverterData(data))
-          setactiveData(data)
         })
       })
       .catch(() => {

@@ -3,10 +3,11 @@ import { List, Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { InverterDetailTable } from './InverterDetailTable'
+import { Building, RootState } from '../../../@types'
 const Title = Typography.Title
 
-const reduceUnique = data => {
-  return data.reduce((acc, val) => {
+const reduceUnique = (data: { inverterID: string; count: number }[]) => {
+  return data.reduce((acc: { [key: string]: number }, val) => {
     Object.keys(acc).includes(val.inverterID)
       ? (acc[val.inverterID] += val.count)
       : (acc[val.inverterID] = val.count)
@@ -14,28 +15,36 @@ const reduceUnique = data => {
   }, {})
 }
 
-export const MultiInverterDetailTable = ({ buildingID }) => {
-  const { t } = useTranslation()
-  const projectData = useSelector(state => state.project)
-  const inverterData = useSelector(state => state.inverter.data).concat(
-    useSelector(state => state.inverter.officialData)
-  )
+type MultiInverterDetailTableProps = { buildingID: string }
 
-  const genInverterCount = buildingData =>
-    buildingData.data.flatMap(spec =>
-      spec.inverter_wiring.map(inverterSpec => ({
-        inverterID: inverterData.find(
-          inverter => inverter.inverterID === inverterSpec.inverter_model.inverterID
-        ).inverterID,
-        count: 1,
-      }))
-    )
+export const MultiInverterDetailTable: React.FC<MultiInverterDetailTableProps> = ({
+  buildingID,
+}) => {
+  const { t } = useTranslation()
+  const projectData = useSelector((state: RootState) => state.project)
+
+  const genInverterCount = (buildingData: Building): { inverterID: string; count: number }[] =>
+    buildingData.data
+      .flatMap(spec =>
+        spec.inverter_wiring.map(inverterSpec => ({
+          inverterID: inverterSpec.inverter_model.inverterID,
+          count: 1,
+        }))
+      )
+      .filter((obj): obj is { inverterID: string; count: number } => obj.inverterID !== null)
 
   // 统计每种用到的逆变器id及数量
-  const inverterCount =
-    buildingID === 'overview'
-      ? projectData.buildings.flatMap(building => genInverterCount(building))
-      : genInverterCount(projectData.buildings.find(building => building.buildingID === buildingID))
+  let inverterCount: { inverterID: string; count: number }[] = []
+  if (projectData) {
+    if (buildingID === 'overview') {
+      inverterCount = projectData.buildings.flatMap(building => genInverterCount(building))
+    } else {
+      const matchBuilding = projectData.buildings.find(
+        building => building.buildingID === buildingID
+      )
+      if (matchBuilding) inverterCount = genInverterCount(matchBuilding)
+    }
+  }
   const uniqueInverterCount = reduceUnique(inverterCount)
   const dataSource = Object.keys(uniqueInverterCount)
 

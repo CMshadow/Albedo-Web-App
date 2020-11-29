@@ -7,7 +7,7 @@ import { PVModal } from './Modal'
 import { getPV } from '../../services'
 import { PVTable } from '../../components/Table/PVTable/PVTable'
 import { PVTableViewOnly } from '../../components/Table/PVTable/PVTableViewOnly'
-import { setPVData } from '../../store/action/index'
+import { setPVData } from '../../store/action'
 import styles from './index.module.scss'
 import { RootState, PV } from '../../@types'
 const { TabPane } = Tabs
@@ -16,9 +16,7 @@ const PVTablePage: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const myData = useSelector((state: RootState) => state.pv.data)
-  const [activeMyData, setactiveMyData] = useState(myData)
   const officialData = useSelector((state: RootState) => state.pv.officialData)
-  const [activeOfficialData, setactiveOfficialData] = useState(officialData)
   const [loading, setloading] = useState(false)
   const [showModal, setshowModal] = useState(false)
   const [editRecord, seteditRecord] = useState<PV | null>(null)
@@ -28,7 +26,6 @@ const PVTablePage: React.FC = () => {
     setloading(true)
     getPV({}).then(data => {
       dispatch(setPVData(data))
-      setactiveMyData(data)
       setloading(false)
     })
   }
@@ -54,14 +51,11 @@ const PVTablePage: React.FC = () => {
           <PVTable
             loading={loading}
             data={myData}
-            activeData={activeMyData}
-            setactiveData={setactiveMyData}
-            setshowModal={setshowModal}
+            setshowEditModal={setshowModal}
             seteditRecord={seteditRecord}
             showEditBut
           />
           <PVModal
-            setactiveData={setactiveMyData}
             showModal={showModal}
             setshowModal={setshowModal}
             editRecord={editRecord}
@@ -69,11 +63,7 @@ const PVTablePage: React.FC = () => {
           />
         </TabPane>
         <TabPane tab={t('PVTable.official')} key='2'>
-          <PVTableViewOnly
-            data={officialData}
-            activeData={activeOfficialData}
-            setactiveData={setactiveOfficialData}
-          />
+          <PVTableViewOnly data={officialData} />
         </TabPane>
       </Tabs>
     </Card>

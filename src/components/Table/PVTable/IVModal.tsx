@@ -4,24 +4,44 @@ import { Modal, Spin, Tabs } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { IVChart } from '../../Charts/IVChart'
 import { PVChart } from '../../Charts/PVChart'
-import { getIVCurve } from '../../../pages/PVTable/service'
+import { getIVCurve } from '../../../services'
 
 const { TabPane } = Tabs
 
-export const IVModal = ({ pvID, userID, show, setshow, setpvID, setuserID }) => {
+type IVModalProps = {
+  pvID: string | undefined
+  userID: string | undefined
+  show: boolean
+  setshow: React.Dispatch<React.SetStateAction<boolean>>
+  setpvID: React.Dispatch<React.SetStateAction<string | undefined>>
+  setuserID: React.Dispatch<React.SetStateAction<string | undefined>>
+}
+
+type IvsV = { current: number; irr: string; voltage: number }
+
+type PvsV = { power: number; voltage: number; irr: string }
+
+export const IVModal: React.FC<IVModalProps> = ({
+  pvID,
+  userID,
+  show,
+  setshow,
+  setpvID,
+  setuserID,
+}) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const [loading, setloading] = useState(false)
-  const [ivDataSrc, setivDataSrc] = useState([])
-  const [pvDataSrc, setpvDataSrc] = useState([])
+  const [ivDataSrc, setivDataSrc] = useState<IvsV[]>([])
+  const [pvDataSrc, setpvDataSrc] = useState<PvsV[]>([])
 
   useEffect(() => {
     if (pvID && userID) {
       setloading(true)
-      dispatch(getIVCurve({ pvID, userID }))
+      getIVCurve({ pvID, userID })
         .then(res => {
-          const ivData = []
-          const pvData = []
+          const ivData: IvsV[] = []
+          const pvData: PvsV[] = []
           Object.keys(res).forEach(key => {
             ivData.push({ current: res[key].i_sc, voltage: 0, irr: key })
             ivData.push({ current: 0, voltage: res[key].v_oc, irr: key })
@@ -51,7 +71,7 @@ export const IVModal = ({ pvID, userID, show, setshow, setpvID, setuserID }) => 
           setpvDataSrc(pvData)
           setloading(false)
         })
-        .catch(e => setloading(false))
+        .catch(() => setloading(false))
     }
   }, [dispatch, pvID, userID])
 
@@ -60,8 +80,8 @@ export const IVModal = ({ pvID, userID, show, setshow, setpvID, setuserID }) => 
       visible={show}
       width='50vw'
       onCancel={() => {
-        setpvID(false)
-        setuserID(false)
+        setpvID(undefined)
+        setuserID(undefined)
         setshow(false)
       }}
       title={t('PVtable.table.iv-pv-curve')}

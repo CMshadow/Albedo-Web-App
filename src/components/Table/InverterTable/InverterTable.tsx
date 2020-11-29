@@ -1,15 +1,32 @@
 import React, { useState } from 'react'
 import { Table, Divider, Button, Drawer, Tooltip } from 'antd'
-import { EditOutlined, LineChartOutlined } from '@ant-design/icons'
+import { EditOutlined, LineChartOutlined, FilterFilled, SearchOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { SearchString, SearchRange } from '../TableColFilters/TableColSearch'
 import { DeleteAction } from './Actions'
 import { InverterDetailTable } from '../InverterDetailTable/InverterDetailTable'
 import { PerformanceCurve } from './PerformanceCurve'
+import { Inverter } from '../../../@types'
+import { ColumnsType } from 'antd/es/table/interface'
+
+type ShownCol =
+  | 'paco'
+  | 'vac'
+  | 'pdcMax'
+  | 'pacMax'
+  | 'mpptNum'
+  | 'vdcMax'
+  | 'vso'
+  | 'idcMax'
+  | 'mpptIdcMax'
+  | 'strIdcMax'
+  | 'vmpptMin'
+  | 'vmpptMax'
+  | 'inverterEffcy'
 
 // 表单中的数字columns和单位
 // 格式[colKey, 类型('n'=num, 's'=str, 'b'=bool), 单位, col宽度]
-const colKeys = [
+const colKeys: [ShownCol, 'n' | 's', string, number][] = [
   ['paco', 'n', 'kWp', 175],
   ['vac', 'n', 'V', 175],
   ['pdcMax', 'n', 'kWp', 175],
@@ -25,36 +42,42 @@ const colKeys = [
   ['inverterEffcy', 'n', '%', 175],
 ]
 
-export const InverterTable = ({
+type InverterTable = {
+  loading: boolean
+  data: Inverter[]
+  setshowEditModal: React.Dispatch<React.SetStateAction<boolean>>
+  seteditRecord: React.Dispatch<React.SetStateAction<Inverter | null>>
+  showEditBut: boolean
+}
+
+export const InverterTable: React.FC<InverterTable> = ({
   loading,
   data,
-  activeData,
-  setactiveData,
-  setshowModal,
+  setshowEditModal,
   seteditRecord,
   showEditBut = false,
 }) => {
   const { t } = useTranslation()
   const [showDrawer, setshowDrawer] = useState(false)
-  const [viewInverterID, setviewInverterID] = useState(null)
-  const [viewInverterUserID, setviewInverterUserID] = useState(null)
+  const [viewInverterID, setviewInverterID] = useState<string>()
+  const [viewInverterUserID, setviewInverterUserID] = useState<string>()
   const [showChartModal, setshowChartModal] = useState(false)
 
   // 点击组件名显示详细信息
-  const onClickName = inverterID => {
+  const onClickRow = (inverterID: string) => {
     setviewInverterID(inverterID)
     setshowDrawer(true)
   }
 
   // 点击IV曲线图标
-  const onClickCurve = (inverterID, userID) => {
+  const onClickCurve = (inverterID: string, userID: string) => {
     setviewInverterID(inverterID)
     setviewInverterUserID(userID)
     setshowChartModal(true)
   }
 
   // 生成表单所有数字列属性
-  const tableCols = colKeys.map(([key, type, unit, width], index) => {
+  const tableCols: ColumnsType<Inverter> = colKeys.map(([key, type, unit, width], index) => {
     return {
       title: t(`InverterTable.table.${key}`),
       dataIndex: key,
@@ -66,8 +89,8 @@ export const InverterTable = ({
       ...SearchRange({
         colKey: key,
         data,
-        setactiveData,
       }),
+      filterIcon: filtered => <FilterFilled style={{ color: filtered ? '#1890ff' : undefined }} />,
     }
   })
   // 生成表单组件备注列属性
@@ -82,10 +105,13 @@ export const InverterTable = ({
     title: t('InverterTable.table.name'),
     dataIndex: 'name',
     key: 'name',
-    sorter: (a, b) => a.name - b.name,
+    sorter: (a, b) => a.name.localeCompare(b.name),
     fixed: 'left',
     width: 250,
-    ...SearchString({ colKey: 'name', onClick: onClickName, data, setactiveData }),
+    ...SearchString('name'),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record.name?.toLowerCase().includes(value.toString().toLowerCase()) || false,
   })
   // 生成表单操作列属性
   if (showEditBut) {
@@ -95,27 +121,30 @@ export const InverterTable = ({
       key: 'action',
       fixed: 'right',
       width: showEditBut ? 175 : 50,
-      // eslint-disable-next-line react/display-name
       render: (value, record) => (
         <div>
           <Tooltip title={t('InverterTable.table.curve-title')}>
             <Button
               type='link'
               icon={<LineChartOutlined />}
-              onClick={() => onClickCurve(record.inverterID, record.userID)}
+              onClick={e => {
+                e.stopPropagation()
+                onClickCurve(record.inverterID, record.userID)
+              }}
             />
           </Tooltip>
           <Divider type='vertical' />
           <Button
             type='link'
             icon={<EditOutlined />}
-            onClick={() => {
+            onClick={e => {
+              e.stopPropagation()
               seteditRecord(record)
-              setshowModal(true)
+              setshowEditModal(true)
             }}
           />
           <Divider type='vertical' />
-          <DeleteAction record={record} setactiveData={setactiveData} />
+          <DeleteAction record={record} />
         </div>
       ),
     })
@@ -125,17 +154,21 @@ export const InverterTable = ({
     <>
       <Table
         columns={tableCols}
-        dataSource={activeData}
+        dataSource={data}
         rowKey='inverterID'
         loading={loading}
         pagination={{
           position: ['bottomCenter'],
-          total: activeData.length,
           showTotal: total => `${total}` + t('table.totalCount'),
           defaultPageSize: 10,
           showSizeChanger: true,
         }}
         scroll={{ x: 'max-content', y: 'calc(100vh - 275px)' }}
+        onRow={record => {
+          return {
+            onClick: () => onClickRow(record.inverterID),
+          }
+        }}
       />
       <Drawer
         bodyStyle={{ padding: '0px' }}
@@ -145,7 +178,7 @@ export const InverterTable = ({
         visible={showDrawer}
         width='50vw'
       >
-        <InverterDetailTable inverterID={viewInverterID} />
+        {viewInverterID ? <InverterDetailTable inverterID={viewInverterID} count={0} /> : null}
       </Drawer>
       <PerformanceCurve
         inverterID={viewInverterID}

@@ -1,77 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Table, Divider, Card, Tabs, Input, Space } from 'antd'
+import { Button, Table, Divider, Card, Tabs } from 'antd'
 import { DashboardTwoTone, SyncOutlined, SearchOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
-import { useHistory, Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import Highlighter from 'react-highlight-words'
+import { SearchString } from '../../components/Table/TableColFilters/TableColSearch'
 import { CreateProjectModal } from './Modal'
 import { getProject } from '../../services'
 import { DeleteAction } from './Actions'
 import styles from './ProjectTable.module.scss'
 import { Project } from '../../@types'
 import { ColumnsType } from 'antd/lib/table'
-import { FilterDropdownProps } from 'antd/lib/table/interface'
 
 const { TabPane } = Tabs
-
-export const SearchString = (colKey: keyof Project) => {
-  const { t } = useTranslation()
-  const [searchedText, setsearchedText] = useState('')
-
-  const handleSearch = (selectedKeys: React.Key[], confirm: () => void) => {
-    confirm()
-    setsearchedText(selectedKeys[0].toString())
-  }
-
-  const handleReset = (clearFilters?: () => void) => {
-    clearFilters && clearFilters()
-    setsearchedText('')
-  }
-
-  return {
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }: FilterDropdownProps) => (
-      <div className={styles.searchBox}>
-        <Input
-          className={styles.input}
-          placeholder={`${t('filter.search')} ${t(`table.${colKey}`)}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys, confirm)}
-        />
-        <Space>
-          <Button
-            className={styles.button}
-            type='primary'
-            onClick={() => handleSearch(selectedKeys, confirm)}
-            icon={<SearchOutlined />}
-            size='small'
-          >
-            {t('filter.search')}
-          </Button>
-          <Button className={styles.button} onClick={() => handleReset(clearFilters)} size='small'>
-            {t('filter.reset')}
-          </Button>
-        </Space>
-      </div>
-    ),
-    render: (text: string, record: Project) => (
-      <Link to={`/project/${record.projectID}/dashboard`}>
-        <Highlighter
-          highlightClassName={styles.highlight}
-          searchWords={[searchedText]}
-          autoEscape={true}
-          textToHighlight={text.toString()}
-        />
-      </Link>
-    ),
-  }
-}
 
 const ProjectTable: React.FC = () => {
   const { t } = useTranslation()

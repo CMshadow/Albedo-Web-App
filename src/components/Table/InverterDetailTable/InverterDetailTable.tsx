@@ -4,14 +4,18 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { InverterNameDescription } from '../../Descriptions/InverterNameDescription'
 import { getLanguage } from '../../../utils/getLanguage'
+import { RootState, Inverter } from '../../../@types'
+import styles from './index.module.scss'
 
-export const InverterDetailTable = ({ inverterID, count }) => {
+type InverterDetailTableProps = { inverterID: string; count: number }
+
+export const InverterDetailTable: React.FC<InverterDetailTableProps> = ({ inverterID, count }) => {
   const { t } = useTranslation()
-  const inverterRedux = useSelector(state => state.inverter)
+  const inverterRedux = useSelector((state: RootState) => state.inverter)
   const inverterData = inverterRedux.data.concat(inverterRedux.officialData)
   const inverterSpec = inverterData.find(inverter => inverter.inverterID === inverterID)
 
-  const KeysAndUnits = [
+  const KeysAndUnits: [keyof Inverter | 'size' | 'mpptStrNum', string][] = [
     ['vdcMax', 'V'],
     ['vdco', 'V'],
     ['vdcMin', 'V'],
@@ -50,25 +54,34 @@ export const InverterDetailTable = ({ inverterID, count }) => {
   ]
 
   const dataSource = KeysAndUnits.map(([key, unit], index) => {
-    const data = {
+    const data: {
+      key: number
+      series: number
+      paramName: string
+      unit: string
+      param: unknown
+    } = {
       key: index + 1,
       series: index + 1,
       paramName: t(`Inverter.${key}`),
       unit: unit === 'check' ? t('table.yes/no') : unit,
+      param: '',
     }
     if (key === 'size') {
-      data.param = `${inverterSpec.inverterLength} x ${inverterSpec.inverterWidth} x ${inverterSpec.inverterHeight}`
+      data.param = `${inverterSpec?.inverterLength} x ${inverterSpec?.inverterWidth} x ${inverterSpec?.inverterHeight}`
     } else if (key === 'mpptStrNum') {
-      data.param = inverterSpec.strNum / inverterSpec.mpptNum
+      data.param = inverterSpec ? inverterSpec.strNum / inverterSpec?.mpptNum : 0
     } else if (key === 'nationEffcy') {
       data.paramName = t(`${getLanguage()}`) + t(`Inverter.${key}`)
-      data.param = inverterSpec[key]
+      data.param = inverterSpec && inverterSpec[key]
     } else if (key === 'radiator') {
-      data.param = t(`Inverter.${inverterSpec[key]}`)
+      data.param = t(`Inverter.${inverterSpec && inverterSpec[key]}`)
     } else {
-      data.param = inverterSpec[key]
-      if (inverterSpec[key] === true) data.param = t('table.true')
-      if (inverterSpec[key] === false) data.param = t('table.false')
+      if (inverterSpec) {
+        data.param = inverterSpec[key]
+        if (inverterSpec[key] === true) data.param = t('table.true')
+        if (inverterSpec[key] === false) data.param = t('table.false')
+      }
     }
     return data
   })
@@ -78,25 +91,25 @@ export const InverterDetailTable = ({ inverterID, count }) => {
       key: 0,
       title: t('table.series'),
       dataIndex: 'series',
-      align: 'center',
+      align: 'center' as const,
     },
     {
       key: 1,
       title: t('table.paramName'),
       dataIndex: 'paramName',
-      align: 'center',
+      align: 'center' as const,
     },
     {
       key: 2,
       title: t('table.unit'),
       dataIndex: 'unit',
-      align: 'center',
+      align: 'center' as const,
     },
     {
       key: 3,
       title: t('table.param'),
       dataIndex: 'param',
-      align: 'center',
+      align: 'center' as const,
     },
   ]
 
@@ -104,6 +117,7 @@ export const InverterDetailTable = ({ inverterID, count }) => {
 
   return (
     <Table
+      className={styles.invTable}
       bordered
       dataSource={dataSource}
       columns={columns}

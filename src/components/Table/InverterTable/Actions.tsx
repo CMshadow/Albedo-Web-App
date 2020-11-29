@@ -3,21 +3,23 @@ import { Button, Popconfirm, message } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { setInverterData } from '../../../store/action/index'
-import { getInverter, deleteInverter } from '../../../pages/InverterTable/service'
+import { setInverterData } from '../../../store/action'
+import { getInverter, deleteInverter } from '../../../services'
+import { Inverter } from '../../../@types'
+
+type DeleteActionProps = { record: Inverter }
 
 // Inverter列表中触发删除一个Inverter
-export const DeleteAction = ({ record, setactiveData }) => {
+export const DeleteAction: React.FC<DeleteActionProps> = ({ record }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
   const onDelete = () => {
-    dispatch(deleteInverter({ inverterID: record.inverterID })).then(() => {
+    deleteInverter({ inverterID: record.inverterID }).then(() => {
       message.success(t('Inverter.success.deleteInverter'))
-      const response = dispatch(getInverter())
+      const response = getInverter({})
       response.then(data => {
         dispatch(setInverterData(data))
-        setactiveData(data)
       })
     })
   }
@@ -25,15 +27,19 @@ export const DeleteAction = ({ record, setactiveData }) => {
   return (
     <Popconfirm
       title={t('warning.delete')}
-      onConfirm={onDelete}
-      onCancel={() => {
+      onConfirm={e => {
+        e?.stopPropagation()
+        onDelete()
+      }}
+      onCancel={e => {
+        e?.stopPropagation()
         return
       }}
       okText={t('action.confirm')}
       cancelText={t('action.cancel')}
       placement='topRight'
     >
-      <Button type='link' danger icon={<DeleteOutlined />} />
+      <Button type='link' danger icon={<DeleteOutlined />} onClick={e => e.stopPropagation()} />
     </Popconfirm>
   )
 }

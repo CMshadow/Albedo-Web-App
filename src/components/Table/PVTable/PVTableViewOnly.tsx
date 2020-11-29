@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Table, Drawer, Button, Tooltip } from 'antd'
-import { LineChartOutlined, SearchOutlined } from '@ant-design/icons'
+import { LineChartOutlined, SearchOutlined, FilterFilled } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { SearchString, SearchRange } from '../TableColFilters/TableColSearch'
 import { PVDetailTable } from '../PVDetailTable/PVDetailTable'
@@ -20,25 +20,17 @@ const colKeys: [ShownCol, 'n' | 's', string, number][] = [
   ['voco', 'n', 'V', 150],
 ]
 
-type PVTableViewOnlyProps = {
-  data: PV[]
-  activeData: PV[]
-  setactiveData: React.Dispatch<React.SetStateAction<PV[]>>
-}
+type PVTableViewOnlyProps = { data: PV[] }
 
-export const PVTableViewOnly: React.FC<PVTableViewOnlyProps> = ({
-  data,
-  activeData,
-  setactiveData,
-}) => {
+export const PVTableViewOnly: React.FC<PVTableViewOnlyProps> = ({ data }) => {
   const { t } = useTranslation()
   const [showDrawer, setshowDrawer] = useState(false)
   const [viewPVID, setviewPVID] = useState<string>()
   const [viewPVUserID, setviewPVUserID] = useState<string>()
   const [showIVModal, setshowIVModal] = useState(false)
 
-  // 点击组件名显示详细信息
-  const onClickName = (pvID: string) => {
+  // 点击行显示详细信息
+  const onClickRow = (pvID: string) => {
     setviewPVID(pvID)
     setshowDrawer(true)
   }
@@ -76,11 +68,11 @@ export const PVTableViewOnly: React.FC<PVTableViewOnlyProps> = ({
       sorter: (a, b) => +a[key] - +b[key],
       multiple: index,
       width: width,
-      // ...SearchRange({
-      //   colKey: key,
-      //   data,
-      //   setactiveData,
-      // }),
+      ...SearchRange({
+        colKey: key,
+        data,
+      }),
+      filterIcon: filtered => <FilterFilled style={{ color: filtered ? '#1890ff' : undefined }} />,
     }
   })
   // 生成表单组件提供商
@@ -91,10 +83,10 @@ export const PVTableViewOnly: React.FC<PVTableViewOnlyProps> = ({
     sorter: (a, b) =>
       !a.companyName || !b.companyName ? 0 : a.companyName.localeCompare(b.companyName),
     width: 150,
-    ...SearchString({ colKey: 'companyName', data, setactiveData }),
-    filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-    ),
+    ...SearchString('companyName', 'tag'),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record.companyName?.toLowerCase().includes(value.toString().toLowerCase()) || false,
   })
   // 生成表单组件备注列属性
   tableCols.splice(0, 0, {
@@ -111,10 +103,10 @@ export const PVTableViewOnly: React.FC<PVTableViewOnlyProps> = ({
     sorter: (a, b) => a.name.localeCompare(b.name),
     fixed: 'left',
     width: 250,
-    ...SearchString({ colKey: 'name', data, setactiveData }),
-    filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-    ),
+    ...SearchString('name'),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record.name?.toLowerCase().includes(value.toString().toLowerCase()) || false,
   })
   // 生成表单组件材质列属性
   tableCols.push({
@@ -139,7 +131,10 @@ export const PVTableViewOnly: React.FC<PVTableViewOnlyProps> = ({
         <Button
           type='link'
           icon={<LineChartOutlined />}
-          onClick={() => onClickIVCurve(record.pvID, record.userID)}
+          onClick={e => {
+            e.stopPropagation()
+            onClickIVCurve(record.pvID, record.userID)
+          }}
         />
       </Tooltip>
     ),
@@ -149,16 +144,20 @@ export const PVTableViewOnly: React.FC<PVTableViewOnlyProps> = ({
     <>
       <Table
         columns={tableCols}
-        dataSource={activeData}
+        dataSource={data}
         rowKey='pvID'
         pagination={{
           position: ['bottomCenter'],
-          total: activeData.length,
           showTotal: total => `${total}` + t('table.totalCount'),
           defaultPageSize: 10,
           showSizeChanger: true,
         }}
         scroll={{ x: 'max-content', y: 'calc(100vh - 275px)' }}
+        onRow={record => {
+          return {
+            onClick: () => onClickRow(record.pvID),
+          }
+        }}
       />
       <Drawer
         bodyStyle={{ padding: '0px' }}
@@ -168,7 +167,7 @@ export const PVTableViewOnly: React.FC<PVTableViewOnlyProps> = ({
         visible={showDrawer}
         width='50vw'
       >
-        <PVDetailTable pvID={viewPVID} count={0} />
+        {viewPVID ? <PVDetailTable pvID={viewPVID} count={0} /> : null}
       </Drawer>
       <IVModal
         pvID={viewPVID}

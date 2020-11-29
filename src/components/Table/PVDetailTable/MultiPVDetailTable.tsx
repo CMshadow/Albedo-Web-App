@@ -3,36 +3,45 @@ import { List, Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { PVDetailTable } from './PVDetailTable'
+import { Building, RootState } from '../../../@types'
 const Title = Typography.Title
 
-const reduceUnique = data => {
-  return data.reduce((acc, val) => {
+const reduceUnique = (data: { pvID: string; count: number }[]) => {
+  return data.reduce((acc: { [key: string]: number }, val) => {
     Object.keys(acc).includes(val.pvID) ? (acc[val.pvID] += val.count) : (acc[val.pvID] = val.count)
     return acc
   }, {})
 }
 
-export const MultiPVDetailTable = ({ buildingID }) => {
-  const { t } = useTranslation()
-  const projectData = useSelector(state => state.project)
-  const pvData = useSelector(state => state.pv.data).concat(
-    useSelector(state => state.pv.officialData)
-  )
+type MultiPVDetailTableProps = { buildingID: string }
 
-  const genPVCount = buildingData =>
-    buildingData.data.map(spec => ({
-      pvID: pvData.find(pv => pv.pvID === spec.pv_panel_parameters.pv_model.pvID).pvID,
-      count: spec.inverter_wiring.reduce((acc, val) => {
-        acc += val.string_per_inverter * val.panels_per_string
-        return acc
-      }, 0),
-    }))
+export const MultiPVDetailTable: React.FC<MultiPVDetailTableProps> = ({ buildingID }) => {
+  const { t } = useTranslation()
+  const projectData = useSelector((state: RootState) => state.project)
+
+  const genPVCount = (buildingData: Building): { pvID: string; count: number }[] =>
+    buildingData.data
+      .map(spec => ({
+        pvID: spec.pv_panel_parameters.pv_model.pvID,
+        count: spec.inverter_wiring.reduce((acc, val) => {
+          acc += (val.string_per_inverter || 0) * (val.panels_per_string || 0)
+          return acc
+        }, 0),
+      }))
+      .filter((obj): obj is { pvID: string; count: number } => obj.pvID !== null)
 
   // 统计每种用到的组件id及数量
-  const pvCount =
-    buildingID === 'overview'
-      ? projectData.buildings.flatMap(building => genPVCount(building))
-      : genPVCount(projectData.buildings.find(building => building.buildingID === buildingID))
+  let pvCount: { pvID: string; count: number }[] = []
+  if (projectData) {
+    if (buildingID === 'overview') {
+      pvCount = projectData.buildings.flatMap(building => genPVCount(building))
+    } else {
+      const matchBuilding = projectData.buildings.find(
+        building => building.buildingID === buildingID
+      )
+      if (matchBuilding) pvCount = genPVCount(matchBuilding)
+    }
+  }
   const uniquePVCount = reduceUnique(pvCount)
   const dataSource = Object.keys(uniquePVCount)
 
