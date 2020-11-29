@@ -48,9 +48,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
           },
         })}
         onClick={event => {
-          console.log(event.lng, event.lat)
           googleRevGeocoder({ lon: event.lng, lat: event.lat, key: apiKey }).then(res => {
-            console.log(res)
             if (res.results.length > 0) {
               setmapPos({ lon: event.lng, lat: event.lat })
               form.setFieldsValue({ projectAddress: res.results[0].formatted_address })

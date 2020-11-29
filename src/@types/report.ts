@@ -16,6 +16,53 @@ export type GainEntry = {
 export type Report = {
   ttl_investment?: number
   gain?: Array<GainEntry>
-  year25_AC_power: Array<{ unit: string; value: number }>
   'final-export-credit'?: number
+
+  coal_reduction: number
+  c_reduction: number
+  co2_reduction: number
+  so2_reduction: number
+  nox_reduction: number
+
+  ttl_dc_power_capacity: { value: number; unit: string }
+  ac_output_distribution: { value: number[]; unit: string }
+  year_AC_power: { value: number; unit: string }
+
+  p_loss_combibox_wiring: number
+  p_loss_soiling: number
+  p_loss_connection: number
+  p_loss_availability: number
+  p_loss_temperature: number
+  p_loss_mismatch_betweenstrings: number
+  p_loss_conversion: number
+  p_loss_tilt_azimuth: number
+  p_loss_dc_wiring: number
+  p_loss_degradation: number
+  p_loss_transformer: number
+  p_loss_degradation_rest: number
+  p_loss_mismatch_withinstring: number
+  p_loss_system: number
+  p_loss_far_side_shading: number
+  p_loss_ac_wiring: number
+  p_loss_eff_irradiance: number
+  p_loss_transformer_wiring: number
+
+  GHI: number[]
+  setup_ac_Ie: number[][]
+  setup_dc_wir_choice: number[][][]
+  setup_month_irr: number[][]
+  year25_kWh_over_kWp: number[]
+  setup_behindPV: number[][]
+  setup_ac_wir_choice: string[][]
+  month_AC_power: { value: number[]; unit: string }
+  year25_AC_power: { unit: string; value: number }[]
+  combibox_Ie: number
+  daily_AC_power: { value: number[]; unit: string }
+  combibox_wir_choice: number
+  setup_month_irr_avg_pk_hr: number[][]
+  p_loss_system_monthly: number[]
+  sunPosition: number[][][]
+  system_efficiency: number
+  weatherAnalysis: { GHI: number; Wspd: number; DHI: number; DryBulb: number; DNI: number }[]
+  kWh_over_kWp: number
 }

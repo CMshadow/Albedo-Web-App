@@ -4,11 +4,14 @@ import { useSelector } from 'react-redux'
 import { Card, Typography } from 'antd'
 import { Chart, Line, Axis, Tooltip } from 'bizcharts'
 import { titleStyle } from '../../styles/chartStyles'
-const Title = Typography.Title
+import { RootState } from '../../@types'
+const { Title } = Typography
 
-export const ACDistributionChart = ({ buildingID }) => {
+type ACDistributionChartProps = { buildingID: string }
+
+export const ACDistributionChart: React.FC<ACDistributionChartProps> = ({ buildingID }) => {
   const { t } = useTranslation()
-  const reportData = useSelector(state => state.report)
+  const reportData = useSelector((state: RootState) => state.report)
 
   const DCPower = reportData[buildingID].ttl_dc_power_capacity.value
   const DCUnit = reportData[buildingID].ttl_dc_power_capacity.unit
@@ -26,12 +29,12 @@ export const ACDistributionChart = ({ buildingID }) => {
       alias: t('acDistributionChart.dc'),
       nice: true,
       tickCount: 10,
-      formatter: text => `${text.toFixed(2)} ${DCUnit}`,
+      formatter: (text: number) => `${text.toFixed(2)} ${DCUnit}`,
     },
     ac: {
       alias: t('acDistributionChart.ac'),
       tickCount: 10,
-      formatter: text => `${text.toFixed(2)} ${ACUnit}`,
+      formatter: (text: number) => `${text.toFixed(2)} ${ACUnit}`,
       nice: true,
     },
   }
@@ -52,7 +55,12 @@ export const ACDistributionChart = ({ buildingID }) => {
         autoFit
         data={dataSource}
         padding='auto'
-        onTooltipChange={e => {
+        onTooltipChange={(e: {
+          items: { value: string; data: { dc: number; ac: number } }[]
+          tooltip: unknown
+          x: number
+          y: number
+        }) => {
           const items = e.items
           const bucket = items[0]
           items[0].value = `${bucket.data.dc.toFixed(2)} ${DCUnit} - ${(

@@ -3,14 +3,23 @@ import { Card, Statistic, Row, Col, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { kg2other } from '../../../utils/unitConverter'
-const Title = Typography.Title
+import { RootState } from '../../../@types'
+const { Title } = Typography
 
-export const EmissionReductionCard = ({ buildingID }) => {
+type EmissionReductionCardProps = { buildingID: string }
+
+export const EmissionReductionCard: React.FC<EmissionReductionCardProps> = ({ buildingID }) => {
   const { t } = useTranslation()
-  const reportData = useSelector(state => state.report)
-  const keys = ['coal_reduction', 'c_reduction', 'co2_reduction', 'so2_reduction', 'nox_reduction']
+  const reportData = useSelector((state: RootState) => state.report)
+  const keys = [
+    'coal_reduction',
+    'c_reduction',
+    'co2_reduction',
+    'so2_reduction',
+    'nox_reduction',
+  ] as const
 
-  const genCard = key => {
+  const genCard = (key: typeof keys[number]) => {
     const data = kg2other(reportData[buildingID][key])
     return (
       <Col key={key} span={8}>

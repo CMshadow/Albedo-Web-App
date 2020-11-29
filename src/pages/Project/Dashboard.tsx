@@ -5,29 +5,33 @@ import { useSelector } from 'react-redux'
 import { Description } from './elements/Description'
 import { OptimalCard } from './elements/OptimalCard'
 import { Equipments } from './elements/Equipments'
+import { RootState } from '../../@types'
 
-const rowGutter = [12, 12]
+const rowGutter: [number, number] = [12, 12]
 
-const Dashboard = () => {
-  const projectData = useSelector(state => state.project)
+const Dashboard: React.FC = () => {
+  const projectData = useSelector((state: RootState) => state.project)
 
   return (
     <div>
       <GlobalAlert />
       <Row gutter={rowGutter}>
         <Col span={24}>
-          <Description loading={!projectData.projectTitle} />
+          <Description loading={!projectData || !projectData.projectTitle} />
         </Col>
       </Row>
       <Row gutter={rowGutter}>
         <Col span={24}>
-          <OptimalCard loading={!(projectData.optTilt >= 0)} {...projectData} />
+          <OptimalCard
+            loading={!projectData || !projectData.optTilt || !(projectData.optTilt >= 0)}
+            {...projectData}
+          />
         </Col>
       </Row>
       <Row gutter={rowGutter}>
         <Col span={24}>
           <Equipments
-            loading={!projectData.projectTitle || !projectData.tiltAzimuthPOA}
+            loading={!projectData || !projectData.projectTitle || !projectData.tiltAzimuthPOA}
             {...projectData}
           />
         </Col>

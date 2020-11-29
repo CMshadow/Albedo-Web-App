@@ -3,32 +3,28 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Tabs, Button, Space } from 'antd'
 import { SettingOutlined } from '@ant-design/icons'
-import * as styles from './BuildingsTab.module.scss'
+import styles from './BuildingsTab.module.scss'
 import { BuildingModal } from './BuildingModal'
 import { SingleBuildingTab } from './SingleBuildingTab'
 import { deleteBuilding } from '../../store/action/index'
+import { Building, RootState } from '../../@types'
 
 const { TabPane } = Tabs
 
-export const BuildingsTab = ({ buildings, ...props }) => {
+type BuildingsTabProps = { buildings: Building[] }
+
+export const BuildingsTab: React.FC<BuildingsTabProps> = ({ buildings }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const projectType = useSelector(state => state.project.projectType)
+  const projectType = useSelector((state: RootState) => state.project?.projectType)
   const [showModal, setshowModal] = useState(false)
-  const [editRecord, seteditRecord] = useState(null)
-  const [activeKey, setactiveKey] = useState(buildings.length > 0 ? buildings[0].buildingID : null)
+  const [editRecord, seteditRecord] = useState<Building | undefined>()
+  const [activeKey, setactiveKey] = useState<string | undefined>(
+    buildings.length > 0 ? buildings[0].buildingID : undefined
+  )
 
-  const deleteBuildingTab = targetKey => {
+  const deleteBuildingTab = (targetKey: string) => {
     dispatch(deleteBuilding(targetKey))
-  }
-
-  const onEdit = (targetKey, action) => {
-    if (action === 'remove') {
-      const keyIndex = buildings.indexOf(buildings.find(b => b.buildingID === targetKey))
-      const newActiveKeyIndex = keyIndex === buildings.length - 1 ? keyIndex - 1 : keyIndex + 1
-      setactiveKey(buildings.length === 1 ? null : buildings[newActiveKeyIndex].buildingID)
-      deleteBuildingTab(targetKey)
-    }
   }
 
   const addBuildingButton = (
@@ -46,7 +42,20 @@ export const BuildingsTab = ({ buildings, ...props }) => {
         tabBarGutter={12}
         hideAdd={true}
         tabBarExtraContent={addBuildingButton}
-        onEdit={onEdit}
+        onEdit={(targetKey, action) => {
+          if (action === 'remove' && typeof targetKey === 'string') {
+            const findBuilding = buildings.find(b => b.buildingID === targetKey)
+            if (findBuilding) {
+              const keyIndex = buildings.indexOf(findBuilding)
+              const newActiveKeyIndex =
+                keyIndex === buildings.length - 1 ? keyIndex - 1 : keyIndex + 1
+              setactiveKey(
+                buildings.length === 1 ? undefined : buildings[newActiveKeyIndex].buildingID
+              )
+              deleteBuildingTab(targetKey)
+            }
+          }
+        }}
         onChange={key => setactiveKey(key)}
       >
         {buildings.map(building => (

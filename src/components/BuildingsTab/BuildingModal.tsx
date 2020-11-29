@@ -5,32 +5,36 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { addBuilding, editBuilding } from '../../store/action/index'
 import { other2m, m2other } from '../../utils/unitConverter'
+import { Building, RootState } from '../../@types'
 const FormItem = Form.Item
 
-export const BuildingModal = ({
-  showModal,
-  setshowModal,
-  editRecord,
-  seteditRecord,
-  setactiveKey,
-}) => {
+type BuildingModalProps = {
+  showModal: boolean
+  setshowModal: React.Dispatch<React.SetStateAction<boolean>>
+  editRecord: Building | undefined
+  seteditRecord: React.Dispatch<React.SetStateAction<Building | undefined>>
+  setactiveKey?: React.Dispatch<React.SetStateAction<string | undefined>>
+}
+
+export const BuildingModal: React.FC<BuildingModalProps> = props => {
+  const { showModal, setshowModal, editRecord, seteditRecord, setactiveKey } = props
   const { t } = useTranslation()
-  const projectType = useSelector(state => state.project.projectType)
   const dispatch = useDispatch()
   const [form] = Form.useForm()
-  const unit = useSelector(state => state.unit.unit)
+  const projectType = useSelector((state: RootState) => state.project?.projectType)
+  const unit = useSelector((state: RootState) => state.unit.unit)
 
   // modal被关闭后回调
   const onClose = () => {
     form.resetFields()
-    seteditRecord(null)
+    seteditRecord(undefined)
   }
 
   const handleOk = () => {
     // 验证表单，如果通过提交表单
     form
       .validateFields()
-      .then(success => {
+      .then(() => {
         form.submit()
       })
       .catch(err => {
@@ -43,7 +47,7 @@ export const BuildingModal = ({
     setshowModal(false)
   }
 
-  const submitForm = values => {
+  const submitForm = (values: { buildingName: string; combibox_cable_len: number }) => {
     values.combibox_cable_len = other2m(unit, values.combibox_cable_len)
     let buildingID
     if (editRecord) {
@@ -60,7 +64,8 @@ export const BuildingModal = ({
   // 组件渲染后加载表单初始值
   useEffect(() => {
     const defaultValues = { ...editRecord }
-    defaultValues.combibox_cable_len = m2other(unit, defaultValues.combibox_cable_len) || null
+    const init_combibox_cable_len = m2other(unit, defaultValues.combibox_cable_len)
+    if (init_combibox_cable_len) defaultValues.combibox_cable_len = init_combibox_cable_len
     form.setFieldsValue(defaultValues || null)
   }, [editRecord, form, unit])
 

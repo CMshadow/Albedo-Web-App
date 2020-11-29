@@ -2,9 +2,12 @@ import React from 'react'
 import { Card, Statistic, Row, Col } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { wh2other } from '../../../utils/unitConverter'
-import * as styles from './OptimalCard.module.scss'
+import styles from './OptimalCard.module.scss'
+import { Project } from '../../../@types'
 
-export const OptimalCard = ({ loading, ...values }) => {
+type OptimalCardProps = Partial<Project> & { loading: boolean }
+
+export const OptimalCard: React.FC<OptimalCardProps> = ({ loading, ...values }) => {
   const { t } = useTranslation()
 
   return (
@@ -33,14 +36,16 @@ export const OptimalCard = ({ loading, ...values }) => {
       </Col>
       <Col span={8}>
         <Card loading={loading}>
-          <Statistic
-            className={styles.text}
-            title={t('project.optimal.optPOA')}
-            value={wh2other(values.optPOA).value}
-            precision={2}
-            valueStyle={{ color: '#faad14' }}
-            suffix={wh2other(values.optPOA).unit + '/㎡'}
-          />
+          {values.optPOA !== undefined && values.optPOA >= 0 ? (
+            <Statistic
+              className={styles.text}
+              title={t('project.optimal.optPOA')}
+              value={Number(wh2other(values.optPOA).value)}
+              precision={2}
+              valueStyle={{ color: '#faad14' }}
+              suffix={wh2other(values.optPOA).unit + '/㎡'}
+            />
+          ) : null}
         </Card>
       </Col>
     </Row>

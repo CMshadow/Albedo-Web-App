@@ -7,20 +7,21 @@ import {
   findUnusedCombiboxSerial,
   findUnusedInverterSerial,
 } from '../../../utils/checkUnusedEquipments'
-import * as styles from './UnusedCombiboxInverterCard.module.scss'
+import styles from './UnusedCombiboxInverterCard.module.scss'
+import { Building, RootState } from '../../../@types'
 
 const { Panel } = Collapse
 const { Paragraph } = Typography
 
 export const UnusedCombiboxInverterCard = () => {
   const { t } = useTranslation()
-  const projectData = useSelector(state => state.project)
-  const allPowercabinets = projectData.powercabinets || []
-  const allTransformers = projectData.transformers || []
+  const projectData = useSelector((state: RootState) => state.project)
+  const allPowercabinets = projectData?.powercabinets || []
+  const allTransformers = projectData?.transformers || []
 
   const unusedTransformerSerial = findUnusedTransformerSerial(allPowercabinets, allTransformers)
 
-  const genUnusedCombiboxInverter = building => {
+  const genUnusedCombiboxInverter = (building: Building) => {
     const unusedCombiboxSerial = findUnusedCombiboxSerial(
       allTransformers,
       allPowercabinets,
@@ -80,8 +81,11 @@ export const UnusedCombiboxInverterCard = () => {
           <Divider />
         </>
       ) : null}
-      <Collapse ghost defaultActiveKey={projectData.buildings.map(building => building.buildingID)}>
-        {projectData.buildings.map(building => (
+      <Collapse
+        ghost
+        defaultActiveKey={projectData?.buildings.map(building => building.buildingID)}
+      >
+        {projectData?.buildings.map(building => (
           <Panel header={building.buildingName} key={building.buildingID} forceRender>
             {genUnusedCombiboxInverter(building)}
           </Panel>

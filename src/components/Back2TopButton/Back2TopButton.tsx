@@ -2,7 +2,7 @@ import React from 'react'
 import { BackTop } from 'antd'
 import { VerticalAlignTopOutlined } from '@ant-design/icons'
 
-const style = {
+const style: React.CSSProperties = {
   height: 40,
   width: 40,
   lineHeight: '40px',
@@ -13,7 +13,7 @@ const style = {
   fontSize: 40,
 }
 
-export const Back2TopButton = () => (
+export const Back2TopButton: React.FC = () => (
   <BackTop>
     <VerticalAlignTopOutlined style={style} />
   </BackTop>

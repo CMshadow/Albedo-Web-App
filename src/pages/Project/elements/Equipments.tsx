@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
-import { Card, Button, Spin, Typography } from 'antd'
+import { Card, Button, Spin } from 'antd'
 import { useSelector } from 'react-redux'
 import { LoadingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
-import * as styles from './Equipments.module.scss'
+import styles from './Equipments.module.scss'
 import { BuildingsTab } from '../../../components/BuildingsTab/BuildingsTab'
 import { BuildingModal } from '../../../components/BuildingsTab/BuildingModal'
-const Title = Typography.Title
+import { Building, Project, RootState } from '../../../@types'
 
-export const Equipments = ({ loading, ...values }) => {
+type EquipmentsProps = Partial<Project> & { loading: boolean }
+
+export const Equipments: React.FC<EquipmentsProps> = ({ loading, ...values }) => {
   const { t } = useTranslation()
-  const projectType = useSelector(state => state.project.projectType)
+  const projectType = useSelector((state: RootState) => state.project?.projectType)
   const [showModal, setshowModal] = useState(false)
-  const [editRecord, seteditRecord] = useState(null)
+  const [editRecord, seteditRecord] = useState<Building | undefined>()
 
   const addBuildingText = () =>
     projectType === 'domestic' ? t('project.add.building') : t('project.add.unit')
@@ -21,7 +23,7 @@ export const Equipments = ({ loading, ...values }) => {
     <Spin
       size='large'
       spinning={loading}
-      tip={<Title level={4}>{t('project.loading.analyze')}</Title>}
+      tip={t('project.loading.analyze')}
       indicator={<LoadingOutlined />}
     >
       <Card
@@ -34,7 +36,7 @@ export const Equipments = ({ loading, ...values }) => {
             {addBuildingText()}
           </Button>
         ) : (
-          <BuildingsTab {...values} />
+          <BuildingsTab buildings={values.buildings} />
         )}
         <BuildingModal
           showModal={showModal}

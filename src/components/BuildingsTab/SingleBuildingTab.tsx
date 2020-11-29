@@ -2,30 +2,33 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Tabs, Button, Row, Col, Anchor } from 'antd'
-import * as styles from './BuildingsTab.module.scss'
-import { addSubAry, addCombibox } from '../../store/action/index'
+import styles from './BuildingsTab.module.scss'
+import { addSubAry, addCombibox } from '../../store/action'
 import { PVSpecCard } from '../SpecCard/PVSpecCard/PVSpecCard'
 import { CombinerBoxSpecCard } from '../SpecCard/CombinerBoxSpecCard/CombinerBoxSpecCard'
+import { Building, RootState } from '../../@types'
 
 const { TabPane } = Tabs
 const { Link } = Anchor
-const rowGutter = [12, 12]
+const rowGutter: [number, number] = [12, 12]
 
-export const SingleBuildingTab = ({ building }) => {
+type SingleBuildingTabProps = { building: Building }
+
+export const SingleBuildingTab: React.FC<SingleBuildingTabProps> = ({ building }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const projectType = useSelector(state => state.project.projectType)
-  const [editingCombibox, seteditingCombibox] = useState(null)
+  const projectType = useSelector((state: RootState) => state.project?.projectType)
+  const [editingCombibox, seteditingCombibox] = useState<number>()
   const [loading, setloading] = useState(false)
-  const [collapseActive, setcollapseActive] = useState(
+  const [collapseActive, setcollapseActive] = useState<boolean[]>(
     new Array(building.data.length).fill(0).map(() => false)
   )
 
-  const addSpec = buildingID => {
+  const addSpec = (buildingID: string) => {
     dispatch(addSubAry(buildingID))
   }
 
-  const addCB = buildingID => {
+  const addCB = (buildingID: string) => {
     dispatch(addCombibox(buildingID))
   }
 
@@ -58,7 +61,7 @@ export const SingleBuildingTab = ({ building }) => {
                   const newcollapseActive = [...collapseActive]
                   newcollapseActive.push(false)
                   setcollapseActive(newcollapseActive)
-                  document.getElementById(`sub${building.data.length - 1}`).scrollIntoView(false)
+                  document.getElementById(`sub${building.data.length - 1}`)?.scrollIntoView(false)
                 }, 500)
               }}
             >
@@ -118,7 +121,7 @@ export const SingleBuildingTab = ({ building }) => {
 
                     document
                       .getElementById(`combibox${building.combibox.length - 1}`)
-                      .scrollIntoView()
+                      ?.scrollIntoView()
                   }, 500)
                 }}
               >
