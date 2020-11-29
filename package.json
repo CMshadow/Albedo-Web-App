@@ -2,6 +2,7 @@
   "name": "albedo-webapp",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
   "dependencies": {
     "@craco/craco": "^5.8.0",
     "@fortawesome/fontawesome-pro": "^5.15.1",
@@ -54,8 +55,8 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
-    "lint": "eslint --fix src/**/*.{js,jsx,ts,tsx}",
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx,css,scss,less}",
+    "lint": "eslint --fix src/**/*.{js,jsx,ts,tsx} && stylelint --config .stylelintrc.json --fix src/**/*.{css,scss,less}",
     "start": "craco start",
     "build": "craco --max-old-space-size=4096 build",
     "test": "craco test",
@@ -99,7 +100,14 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^4.3.0",
     "lint-staged": "^10.5.1",
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "stylelint": "^13.8.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "^2.3.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.18.0"
   },
   "husky": {
     "hooks": {
@@ -109,7 +117,12 @@
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,md,yml,yaml}": [
       "prettier --write",
-      "eslint --fix",
+      "eslint --config .eslintrc.js --fix",
+      "git add"
+    ],
+    "src/**/*.{css,scss,less}": [
+      "prettier --write",
+      "stylelint --config .stylelintrc.json --fix",
       "git add"
     ]
   }

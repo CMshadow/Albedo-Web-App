@@ -1,55 +1,55 @@
 .layout {
-    background: #ffffff;
-  }
+  background: #fff;
+}
 
-  .content {
-    background: #ffffff;
-    //font-size: 16px;
-    font-size: 1em;
-    max-width: 1080px;
-    //margin: 100px auto 0px auto;
-    margin: 6em auto 0px auto;
-    text-align: center;
-  }
+.content {
+  max-width: 1080px;
+  //margin: 100px auto 0px auto;
+  margin: 6em auto 0 auto;
+  //font-size: 16px;
+  font-size: 1em;
+  text-align: center;
+  background: #fff;
+}
 
-  .highlightTxt {
-    //font-size: 18px;
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-right: 3px;
-  }
+.highlightTxt {
+  margin-right: 3px;
+  font-weight: bold;
+  //font-size: 18px;
+  font-size: 1.2em;
+}
 
-  .regularTxt {
-    //font-size: 16px;
-    font-size: 1em;
-  }
+.regularTxt {
+  //font-size: 16px;
+  font-size: 1em;
+}
 
-  .part {
-    //margin-top: 200px;
-    margin-top: 13.75em;
-    margin-bottom: 50px;
-  }
+.part {
+  //margin-top: 200px;
+  margin-top: 13.75em;
+  margin-bottom: 50px;
+}
 
-  .feature {
-    margin-top: 220px;
-  }
+.feature {
+  margin-top: 220px;
+}
 
-  .section {
-    //margin-top: 25px;
-    margin-top: 1.5em;
-    width: 100%;
+.section {
+  width: 100%;
+  //margin-top: 25px;
+  margin-top: 1.5em;
 
-    .padSentence {
-      height: 35%;
-    }
+  .padSentence {
+    height: 35%;
   }
+}
 
-  .card {
-    text-align: left;
-  }
+.card {
+  text-align: left;
+}
 
-  .icon {
-    //font-size: 50px;
-    font-size: 3.125em;
-    float: left;
-  }
+.icon {
+  float: left;
+  //font-size: 50px;
+  font-size: 3.125em;
+}

@@ -1,35 +1,34 @@
 .headerInScroll {
-    position: fixed;
-    z-index: 999;
-    width: 100%;
-    background-color: white;
-    padding:0px;
-    box-shadow: 0px 0px 10px 0px rgba(97,97,97,0.71);
-  }
-  
-  .headerInFixed {
-    position: fixed;
-    z-index: 999;
-    width: 100%;
-    padding:0px;
-    background-color: white;
-  }
-  
-  .logo {
-    padding: 0 3%;
-  }
-  
-  .nav {
-    height: 64px;
-    border: 0;
-    overflow: hidden;
-  }
-  
-  .right {
-    position: absolute;
-    right: 5%;
-    top: 0px;
-    color: white;
-    height: 64px;
-  }
-    
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  padding: 0;
+  background-color: white;
+  box-shadow: 0 0 10px 0 rgba(97, 97, 97, 0.71);
+}
+
+.headerInFixed {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  padding: 0;
+  background-color: white;
+}
+
+.logo {
+  padding: 0 3%;
+}
+
+.nav {
+  height: 64px;
+  overflow: hidden;
+  border: 0;
+}
+
+.right {
+  position: absolute;
+  top: 0;
+  right: 5%;
+  height: 64px;
+  color: white;
+}

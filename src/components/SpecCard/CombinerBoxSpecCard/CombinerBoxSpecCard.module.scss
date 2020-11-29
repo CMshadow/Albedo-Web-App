@@ -1,20 +1,18 @@
 @import '../../../styles/global.scss';
 
-.card{
+.card {
   width: 100%;
-  margin: 25px 0px;
+  margin: 25px 0;
+  padding: 5px 0;
   border: 2px solid $primary-color;
-  padding: 5px 0px;
 
   .content {
     margin: 15px;
   }
-
 }
 
-
 .submitBut {
-  margin: 0px;
+  margin: 0;
 }
 
 .divider {
@@ -26,6 +24,6 @@
 }
 
 .linkedInverterParagraph {
+  margin: 0.5em 0 !important;
   color: #faad14;
-  margin: 0.5em 0px !important;
 }

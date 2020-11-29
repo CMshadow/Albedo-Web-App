@@ -15,7 +15,9 @@
 
   .password {
     margin-bottom: 24px;
+
     :global {
+
       .ant-form-item-explain {
         display: none;
       }
@@ -24,7 +26,7 @@
 
   .submit {
     width: 100%;
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   .floatleft {

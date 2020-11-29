@@ -10,7 +10,9 @@
 
   .password {
     margin-bottom: 24px;
+
     :global {
+
       .ant-form-item-explain {
         display: none;
       }
@@ -51,7 +53,9 @@
 }
 
 .progress-pass > .progress {
+
   :global {
+
     .ant-progress-bg {
       background-color: $warning-color;
     }
@@ -71,7 +75,7 @@
 }
 
 .popover {
-  padding: 5px 0px;
+  padding: 5px 0;
 }
 
 .popoverContent {
@@ -79,5 +83,5 @@
 }
 
 .popoverIcon {
-  padding: 0px 5px;
+  padding: 0 5px;
 }

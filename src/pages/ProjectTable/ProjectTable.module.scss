@@ -11,13 +11,13 @@
   padding: 8px;
 
   .input {
+    display: block;
     width: 200px;
     margin-bottom: 8px;
-    display: block;
   }
 
   .button {
     width: 96px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 }

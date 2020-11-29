@@ -1,18 +1,18 @@
 .layout {
-  background-color: #fff;
   min-height: 100vh;
+  background-color: #fff;
 
   .content {
-    background: #ffffff;
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 20px;
+    padding-right: 5%;
+    padding-left: 5%;
     font-size: 1em;
     //min-width: 1080px;
     line-height: 100px;
-    margin-top: 100px;
-    margin-bottom: 20px;
     text-align: center;
-    width: 100%;
-    padding-left: 5%;
-    padding-right: 5%;
+    background: #fff;
   }
 
   .title1 .title2 {
@@ -23,5 +23,4 @@
     float: center;
     text-align: left;
   }
-
 }

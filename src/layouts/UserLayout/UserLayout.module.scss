@@ -6,6 +6,10 @@
   height: 100vh;
   overflow: auto;
   background: $layout-body-background;
+  background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
+  background-repeat: no-repeat;
+  background-position: center 110px;
+  background-size: 100%;
 }
 
 .lang {
@@ -13,6 +17,7 @@
   height: 40px;
   line-height: 44px;
   text-align: right;
+
   :global(.ant-dropdown-trigger) {
     margin-right: 24px;
   }
@@ -20,21 +25,8 @@
 
 .content {
   flex: 1;
-  padding: 32px 0;
-}
-
-
-.container {
-  background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
-  background-repeat: no-repeat;
-  background-position: center 110px;
-  background-size: 100%;
-}
-
-.content {
   padding: 32px 0 24px;
 }
-
 
 .top {
   text-align: center;
@@ -43,6 +35,7 @@
 .header {
   height: 100px;
   line-height: 44px;
+
   a {
     text-decoration: none;
   }

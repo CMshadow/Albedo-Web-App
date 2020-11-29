@@ -1,19 +1,19 @@
 .sider {
-  overflow: auto;
-  height: 100vh;
   position: fixed;
   left: 0;
   z-index: 2;
+  height: 100vh;
+  overflow: auto;
 
   h1 {
-    font-size: 20px;
-    color: white;
     margin: 0;
+    color: white;
+    font-size: 20px;
   }
 
   h4 {
-    color: orange;
     margin: 0;
+    color: orange;
   }
 
   .title {
@@ -27,8 +27,8 @@
   }
 
   .menuItem {
+    margin: 10px 0;
     font-size: 15px;
-    margin: 10px 0px;
   }
 }
 
@@ -42,7 +42,7 @@
   }
 
   .footer {
-    background-color: white;
     padding: 0;
+    background-color: white;
   }
 }

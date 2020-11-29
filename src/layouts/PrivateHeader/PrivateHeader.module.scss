@@ -6,9 +6,9 @@ $pro-header-hover-bg: rgba(0, 0, 0, 0.025);
   position: fixed;
   z-index: 999;
   width: calc(100vw - 250px);
-  background-color: white;
   padding-left: 15px;
-  box-shadow: 0px 0px 10px 0px rgba(97,97,97,0.71);
+  background-color: white;
+  box-shadow: 0 0 10px 0 rgba(97, 97, 97, 0.71);
 }
 
 .right {
@@ -22,19 +22,22 @@ $pro-header-hover-bg: rgba(0, 0, 0, 0.025);
   padding: 0 20px;
   cursor: pointer;
   transition: all 0.3s;
+
   > span {
     color: fade($black, 65%);
     vertical-align: middle;
   }
+
   &:hover {
     background: $pro-header-hover-bg;
   }
+
   &:global(.opened) {
     background: $pro-header-hover-bg;
   }
 }
 
 .avatar {
+  margin: 0 5px;
   background-color: orange;
-  margin: 0px 5px;
 }

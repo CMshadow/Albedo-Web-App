@@ -5,8 +5,8 @@
 }
 
 .ant-table-title {
-  padding: 0px !important;
-  border: 0px !important;
+  padding: 0 !important;
+  border: 0 !important;
 }
 
 .noneditable {
@@ -23,30 +23,30 @@
 .editable-cell-wrap {
   min-height: 22px;
   padding: 4px;
-  border: 1px solid #ffffff;
+  border: 1px solid #fff;
   cursor: pointer;
 }
 
 .editable-cell-wrap-empty {
   min-height: 22px;
   padding: 4px;
-  cursor: pointer;
   border: 1px solid #ff4d4f;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .editable-row:hover .editable-cell-wrap {
-  border: 1px solid $primary-color-2;
   min-height: 22px;
-  border-radius: 4px;
   padding: 4px 11px;
+  border: 1px solid $primary-color-2;
+  border-radius: 4px;
 }
 
 .editable-row:hover .editable-cell-wrap-empty {
-  border: 1px solid $primary-color-2;
   min-height: 22px;
-  border-radius: 4px;
   padding: 4px 11px;
+  border: 1px solid $primary-color-2;
+  border-radius: 4px;
 }
 
 .summaryRow {
