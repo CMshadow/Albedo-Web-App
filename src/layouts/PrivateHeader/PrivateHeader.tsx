@@ -44,7 +44,7 @@ const PrivateHeader: React.FC = () => {
           size='large'
           icon={<ArrowLeftOutlined />}
           onClick={() => {
-            history.push('/dashboard')
+            history.push('/')
           }}
         >
           {t('sider.menu.back-project')}
@@ -67,7 +67,7 @@ const PrivateHeader: React.FC = () => {
           </div>
         </Dropdown>
         <div className={styles.item}>
-          <SelectLang className={styles.item} />
+          <SelectLang />
         </div>
       </Row>
     </Header>

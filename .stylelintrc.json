@@ -22,7 +22,9 @@
       {
         "ignorePseudoClasses": ["global"]
       }
-    ]
+    ],
+    "property-no-unknown": [true, { "ignoreProperties": ["line-dash", "line-width"] }],
+    "unit-no-unknown": [true, { "ignoreUnits": ["/^[d+,s*d+]/", "]"] }]
   },
   "ignoreFiles": ["node_modules/**/*", "build/**/*"]
 }

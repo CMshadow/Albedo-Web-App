@@ -8,7 +8,7 @@ const PublicRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={() => (!cognitoUser ? children : <Redirect to={{ pathname: '/dashboard' }} />)}
+      render={() => (!cognitoUser ? children : <Redirect to={{ pathname: '/' }} />)}
     />
   )
 }

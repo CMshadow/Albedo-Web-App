@@ -9,4 +9,5 @@ export type ParamsFormRedirectState = {
 
 export type Params = {
   projectID: string
+  buildingID?: string
 }

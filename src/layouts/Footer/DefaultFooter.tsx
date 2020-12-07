@@ -11,15 +11,15 @@ const DefaultFooter: React.FC = () => {
 
   return (
     <Footer className={styles.footer}>
-      <Link href='/terms' target='_blank'>
+      <Link href='albedox.com/terms' target='_blank'>
         {t('footer.term-of-use')}
       </Link>
       <Divider type='vertical' />
-      <Link href='/cookie' target='_blank'>
+      <Link href='albedox.com/cookie' target='_blank'>
         {t('footer.cookie')}
       </Link>
       <Divider type='vertical' />
-      <Link href='/privacy' target='_blank'>
+      <Link href='albedox.com/privacy' target='_blank'>
         {t('footer.privacy')}
       </Link>
       <br />

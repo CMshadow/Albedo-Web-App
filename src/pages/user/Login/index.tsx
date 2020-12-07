@@ -31,7 +31,7 @@ const Login: React.FC = () => {
           dispatch(setCognitoUser(cognitoUser))
           resolve()
         }).then(() => {
-          history.push('/dashboard')
+          history.push('/')
         })
       })
       .catch(err => {

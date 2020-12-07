@@ -47,7 +47,7 @@ const Verification: React.FC = () => {
             dispatch(setCognitoUser(cognitoUser))
             resolve()
           }).then(() => {
-            history.push('/dashboard')
+            history.push('/')
           })
         })
       })

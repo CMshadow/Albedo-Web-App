@@ -70,7 +70,7 @@ export const SearchString = <T extends Record<string, unknown>>(
       </div>
     ),
     render: (text: string, record: T) => {
-      if ('projectID' in record && text === 'projectTitle') {
+      if ('projectID' in record && colKey === 'projectTitle') {
         return <Link to={`/project/${record.projectID}/dashboard`}>{renderText(text)}</Link>
       } else if ('theme' in record && renderType === 'tag') {
         return renderTag(text, record.theme as string)

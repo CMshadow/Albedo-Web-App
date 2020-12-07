@@ -12,10 +12,11 @@ export const createGainData: ICreateGainData = report => {
   }
   const initDataSource = [
     {
-      key: 0,
-      series: 0,
+      key: '0',
+      series: '0',
       name: 'construction',
       unit: 'price',
+      description: '',
       'cash-in-flow-togrid': 0,
       'cash-in-flow-selfuse': 0,
       'cash-out-flow-togrid': report.ttl_investment,
@@ -30,8 +31,8 @@ export const createGainData: ICreateGainData = report => {
     const yearACInKwh = wh2kwh(other2wh(obj.value, obj.unit)) as number
     const cashInFlowToGrid = Number((yearACInKwh * fnExportCredit).toFixed(2))
     const cashInFlowSelfUse = Number((yearACInKwh * fnExportCredit).toFixed(2))
-    const cashOutFlowToGrid = report.gain ? report.gain[index + 1]['cash-out-flow-togrid'] : 0
-    const cashOutFlowSelfUse = report.gain ? report.gain[index + 1]['cash-out-flow-selfuse'] : 0
+    const cashOutFlowToGrid = report.gain?.[index + 1]['cash-out-flow-togrid'] || 0
+    const cashOutFlowSelfUse = report.gain?.[index + 1]['cash-out-flow-selfuse'] || 0
     const netCashFlowToGrid = Number((cashInFlowToGrid - cashOutFlowToGrid).toFixed(2))
     const netCashFlowSelfUse = Number((cashInFlowSelfUse - cashOutFlowSelfUse).toFixed(2))
     const lastAccNetCashFlowToGrid = initDataSource.slice(-1)[0]['acc-net-cash-flow-togrid']
@@ -43,10 +44,11 @@ export const createGainData: ICreateGainData = report => {
       (lastAccNetCashFlowSelfUse + netCashFlowSelfUse).toFixed(2)
     )
     initDataSource.push({
-      key: index + 1,
-      series: index + 1,
+      key: `${index + 1}`,
+      series: `${index + 1}`,
       unit: 'price',
       name: `${index + 1}`,
+      description: '',
       'cash-in-flow-togrid': cashInFlowToGrid,
       'cash-in-flow-selfuse': cashInFlowSelfUse,
       'cash-out-flow-togrid': cashOutFlowToGrid,

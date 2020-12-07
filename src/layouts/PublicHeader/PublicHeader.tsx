@@ -23,7 +23,7 @@ const PublicHeader: React.FC = () => {
           </Button>
         </Space>
         <div className={styles.item}>
-          <SelectLang className={styles.item} />
+          <SelectLang />
         </div>
       </Row>
     </Header>

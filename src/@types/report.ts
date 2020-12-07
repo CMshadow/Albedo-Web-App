@@ -1,23 +1,36 @@
 export type GainEntry = {
-  key: number
+  key: string
   name: string
   unit: string
-  series: number
-  'acc-net-cash-flow-selfuse': number
-  'acc-net-cash-flow-togrid': number
-  'cash-in-flow-selfuse': number
-  'cash-in-flow-togrid': number
-  'cash-out-flow-selfuse': number
-  'cash-out-flow-togrid': number
-  'net-cash-flow-selfuse': number
-  'net-cash-flow-togrid': number
+  series: string
+  description: string
+  total?: number
+  'acc-net-cash-flow-selfuse'?: number
+  'acc-net-cash-flow-togrid'?: number
+  'cash-in-flow-selfuse'?: number
+  'cash-in-flow-togrid'?: number
+  'cash-out-flow-selfuse'?: number
+  'cash-out-flow-togrid'?: number
+  'net-cash-flow-selfuse'?: number
+  'net-cash-flow-togrid'?: number
+}
+
+export type InvestmentEntry = {
+  key: string
+  series?: string | number
+  name?: string
+  description?: string
+  unit?: string
+  quantity?: number
+  unitPriceEditable?: boolean
+  descriptionEditable?: boolean
+  totalPriceEditable?: boolean
+  unitPrice?: number
+  totalPrice?: number
+  investmentWeight?: number | undefined
 }
 
 export type Report = {
-  ttl_investment?: number
-  gain?: Array<GainEntry>
-  'final-export-credit'?: number
-
   coal_reduction: number
   c_reduction: number
   co2_reduction: number
@@ -49,20 +62,30 @@ export type Report = {
 
   GHI: number[]
   setup_ac_Ie: number[][]
-  setup_dc_wir_choice: number[][][]
+  setup_dc_wir_choice: number[][][][]
   setup_month_irr: number[][]
   year25_kWh_over_kWp: number[]
   setup_behindPV: number[][]
   setup_ac_wir_choice: string[][]
   month_AC_power: { value: number[]; unit: string }
   year25_AC_power: { unit: string; value: number }[]
+  year25_DC_power: { unit: string; value: number }[]
   combibox_Ie: number
   daily_AC_power: { value: number[]; unit: string }
-  combibox_wir_choice: number
+  combibox_wir_choice: number[][]
   setup_month_irr_avg_pk_hr: number[][]
   p_loss_system_monthly: number[]
   sunPosition: number[][][]
   system_efficiency: number
   weatherAnalysis: { GHI: number; Wspd: number; DHI: number; DryBulb: number; DNI: number }[]
   kWh_over_kWp: number
+
+  'feed-in-tariff'?: number
+  'export-credit'?: number
+  'rate-of-electricity'?: number
+  'final-export-credit'?: number
+  ttl_investment?: number
+  investment: InvestmentEntry[]
+  gain?: GainEntry[]
+  investmentPerKw?: string
 }

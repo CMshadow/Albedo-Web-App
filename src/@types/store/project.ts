@@ -72,6 +72,12 @@ export interface AddSubAryAction {
   buildingID: string
 }
 
+export type InvPlan = {
+  inverterID: string
+  inverterUserID: string
+  plan?: Array<{ pps: number; spi: number }>
+}
+
 export type EditSubAryParams = {
   buildingID: string
   specIndex: number
@@ -83,11 +89,7 @@ export type EditSubAryParams = {
   celltemp_vars: number[]
   ac_cable_avg_len?: number
   dc_cable_avg_len?: number
-  invPlan?: {
-    inverterID: string
-    inverterUserID: string
-    plan?: Array<{ pps: number; spi: number }>
-  }
+  invPlan?: InvPlan
 }
 export interface EditSubAryAction extends EditSubAryParams {
   type: typeof EDIT_PV_SPEC

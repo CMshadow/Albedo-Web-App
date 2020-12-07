@@ -18,7 +18,7 @@ export const SingleBuildingTab: React.FC<SingleBuildingTabProps> = ({ building }
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const projectType = useSelector((state: RootState) => state.project?.projectType)
-  const [editingCombibox, seteditingCombibox] = useState<number>()
+  const [editingCombibox, seteditingCombibox] = useState<number | undefined>()
   const [loading, setloading] = useState(false)
   const [collapseActive, setcollapseActive] = useState<boolean[]>(
     new Array(building.data.length).fill(0).map(() => false)
@@ -109,7 +109,7 @@ export const SingleBuildingTab: React.FC<SingleBuildingTabProps> = ({ building }
               <Button
                 className={styles.addSpecCombibox}
                 loading={loading}
-                disabled={editingCombibox !== null}
+                disabled={editingCombibox !== undefined}
                 block
                 type='dashed'
                 onClick={() => {

@@ -28,7 +28,7 @@ type WiringChoice = {
 
 type ManualInverterResponse = {
   autoPlan: {
-    plan: InvPlan
+    plan: InvPlan[]
     wasted: number
   }
   N1vdcMax: number
@@ -81,7 +81,7 @@ const manualInverterRequest: IAxiosRequest<
     username: string
     jwtToken: string
   },
-  ManualInverterResponse
+  ManualInverterResponse | string
 > = args =>
   axios
     .get<ManualInverterResponse>(`/project/${args.username}/${args.projectID}/manualinverter`, {

@@ -255,26 +255,26 @@ const ProjectLayout: React.FC = props => {
       fetchPromises.push(
         getPV({})
           .then(res => dispatch(setPVData(res)))
-          .catch(() => history.push('/dashboard'))
+          .catch(() => history.push('/'))
       )
       fetchPromises.push(
         getOfficialPV({
           region: cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US',
         })
           .then(res => dispatch(setOfficialPVData(res)))
-          .catch(() => history.push('/dashboard'))
+          .catch(() => history.push('/'))
       )
       fetchPromises.push(
         getInverter({})
           .then(res => dispatch(setInverterData(res)))
-          .catch(() => history.push('/dashboard'))
+          .catch(() => history.push('/'))
       )
       fetchPromises.push(
         getOfficialInverter({
           region: cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US',
         })
           .then(res => dispatch(setOfficialInverterData(res)))
-          .catch(() => history.push('/dashboard'))
+          .catch(() => history.push('/'))
       )
       await Promise.all(fetchPromises)
 
@@ -296,12 +296,12 @@ const ProjectLayout: React.FC = props => {
           const getReportPromises = projectData.buildings
             .map(building => {
               return getReport({ projectID, buildingID: building.buildingID }).then(res =>
-                setReportData({ buildingID: building.buildingID, data: res })
+                dispatch(setReportData({ buildingID: building.buildingID, data: res }))
               )
             })
             .concat([
               getReport({ projectID, buildingID: 'overview' }).then(res =>
-                setReportData({ buildingID: 'overview', data: res })
+                dispatch(setReportData({ buildingID: 'overview', data: res }))
               ),
             ])
           await Promise.all(getReportPromises)
@@ -337,7 +337,7 @@ const ProjectLayout: React.FC = props => {
         })
         .catch(() => {
           dispatch(releaseProjectData())
-          history.push('/dashboard')
+          history.push('/')
         })
     }
 

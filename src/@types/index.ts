@@ -4,6 +4,7 @@ export * from './report'
 export * from './pv'
 export * from './inv'
 export * from './PANandOND'
+export * from './misc'
 
 export * from './store'
 export * from './store/auth'

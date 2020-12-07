@@ -50,7 +50,7 @@ const ParamsForm: React.FC = () => {
   const [form] = Form.useForm()
   const { projectID } = useParams<Params>()
 
-  const horizonData =
+  const horizonData: [number, number][] =
     projectData && projectData.horizonData
       ? JSON.parse(JSON.stringify(projectData.horizonData))
       : new Array(24).fill([]).map((val, index) => [(index + 1) * 15, 0])
@@ -202,9 +202,7 @@ const ParamsForm: React.FC = () => {
     ))
 
   // 表单提交
-  const submitForm = async (
-    values: Record<string, string | number> & { monthly_albedo: number[] }
-  ) => {
+  const submitForm = async (values: Record<string, unknown> & { monthly_albedo: number[] }) => {
     if (!projectData) return
     setloading(true)
     // 去除values中所有undefined properties

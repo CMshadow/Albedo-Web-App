@@ -16,7 +16,7 @@ const AuthGateway: React.FC = ({ children }) => {
         dispatch(setCognitoUser(res))
         setauthenticated(true)
       })
-      .catch(err => {
+      .catch(() => {
         setauthenticated(true)
       })
   }, [dispatch, history])

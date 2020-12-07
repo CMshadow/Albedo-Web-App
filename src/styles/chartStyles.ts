@@ -8,21 +8,20 @@ export const titleStyle = {
 
 export const lgTitleStyle = {
   fontSize: 16,
-  fontWeight: 'bold',
+  fontWeight: 'bold' as const,
   fontFamily: fontFamily,
-  textAlign: 'center',
+  textAlign: 'center' as const,
 }
 
 export const legendStyle = {
   fontSize: 14,
   fontFamily: fontFamily,
-  fontWeight: 'bold',
+  fontWeight: 'bold' as const,
 }
 
 export const lgTextStyle = {
-  lineHeight: '240px',
-  fontSize: '30',
+  fontSize: 30,
   fill: '#262626',
-  textAlign: 'center',
+  textAlign: 'center' as const,
   fontFamily: fontFamily,
 }

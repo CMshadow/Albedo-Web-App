@@ -39,22 +39,22 @@ const BasicLayout: React.FC = props => {
       fetchPromises.push(
         getPV({})
           .then(res => dispatch(setPVData(res)))
-          .catch(() => history.push('/dashboard'))
+          .catch(() => history.push('/'))
       )
       fetchPromises.push(
         getOfficialPV({ region: cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US' })
           .then(res => dispatch(setOfficialPVData(res)))
-          .catch(() => history.push('/dashboard'))
+          .catch(() => history.push('/'))
       )
       fetchPromises.push(
         getInverter({})
           .then(res => dispatch(setInverterData(res)))
-          .catch(() => history.push('/dashboard'))
+          .catch(() => history.push('/'))
       )
       fetchPromises.push(
         getOfficialInverter({ region: cognitoUser.attributes.locale === 'zh-CN' ? 'CN' : 'US' })
           .then(res => dispatch(setOfficialInverterData(res)))
-          .catch(() => history.push('/dashboard'))
+          .catch(() => history.push('/'))
       )
       await Promise.all(fetchPromises)
     }
@@ -86,8 +86,10 @@ const BasicLayout: React.FC = props => {
           <Menu
             theme='dark'
             mode='inline'
-            selectedKeys={[selectMenu]}
-            onSelect={({ key }) => history.push(`/${key}`)}
+            selectedKeys={[selectMenu || 'dashboard']}
+            onSelect={({ key }) =>
+              key === 'dashboard' ? history.push('/') : history.push(`/${key}`)
+            }
           >
             <Menu.Item key='dashboard' className={styles.menuItem}>
               {t('sider.menu.project')}

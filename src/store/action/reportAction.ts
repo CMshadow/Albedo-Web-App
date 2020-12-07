@@ -10,7 +10,7 @@ interface IAction<P, R> {
 
 type BuildingIDParam = { buildingID: string }
 type SetReportDataParams = BuildingIDParam & { data: Report }
-type UpdateReportAttributesParams = BuildingIDParam & { [key: string]: Partial<Report> }
+type UpdateReportAttributesParams = BuildingIDParam & Partial<Report>
 
 export const setReportData: IAction<SetReportDataParams, void> = ({
   buildingID,
