@@ -36,7 +36,7 @@ registerShape('point', 'pointer', {
 
     return group
   },
-}) as any
+})
 
 type SystemEfficiencyChartProps = { buildingID: string }
 

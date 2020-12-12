@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Table, Form, InputNumber } from 'antd'
+import React, { useState, useEffect, useContext, useRef } from 'react'
+import { Table, Form, InputNumber, Input } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { TableHeadDescription } from '../../Descriptions/TableHeadDescription'
@@ -39,7 +39,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false)
+  const inputRef = useRef<Input>(null)
   const form = useContext(EditableContext)
+
+  useEffect(() => {
+    if (editing) inputRef.current && inputRef.current.focus()
+  }, [editing])
 
   const toggleEdit = () => {
     setEditing(!editing)
@@ -61,7 +66,13 @@ const EditableCell: React.FC<EditableCellProps> = ({
   if (editable) {
     childNode = editing ? (
       <Form.Item style={{ margin: 0, width: '100%' }} name={dataIndex} rules={[{ required: true }]}>
-        <InputNumber style={{ width: '100%' }} onPressEnter={save} onBlur={save} min={0} />
+        <InputNumber
+          ref={inputRef}
+          style={{ width: '100%' }}
+          onPressEnter={save}
+          onBlur={save}
+          min={0}
+        />
       </Form.Item>
     ) : (
       <div

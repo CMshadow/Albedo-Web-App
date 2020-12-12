@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import { Table, Form, Input, InputNumber, Card, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
@@ -55,7 +55,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
   ...restProps
 }) => {
   const [editing, setEditing] = useState(false)
+  const inputRef = useRef<Input>(null)
   const form = useContext(EditableContext)
+
+  useEffect(() => {
+    if (editing) inputRef.current && inputRef.current.focus()
+  }, [editing])
 
   const toggleEdit = () => {
     setEditing(!editing)
@@ -81,11 +86,19 @@ const EditableCell: React.FC<EditableCellProps> = ({
     switch (dataIndex) {
       case 'unitPrice':
         inputField = (
-          <InputNumber style={{ width: '100%' }} onPressEnter={save} onBlur={save} min={0} />
+          <InputNumber
+            ref={inputRef}
+            style={{ width: '100%' }}
+            onPressEnter={save}
+            onBlur={save}
+            min={0}
+          />
         )
         break
       default:
-        inputField = <Input style={{ width: '100%' }} onPressEnter={save} onBlur={save} />
+        inputField = (
+          <Input ref={inputRef} style={{ width: '100%' }} onPressEnter={save} onBlur={save} />
+        )
     }
     childNode = editing ? (
       <Form.Item style={{ margin: 0, width: '100%' }} name={dataIndex} rules={[{ required: true }]}>

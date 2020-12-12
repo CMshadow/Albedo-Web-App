@@ -7,7 +7,8 @@ interface ICreateGainData {
 
 export const createGainData: ICreateGainData = report => {
   const fnExportCredit = report['final-export-credit']
-  if (!report.ttl_investment || fnExportCredit === undefined) {
+  const fnRateOfElectricity = report['rate-of-electricity']
+  if (!report.ttl_investment || fnExportCredit === undefined || fnRateOfElectricity === undefined) {
     return []
   }
   const initDataSource = [
@@ -30,7 +31,7 @@ export const createGainData: ICreateGainData = report => {
   report.year25_AC_power.forEach((obj, index) => {
     const yearACInKwh = wh2kwh(other2wh(obj.value, obj.unit)) as number
     const cashInFlowToGrid = Number((yearACInKwh * fnExportCredit).toFixed(2))
-    const cashInFlowSelfUse = Number((yearACInKwh * fnExportCredit).toFixed(2))
+    const cashInFlowSelfUse = Number((yearACInKwh * fnRateOfElectricity).toFixed(2))
     const cashOutFlowToGrid = report.gain?.[index + 1]['cash-out-flow-togrid'] || 0
     const cashOutFlowSelfUse = report.gain?.[index + 1]['cash-out-flow-selfuse'] || 0
     const netCashFlowToGrid = Number((cashInFlowToGrid - cashOutFlowToGrid).toFixed(2))

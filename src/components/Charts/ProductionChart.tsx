@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { DatePicker, Row, Divider, Typography, Space, Radio, Spin, Card } from 'antd'
+import { DayProductionChart } from './DayProductionChart'
+import { MonthlyProductionChart } from './MonthlyProductionChart'
 import moment, { Moment } from 'moment'
-import { Chart, Legend, Axis, Line, Point, Interval } from 'bizcharts'
-import { titleStyle, legendStyle } from '../../styles/chartStyles'
 import { getProductionData } from '../../services'
 import { wh2other, w2other } from '../../utils/unitConverter'
 import { getLanguage } from '../../utils/getLanguage'
+import { ScaleOption } from 'bizcharts/lib/interface'
 const { Title, Text } = Typography
 
 const meteonormYear = 2005
@@ -83,7 +84,7 @@ export const ProductionChart: React.FC<ProducationChartProps> = ({ buildingID })
     })
   }, [buildingID, date, dispatch, mode, projectID, t])
 
-  const scale = {
+  const scale: { [field: string]: ScaleOption } = {
     date: {
       type: mode === 'month' ? 'cat' : 'linear',
       alias: mode === 'month' ? t('productionChart.day') : t('productionChart.hour'),
@@ -134,36 +135,11 @@ export const ProductionChart: React.FC<ProducationChartProps> = ({ buildingID })
       </Row>
       <Divider />
       <Spin spinning={loading}>
-        <Chart
-          scale={scale}
-          padding={[30, 30, 100, 100]}
-          autoFit
-          height={500}
-          data={dataSource}
-          interactions={['active-region']}
-        >
-          <Legend
-            visible={mode === 'day'}
-            position='bottom'
-            itemName={{ style: legendStyle }}
-            offsetY={-10}
-          />
-          <Axis name='date' title={{ style: titleStyle }} />
-          <Axis name='value' title={{ style: titleStyle }} />
-          {mode === 'day' ? (
-            [
-              <Line
-                key='line'
-                shape='smooth'
-                position='date*value'
-                color={['type', ['#1890ff', '#faad14']]}
-              />,
-              <Point key='point' position='date*value' color={['type', ['#1890ff', '#faad14']]} />,
-            ]
-          ) : (
-            <Interval position='date*value' color={['type', ['#1890ff', '#faad14']]} />
-          )}
-        </Chart>
+        {mode === 'day' ? (
+          <DayProductionChart scale={scale} dataSource={dataSource} />
+        ) : (
+          <MonthlyProductionChart scale={scale} dataSource={dataSource} />
+        )}
       </Spin>
     </Card>
   )
