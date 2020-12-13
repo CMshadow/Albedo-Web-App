@@ -3,7 +3,6 @@
   "sider.edition": "Beta Version ",
   "sider.menu.project": "Manage Projects",
 
-
   "sider.menu.back-project": "Exit the project",
   "sider.menu.projectDetail": "System Setup",
   "sider.menu.commercial": "Transformer & Power Cabinet Setup",
@@ -13,12 +12,12 @@
   "sider.menu.report.suffix": "",
   "sider.menu.pv": "Manage Module",
   "sider.menu.inverter": "Manage Inverter",
+  "sider.menu.weather": "Manager Weather Data",
 
   "sider.menu.singleLineDiagram": "Single Line Diagram",
   "sider.menu.singleLineDiagram.prefix": "Building: ",
   "sider.menu.singleLineDiagram.suffix": "",
   "sider.menu.singleLineDiagram.disabled": "Generate Report first to view SLD",
-
 
   "sider.save": "Save",
   "sider.report.disabled": "Setup is not complete",

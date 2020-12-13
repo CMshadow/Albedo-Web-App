@@ -20,6 +20,7 @@ const PowerGrid = lazy(() => import('./pages/PowerGrid/PowerGrid'))
 const PVTable = lazy(() => import('./pages/PVTable/index'))
 const InverterTable = lazy(() => import('./pages/InverterTable/index'))
 const SLD = lazy(() => import('./pages/SingleLineDiagram/index'))
+const WeatherManager = lazy(() => import('./pages/WeatherManager/index'))
 
 const Router = () => {
   return (
@@ -42,9 +43,6 @@ const Router = () => {
                 <PublicRoute path='/user/verify'>
                   <Verification />
                 </PublicRoute>
-                <Route path='*'>
-                  <NotFound404 />
-                </Route>
               </Switch>
             </UserLayout>
           </Route>
@@ -66,9 +64,6 @@ const Router = () => {
                 <PrivateRoute path='/project/:projectID/singleLineDiagram/:buildingID'>
                   <SLD />
                 </PrivateRoute>
-                <PrivateRoute path='*'>
-                  <NotFound404 />
-                </PrivateRoute>
               </Switch>
             </ProjectLayout>
           </PrivateRoute>
@@ -80,6 +75,11 @@ const Router = () => {
           <PrivateRoute path='/inverter'>
             <BasicLayout>
               <InverterTable />
+            </BasicLayout>
+          </PrivateRoute>
+          <PrivateRoute path='/weather'>
+            <BasicLayout>
+              <WeatherManager />
             </BasicLayout>
           </PrivateRoute>
           <PrivateRoute path='/' exact>

@@ -1,0 +1,19 @@
+{
+  "weatherManager.add": "Create New Weather Portfolio",
+  "weatherManager.portfolio.name": "Portfolio Name",
+  "weatherManager.portfolio.name.placeholder": "Portfolio Name",
+  "weatherManager.portfolio.address": "Weather Data Address",
+  "weatherManager.portfolio.address.placeholder": "Enter an address and verify, or click a location on the map",
+  "weatherManager.portfolio.meteonorm": "Meteonorm Source",
+  "weatherManager.portfolio.nasa": "NASA Source",
+  "weatherManager.portfolio.custom": "Customized Source",
+  "weatherManager.portfolio.createdAt": "Created At",
+  "weatherManager.portfolio.longitude": "Longitude",
+  "weatherManager.portfolio.latitude": "Latitude",
+
+  "weatherManager.portfolio.address.verified": "Address verified",
+  "weatherManager.portfolio.address.unverified": "Verify the address",
+
+  "weatherManager.portfolio.src.yes": "Generated",
+  "weatherManager.portfolio.src.no": "Empty"
+}

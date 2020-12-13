@@ -3,7 +3,6 @@
   "sider.edition": "Beta版本 v",
   "sider.menu.project": "管理项目",
 
-
   "sider.menu.back-project": "退出该项目",
   "sider.menu.projectDetail": "光伏发电单元配置",
   "sider.menu.commercial": "接入系统配置",
@@ -13,12 +12,12 @@
   "sider.menu.report.suffix": "的报告",
   "sider.menu.pv": "管理光伏组件",
   "sider.menu.inverter": "管理逆变器",
+  "sider.menu.weather": "管理天气数据",
 
   "sider.menu.singleLineDiagram": "系统电气主接线图",
   "sider.menu.singleLineDiagram.prefix": "",
   "sider.menu.singleLineDiagram.suffix": "-电气主接线图",
   "sider.menu.singleLineDiagram.disabled": "生成报告后查看系统电气主接线图",
-
 
   "sider.save": "保存项目",
   "sider.report.disabled": "该房屋配置尚未完成",

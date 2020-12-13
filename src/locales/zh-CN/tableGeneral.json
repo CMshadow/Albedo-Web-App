@@ -4,6 +4,7 @@
   "table.delete": "删除",
   "table.totalCount": "条数据",
   "table.name": "名称",
+  "table.address": "地址",
   "table.month": "月份",
 
   "filter.search": "搜索",

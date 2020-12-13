@@ -5,6 +5,8 @@ export * from './pv'
 export * from './inv'
 export * from './PANandOND'
 export * from './misc'
+export * from './geo'
+export * from './weatherPortfolio'
 
 export * from './store'
 export * from './store/auth'

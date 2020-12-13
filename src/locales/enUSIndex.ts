@@ -21,6 +21,7 @@ import emissionReduction from './en-US/emissionReduction.json'
 import chart from './en-US/chart.json'
 import techSupport from './en-US/techSupport.json'
 import WeatherAnalysisTable from './en-US/weatherAnalysisTable.json'
+import WeatherManager from './en-US/weatherManager.json'
 
 export default {
   ...country,
@@ -46,4 +47,5 @@ export default {
   ...chart,
   ...techSupport,
   ...WeatherAnalysisTable,
+  ...WeatherManager,
 }

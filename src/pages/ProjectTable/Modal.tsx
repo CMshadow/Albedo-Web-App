@@ -18,8 +18,8 @@ import {
 } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { genFullName } from '../../utils/genFullName'
-import GoogleMap from './GoogleMap'
-import AMap from './AMap'
+import { GoogleMap } from '../../components/GoogleMap'
+import { AMap } from '../../components/AMap'
 import styles from './Modal.module.scss'
 import { ProjectPreUpload, RootState } from '../../@types'
 
@@ -53,7 +53,11 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
   const unit = useSelector((state: RootState) => state.unit.unit)
   const [loading, setloading] = useState(false)
   const [validated, setvalidated] = useState(false)
-  const [mapPos, setmapPos] = useState({ lon: -117.843687, lat: 33.676542 })
+  const [mapPos, setmapPos] = useState(
+    cognitoUser && cognitoUser.attributes.locale === 'en-US'
+      ? { lon: -117.843687, lat: 33.676542 }
+      : { lon: 116.397606, lat: 39.907969 }
+  )
   const [googleMapKey, setgoogleMapKey] = useState<string>()
   const [aMapKey, setaMapKey] = useState<string>()
   const [aMapWebKey, setaMapWebKey] = useState<string>()
@@ -228,12 +232,18 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
           {aMapWebKey && aMapKey ? (
             <AMap
               mapPos={mapPos}
-              setmapPos={setmapPos}
               validated={validated}
-              setvalidated={setvalidated}
               apiKey={aMapKey}
               webApiKey={aMapWebKey}
-              form={form}
+              onClick={(e, res) => {
+                if (res.regeocode.formatted_address.length > 0) {
+                  setmapPos({ lon: e.lnglat.lng, lat: e.lnglat.lat })
+                  form.setFieldsValue({ projectAddress: res.regeocode.formatted_address })
+                  setvalidated(true)
+                } else {
+                  notification.error({ message: t('project.error.invalid-address.amap') })
+                }
+              }}
             />
           ) : null}
         </TabPane>
@@ -241,11 +251,17 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
           {googleMapKey ? (
             <GoogleMap
               mapPos={mapPos}
-              setmapPos={setmapPos}
               validated={validated}
-              setvalidated={setvalidated}
               apiKey={googleMapKey}
-              form={form}
+              onClick={(event, res) => {
+                if (res.results.length > 0) {
+                  setmapPos({ lon: event.lng, lat: event.lat })
+                  form.setFieldsValue({ projectAddress: res.results[0].formatted_address })
+                  setvalidated(true)
+                } else {
+                  notification.error({ message: t('project.error.invalid-address.googlemap') })
+                }
+              }}
             />
           ) : null}
         </TabPane>

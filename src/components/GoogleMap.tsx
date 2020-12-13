@@ -1,11 +1,9 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import GoogleMapReact from 'google-map-react'
-import { googleRevGeocoder } from '../../services'
-import { notification } from 'antd'
-import { useTranslation } from 'react-i18next'
-import { FormInstance } from 'antd/lib/form'
+import { googleRevGeocoder } from '../services'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMapMarkerAlt } from '@fortawesome/pro-light-svg-icons'
+import { GoogleRevGeocoderType } from '../@types'
 
 const Marker: React.FC<GoogleMapReact.ChildComponentProps> = () => {
   return (
@@ -18,21 +16,11 @@ const Marker: React.FC<GoogleMapReact.ChildComponentProps> = () => {
 type GoogleMapProps = {
   apiKey: string
   mapPos: { lat: number; lon: number }
-  setmapPos: Dispatch<SetStateAction<{ lat: number; lon: number }>>
   validated: boolean
-  setvalidated: Dispatch<SetStateAction<boolean>>
-  form: FormInstance
+  onClick?: (event: GoogleMapReact.ClickEventValue, res: GoogleRevGeocoderType) => void
 }
 
-const GoogleMap: React.FC<GoogleMapProps> = ({
-  apiKey,
-  mapPos,
-  setmapPos,
-  validated,
-  setvalidated,
-  form,
-}) => {
-  const { t } = useTranslation()
+export const GoogleMap: React.FC<GoogleMapProps> = ({ apiKey, mapPos, validated, onClick }) => {
   return (
     <div style={{ width: '100%', height: '50vh' }}>
       <GoogleMapReact
@@ -48,15 +36,9 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
           },
         })}
         onClick={event => {
-          googleRevGeocoder({ lon: event.lng, lat: event.lat, key: apiKey }).then(res => {
-            if (res.results.length > 0) {
-              setmapPos({ lon: event.lng, lat: event.lat })
-              form.setFieldsValue({ projectAddress: res.results[0].formatted_address })
-              setvalidated(true)
-            } else {
-              notification.error({ message: t('project.error.invalid-address.googlemap') })
-            }
-          })
+          googleRevGeocoder({ lon: event.lng, lat: event.lat, key: apiKey }).then(res =>
+            onClick?.(event, res)
+          )
         }}
       >
         {validated ? <Marker lat={mapPos.lat} lng={mapPos.lon} /> : null}
@@ -64,5 +46,3 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     </div>
   )
 }
-
-export default GoogleMap

@@ -1,13 +1,10 @@
 import axios from '../axios.config'
-
-type GoogleGeocoderType = {
-  results: { formatted_address: string; geometry: { location: { lng: number; lat: number } } }[]
-}
-type GoogleRevGeocoderType = {
-  results: { formatted_address: string; geometry: { location: { lng: number; lat: number } } }[]
-}
-type AMapGeocoderType = { geocodes: { formatted_address: string; location: string }[] }
-type AMapRevGeocoderType = { regeocode: { formatted_address: string } }
+import {
+  GoogleGeocoderType,
+  GoogleRevGeocoderType,
+  AMapGeocoderType,
+  AMapRevGeocoderType,
+} from '../@types'
 
 export const googleGeocoder = (params: {
   address: string
