@@ -1,0 +1,44 @@
+@import '../../../styles/global.scss';
+
+.card {
+  cursor: unset;
+}
+
+.cardTitle {
+  margin: 0 !important;
+}
+
+.ant-table-title {
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.editable-cell {
+  position: relative;
+}
+
+.editable-cell-wrap {
+  min-height: 22px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.editable-cell-wrap-empty {
+  min-height: 22px;
+  padding: 5px;
+  border: 1px solid #ff4d4f;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editable-row:hover .editable-cell-wrap {
+  padding: 4px 11px;
+  border: 1px solid $primary-color-2;
+  border-radius: 4px;
+}
+
+.editable-row:hover .editable-cell-wrap-empty {
+  padding: 4px 11px;
+  border: 1px solid $primary-color-2;
+  border-radius: 4px;
+}

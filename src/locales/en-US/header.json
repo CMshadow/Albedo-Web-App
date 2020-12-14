@@ -1,5 +1,7 @@
 {
   "header.login": "Login",
   "header.signup": "Sign up",
-  "header.logout": "Logout"
+  "header.logout": "Logout",
+
+  "header.unit": "Unit"
 }

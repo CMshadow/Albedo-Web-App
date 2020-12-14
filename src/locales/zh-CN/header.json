@@ -1,5 +1,7 @@
 {
   "header.login": "登录",
   "header.signup": "注册",
-  "header.logout": "退出登录"
+  "header.logout": "退出登录",
+
+  "header.unit": "单位"
 }

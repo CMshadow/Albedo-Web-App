@@ -1,7 +1,7 @@
 {
   "investment.title": "光伏系统投资统计表",
   "investment.project-title": "项目名称",
-  "investment.project-scale": "项目规模",
+  "investment.project-scale": "直流装机容量",
 
   "investment.series": "序号",
   "investment.name": "工程或费用名称",
@@ -21,12 +21,15 @@
   "investment.name.rack": "光伏板支架及基础",
   "investment.name.inverter": "并网逆变器",
   "investment.name.combibox": "交流汇流箱",
+  "investment.name.transformer": "变压器",
+  "investment.name.powercabinet": "并网柜",
   "investment.name.meter": "关口电能表",
   "investment.name.router": "无线路由器",
   "investment.name.comm": "通信管理机",
   "investment.name.dc_wiring": "直流光伏电缆",
-  "investment.name.ac_wiring": "逆变器至汇流箱交流电缆",
-  "investment.name.combibox_wiring": "并网交流电缆",
+  "investment.name.ac_wiring": "逆变器出口动力电缆",
+  "investment.name.combibox_wiring": "汇流箱出口动力电缆",
+  "investment.name.transformer_wiring": "箱变高压侧动力电缆",
   "investment.name.rooftop": "屋面加固费用",
   "investment.name.other": "其它费用",
   "investment.name.unitInvestment": "单位千瓦投资",
@@ -41,7 +44,15 @@
   "investment.unit.price/tao": "元/套",
   "investment.unit.price/xiang": "元/项",
   "investment.unit.price/m": "元/m",
+  "investment.unit.price/ft": "元/ft",
   "investment.unit.price": "元",
   "investment.unit.price/W": "元/W",
-  "investment.unit.price/KW": "元/KW"
+  "investment.unit.price/KW": "元/kW",
+
+  "equipment.description": "设备名称",
+  "equipment.unit.kuai": "块",
+  "equipment.unit.tai": "台",
+  "equipment.unit.m": "m",
+  "equipment.unit.ft": "ft",
+  "equipment.unit.mian": "面"
 }

@@ -1,0 +1,29 @@
+@import '../../../styles/global.scss';
+
+.card {
+  width: 100%;
+  margin: 25px 0;
+  padding: 5px 0;
+  border: 2px solid $primary-color;
+
+  .content {
+    margin: 15px;
+  }
+}
+
+.submitBut {
+  margin: 0;
+}
+
+.divider {
+  margin: 2px;
+}
+
+.serial {
+  color: #1890ff;
+}
+
+.linkedInverterParagraph {
+  margin: 0.5em 0 !important;
+  color: #faad14;
+}

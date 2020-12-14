@@ -1,5 +1,6 @@
 {
-  "irrTable.title": "拟建屋顶光伏年度/各月辐射量表",
+  "irrTable.title.domestic": "拟建屋顶光伏系统年度/各月辐射量表",
+  "irrTable.title.commercial": "拟建分布式光伏系统年度/各月辐射量表",
 
   "irrTable.irradiance": "总辐射量",
   "irrTable.irradianceYear": "年总辐射量",

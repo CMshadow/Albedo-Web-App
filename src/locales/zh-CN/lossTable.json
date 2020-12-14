@@ -2,7 +2,9 @@
   "lossTable.title": "光伏发电系统损失表",
 
   "lossTable.p_loss_tilt_azimuth": "与最佳安装朝向倾角辐射量所成百分比",
-  "lossTable.p_loss_mismatch": "光伏组件的匹配损失",
+  "lossTable.p_loss_far_side_shading": "远方阴影损失",
+  "lossTable.p_loss_mismatch_withinstring": "组串内失配损失",
+  "lossTable.p_loss_mismatch_betweenstrings": "组串间失配损失",
   "lossTable.p_loss_soiling": "表面灰尘遮挡损失",
   "lossTable.p_loss_eff_irradiance": "有效辐射损失",
   "lossTable.p_loss_temperature": "温度影响损失",
@@ -12,8 +14,10 @@
   "lossTable.p_loss_conversion": "逆变器损失",
   "lossTable.p_loss_transformer": "升压变压器损耗",
   "lossTable.p_loss_dc_wiring": "直流线损",
-  "lossTable.p_loss_ac_wiring": "低压汇流线损",
-  "lossTable.p_loss_combibox_wiring": "交流线损",
+  "lossTable.p_loss_ac_wiring": "逆变器出口电缆线损",
+  "lossTable.p_loss_combibox_wiring": "汇流箱出口电缆线损",
+  "lossTable.p_loss_transformer_wiring": "变压器出口电缆线损",
+  "lossTable.p_loss_availability": "不可利用率",
   "lossTable.p_loss_system": "发电系统总损失",
   "lossTable.system_efficiency": "发电系统总效率"
 }

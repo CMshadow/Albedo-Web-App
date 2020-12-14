@@ -1,26 +1,26 @@
 @import '../../styles/global.scss';
 
 .sider {
-  overflow: auto;
-  height: 100vh;
   position: fixed;
   left: 0;
   z-index: 2;
+  height: 100vh;
+  overflow: auto;
 
   .divider {
-    background-color: $primary-color2;
-    margin: 10px 0px;
+    margin: 10px 0;
+    background-color: $primary-color-2;
   }
 
   h1 {
-    font-size: 20px;
-    color: white;
     margin: 0;
+    color: white;
+    font-size: 20px;
   }
 
   h4 {
-    color: $primary-color2;
     margin: 0;
+    color: $primary-color-2;
   }
 
   .title {
@@ -38,8 +38,8 @@
   }
 
   .menuItem {
+    margin: 10px 0;
     font-size: 15px;
-    margin: 10px 0px;
   }
 
   .saveBut {
@@ -47,15 +47,15 @@
     bottom: 0;
     left: 0;
     width: 250px;
-    background-color: #52c41a;
     color: white;
+    background-color: #52c41a;
   }
 
   .spin {
-    text-align: center;
     justify-content: center;
     height: calc(100vh - 64px);
-    padding: 50% 0px;
+    padding: 50% 0;
+    text-align: center;
   }
 }
 
@@ -64,12 +64,18 @@
   margin-left: 250px;
 
   .content {
+    height: 100%;
     margin-top: 64px;
     padding: 15px;
-  }
-}
 
-.footer {
-  background-color: white;
-  padding: 0;
+    .loadingSpin {
+      height: calc(100vh - 64px - 100px - 30px);
+    }
+  }
+
+  .footer {
+    height: 100px;
+    padding: 0;
+    background-color: white;
+  }
 }

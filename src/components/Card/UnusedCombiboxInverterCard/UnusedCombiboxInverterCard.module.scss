@@ -1,0 +1,27 @@
+@import '../../../styles/global.scss';
+
+.card {
+  width: 100%;
+  margin: 10px 0;
+  padding: 5px 0;
+  border: 2px solid #ffa39e;
+
+  .content {
+    margin: 24px;
+  }
+}
+
+.transformerParagraph {
+  margin: 0.5em 0 !important;
+  color: #95de64;
+}
+
+.combiboxParagraph {
+  margin: 0.5em 0 !important;
+  color: #69c0ff;
+}
+
+.inverterParagraph {
+  margin: 0.5em 0 !important;
+  color: #faad14;
+}

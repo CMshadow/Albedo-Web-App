@@ -2,6 +2,7 @@
   "user.register": "Register",
   "user.login": "Login",
   "user.save-login": "Auto Login",
+  "user.reset-password": "Set New Password",
   "user.forget-password": "Forget Password",
   "user.logo.welcome": "Professional Solar Design Software",
 
@@ -38,10 +39,17 @@
   "user.error.UsernameExistsException": "This email address is already used",
   "user.error.CodeMismatchException": "Verification code is incorrect",
   "user.error.NotAuthorizedException": "Account name or password is incorrect",
+  "user.error.send-code-fail": "Failed sending verification code",
+  "user.error.reset-password": "Failed setting new password",
 
   "user.verification.resend": "Resend",
   "user.verification.welcome": "Verify email address",
   "user.verification.confirm": "Confirm",
 
-  "user.login.welcome": "User login"
+  "user.forget.email": "User Email",
+  "user.forget.send-code": "Verification Code",
+  "user.forget.newpassword": "New Password",
+
+  "user.login.welcome": "User login",
+  "user.forget.welcome": "Reset Password"
 }

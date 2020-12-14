@@ -1,0 +1,19 @@
+.searchBox {
+  padding: 8px;
+
+  .input {
+    display: block;
+    width: 188px;
+    margin-bottom: 8px;
+  }
+
+  .button {
+    width: 90px;
+    margin-bottom: 8px;
+  }
+}
+
+.highlight {
+  padding: 0;
+  background-color: #ffc069;
+}

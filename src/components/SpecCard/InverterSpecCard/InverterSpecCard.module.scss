@@ -1,0 +1,36 @@
+@import '../../../styles/global.scss';
+
+.card {
+  width: 100%;
+  margin: 10px 0;
+
+  .content {
+    margin: 24px;
+  }
+
+  .divider {
+    background-color: white;
+  }
+
+  .toolbar {
+    justify-content: center;
+    float: right;
+    height: 100%;
+    padding: 20px;
+    background-color: $layout-body-background;
+  }
+
+  .sectionBreak {
+    margin: 0;
+  }
+
+  .collapse {
+    color: white;
+    background-color: white;
+  }
+
+  .addSpec {
+    height: 70px;
+    margin: 20px 0;
+  }
+}

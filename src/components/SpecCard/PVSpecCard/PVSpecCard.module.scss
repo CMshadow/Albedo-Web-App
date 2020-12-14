@@ -1,0 +1,39 @@
+@import '../../../styles/global.scss';
+
+.card {
+  width: 100%;
+  margin: 25px 0;
+  border: 2px solid $primary-color-2;
+
+  .content {
+    margin: 15px;
+  }
+
+  .divider {
+    background-color: white;
+  }
+
+  .toolbar {
+    justify-content: center;
+    float: right;
+    height: 100%;
+    padding: 20px;
+    background-color: $layout-body-background;
+    border-radius: 0 5px 0 0;
+  }
+
+  .sectionBreak {
+    margin: 0;
+  }
+
+  .collapse .collapsePanel {
+    color: white;
+    background-color: white;
+    border: 0;
+  }
+
+  .addSpec {
+    height: 70px;
+    margin: 20px 0;
+  }
+}
