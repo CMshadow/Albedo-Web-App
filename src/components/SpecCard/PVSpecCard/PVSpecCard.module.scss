@@ -1,8 +1,8 @@
 @import '../../../styles/global.scss';
 
-.card{
+.card {
   width: 100%;
-  margin: 25px 0px;
+  margin: 25px 0;
   border: 2px solid $primary-color-2;
 
   .content {
@@ -14,26 +14,26 @@
   }
 
   .toolbar {
+    justify-content: center;
     float: right;
-    background-color: $layout-body-background;
     height: 100%;
     padding: 20px;
-    justify-content: center;
-    border-radius: 0px 5px 0px 0px;
+    background-color: $layout-body-background;
+    border-radius: 0 5px 0 0;
   }
 
   .sectionBreak {
-    margin: 0px;
+    margin: 0;
   }
 
   .collapse .collapsePanel {
     color: white;
     background-color: white;
-    border: 0px;
+    border: 0;
   }
 
   .addSpec {
     height: 70px;
-    margin: 20px 0px;
+    margin: 20px 0;
   }
 }

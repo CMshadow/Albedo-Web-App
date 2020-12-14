@@ -6,3 +6,18 @@
   float: right;
   margin-bottom: 10px;
 }
+
+.searchBox {
+  padding: 8px;
+
+  .input {
+    display: block;
+    width: 200px;
+    margin-bottom: 8px;
+  }
+
+  .button {
+    width: 96px;
+    margin-bottom: 0;
+  }
+}

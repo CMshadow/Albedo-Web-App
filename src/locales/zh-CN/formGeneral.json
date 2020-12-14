@@ -1,5 +1,7 @@
 {
   "form.confirm": "确认",
   "form.pass": "满足",
-  "form.fail": "不满足"
+  "form.fail": "不满足",
+  "form.required": "必填",
+  "form.min.0": "最小为0"
 }

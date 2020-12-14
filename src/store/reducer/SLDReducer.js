@@ -1,4 +1,4 @@
-import * as actionTypes from '../action/actionTypes';
+import * as actionTypes from '../action/actionTypes'
 
 const initialState = {
   pvDist: [],
@@ -14,23 +14,22 @@ const initialState = {
   serverPanelPosition: [],
   disconnectSize: [],
   serverPanelAccess: [],
-  meterPosition:[],
-  gridPosition:[],
+  meterPosition: [],
+  gridPosition: [],
   meterAccessPosition: [],
   //CN
   diagramWidth: window.innerWidth - 250,
   diagramHeight: window.innerHeight - 64,
-  diagramBoundaryPosition: [0 , 0],
+  diagramBoundaryPosition: [0, 0],
   diagramInverterPorts: [],
   diagramMeterAccessPort: [],
-  diagramMeterAccessAllIn: []
-
-};
+  diagramMeterAccessAllIn: [],
+}
 
 const setPVDist = (state, action) => {
   return {
     ...state,
-    pvDist: action.pvDist
+    pvDist: action.pvDist,
   }
 }
 
@@ -39,30 +38,30 @@ const setInverterWidth = (state, action) => {
     ...state,
     width: action.width,
     pvGap: action.pvGap,
-    pvAccessPorts: action.accessPoints
+    pvAccessPorts: action.accessPoints,
   }
 }
 
 const InverterDataExport = (state, action) => {
   return {
     ...state,
-    inverterAccessPorts: action.accessPoints
+    inverterAccessPorts: action.accessPoints,
   }
 }
 
 const setInterConnectData = (state, action) => {
-  return{
+  return {
     ...state,
     disconnecterPosition: action.startPosition,
-    interConnectAccessPorts : action.accessPoints,
-    disconnectSize: action.size
+    interConnectAccessPorts: action.accessPoints,
+    disconnectSize: action.size,
   }
 }
 
 const setSize = (state, action) => {
   return {
     ...state,
-    stageHeight: action.height
+    stageHeight: action.height,
   }
 }
 
@@ -70,7 +69,7 @@ const setServerPanel = (state, action) => {
   return {
     ...state,
     disconnecterAccess: action.accessPoints,
-    serverPanelPosition: action.startPosition
+    serverPanelPosition: action.startPosition,
   }
 }
 
@@ -78,7 +77,7 @@ const setMeter = (state, action) => {
   return {
     ...state,
     serverPanelAccess: action.accessPoints,
-    meterPosition: action.startPosition
+    meterPosition: action.startPosition,
   }
 }
 
@@ -86,108 +85,107 @@ const setGrid = (state, action) => {
   return {
     ...state,
     gridPosition: action.startPosition,
-    meterAccessPosition: action.accessPoints
+    meterAccessPosition: action.accessPoints,
   }
 }
 
 const setWidth = (state, action) => {
   return {
     ...state,
-    stageWidth: action.width
+    stageWidth: action.width,
   }
 }
 
 const setStartPosition = (state, action) => {
-  return{
+  return {
     ...state,
-    diagramBoundaryPosition: action.position
+    diagramBoundaryPosition: action.position,
   }
 }
 
 const setDiagramWidth = (state, action) => {
-  return{
+  return {
     ...state,
-    diagramWidth: action.width
-  }  
+    diagramWidth: action.width,
+  }
 }
 
 export const setInverterAccessPorts = (state, action) => {
-  return{
+  return {
     ...state,
-    diagramInverterPorts: action.accessPoints
+    diagramInverterPorts: action.accessPoints,
   }
 }
 
 export const setMeterAccessPort = (state, action) => {
-  return{
+  return {
     ...state,
-    diagramMeterAccessPort: action.meterAccess
+    diagramMeterAccessPort: action.meterAccess,
   }
 }
 
 export const diagramMeterAccessAllIn = (state, action) => {
-  return{
+  return {
     ...state,
-    diagramMeterAccessAllIn: action.meterAllInAccess
+    diagramMeterAccessAllIn: action.meterAllInAccess,
   }
 }
-
 
 export const setDiagramHeight = (state, action) => {
-  return{
+  return {
     ...state,
-    diagramHeight: action.height
-  }  
+    diagramHeight: action.height,
+  }
 }
 
-
-const reducer = (state=initialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_PV_DIST:
-      return setPVDist(state, action);
+      return setPVDist(state, action)
 
     case actionTypes.SET_INVERTER_WIDTH:
-      return setInverterWidth(state, action);
-    
+      return setInverterWidth(state, action)
+
     case actionTypes.SET_INVERTER_DATA_SLD:
-      return InverterDataExport(state, action);
+      return InverterDataExport(state, action)
 
     case actionTypes.SET_INTERCONNECT_DATA:
-      return setInterConnectData(state, action);
+      return setInterConnectData(state, action)
 
     case actionTypes.SET_SIZE:
-      return setSize(state, action);
+      return setSize(state, action)
 
     case actionTypes.SET_SERVER_PANEL:
-      return setServerPanel(state, action);
+      return setServerPanel(state, action)
 
     case actionTypes.SET_METER:
-      return setMeter(state, action);
-    
+      return setMeter(state, action)
+
     case actionTypes.SET_GRID:
-      return setGrid(state, action);
-    
+      return setGrid(state, action)
+
     case actionTypes.SET_WIDTH:
-      return setWidth(state, action);
+      return setWidth(state, action)
 
     case actionTypes.SET_DIAGRAM_WIDTH:
-      return setDiagramWidth(state, action);
+      return setDiagramWidth(state, action)
 
     case actionTypes.SET_START_POSTION:
-      return setStartPosition(state, action);
+      return setStartPosition(state, action)
 
     case actionTypes.SET_INVERTER_ACCESSPORTS:
-      return setInverterAccessPorts(state, action);
+      return setInverterAccessPorts(state, action)
 
     case actionTypes.SET_METER_ACCESS:
-      return setMeterAccessPort(state, action);
-    default: return state;
+      return setMeterAccessPort(state, action)
+    default:
+      return state
 
     case actionTypes.SET_METER_ACCESS_ALL_IN:
-      return diagramMeterAccessAllIn(state, action);
+      return diagramMeterAccessAllIn(state, action)
     case actionTypes.SET_DIAGRAM_HEIGHT:
-      return setDiagramHeight(state, action);
+      return setDiagramHeight(state, action)
   }
-};
+}
 
-export default reducer;
+export default reducer

@@ -1,0 +1,20 @@
+{
+  "weatherManager.add": "创建天气档案",
+  "weatherManager.portfolio.name": "档案名称",
+  "weatherManager.portfolio.name.placeholder": "输入档案名称",
+  "weatherManager.portfolio.address": "天气数据地址",
+  "weatherManager.portfolio.address.placeholder": "请输入地址并验证，或在地图上直接点击位置",
+  "weatherManager.portfolio.meteonorm": "Meteonorm数据",
+  "weatherManager.portfolio.nasa": "NASA数据",
+  "weatherManager.portfolio.custom": "自定义数据",
+  "weatherManager.portfolio.createdAt": "创建于",
+  "weatherManager.portfolio.longitude": "经度",
+  "weatherManager.portfolio.latitude": "纬度",
+
+  "weatherManager.portfolio.address.verified": "地址已被验证",
+  "weatherManager.portfolio.address.unverified": "验证地址",
+
+  "weatherManager.portfolio.src.yes": "已生成",
+  "weatherManager.portfolio.src.no": "未生成",
+  "weatherManager.portfolio.src.gen": "立即生成"
+}

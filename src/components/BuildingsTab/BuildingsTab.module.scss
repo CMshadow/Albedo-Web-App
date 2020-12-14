@@ -4,9 +4,10 @@
   width: 200px;
 }
 
-.addSpec, .addSpecCombibox {
+.addSpec,
+.addSpecCombibox {
   height: 100px;
-  margin: 20px 0px;
+  margin: 20px 0;
 }
 
 .addSpec:hover {
@@ -15,6 +16,6 @@
 }
 
 .icon {
-  margin-right: 0px !important;
+  margin-right: 0 !important;
   color: grey;
 }

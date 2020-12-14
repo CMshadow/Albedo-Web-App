@@ -4,6 +4,7 @@
   "table.delete": "Delete",
   "table.totalCount": "items",
   "table.name": "Name",
+  "table.address": "Address",
   "table.month": "Month",
 
   "filter.search": "Search",

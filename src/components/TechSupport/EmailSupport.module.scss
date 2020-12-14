@@ -1,13 +1,13 @@
 .triggerButton {
   position: fixed;
-  bottom: 5%;
   right: 40px;
+  bottom: 5%;
   z-index: 1;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
 .modal {
-  // position: fixed;                  
+  // position: fixed;
   // top: 30%;
   // right: 20px;
 }
@@ -18,17 +18,18 @@
 }
 
 .formRowTextArea {
+  width: 91%;
   margin-left: 38px;
-  width: 91%
 }
 
 .formItem {
-  padding: 0px 20px;
+  padding: 0 20px;
 }
 
-.MessageOutlined { 
-  font-size: 20px
+.MessageOutlined {
+  font-size: 20px;
 }
+
 .draggerComp {
   width: 95%;
 }

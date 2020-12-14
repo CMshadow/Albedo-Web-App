@@ -1,5 +1,7 @@
 {
   "form.confirm": "Confirm",
   "form.pass": "Passed",
-  "form.fail": "Failed"
+  "form.fail": "Failed",
+  "form.required": "Required",
+  "form.min.0": "Minimum of 0"
 }
