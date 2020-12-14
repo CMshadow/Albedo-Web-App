@@ -44,7 +44,7 @@ const PowerGrid = () => {
                 <Button
                   className={styles.addSpecTransformer}
                   loading={loading}
-                  disabled={editingTransformer !== null}
+                  disabled={editingTransformer !== undefined}
                   block
                   type='dashed'
                   onClick={() => {
@@ -93,7 +93,7 @@ const PowerGrid = () => {
                 <Button
                   className={styles.addSpecPowercabinet}
                   loading={loading}
-                  disabled={editingPowercabinet !== null}
+                  disabled={editingPowercabinet !== undefined}
                   block
                   type='dashed'
                   onClick={() => {

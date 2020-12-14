@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Card, Descriptions, PageHeader, Row, Col, Tabs, Divider } from 'antd'
+import { Card, Descriptions, PageHeader, Row, Col, Tabs, Divider, Button } from 'antd'
 import { RootState, WeatherPortfolio } from '../../@types'
 import { useTranslation } from 'react-i18next'
 import { AMap } from '../../components/AMap'
@@ -60,6 +60,29 @@ export const Portfolio: React.FC<PortfolioProps> = props => {
               </Descriptions.Item>
             </Descriptions>
             <Divider />
+            <Card hoverable>
+              <Row align='middle'>
+                <Col span={12}>{t('weatherManager.portfolio.meteonorm')}</Col>
+                <Col span={12}>
+                  <Row justify='end'>
+                    <Button>{t('weatherManager.portfolio.src.gen')}</Button>
+                  </Row>
+                </Col>
+              </Row>
+            </Card>
+            <br />
+            <Card hoverable>
+              <Row align='middle'>
+                <Col span={12}>{t('weatherManager.portfolio.nasa')}</Col>
+                <Col span={12}>
+                  <Row justify='end'>
+                    <Button>{t('weatherManager.portfolio.src.gen')}</Button>
+                  </Row>
+                </Col>
+              </Row>
+            </Card>
+            <br />
+            <Card hoverable>{t('weatherManager.portfolio.custom')}</Card>
           </Col>
           <Col span={12}>
             <Tabs

@@ -100,9 +100,9 @@ const BasicLayout: React.FC = props => {
             <Menu.Item key='inverter' className={styles.menuItem}>
               {t('sider.menu.inverter')}
             </Menu.Item>
-            <Menu.Item key='weather' className={styles.menuItem}>
+            {/* <Menu.Item key='weather' className={styles.menuItem}>
               {t('sider.menu.weather')}
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu>
         </Sider>
         <Layout className={styles.main}>

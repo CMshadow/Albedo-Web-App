@@ -15,5 +15,6 @@
   "weatherManager.portfolio.address.unverified": "验证地址",
 
   "weatherManager.portfolio.src.yes": "已生成",
-  "weatherManager.portfolio.src.no": "未生成"
+  "weatherManager.portfolio.src.no": "未生成",
+  "weatherManager.portfolio.src.gen": "立即生成"
 }

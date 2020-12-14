@@ -15,5 +15,6 @@
   "weatherManager.portfolio.address.unverified": "Verify the address",
 
   "weatherManager.portfolio.src.yes": "Generated",
-  "weatherManager.portfolio.src.no": "Empty"
+  "weatherManager.portfolio.src.no": "Empty",
+  "weatherManager.portfolio.src.gen": "Generate Now"
 }
