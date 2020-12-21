@@ -1,13 +1,13 @@
 import axios from '../axios.config'
 import injectAuth from './injectAuth'
-import { IAxiosRequest, Report } from '../@types'
+import { IAxiosRequest, CommercialReport, DomesticReport } from '../@types'
 
 const genReportRequest: IAxiosRequest<
   { projectID: string; buildingID: string; username: string; jwtToken: string },
-  Report
+  DomesticReport | CommercialReport
 > = args =>
   axios
-    .post<Report>(
+    .post<DomesticReport | CommercialReport>(
       `/project/${args.username}/${args.projectID}/${args.buildingID}/report`,
       {},
       { headers: { 'COG-TOKEN': args.jwtToken } }
@@ -16,7 +16,7 @@ const genReportRequest: IAxiosRequest<
 
 const getReportRequest: IAxiosRequest<
   { projectID: string; buildingID: string; username: string; jwtToken: string },
-  Report
+  DomesticReport | CommercialReport
 > = args =>
   axios
     .get(`/project/${args.username}/${args.projectID}/${args.buildingID}/report`, {
@@ -38,14 +38,14 @@ const saveReportRequest: IAxiosRequest<
   {
     projectID: string
     buildingID: string
-    values: Report
+    values: DomesticReport | CommercialReport
     username: string
     jwtToken: string
   },
-  { Attributes: Report }
+  { Attributes: DomesticReport | CommercialReport }
 > = args =>
   axios
-    .put<{ Attributes: Report }>(
+    .put<{ Attributes: DomesticReport | CommercialReport }>(
       `/project/${args.username}/${args.projectID}/${args.buildingID}/report`,
       args.values,
       {

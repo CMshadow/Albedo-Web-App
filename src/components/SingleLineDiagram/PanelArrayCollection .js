@@ -30,7 +30,7 @@ const PanelArrayCollection = props => {
 
   const drawPanelArray = () => {
     zoomAuto()
-    dispatch(setPVDist([startX + minSize[0] * 1.5, startPosition[1]]))
+    dispatch(setPVDist(startX + minSize[0] * 1.5))
     for (let i = 0; i < numOfArray; ++i) {
       startY = startPosition[1] + minSize[1] * 1.8 * i
       if (i === 1 && overSized) {

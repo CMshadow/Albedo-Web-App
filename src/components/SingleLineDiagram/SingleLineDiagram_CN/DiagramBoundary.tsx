@@ -4,13 +4,26 @@ import { Rect, Line, Group, Text, Image } from 'react-konva'
 import { useSelector, useDispatch } from 'react-redux'
 import Logo from '../../../assets/logo.png'
 import { setDiagramWidth, setStartPosition } from '../../../store/action/index'
+import { RootState, IAllPVArray, IProjectState } from '../../../@types'
 import useImage from 'use-image'
 
-const DiagramBoundary = props => {
+type BoundaryProps = {
+  index: number
+  combiBox: string
+  acData: string[]
+  dcData: string[][]
+  numOfInv: number
+  aggrePacoData: { [key: string]: number }
+  allPVArray: IAllPVArray[]
+  combiboxIe?: number
+  projectData: IProjectState
+}
+
+const DiagramBoundary: React.FC<BoundaryProps> = props => {
   const [logo] = useImage(Logo)
   const dispatch = useDispatch()
-  const groupOfBoundary = []
-  const width = useSelector(state => state.SLD.diagramWidth)
+  const groupOfBoundary: React.ReactNode[] = []
+  const width = useSelector((state: RootState) => state.SLD.diagramWidth)
   const boundaryWidth = width * 0.8 > 800 ? width * 0.8 : 800
   const boundaryHeight = boundaryWidth * (4 / 6)
   const offset = props.index === 1 ? 0 : boundaryHeight + 100
@@ -23,9 +36,9 @@ const DiagramBoundary = props => {
   const numOfInverter = props.numOfInv
   const acData = props.acData.length > 0 ? props.acData : []
   const acDataSet = new Set(acData)
-  const aggrePacpData = props.aggrePacpData
-  const sortedPacoKeys = Object.keys(aggrePacpData).sort((a, b) =>
-    aggrePacpData[a] > aggrePacpData[b] ? -1 : 1
+  const aggrePacoData = props.aggrePacoData
+  const sortedPacoKeys = Object.keys(aggrePacoData).sort((a, b) =>
+    aggrePacoData[a] > aggrePacoData[b] ? -1 : 1
   )
   const dcData = props.dcData.length > 0 ? props.dcData[0][0] : ''
   const dcDataSet = new Set(props.dcData)
@@ -131,7 +144,7 @@ const DiagramBoundary = props => {
           key={'Boundary-Text-' + uuidv4()}
           x={startPosition[0] + unitWidth * (index + 0.5)}
           y={startPosition[1] + 1}
-          text={index + 1}
+          text={`${index + 1}`}
           fontSize={boundaryWidth * 0.01 > 12 ? 12 : boundaryWidth * 0.01}
           fontFamily='Arial'
           fill='Black'
@@ -143,7 +156,7 @@ const DiagramBoundary = props => {
           key={'Boundary-Text-' + uuidv4()}
           x={startPosition[0] + unitWidth * (index + 0.5)}
           y={startPosition[1] + boundaryHeight - boundaryWidth * 0.01 + 1}
-          text={index + 1}
+          text={`${index + 1}`}
           fontSize={boundaryWidth * 0.01 > 10 ? 10 : boundaryWidth * 0.01}
           fontFamily='Arial'
           fill='Black'
@@ -262,7 +275,7 @@ const DiagramBoundary = props => {
         key={'Boundary-Text-' + uuidv4()}
         x={startX + iconWidth * 0.6}
         y={startY + iconHeight * 0.7 + font}
-        text={'   项目: ' + props.projectData.projectTitle}
+        text={'   项目: ' + `${props.projectData?.projectTitle}`}
         fontSize={font}
         fontFamily='Arial'
         fill='Black'
@@ -293,7 +306,7 @@ const DiagramBoundary = props => {
     )
   }
   const drawDiagramShelf = () => {
-    let lastPosition = []
+    let lastPosition: number[] = []
     const unitHeight = (boundWidth * 0.7) / 8
     const font = unitHeight * 0.2 > 14 ? 14 : unitHeight * 0.2
     const heightOffSet = 10

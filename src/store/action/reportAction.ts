@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes'
 import { ThunkAction } from 'redux-thunk'
-import { RootState, ReportActionTypes, Report } from '../../@types'
+import { RootState, ReportActionTypes, CommercialReport, DomesticReport } from '../../@types'
 
 type ThunkResult<R> = ThunkAction<R, RootState, undefined, ReportActionTypes>
 
@@ -9,8 +9,8 @@ interface IAction<P, R> {
 }
 
 type BuildingIDParam = { buildingID: string }
-type SetReportDataParams = BuildingIDParam & { data: Report }
-type UpdateReportAttributesParams = BuildingIDParam & Partial<Report>
+type SetReportDataParams = BuildingIDParam & { data: CommercialReport | DomesticReport }
+type UpdateReportAttributesParams = BuildingIDParam & Partial<CommercialReport | DomesticReport>
 
 export const setReportData: IAction<SetReportDataParams, void> = ({
   buildingID,

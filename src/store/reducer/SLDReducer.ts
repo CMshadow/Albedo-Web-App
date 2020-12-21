@@ -1,39 +1,61 @@
 import * as actionTypes from '../action/actionTypes'
+import {
+  ISLDState,
+  SetPVDist,
+  SetInverterWidth,
+  InverterDataExport,
+  SetInterConnectData,
+  SetResize,
+  SetServerPanel,
+  SetMeter,
+  SetGrid,
+  SetWidth,
+  SetStartPosition,
+  SetDiagramWidth,
+  SetDiagramHeight,
+  SetInverterAccessPorts,
+  SetMeterAccess,
+  SetMeterAccessAllIn,
+  SingleLineDiagramActionType,
+} from '../../@types'
 
-const initialState = {
-  pvDist: [],
+const initialState: ISLDState = {
+  pvDist: 0,
   width: 1,
   pvGap: 0,
   pvAccessPorts: [],
   inverterAccessPorts: [],
-  interConnectAccessPorts: [],
-  disconnecterPosition: [],
+  interConnectAccessPorts: [0, 0],
+  disconnecterPosition: [0, 0],
   stageWidth: window.innerWidth - 250,
   stageHeight: window.innerHeight - 64,
-  disconnecterAccess: [],
-  serverPanelPosition: [],
-  disconnectSize: [],
-  serverPanelAccess: [],
-  meterPosition: [],
-  gridPosition: [],
-  meterAccessPosition: [],
+  disconnecterAccess: [0, 0],
+  serverPanelPosition: [0, 0],
+  disconnectSize: 0,
+  serverPanelAccess: [0, 0],
+  meterPosition: [0, 0],
+  gridPosition: [0, 0],
+  meterAccessPosition: [0, 0],
   //CN
   diagramWidth: window.innerWidth - 250,
   diagramHeight: window.innerHeight - 64,
   diagramBoundaryPosition: [0, 0],
-  diagramInverterPorts: [],
-  diagramMeterAccessPort: [],
-  diagramMeterAccessAllIn: [],
+  diagramMeterAccessPort: [0, 0],
+  diagramMeterAccessAllIn: [0, 0],
 }
 
-const setPVDist = (state, action) => {
+interface ISLDReducer<A> {
+  (state: ISLDState, action: A): ISLDState
+}
+
+const setPVDist: ISLDReducer<SetPVDist> = (state, action) => {
   return {
     ...state,
     pvDist: action.pvDist,
   }
 }
 
-const setInverterWidth = (state, action) => {
+const setInverterWidth: ISLDReducer<SetInverterWidth> = (state, action) => {
   return {
     ...state,
     width: action.width,
@@ -42,14 +64,14 @@ const setInverterWidth = (state, action) => {
   }
 }
 
-const InverterDataExport = (state, action) => {
+const inverterDataExport: ISLDReducer<InverterDataExport> = (state, action) => {
   return {
     ...state,
     inverterAccessPorts: action.accessPoints,
   }
 }
 
-const setInterConnectData = (state, action) => {
+const setInterConnectData: ISLDReducer<SetInterConnectData> = (state, action) => {
   return {
     ...state,
     disconnecterPosition: action.startPosition,
@@ -58,14 +80,14 @@ const setInterConnectData = (state, action) => {
   }
 }
 
-const setSize = (state, action) => {
+const setSize: ISLDReducer<SetResize> = (state, action) => {
   return {
     ...state,
     stageHeight: action.height,
   }
 }
 
-const setServerPanel = (state, action) => {
+const setServerPanel: ISLDReducer<SetServerPanel> = (state, action) => {
   return {
     ...state,
     disconnecterAccess: action.accessPoints,
@@ -73,7 +95,7 @@ const setServerPanel = (state, action) => {
   }
 }
 
-const setMeter = (state, action) => {
+const setMeter: ISLDReducer<SetMeter> = (state, action) => {
   return {
     ...state,
     serverPanelAccess: action.accessPoints,
@@ -81,7 +103,7 @@ const setMeter = (state, action) => {
   }
 }
 
-const setGrid = (state, action) => {
+const setGrid: ISLDReducer<SetGrid> = (state, action) => {
   return {
     ...state,
     gridPosition: action.startPosition,
@@ -89,56 +111,56 @@ const setGrid = (state, action) => {
   }
 }
 
-const setWidth = (state, action) => {
+const setWidth: ISLDReducer<SetWidth> = (state, action) => {
   return {
     ...state,
     stageWidth: action.width,
   }
 }
 
-const setStartPosition = (state, action) => {
+const setStartPosition: ISLDReducer<SetStartPosition> = (state, action) => {
   return {
     ...state,
     diagramBoundaryPosition: action.position,
   }
 }
 
-const setDiagramWidth = (state, action) => {
+const setDiagramWidth: ISLDReducer<SetDiagramWidth> = (state, action) => {
   return {
     ...state,
     diagramWidth: action.width,
   }
 }
 
-export const setInverterAccessPorts = (state, action) => {
+export const setInverterAccessPorts: ISLDReducer<SetInverterAccessPorts> = (state, action) => {
   return {
     ...state,
     diagramInverterPorts: action.accessPoints,
   }
 }
 
-export const setMeterAccessPort = (state, action) => {
+export const setMeterAccessPort: ISLDReducer<SetMeterAccess> = (state, action) => {
   return {
     ...state,
     diagramMeterAccessPort: action.meterAccess,
   }
 }
 
-export const diagramMeterAccessAllIn = (state, action) => {
+export const diagramMeterAccessAllIn: ISLDReducer<SetMeterAccessAllIn> = (state, action) => {
   return {
     ...state,
     diagramMeterAccessAllIn: action.meterAllInAccess,
   }
 }
 
-export const setDiagramHeight = (state, action) => {
+export const setDiagramHeight: ISLDReducer<SetDiagramHeight> = (state, action) => {
   return {
     ...state,
     diagramHeight: action.height,
   }
 }
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: SingleLineDiagramActionType) => {
   switch (action.type) {
     case actionTypes.SET_PV_DIST:
       return setPVDist(state, action)
@@ -147,7 +169,7 @@ const reducer = (state = initialState, action) => {
       return setInverterWidth(state, action)
 
     case actionTypes.SET_INVERTER_DATA_SLD:
-      return InverterDataExport(state, action)
+      return inverterDataExport(state, action)
 
     case actionTypes.SET_INTERCONNECT_DATA:
       return setInterConnectData(state, action)
@@ -178,13 +200,15 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.SET_METER_ACCESS:
       return setMeterAccessPort(state, action)
-    default:
-      return state
 
     case actionTypes.SET_METER_ACCESS_ALL_IN:
       return diagramMeterAccessAllIn(state, action)
+
     case actionTypes.SET_DIAGRAM_HEIGHT:
       return setDiagramHeight(state, action)
+
+    default:
+      return state
   }
 }
 
