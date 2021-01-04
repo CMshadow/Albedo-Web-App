@@ -6,7 +6,18 @@ export type WeatherPortfolio = {
   createdAt: number
   longitude: number
   latitude: number
+  altitude: number
+  mode: 'tmy' | 'processed'
   meteonorm_src: string | null
   nasa_src: string | null
   custom_src: string | null
+}
+
+export type ParsedCSV = {
+  GHI: number[]
+  DNI: number[]
+  DHI: number[]
+  'Dry-bulb': number[]
+  Pressure: number[]
+  Wspd: number[]
 }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Modal, Form, Input, Tabs, notification, Button, Divider } from 'antd'
+import { Modal, Form, Input, Tabs, notification, Button, Divider, Select } from 'antd'
+import { other2m } from '../../utils/unitConverter'
 import { AMap } from '../../components/AMap'
 import { GoogleMap } from '../../components/GoogleMap'
 import { amapGeocoder, googleGeocoder, getApiKey, createWeatherPortfolio } from '../../services'
@@ -23,8 +24,8 @@ type CreateModalProps = {
 export const CreateModal: React.FC<CreateModalProps> = props => {
   const [form] = Form.useForm()
   const { showModal, setshowModal, afterClose } = props
-  const dispatch = useDispatch()
   const { t } = useTranslation()
+  const unit = useSelector((state: RootState) => state.unit.unit)
   const cognitoUser = useSelector((state: RootState) => state.auth.cognitoUser)
   const [validated, setvalidated] = useState(false)
   const [mapPos, setmapPos] = useState(
@@ -75,12 +76,20 @@ export const CreateModal: React.FC<CreateModalProps> = props => {
   }
 
   // 表单提交
-  const submitForm = (values: { name: string; address: string }) => {
+  const submitForm = (values: {
+    name: string
+    address: string
+    altitude: string
+    mode: 'tmy' | 'processed'
+  }) => {
+    const altitude = other2m(unit, Number(values.altitude))
     createWeatherPortfolio({
       name: values.name,
       address: values.address,
       longitude: Number(mapPos.lon),
       latitude: Number(mapPos.lat),
+      altitude: altitude,
+      mode: values.mode,
     })
       .then(() => {
         setTimeout(() => {
@@ -246,6 +255,30 @@ export const CreateModal: React.FC<CreateModalProps> = props => {
               </Button>
             }
             placeholder={t('weatherManager.portfolio.address.placeholder')}
+          />
+        </Form.Item>
+        <Form.Item
+          name='altitude'
+          label={t('weatherManager.portfolio.altitude')}
+          rules={[{ required: true }]}
+        >
+          <Input
+            type='number'
+            placeholder={t('weatherManager.portfolio.altitude.placeholder')}
+            suffix={unit}
+          />
+        </Form.Item>
+        <Form.Item
+          name='mode'
+          label={t('weatherManager.portfolio.mode')}
+          rules={[{ required: true }]}
+        >
+          <Select
+            placeholder={t('weatherManager.portfolio.mode.placeholder')}
+            options={[
+              { value: 'processed', label: t('weatherManager.portfolio.mode.processed') },
+              { value: 'tmy', label: t('weatherManager.portfolio.mode.tmy') },
+            ]}
           />
         </Form.Item>
       </Form>

@@ -10,11 +10,32 @@
   "weatherManager.portfolio.createdAt": "Created At",
   "weatherManager.portfolio.longitude": "Longitude",
   "weatherManager.portfolio.latitude": "Latitude",
+  "weatherManager.portfolio.altitude": "Altitude",
+  "weatherManager.portfolio.altitude.placeholder": "Altitude",
+  "weatherManager.portfolio.mode": "Procedure",
+  "weatherManager.portfolio.mode.placeholder": "Choose a Procedure",
+  "weatherManager.portfolio.mode.tmy": "Upload TMY Data",
+  "weatherManager.portfolio.mode.processed": "Make Compound Data",
 
   "weatherManager.portfolio.address.verified": "Address verified",
   "weatherManager.portfolio.address.unverified": "Verify the address",
 
   "weatherManager.portfolio.src.yes": "Generated",
   "weatherManager.portfolio.src.no": "Empty",
-  "weatherManager.portfolio.src.gen": "Generate Now"
+  "weatherManager.portfolio.src.gen": "Generate Now",
+  "weatherManager.portfolio.waitMeteonorm": "Setting up Services",
+
+  "weatherManager.portfolio.tmy.step.1": "Download Templates",
+  "weatherManager.portfolio.tmy.step.2": "Upload Finished File",
+  "weatherManager.portfolio.tmy.step.3": "Data Calibration",
+
+  "weatherManager.portfolio.template.download": "Download Template",
+  "weatherManager.portfolio.template.instruction": "Template Guideline",
+  "weatherManager.portfolio.template.instruction.content": "Orange boxes are required, Blue boxes are optional",
+  "weatherManager.portfolio.template.hourly": "Hourly Template",
+  "weatherManager.portfolio.template.daily": "Daily Template",
+  "weatherManager.portfolio.template.monthly": "Monthly Template",
+
+  "weatherManager.portfolio.upload.description": "Click or drag a CSV file into this area",
+  "weatherManager.portfolio.upload": "Upload File"
 }

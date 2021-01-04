@@ -17,10 +17,11 @@ import Dashboard from './pages/Project/Dashboard'
 const Report = lazy(() => import('./pages/Report/Report'))
 const ParamsForm = lazy(() => import('./pages/ParamsForm/ParamsForm'))
 const PowerGrid = lazy(() => import('./pages/PowerGrid/PowerGrid'))
-const PVTable = lazy(() => import('./pages/PVTable/index'))
-const InverterTable = lazy(() => import('./pages/InverterTable/index'))
-const SLD = lazy(() => import('./pages/SingleLineDiagram/index'))
-const WeatherManager = lazy(() => import('./pages/WeatherManager/index'))
+const PVTable = lazy(() => import('./pages/PVTable'))
+const InverterTable = lazy(() => import('./pages/InverterTable'))
+const SLD = lazy(() => import('./pages/SingleLineDiagram'))
+const WeatherManager = lazy(() => import('./pages/WeatherManager'))
+const WeatherPortfolio = lazy(() => import('./pages/WeatherPortfolio'))
 
 const Router = () => {
   return (
@@ -79,7 +80,14 @@ const Router = () => {
           </PrivateRoute>
           <PrivateRoute path='/weather'>
             <BasicLayout>
-              <WeatherManager />
+              <Switch>
+                <PrivateRoute path='/weather/:portfolioID'>
+                  <WeatherPortfolio />
+                </PrivateRoute>
+                <PrivateRoute path='/weather'>
+                  <WeatherManager />
+                </PrivateRoute>
+              </Switch>
             </BasicLayout>
           </PrivateRoute>
           <PrivateRoute path='/' exact>
