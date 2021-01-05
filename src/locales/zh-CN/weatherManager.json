@@ -23,6 +23,8 @@
   "weatherManager.portfolio.src.yes": "已生成",
   "weatherManager.portfolio.src.no": "未生成",
   "weatherManager.portfolio.src.gen": "立即生成",
+  "weatherManager.portfolio.src.download": "下载数据",
+  "weatherManager.portfolio.src.download.meteonorm": "Meteonorm协议限制无法提供下载，仅供软件内部使用",
   "weatherManager.portfolio.waitMeteonorm": "正在准备后台程序",
   "weatherManager.portfolio.make-tmy": "生成自定义数据 - 上传代表年数据",
   "weatherManager.portfolio.make-processed": "生成自定义数据 - 合成代表年数据",

@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { LoadingOutlined } from '@ant-design/icons'
-import { Card, Descriptions, PageHeader, Row, Col, Tabs, Divider, Button, Badge, Spin } from 'antd'
+import { LoadingOutlined, CloudDownloadOutlined } from '@ant-design/icons'
+import {
+  Card,
+  Descriptions,
+  PageHeader,
+  Row,
+  Col,
+  Tabs,
+  Divider,
+  Button,
+  Badge,
+  Spin,
+  Tooltip,
+  Space,
+} from 'antd'
 import promiseRetry from 'promise-retry'
 import { Params, RootState, WeatherPortfolio } from '../../@types'
 import { useTranslation } from 'react-i18next'
@@ -97,7 +110,12 @@ const WeatherPortfolioFC = () => {
                 <Col span={12}>
                   <Row justify='end'>
                     {portfolio?.meteonorm_src ? (
-                      <Badge status='success' text={t('weatherManager.portfolio.src.yes')} />
+                      <Space>
+                        <Badge status='success' text={t('weatherManager.portfolio.src.yes')} />
+                        <Tooltip title={t('weatherManager.portfolio.src.download.meteonorm')}>
+                          <Button type='link' disabled icon={<CloudDownloadOutlined />} />
+                        </Tooltip>
+                      </Space>
                     ) : (
                       <Badge status='default' text={t('weatherManager.portfolio.src.no')} />
                     )}
@@ -113,7 +131,16 @@ const WeatherPortfolioFC = () => {
                     <Col span={12}>{t('weatherManager.portfolio.nasa')}</Col>
                     <Col span={12}>
                       <Row justify='end'>
-                        <Button>{t('weatherManager.portfolio.src.gen')}</Button>
+                        {portfolio?.nasa_src ? (
+                          <Space>
+                            <Badge status='success' text={t('weatherManager.portfolio.src.yes')} />
+                            <Tooltip title={t('weatherManager.portfolio.src.download')}>
+                              <Button type='link' icon={<CloudDownloadOutlined />} />
+                            </Tooltip>
+                          </Space>
+                        ) : (
+                          <Button>{t('weatherManager.portfolio.src.gen')}</Button>
+                        )}
                       </Row>
                     </Col>
                   </Row>
@@ -127,7 +154,12 @@ const WeatherPortfolioFC = () => {
                 <Col span={12}>
                   <Row justify='end'>
                     {portfolio?.custom_src ? (
-                      <Badge status='success' text={t('weatherManager.portfolio.src.yes')} />
+                      <Space>
+                        <Badge status='success' text={t('weatherManager.portfolio.src.yes')} />
+                        <Tooltip title={t('weatherManager.portfolio.src.download')}>
+                          <Button type='link' icon={<CloudDownloadOutlined />} />
+                        </Tooltip>
+                      </Space>
                     ) : (
                       <Badge status='default' text={t('weatherManager.portfolio.src.no')} />
                     )}
