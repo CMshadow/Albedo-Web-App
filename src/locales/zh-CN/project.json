@@ -13,6 +13,7 @@
   "project.create.projectAltitude": "项目海拔",
   "project.create.projectAltitude.placeholder": "项目海拔高度",
   "project.create.type": "项目类型",
+  "project.create.type.placeholder": "选择一个项目类型",
   "project.type.domestic": "户用项目",
   "project.type.commercial": "分布式项目",
   "project.create.proParams": "进阶设置",
@@ -61,7 +62,7 @@
   "project.add.combibox": "添加汇流箱",
   "project.add.transformer": "添加变压器",
   "project.add.powercabinet": "添加并网柜",
-  
+
   "project.spec.sub-array": "管理光伏子区域",
   "project.spec.combiner_box": "管理汇流箱",
   "project.spec.tilt_angle": "组件倾角",
@@ -77,8 +78,8 @@
   "project.spec.inverters": "管理逆变器配置",
   "project.add.inverterSpec": "添加逆变器配置",
 
-  "project.error.tilt":"倾角在0°到60°之间",
-  "project.error.azimuth":"朝向在0°到360°之间",
+  "project.error.tilt": "倾角在0°到60°之间",
+  "project.error.azimuth": "朝向在0°到360°之间",
 
   "project.spec.celltemp-model": "温度模型",
   "project.spec.celltemp_sandia": "Sandia电池片温度模型",

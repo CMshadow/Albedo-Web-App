@@ -13,6 +13,7 @@
   "project.create.projectAltitude": "Project Altitude",
   "project.create.projectAltitude.placeholder": "Project Altitude",
   "project.create.type": "Project Type",
+  "project.create.type.placeholder": "Select a Project Type",
   "project.type.domestic": "Residential",
   "project.type.commercial": "Distributed",
   "project.create.proParams": "Advanced Setting",
@@ -77,8 +78,8 @@
   "project.spec.inverters": "Manage Inverter Settings",
   "project.add.inverterSpec": "Add a Inverter",
 
-  "project.error.tilt":"Tilting should be between 0° and 60°",
-  "project.error.azimuth":"Azimuth should be between 0 and 360°",
+  "project.error.tilt": "Tilting should be between 0° and 60°",
+  "project.error.azimuth": "Azimuth should be between 0 and 360°",
 
   "project.spec.celltemp-model": "Celltemp Model",
   "project.spec.celltemp_sandia": "Sandia Model",
