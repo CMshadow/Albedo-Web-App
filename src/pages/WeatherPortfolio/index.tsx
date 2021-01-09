@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next'
 import { AMap } from '../../components/AMap'
 import { GoogleMap } from '../../components/GoogleMap'
 import { TmyProcedure } from './TmyProcedure'
-import { getApiKey, getWeatherPortfolioSingle } from '../../services'
+import { getApiKey, getWeatherPortfolioSingle, createNASA } from '../../services'
 import styles from './index.module.scss'
 import { m2other } from '../../utils/unitConverter'
 import { useHistory, useParams } from 'react-router-dom'
@@ -37,11 +37,26 @@ const WeatherPortfolioFC = () => {
   const [portfolio, setportfolio] = useState<WeatherPortfolio | undefined>()
   const [googleMapKey, setgoogleMapKey] = useState<string>()
   const [waitMeteonorm, setwaitMeteonorm] = useState(true)
+  const [nasaLoading, setnasaLoading] = useState(false)
   const [aMapKey, setaMapKey] = useState<string>()
   const [aMapWebKey, setaMapWebKey] = useState<string>()
   const [selectedMap, setselectedMap] = useState<string>(
     cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'aMap' : 'googleMap'
   )
+
+  const createNASAData = () => {
+    if (!portfolioID) return
+    setnasaLoading(true)
+    createNASA({ portfolioID: portfolioID })
+      .then(res => {
+        setportfolio(res)
+        setnasaLoading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setnasaLoading(false)
+      })
+  }
 
   // 组件渲染后获取浏览器位置 及 获取地图服务api key
   useEffect(() => {
@@ -139,7 +154,9 @@ const WeatherPortfolioFC = () => {
                             </Tooltip>
                           </Space>
                         ) : (
-                          <Button>{t('weatherManager.portfolio.src.gen')}</Button>
+                          <Button onClick={createNASAData} loading={nasaLoading}>
+                            {t('weatherManager.portfolio.src.gen')}
+                          </Button>
                         )}
                       </Row>
                     </Col>

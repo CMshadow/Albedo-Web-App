@@ -86,8 +86,19 @@ const complementCSVRequest: IAxiosRequest<
     )
     .then(res => res.data)
 
+const createNASARequest: IAxiosRequest<
+  { portfolioID: string; username: string; jwtToken: string },
+  WeatherPortfolio
+> = args =>
+  axios
+    .get<WeatherPortfolio>(`/weatherportfolio/${args.username}/${args.portfolioID}/nasa`, {
+      headers: { 'COG-TOKEN': args.jwtToken },
+    })
+    .then(res => res.data)
+
 export const createWeatherPortfolio = injectAuth(createWeatherPortfolioRequest)
 export const getWeatherPortfolio = injectAuth(getWeatherPortfolioRequest)
 export const getWeatherPortfolioSingle = injectAuth(getWeatherPortfolioSingleRequest)
 export const deleteWeatherPortfolio = injectAuth(deleteWeatherPortfolioRequest)
 export const complementCSV = injectAuth(complementCSVRequest)
+export const createNASA = injectAuth(createNASARequest)
