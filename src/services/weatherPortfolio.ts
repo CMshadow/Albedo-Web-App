@@ -75,13 +75,19 @@ const deleteWeatherPortfolioRequest: IAxiosRequest<
     .then(res => res.data)
 
 const complementCSVRequest: IAxiosRequest<
-  { parsedCSV: ParsedCSV; portfolioID: string; username: string; jwtToken: string },
+  {
+    parsedCSV: ParsedCSV[]
+    dataYear: number[]
+    portfolioID: string
+    username: string
+    jwtToken: string
+  },
   WeatherPortfolio
 > = args =>
   axios
     .post<WeatherPortfolio>(
       `/weatherportfolio/${args.username}/${args.portfolioID}`,
-      args.parsedCSV,
+      args.parsedCSV.map((item, i) => ({ year: args.dataYear[i], data: item })),
       { headers: { 'COG-TOKEN': args.jwtToken } }
     )
     .then(res => res.data)
@@ -96,9 +102,23 @@ const createNASARequest: IAxiosRequest<
     })
     .then(res => res.data)
 
+const allSrcMonthGHIRequest: IAxiosRequest<
+  { portfolioID: string; username: string; jwtToken: string },
+  Record<string, number[]>
+> = args =>
+  axios
+    .get<Record<string, number[]>>(
+      `/weatherportfolio/${args.username}/${args.portfolioID}/allsrcmonthghi`,
+      {
+        headers: { 'COG-TOKEN': args.jwtToken },
+      }
+    )
+    .then(res => res.data)
+
 export const createWeatherPortfolio = injectAuth(createWeatherPortfolioRequest)
 export const getWeatherPortfolio = injectAuth(getWeatherPortfolioRequest)
 export const getWeatherPortfolioSingle = injectAuth(getWeatherPortfolioSingleRequest)
 export const deleteWeatherPortfolio = injectAuth(deleteWeatherPortfolioRequest)
 export const complementCSV = injectAuth(complementCSVRequest)
 export const createNASA = injectAuth(createNASARequest)
+export const allSrcMonthGHI = injectAuth(allSrcMonthGHIRequest)

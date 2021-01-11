@@ -1,9 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import {
   DownloadOutlined,
   UploadOutlined,
   InboxOutlined,
   CheckCircleTwoTone,
+  PaperClipOutlined,
+  DeleteOutlined,
 } from '@ant-design/icons'
 import {
   Steps,
@@ -17,6 +19,9 @@ import {
   Upload,
   notification,
   Result,
+  Radio,
+  Select,
+  Space,
 } from 'antd'
 import { Params, ParsedCSV, WeatherPortfolio } from '../../@types'
 import { parseString } from 'fast-csv'
@@ -25,6 +30,7 @@ import { useTranslation } from 'react-i18next'
 import { RcFile, UploadProps } from 'antd/lib/upload'
 import { complementCSV } from '../../services'
 import { useParams } from 'react-router-dom'
+import { aggregateByMonth, aggregateDay2Month } from '../../utils/dataChunk'
 
 const { Step } = Steps
 const { TabPane } = Tabs
@@ -41,6 +47,8 @@ type TmyProcedureProps = {
   initStep?: number
   portfolio: WeatherPortfolio
   setportfolio: (p: WeatherPortfolio) => void
+  genExtraChartData?: (d: { month: number; src: string; value: number }[]) => void
+  genExtraTableData?: (d: Record<string, number[]>) => void
 }
 
 type CSVRow = {
@@ -55,20 +63,15 @@ type CSVRow = {
 const Cols = ['GHI', 'DNI', 'DHI', 'Dry-bulb', 'Pressure', 'Wspd'] as const
 
 export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
-  const { initStep, portfolio, setportfolio } = props
+  const { initStep, portfolio, setportfolio, genExtraChartData, genExtraTableData } = props
   const { t } = useTranslation()
   const { portfolioID } = useParams<Params>()
   const [step, setstep] = useState(initStep ?? 0)
   const [loading, setloading] = useState(false)
   const [fileList, setfileList] = useState<RcFile[]>([])
-  const [parsedData, setparsedData] = useState<ParsedCSV>({
-    GHI: [],
-    DNI: [],
-    DHI: [],
-    'Dry-bulb': [],
-    Pressure: [],
-    Wspd: [],
-  })
+  const [parsedData, setparsedData] = useState<ParsedCSV[]>([])
+  const [dataYear, setdataYear] = useState<number[]>([])
+  const [selSrc, setselSrc] = useState<'meteonorm' | 'nasa'>('meteonorm')
 
   if (!portfolioID) return null
 
@@ -93,11 +96,87 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
     },
   ]
 
+  const genChartData = (parsedData: ParsedCSV[], fileList: RcFile[]) =>
+    parsedData.flatMap((data, i) =>
+      (data.GHI.length === 8760
+        ? aggregateByMonth(data.GHI)
+        : data.GHI.length === 365
+        ? aggregateDay2Month(data.GHI)
+        : data.GHI
+      ).map((val, j) => ({
+        month: j,
+        src: fileList[i].name,
+        value: val,
+      }))
+    )
+
+  const genTableData = (parsedData: ParsedCSV[], fileList: RcFile[]) => {
+    const aggr: Record<string, number[]> = {}
+    parsedData.forEach((data, i) => {
+      aggr[fileList[i].name] =
+        data.GHI.length === 8760
+          ? aggregateByMonth(data.GHI)
+          : data.GHI.length === 365
+          ? aggregateDay2Month(data.GHI)
+          : data.GHI
+    })
+    return aggr
+  }
+
   const uploadProps: UploadProps = {
     accept: '.csv',
     fileList: fileList,
     disabled: loading,
-    onRemove: () => setfileList([]),
+    itemRender: (_, file, filelist) => {
+      const index = filelist?.indexOf(file)
+      return (
+        <Row align='middle' className={styles.fileRow}>
+          <Col span={20}>
+            <Space>
+              <PaperClipOutlined />
+              {file.name}
+              <Select
+                className={styles.select}
+                key='year'
+                placeholder='选择年份'
+                options={Array(20)
+                  .fill(0)
+                  .map((_, i) => ({ label: 2000 + i, value: 2000 + i }))}
+                onSelect={val => {
+                  if (index !== undefined) {
+                    dataYear.splice(index, 1, Number(val))
+                    setdataYear([...dataYear])
+                  }
+                }}
+              />
+            </Space>
+          </Col>
+          <Col span={4}>
+            <Row justify='end'>
+              <Button
+                danger
+                type='link'
+                onClick={() => {
+                  if (index !== undefined) {
+                    fileList.splice(index, 1)
+                    dataYear.splice(index, 1)
+                    parsedData.splice(index, 1)
+                  }
+                  setfileList([...fileList])
+                  setdataYear([...dataYear])
+                  setparsedData([...parsedData])
+                  genExtraChartData &&
+                    genExtraChartData(genChartData([...parsedData], [...fileList]))
+                  genExtraTableData &&
+                    genExtraTableData(genTableData([...parsedData], [...fileList]))
+                }}
+                icon={<DeleteOutlined className={styles.delete} />}
+              />
+            </Row>
+          </Col>
+        </Row>
+      )
+    },
     beforeUpload: file => {
       const reader = new FileReader()
 
@@ -138,9 +217,16 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
                 notification.error({ message: '必填列不能全部留空' })
                 return
               }
-              setfileList([file])
               notification.success({ message: 'CSV文件读取完毕' })
-              setparsedData(parsedCSV)
+
+              const newFileList = [...fileList, file]
+              const newParsedData = [...parsedData, parsedCSV]
+              setfileList(newFileList)
+              setparsedData(newParsedData)
+              setdataYear([...dataYear, 0])
+
+              genExtraChartData && genExtraChartData(genChartData(newParsedData, newFileList))
+              genExtraTableData && genExtraTableData(genTableData(newParsedData, newFileList))
             })
       }
       return false
@@ -206,14 +292,13 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
           block
           size='large'
           type='primary'
-          disabled={fileList.length === 0}
+          disabled={fileList.length === 0 || dataYear.some(y => y === 0)}
           icon={<UploadOutlined />}
           loading={loading}
           onClick={() => {
             setloading(true)
-            complementCSV({ parsedCSV: parsedData, portfolioID })
+            complementCSV({ parsedCSV: parsedData, dataYear, portfolioID })
               .then(updatedWeatherPortfolio => {
-                console.log(updatedWeatherPortfolio)
                 setportfolio(updatedWeatherPortfolio)
                 setloading(false)
                 setstep(2)
@@ -244,18 +329,93 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
     />
   )
 
+  const ProcessedStep = (
+    <Row gutter={15}>
+      <Col span={8}>
+        <Row justify='center'>
+          <Title level={5}>选择实测数据</Title>
+        </Row>
+        <Row justify='center'>
+          <Radio.Group defaultValue='real'>
+            <Radio value='real'>实测数据</Radio>
+          </Radio.Group>
+        </Row>
+      </Col>
+      <Col span={8}>
+        <Row justify='center'>
+          <Title level={5}>选择卫星数据</Title>
+        </Row>
+        <Row justify='center'>
+          <Radio.Group
+            defaultValue='meteonorm'
+            value={selSrc}
+            onChange={e => setselSrc(e.target.value)}
+          >
+            <Radio style={{ display: 'block' }} value='meteonorm'>
+              {t('weatherManager.portfolio.meteonorm')}
+            </Radio>
+            {portfolio.nasa_src && (
+              <Radio style={{ display: 'block' }} value='nasa'>
+                {t('weatherManager.portfolio.nasa')}
+              </Radio>
+            )}
+          </Radio.Group>
+        </Row>
+      </Col>
+      <Col span={8}>
+        <Row justify='center'>
+          <Title level={5}>选择融合方法</Title>
+        </Row>
+        <Row justify='center'>
+          <Radio.Group defaultValue='month-ratio'>
+            <Radio
+              disabled={selSrc === 'meteonorm'}
+              style={{ display: 'block' }}
+              value='month-ratio'
+            >
+              月比值修正
+            </Radio>
+            <Radio
+              disabled={selSrc === 'meteonorm' || parsedData.some(item => item.GHI.length < 365)}
+              style={{ display: 'block' }}
+              value='year-formula'
+            >
+              总体相关方程
+            </Radio>
+            <Radio
+              style={{ display: 'block' }}
+              disabled={selSrc === 'meteonorm' || parsedData.some(item => item.GHI.length < 365)}
+              value='month-formula'
+            >
+              各月相关方程
+            </Radio>
+            <Radio style={{ display: 'block' }} value='ghi-ratio'>
+              总辐射修正
+            </Radio>
+          </Radio.Group>
+        </Row>
+      </Col>
+    </Row>
+  )
+
   return (
     <>
       <Row className={styles.row} justify='center'>
-        <Title level={4}>{t('weatherManager.portfolio.make-tmy')}</Title>
+        <Title level={4}>{t(`weatherManager.portfolio.${portfolio.mode}`)}</Title>
       </Row>
       <Row className={styles.row}>
         <Col span={24}>
           <Steps type='navigation' current={step} onChange={step => setstep(step)}>
             <Step title={t('weatherManager.portfolio.tmy.step.1')} disabled={loading} />
             <Step title={t('weatherManager.portfolio.tmy.step.2')} disabled={loading} />
+            {portfolio.mode === 'processed' && (
+              <Step
+                title={t('weatherManager.portfolio.tmy.step.3')}
+                disabled={parsedData.length === 0 || loading}
+              />
+            )}
             <Step
-              title={t('weatherManager.portfolio.tmy.step.3')}
+              title={t('weatherManager.portfolio.tmy.step.4')}
               disabled={!portfolio.custom_src || loading}
             />
           </Steps>
@@ -263,7 +423,13 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
       </Row>
       <Row className={styles.row}>
         <Col span={24}>
-          {step === 0 ? DownloadContent : step === 1 ? UploadContent : FinishContent}
+          {step === 0
+            ? DownloadContent
+            : step === 1
+            ? UploadContent
+            : portfolio.mode === 'processed' && step === 2
+            ? ProcessedStep
+            : FinishContent}
         </Col>
       </Row>
     </>

@@ -25,6 +25,7 @@ import { getApiKey, getWeatherPortfolioSingle, createNASA } from '../../services
 import styles from './index.module.scss'
 import { m2other } from '../../utils/unitConverter'
 import { useHistory, useParams } from 'react-router-dom'
+import { GHIViz } from './GHIViz'
 
 const { TabPane } = Tabs
 
@@ -43,6 +44,19 @@ const WeatherPortfolioFC = () => {
   const [selectedMap, setselectedMap] = useState<string>(
     cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'aMap' : 'googleMap'
   )
+
+  const [extraChartData, setextraChartData] = useState<
+    { month: number; src: string; value: number }[]
+  >([])
+  const [extraTableData, setextraTableData] = useState<Record<string, number[]>>({})
+
+  const genExtraChartData = (data: { month: number; src: string; value: number }[]) => {
+    setextraChartData(data)
+  }
+
+  const genExtraTableData = (data: Record<string, number[]>) => {
+    setextraTableData(data)
+  }
 
   const createNASAData = () => {
     if (!portfolioID) return
@@ -214,6 +228,14 @@ const WeatherPortfolioFC = () => {
             </Tabs>
           </Col>
         </Row>
+        <Divider />
+        {portfolio ? (
+          <GHIViz
+            portfolio={portfolio}
+            extraChartData={extraChartData}
+            extraTableData={extraTableData}
+          />
+        ) : null}
         <Divider className={styles.nextsect} />
         <Row>
           {portfolio && (
@@ -221,6 +243,8 @@ const WeatherPortfolioFC = () => {
               portfolio={portfolio}
               setportfolio={(p: WeatherPortfolio) => setportfolio(p)}
               initStep={portfolio?.custom_src ? 2 : 0}
+              genExtraChartData={genExtraChartData}
+              genExtraTableData={genExtraTableData}
             />
           )}
         </Row>

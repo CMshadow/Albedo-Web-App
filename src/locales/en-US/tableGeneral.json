@@ -1,4 +1,5 @@
 {
+  "table": "Table",
   "table.action": "Action",
   "table.edit": "Edit",
   "table.delete": "Delete",

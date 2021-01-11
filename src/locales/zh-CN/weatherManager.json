@@ -26,12 +26,13 @@
   "weatherManager.portfolio.src.download": "下载数据",
   "weatherManager.portfolio.src.download.meteonorm": "Meteonorm协议限制无法提供下载，仅供软件内部使用",
   "weatherManager.portfolio.waitMeteonorm": "正在准备后台程序",
-  "weatherManager.portfolio.make-tmy": "生成自定义数据 - 上传代表年数据",
-  "weatherManager.portfolio.make-processed": "生成自定义数据 - 合成代表年数据",
+  "weatherManager.portfolio.tmy": "生成自定义数据 - 上传代表年数据",
+  "weatherManager.portfolio.processed": "生成自定义数据 - 实测数据合成代表年数据",
 
   "weatherManager.portfolio.tmy.step.1": "下载CSV模板",
   "weatherManager.portfolio.tmy.step.2": "上传填写完毕的文件",
-  "weatherManager.portfolio.tmy.step.3": "自定义数据生成完毕",
+  "weatherManager.portfolio.tmy.step.3": "数据融合处理",
+  "weatherManager.portfolio.tmy.step.4": "自定义数据生成完毕",
 
   "weatherManager.portfolio.template.download": "下载",
   "weatherManager.portfolio.template.instruction": "填写指南",

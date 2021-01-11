@@ -1,4 +1,5 @@
 {
+  "chart": "对比图",
   "cashflowChart.title": "项目累计现金流",
   "acPowerChart.title": "项目首年每月发电量",
   "lossChart.title": "系统各项损失",
@@ -136,5 +137,7 @@
   "PacPdcChart.vdco": "Vdco",
   "PacPdcChart.vdcMax": "Vdcmax",
   "InverterEfficiencyChart.eff": "逆变器效率",
-  "InverterEfficiencyChart.pac_percent": "输出功率/额定功率"
+  "InverterEfficiencyChart.pac_percent": "输出功率/额定功率",
+
+  "GHICompareChart.GHI": "总辐射量(GHI)"
 }
