@@ -17,7 +17,7 @@ export type ParsedCSV = {
   GHI: number[]
   DNI: number[]
   DHI: number[]
-  'Dry-bulb': number[]
+  DryBulb: number[]
   Pressure: number[]
   Wspd: number[]
 }

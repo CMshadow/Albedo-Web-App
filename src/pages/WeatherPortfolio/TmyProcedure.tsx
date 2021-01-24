@@ -55,12 +55,12 @@ type CSVRow = {
   GHI: string
   DNI: string
   DHI: string
-  'Dry-bulb': string
+  DryBulb: string
   Pressure: string
   Wspd: string
 }
 
-const Cols = ['GHI', 'DNI', 'DHI', 'Dry-bulb', 'Pressure', 'Wspd'] as const
+const Cols = ['GHI', 'DNI', 'DHI', 'DryBulb', 'Pressure', 'Wspd'] as const
 
 export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
   const { initStep, portfolio, setportfolio, genExtraChartData, genExtraTableData } = props
@@ -72,6 +72,9 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
   const [parsedData, setparsedData] = useState<ParsedCSV[]>([])
   const [dataYear, setdataYear] = useState<number[]>([])
   const [selSrc, setselSrc] = useState<'meteonorm' | 'nasa'>('meteonorm')
+  const [selMethod, setselMethod] = useState<
+    'month-ratio' | 'year-formula' | 'month-formula' | 'ghi-ratio'
+  >('ghi-ratio')
 
   if (!portfolioID) return null
 
@@ -138,16 +141,21 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
               <Select
                 className={styles.select}
                 key='year'
-                placeholder='选择年份'
+                placeholder={t('weatherManager.portfolio.upload.selectYear')}
                 options={Array(20)
                   .fill(0)
-                  .map((_, i) => ({ label: 2000 + i, value: 2000 + i }))}
+                  .map((_, i) => ({
+                    label: 2000 + i,
+                    value: 2000 + i,
+                    disabled: dataYear.includes(2000 + i),
+                  }))}
                 onSelect={val => {
                   if (index !== undefined) {
                     dataYear.splice(index, 1, Number(val))
                     setdataYear([...dataYear])
                   }
                 }}
+                value={index !== undefined && dataYear[index] > 0 ? dataYear[index] : undefined}
               />
             </Space>
           </Col>
@@ -186,38 +194,38 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
           GHI: [],
           DNI: [],
           DHI: [],
-          'Dry-bulb': [],
+          DryBulb: [],
           Pressure: [],
           Wspd: [],
         }
 
         event.target?.result &&
           parseString(event.target.result.toString(), {
-            headers: ['Date', undefined, 'GHI', 'DNI', 'DHI', 'Dry-bulb', 'Pressure', 'Wspd'],
+            headers: ['Date', undefined, 'GHI', 'DNI', 'DHI', 'DryBulb', 'Pressure', 'Wspd'],
             skipLines: 1,
           })
             .on('error', error => console.error(error))
             .on('data', (row: CSVRow) => {
-              Cols.forEach(key => parsedCSV[key].push(Number(row[key])))
+              Cols.forEach(key => parsedCSV[key].push(row[key] === '' ? -0.001 : Number(row[key])))
             })
             .on('end', (rowCount: number) => {
               if (![12, 365, 8760].includes(rowCount)) {
-                notification.error({ message: '不符合模版要求' })
+                notification.error({ message: t('weatherManager.portfolio.upload.error.template') })
                 return
               }
               if (Cols.some(col => parsedCSV[col].some(val => isNaN(val)))) {
-                notification.error({ message: '文件中存在非数字值' })
+                notification.error({ message: t('weatherManager.portfolio.upload.error.value') })
                 return
               }
               if (
                 parsedCSV['GHI'].every(val => val === 0) ||
-                parsedCSV['Dry-bulb'].every(val => val === 0) ||
+                parsedCSV['DryBulb'].every(val => val === 0) ||
                 parsedCSV['Wspd'].every(val => val === 0)
               ) {
-                notification.error({ message: '必填列不能全部留空' })
+                notification.error({ message: t('weatherManager.portfolio.upload.error.required') })
                 return
               }
-              notification.success({ message: 'CSV文件读取完毕' })
+              notification.success({ message: t('weatherManager.portfolio.upload.success') })
 
               const newFileList = [...fileList, file]
               const newParsedData = [...parsedData, parsedCSV]
@@ -293,23 +301,41 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
           size='large'
           type='primary'
           disabled={fileList.length === 0 || dataYear.some(y => y === 0)}
-          icon={<UploadOutlined />}
+          icon={portfolio.mode === 'tmy' && <UploadOutlined />}
           loading={loading}
           onClick={() => {
-            setloading(true)
-            complementCSV({ parsedCSV: parsedData, dataYear, portfolioID })
-              .then(updatedWeatherPortfolio => {
-                setportfolio(updatedWeatherPortfolio)
-                setloading(false)
-                setstep(2)
-              })
-              .catch(err => {
-                console.log(err)
-                setloading(false)
-              })
+            if (parsedData.length > 1) {
+              setloading(true)
+              complementCSV({ parsedCSV: parsedData, dataYear, portfolioID })
+                .then(updatedWeatherPortfolio => {
+                  setportfolio(updatedWeatherPortfolio)
+                  setloading(false)
+                  setstep(2)
+                })
+                .catch(err => {
+                  console.log(err)
+                  setloading(false)
+                })
+            } else if (portfolio.mode === 'processed') {
+              setstep(2)
+            } else {
+              setloading(true)
+              complementCSV({ parsedCSV: parsedData, dataYear, portfolioID })
+                .then(updatedWeatherPortfolio => {
+                  setportfolio(updatedWeatherPortfolio)
+                  setloading(false)
+                  setstep(2)
+                })
+                .catch(err => {
+                  console.log(err)
+                  setloading(false)
+                })
+            }
           }}
         >
-          {t('weatherManager.portfolio.upload')}
+          {parsedData.length > 1
+            ? t('weatherManager.portfolio.upload.multi2tmy')
+            : t(`weatherManager.portfolio.upload.${portfolio.mode}`)}
         </Button>
       </Row>
     </div>
@@ -329,74 +355,119 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
     />
   )
 
-  const ProcessedStep = (
-    <Row gutter={15}>
-      <Col span={8}>
-        <Row justify='center'>
-          <Title level={5}>选择实测数据</Title>
-        </Row>
-        <Row justify='center'>
-          <Radio.Group defaultValue='real'>
-            <Radio value='real'>实测数据</Radio>
-          </Radio.Group>
-        </Row>
-      </Col>
-      <Col span={8}>
-        <Row justify='center'>
-          <Title level={5}>选择卫星数据</Title>
-        </Row>
-        <Row justify='center'>
-          <Radio.Group
-            defaultValue='meteonorm'
-            value={selSrc}
-            onChange={e => setselSrc(e.target.value)}
-          >
-            <Radio style={{ display: 'block' }} value='meteonorm'>
-              {t('weatherManager.portfolio.meteonorm')}
-            </Radio>
-            {portfolio.nasa_src && (
-              <Radio style={{ display: 'block' }} value='nasa'>
-                {t('weatherManager.portfolio.nasa')}
+  const ProcessContent = (
+    <>
+      <Row gutter={[15, 15]}>
+        <Col span={8}>
+          <Row justify='center'>
+            <Title level={5}>{t('weatherManager.portfolio.measured.choice')}</Title>
+          </Row>
+          <Row justify='center'>
+            <Radio.Group defaultValue='real'>
+              <Radio value='real'>{t('weatherManager.portfolio.measured')}</Radio>
+            </Radio.Group>
+          </Row>
+        </Col>
+        <Col span={8}>
+          <Row justify='center'>
+            <Title level={5}>{t('weatherManager.portfolio.satellite.choice')}</Title>
+          </Row>
+          <Row justify='center'>
+            <Radio.Group
+              defaultValue='meteonorm'
+              value={selSrc}
+              onChange={e => setselSrc(e.target.value)}
+            >
+              <Radio style={{ display: 'block' }} value='meteonorm'>
+                {t('weatherManager.portfolio.meteonorm')}
               </Radio>
-            )}
-          </Radio.Group>
-        </Row>
-      </Col>
-      <Col span={8}>
-        <Row justify='center'>
-          <Title level={5}>选择融合方法</Title>
-        </Row>
-        <Row justify='center'>
-          <Radio.Group defaultValue='month-ratio'>
-            <Radio
-              disabled={selSrc === 'meteonorm'}
-              style={{ display: 'block' }}
-              value='month-ratio'
+              {portfolio.nasa_src && (
+                <Radio style={{ display: 'block' }} value='nasa'>
+                  {t('weatherManager.portfolio.nasa')}
+                </Radio>
+              )}
+            </Radio.Group>
+          </Row>
+        </Col>
+        <Col span={8}>
+          <Row justify='center'>
+            <Title level={5}>{t('weatherManager.portfolio.method.choice')}</Title>
+          </Row>
+          <Row justify='center'>
+            <Radio.Group
+              defaultValue='month-ratio'
+              value={selMethod}
+              onChange={e => setselMethod(e.target.value)}
             >
-              月比值修正
-            </Radio>
-            <Radio
-              disabled={selSrc === 'meteonorm' || parsedData.some(item => item.GHI.length < 365)}
-              style={{ display: 'block' }}
-              value='year-formula'
-            >
-              总体相关方程
-            </Radio>
-            <Radio
-              style={{ display: 'block' }}
-              disabled={selSrc === 'meteonorm' || parsedData.some(item => item.GHI.length < 365)}
-              value='month-formula'
-            >
-              各月相关方程
-            </Radio>
-            <Radio style={{ display: 'block' }} value='ghi-ratio'>
-              总辐射修正
-            </Radio>
-          </Radio.Group>
-        </Row>
-      </Col>
-    </Row>
+              <Radio
+                disabled={selSrc === 'meteonorm'}
+                style={{ display: 'block' }}
+                value='month-ratio'
+              >
+                {t('weatherManager.portfolio.method.month-ratio')}
+              </Radio>
+              <Radio
+                disabled={selSrc === 'meteonorm'}
+                style={{ display: 'block' }}
+                value='year-formula'
+              >
+                {t('weatherManager.portfolio.method.year-formula')}
+              </Radio>
+              <Radio
+                style={{ display: 'block' }}
+                disabled={selSrc === 'meteonorm'}
+                value='month-formula'
+              >
+                {t('weatherManager.portfolio.method.month-formula')}
+              </Radio>
+              <Radio style={{ display: 'block' }} value='ghi-ratio'>
+                {t('weatherManager.portfolio.method.ghi-ratio')}
+              </Radio>
+            </Radio.Group>
+          </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Button
+          block
+          size='large'
+          type='primary'
+          icon={<UploadOutlined />}
+          loading={loading}
+          onClick={() => {
+            setloading(true)
+            complementCSV({
+              parsedCSV: parsedData,
+              dataYear,
+              source: selSrc,
+              method: selMethod,
+              portfolioID,
+            })
+              .then(updatedWeatherPortfolio => {
+                setportfolio(updatedWeatherPortfolio)
+                setloading(false)
+                setstep(3)
+              })
+              .catch(err => {
+                console.log(err)
+                setloading(false)
+              })
+          }}
+        >
+          {t('weatherManager.portfolio.process')}
+        </Button>
+      </Row>
+    </>
   )
+
+  const determineContent = (step: number) => {
+    if (step === 0) return DownloadContent
+    if (step == 1) return UploadContent
+    if (step == 2) {
+      if (parsedData.length > 1 || portfolio.mode === 'tmy') return FinishContent
+      else return ProcessContent
+    } else return FinishContent
+  }
 
   return (
     <>
@@ -408,7 +479,7 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
           <Steps type='navigation' current={step} onChange={step => setstep(step)}>
             <Step title={t('weatherManager.portfolio.tmy.step.1')} disabled={loading} />
             <Step title={t('weatherManager.portfolio.tmy.step.2')} disabled={loading} />
-            {portfolio.mode === 'processed' && (
+            {portfolio.mode === 'processed' && parsedData.length <= 1 && (
               <Step
                 title={t('weatherManager.portfolio.tmy.step.3')}
                 disabled={parsedData.length === 0 || loading}
@@ -422,15 +493,7 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
         </Col>
       </Row>
       <Row className={styles.row}>
-        <Col span={24}>
-          {step === 0
-            ? DownloadContent
-            : step === 1
-            ? UploadContent
-            : portfolio.mode === 'processed' && step === 2
-            ? ProcessedStep
-            : FinishContent}
-        </Col>
+        <Col span={24}>{determineContent(step)}</Col>
       </Row>
     </>
   )

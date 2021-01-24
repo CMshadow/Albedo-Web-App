@@ -242,7 +242,6 @@ const WeatherPortfolioFC = () => {
             <TmyProcedure
               portfolio={portfolio}
               setportfolio={(p: WeatherPortfolio) => setportfolio(p)}
-              initStep={portfolio?.custom_src ? 2 : 0}
               genExtraChartData={genExtraChartData}
               genExtraTableData={genExtraTableData}
             />

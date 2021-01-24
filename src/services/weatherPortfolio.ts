@@ -78,6 +78,8 @@ const complementCSVRequest: IAxiosRequest<
   {
     parsedCSV: ParsedCSV[]
     dataYear: number[]
+    source?: 'meteonorm' | 'nasa'
+    method?: 'month-ratio' | 'year-formula' | 'month-formula' | 'ghi-ratio'
     portfolioID: string
     username: string
     jwtToken: string
@@ -87,8 +89,11 @@ const complementCSVRequest: IAxiosRequest<
   axios
     .post<WeatherPortfolio>(
       `/weatherportfolio/${args.username}/${args.portfolioID}`,
-      args.parsedCSV.map((item, i) => ({ year: args.dataYear[i], data: item })),
-      { headers: { 'COG-TOKEN': args.jwtToken } }
+      args.parsedCSV,
+      {
+        headers: { 'COG-TOKEN': args.jwtToken },
+        params: { source: args.source, method: args.method, year: args.dataYear[0] },
+      }
     )
     .then(res => res.data)
 
