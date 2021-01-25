@@ -99,13 +99,15 @@ const complementCSVRequest: IAxiosRequest<
 
 const createNASARequest: IAxiosRequest<
   { portfolioID: string; username: string; jwtToken: string },
-  WeatherPortfolio
+  void
 > = args =>
   axios
-    .get<WeatherPortfolio>(`/weatherportfolio/${args.username}/${args.portfolioID}/nasa`, {
+    .get<void>(`/weatherportfolio/${args.username}/${args.portfolioID}/nasa`, {
       headers: { 'COG-TOKEN': args.jwtToken },
     })
-    .then(res => res.data)
+    .then(() => {
+      return
+    })
 
 const allSrcMonthGHIRequest: IAxiosRequest<
   { portfolioID: string; username: string; jwtToken: string },

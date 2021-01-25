@@ -62,9 +62,20 @@ const WeatherPortfolioFC = () => {
     if (!portfolioID) return
     setnasaLoading(true)
     createNASA({ portfolioID: portfolioID })
-      .then(res => {
-        setportfolio(res)
-        setnasaLoading(false)
+      .then(() => {
+        promiseRetry(
+          retry => {
+            return getWeatherPortfolioSingle({ portfolioID: portfolioID }).then(res => {
+              if (!res.nasa_src) {
+                retry(null)
+              } else {
+                setportfolio(res)
+                setnasaLoading(false)
+              }
+            })
+          },
+          { minTimeout: 5000 }
+        )
       })
       .catch(err => {
         console.log(err)

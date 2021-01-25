@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Modal, Form, Input, Tabs, notification, Button, Divider, Select } from 'antd'
-import { other2m } from '../../utils/unitConverter'
+import { m2other, other2m } from '../../utils/unitConverter'
 import { AMap } from '../../components/AMap'
 import { GoogleMap } from '../../components/GoogleMap'
-import { amapGeocoder, googleGeocoder, getApiKey, createWeatherPortfolio } from '../../services'
+import {
+  amapGeocoder,
+  googleGeocoder,
+  getApiKey,
+  createWeatherPortfolio,
+  googleElevation,
+} from '../../services'
 import styles from './Modal.module.scss'
 
 import { RootState } from '../../@types'
@@ -263,9 +269,24 @@ export const CreateModal: React.FC<CreateModalProps> = props => {
           label={t('weatherManager.portfolio.altitude')}
           rules={[{ required: true }]}
         >
-          <Input
-            type='number'
-            placeholder={t('weatherManager.portfolio.altitude.placeholder')}
+          <Input.Search
+            onSearch={() =>
+              googleMapKey &&
+              googleElevation({
+                lon: mapPos.lon,
+                lat: mapPos.lat,
+                key: googleMapKey,
+              })
+                .then(res => {
+                  const val = m2other(unit, res.elevation)
+                  form.setFieldsValue({ altitude: Number(val.toFixed(2)) })
+                })
+                .catch(() => notification.error({ message: 'Failed finding elevation' }))
+            }
+            enterButton={
+              <Button disabled={!validated}>{t('project.create.projectAltitude.auto')}</Button>
+            }
+            placeholder={t('project.create.projectAltitude.placeholder')}
             suffix={unit}
           />
         </Form.Item>

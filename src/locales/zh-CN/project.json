@@ -11,6 +11,7 @@
   "project.create.validation.unfinished": "验证地址",
   "project.create.validation.finished": "地址已被验证",
   "project.create.projectAltitude": "项目海拔",
+  "project.create.projectAltitude.auto": "自动获取海拔高度",
   "project.create.projectAltitude.placeholder": "项目海拔高度",
   "project.create.type": "项目类型",
   "project.type.domestic": "户用项目",

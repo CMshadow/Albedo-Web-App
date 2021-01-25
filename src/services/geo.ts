@@ -5,6 +5,7 @@ import {
   AMapGeocoderType,
   AMapRevGeocoderType,
 } from '../@types'
+import injectAuth from './injectAuth'
 
 export const googleGeocoder = (params: {
   address: string
@@ -44,3 +45,18 @@ export const amapRevGeocoder = (params: {
       params: { location: `${params.lon},${params.lat}`, key: params.key },
     })
     .then(res => res.data)
+
+const googleElevationRequest = (params: {
+  lon: number
+  lat: number
+  key: string
+  jwtToken: string
+}): Promise<{ elevation: number }> =>
+  axios
+    .get<{ elevation: number }>(`/autoelevation`, {
+      params: { longitude: params.lon, latitude: params.lat },
+      headers: { 'COG-TOKEN': params.jwtToken },
+    })
+    .then(res => res.data)
+
+export const googleElevation = injectAuth(googleElevationRequest)

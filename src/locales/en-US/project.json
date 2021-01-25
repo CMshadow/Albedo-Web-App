@@ -11,6 +11,7 @@
   "project.create.validation.unfinished": "Verify Address",
   "project.create.validation.finished": "Address Verified",
   "project.create.projectAltitude": "Project Altitude",
+  "project.create.projectAltitude.auto": "Auto Altitude",
   "project.create.projectAltitude.placeholder": "Project Altitude",
   "project.create.type": "Project Type",
   "project.type.domestic": "Residential",

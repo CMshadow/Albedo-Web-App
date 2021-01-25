@@ -8,6 +8,7 @@ import {
   getApiKey,
   createProject,
   getWeatherPortfolio,
+  googleElevation,
 } from '../../services'
 import {
   Tabs,
@@ -28,6 +29,7 @@ import { GoogleMap } from '../../components/GoogleMap'
 import { AMap } from '../../components/AMap'
 import styles from './Modal.module.scss'
 import { ProjectPreUpload, RootState, WeatherPortfolio } from '../../@types'
+import { m2other } from '../../utils/unitConverter'
 
 const FormItem = Form.Item
 const { Option } = Select
@@ -328,7 +330,27 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
           label={t('project.create.projectAltitude')}
           rules={[{ required: true }]}
         >
-          <Input placeholder={t('project.create.projectAltitude.placeholder')} suffix={unit} />
+          <Input.Search
+            type='number'
+            onSearch={() =>
+              googleMapKey &&
+              googleElevation({
+                lon: mapPos.lon,
+                lat: mapPos.lat,
+                key: googleMapKey,
+              })
+                .then(res => {
+                  const val = m2other(unit, res.elevation)
+                  form.setFieldsValue({ projectAltitude: Number(val.toFixed(2)) })
+                })
+                .catch(() => notification.error({ message: 'Failed finding elevation' }))
+            }
+            enterButton={
+              <Button disabled={!validated}>{t('project.create.projectAltitude.auto')}</Button>
+            }
+            placeholder={t('project.create.projectAltitude.placeholder')}
+            suffix={unit}
+          />
         </FormItem>
         <FormItem name='projectType' label={t('project.create.type')} rules={[{ required: true }]}>
           <Select>
