@@ -41,7 +41,6 @@ const wrapperCol = { xs: { span: 24 }, sm: { span: 24 }, md: { span: 15, offset:
 const markStyle = { overflow: 'hidden', whiteSpace: 'nowrap' }
 
 const initValues = {
-  projectType: 'domestic',
   albedo: 0.3,
   DCVolDropFac: 1,
   ACVolDropFac: 2,
@@ -353,7 +352,10 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
           />
         </FormItem>
         <FormItem name='projectType' label={t('project.create.type')} rules={[{ required: true }]}>
-          <Select>
+          <Select
+            defaultActiveFirstOption={false}
+            placeholder={t('project.create.type.placeholder')}
+          >
             <Option key='domestic' value='domestic'>
               {t(`project.type.domestic`)}
             </Option>

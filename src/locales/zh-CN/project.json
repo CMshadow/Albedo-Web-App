@@ -14,6 +14,7 @@
   "project.create.projectAltitude.auto": "自动获取海拔高度",
   "project.create.projectAltitude.placeholder": "项目海拔高度",
   "project.create.type": "项目类型",
+  "project.create.type.placeholder": "选择一个项目类型",
   "project.type.domestic": "户用项目",
   "project.type.commercial": "分布式项目",
   "project.create.weatherSrc": "天气数据",

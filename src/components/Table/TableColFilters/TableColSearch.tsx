@@ -29,12 +29,12 @@ export const SearchString = <T extends Record<string, unknown>>(
     <Tag color={theme}>{children}</Tag>
   )
 
-  const renderText = (text: string) => (
+  const renderText = (text: string | undefined) => (
     <Highlighter
       highlightClassName={styles.highlight}
       searchWords={[searchedText]}
       autoEscape={true}
-      textToHighlight={text.toString()}
+      textToHighlight={text ? text.toString() : ''}
     />
   )
 
@@ -69,7 +69,7 @@ export const SearchString = <T extends Record<string, unknown>>(
         </Space>
       </div>
     ),
-    render: (text: string, record: T) => {
+    render: (text: string | undefined, record: T) => {
       if ('projectID' in record && colKey === 'projectTitle') {
         return <Link to={`/project/${record.projectID}/dashboard`}>{renderText(text)}</Link>
       } else if ('theme' in record && renderType === 'tag') {

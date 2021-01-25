@@ -2,22 +2,24 @@ import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { Rect, Group, Line, Text, Arrow, Circle, Ellipse } from 'react-konva'
 import { useSelector } from 'react-redux'
+import { RootState } from '../../../@types'
 
-const SelfUseMeter = props => {
-  const accessPort = useSelector(state => state.SLD.diagramMeterAccessPort)
-  const groupOfMeter = []
-  const width = useSelector(state => state.SLD.diagramWidth) * 0.8
+const SelfUseMeter: React.FC<{ combiboxIe: number }> = props => {
+  const accessPort = useSelector((state: RootState) => state.SLD.diagramMeterAccessPort)
+  const groupOfMeter: React.ReactNode[] = []
+  const width = useSelector((state: RootState) => state.SLD.diagramWidth) * 0.8
   const height = width * (4 / 6)
   const unitHeight = height / 4
   const unitWidth = width / 6
   const startX = accessPort[0] - unitWidth * 0.5
   const startY = accessPort[1] - unitHeight * 0.7
 
-  const combiSelect = combiboxIe => {
+  const combiSelect = (combiboxIe: number): number => {
     const standard = [32, 63, 80, 100, 125, 160, 225]
     for (let element = 0; element < standard.length; element++) {
       if (standard[element] > combiboxIe) return standard[element]
     }
+    return combiboxIe
   }
   const DrawMeter = () => {
     groupOfMeter.push(
@@ -214,7 +216,7 @@ const SelfUseMeter = props => {
     return groupOfMeter
   }
 
-  const drawSwictchPort = position => {
+  const drawSwictchPort = (position: [number, number]) => {
     groupOfMeter.push(
       <Line
         key={'Meter-Line-' + uuidv4()}
@@ -270,7 +272,7 @@ const SelfUseMeter = props => {
     )
   }
 
-  const drawServicePanel = params => {
+  const drawServicePanel = () => {
     groupOfMeter.push(
       <Line
         key={'Meter-Line-' + uuidv4()}

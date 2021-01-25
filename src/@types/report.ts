@@ -61,18 +61,16 @@ export type Report = {
   p_loss_transformer_wiring: number
 
   GHI: number[]
-  setup_ac_Ie: number[][]
-  setup_dc_wir_choice: number[][][][]
+
   setup_month_irr: number[][]
   year25_kWh_over_kWp: number[]
   setup_behindPV: number[][]
-  setup_ac_wir_choice: string[][]
+
   month_AC_power: { value: number[]; unit: string }
   year25_AC_power: { unit: string; value: number }[]
   year25_DC_power: { unit: string; value: number }[]
   combibox_Ie: number
   daily_AC_power: { value: number[]; unit: string }
-  combibox_wir_choice: number[][]
   setup_month_irr_avg_pk_hr: number[][]
   p_loss_system_monthly: number[]
   sunPosition: number[][][]
@@ -88,4 +86,19 @@ export type Report = {
   investment: InvestmentEntry[]
   gain?: GainEntry[]
   investmentPerKw?: string
+}
+
+export type DomesticReport = Report & {
+  setup_dc_wir_choice: string[][][]
+  setup_ac_wir_choice: string[][]
+  setup_ac_Ie: number[][]
+  combibox_wir_choice: string
+  combibox_Ie: number
+}
+
+export type CommercialReport = Report & {
+  setup_dc_wir_choice: string[][][][]
+  setup_ac_wir_choice: string[][][]
+  combibox_wir_choice: string[][]
+  transformer_wir_choice: string[]
 }

@@ -49,7 +49,7 @@ export const CellTempModel: React.FC<CellTempModelProps> = ({ form, pvID, initMo
 
   const sandiaCelltempParamField = (
     <>
-      <Col md={12} lg={8}>
+      <Col md={24} lg={8}>
         <FormItem
           name='a'
           rules={[{ required: true }]}
@@ -62,7 +62,7 @@ export const CellTempModel: React.FC<CellTempModelProps> = ({ form, pvID, initMo
           <InputNumber disabled={!customParams} />
         </FormItem>
       </Col>
-      <Col md={12} lg={8}>
+      <Col md={24} lg={8}>
         <FormItem
           name='b'
           rules={[{ required: true }]}
@@ -75,7 +75,7 @@ export const CellTempModel: React.FC<CellTempModelProps> = ({ form, pvID, initMo
           <InputNumber disabled={!customParams} />
         </FormItem>
       </Col>
-      <Col md={12} lg={8}>
+      <Col md={24} lg={8}>
         <FormItem
           label={
             <Tooltip title={t('project.spec.celltemp_dtc.help')}>
@@ -94,7 +94,7 @@ export const CellTempModel: React.FC<CellTempModelProps> = ({ form, pvID, initMo
 
   const pvsystCelltempParamField = (
     <>
-      <Col lg={12} xl={8}>
+      <Col lg={24} xl={8}>
         <FormItem
           label={
             <Tooltip title={t('project.spec.celltemp_uc.help')}>
@@ -108,7 +108,7 @@ export const CellTempModel: React.FC<CellTempModelProps> = ({ form, pvID, initMo
           <Text> W/㎡⋅k</Text>
         </FormItem>
       </Col>
-      <Col lg={12} xl={8}>
+      <Col lg={24} xl={8}>
         <FormItem
           label={
             <Tooltip title={t('project.spec.celltemp_uv.help')}>
@@ -122,7 +122,7 @@ export const CellTempModel: React.FC<CellTempModelProps> = ({ form, pvID, initMo
           <Text> W/㎡⋅k / m/s</Text>
         </FormItem>
       </Col>
-      <Col lg={12} xl={8}>
+      <Col lg={24} xl={8}>
         <FormItem
           label={
             <Tooltip title={t('project.spec.celltemp_v.help')}>
@@ -142,7 +142,7 @@ export const CellTempModel: React.FC<CellTempModelProps> = ({ form, pvID, initMo
   return (
     <>
       <Row gutter={rowGutter}>
-        <Col sm={24} md={24} lg={24} xl={12}>
+        <Col span={24}>
           <FormItem name='celltemp_model' label={null} rules={[{ required: true }]}>
             <Select
               onSelect={(value: ModelOptions) => {
@@ -227,9 +227,7 @@ export const CellTempModel: React.FC<CellTempModelProps> = ({ form, pvID, initMo
           </FormItem>
         </Col>
       </Row>
-      <Row gutter={rowGutter}>
-        {celltempModel === 'pvsyst' ? pvsystCelltempParamField : sandiaCelltempParamField}
-      </Row>
+      <Row>{celltempModel === 'pvsyst' ? pvsystCelltempParamField : sandiaCelltempParamField}</Row>
     </>
   )
 }

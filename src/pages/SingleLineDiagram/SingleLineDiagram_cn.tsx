@@ -10,74 +10,91 @@ import MeterAllIn from '../../components/SingleLineDiagram/SingleLineDiagram_CN/
 import * as DataGenerator from '../../utils/singleLineDiagramDataGenerator'
 import ComponentsTable from '../../components/SingleLineDiagram/SingleLineDiagram_CN/ComponentTable'
 import { ReactReduxContext, Provider, useSelector } from 'react-redux'
+import { RootState, Params, IAllPVArray, DomesticReport } from '../../@types'
 
 const SingleLineDiagCN = () => {
-  const { buildingID } = useParams()
+  const { buildingID } = useParams<Params>()
 
-  const userPV = useSelector(state => state.pv.data)
-  const officialPV = useSelector(state => state.pv.officialData)
+  const userPV = useSelector((state: RootState) => state.pv.data)
+  const officialPV = useSelector((state: RootState) => state.pv.officialData)
   const allPV = userPV.concat(officialPV)
-  const userInverter = useSelector(state => state.inverter.data)
-  const officialInverter = useSelector(state => state.inverter.officialData)
+
+  const userInverter = useSelector((state: RootState) => state.inverter.data)
+  const officialInverter = useSelector((state: RootState) => state.inverter.officialData)
   const allInverter = userInverter.concat(officialInverter)
 
-  const projectData = useSelector(state => state.project)
-  const buildingData = projectData.buildings.find(building => building.buildingID === buildingID)
+  const newWidth = useSelector((state: RootState) => state.SLD.diagramWidth)
+  const newHeight = useSelector((state: RootState) => state.SLD.diagramHeight)
+
+  const reportData = useSelector((state: RootState) => state.report)
+  const projectData = useSelector((state: RootState) => state.project)
+
+  const buildingData = projectData?.buildings.find(building => building.buildingID === buildingID)
+
+  if (!buildingData || !buildingID) return null
+
   const invSpec = DataGenerator.getInverterWring(buildingData)
+  const numOfInverter = invSpec.length
+
   const aggrePaco = invSpec
-    .map(spec => allInverter.find(inv => inv.inverterID === spec.inverter_model.inverterID).paco)
-    .reduce((cum, val) => {
-      Object.keys(cum).includes(val.toString()) ? (cum[val] += 1) : (cum[val] = 1)
+    ?.map(spec => allInverter.find(inv => inv.inverterID === spec.inverter_model.inverterID)?.paco)
+    .filter((val): val is number => val !== undefined)
+    .reduce((cum: { [key: string]: number }, val) => {
+      Object.keys(cum).includes(val.toString())
+        ? (cum[val.toString()] += 1)
+        : (cum[val.toString()] = 1)
       return cum
     }, {})
-  const numOfInverter = invSpec.length
-  const allPVArray = buildingData.data.flatMap((setup, index) =>
-    setup.inverter_wiring.flatMap(invSpec => {
-      const pvSpec = allPV.find(pv => pv.pvID === setup.pv_panel_parameters.pv_model.pvID)
-      const inverter = allInverter.find(inv => inv.inverterID === invSpec.inverter_model.inverterID)
-      return {
-        siliconMaterial: pvSpec.siliconMaterial,
-        inverter_serial_number: `${index + 1}.${invSpec.inverter_serial_number}`,
-        pvName: pvSpec.name,
-        pmax: pvSpec.pmax,
-        voc: pvSpec.voco,
-        vpm: pvSpec.vmpo,
-        isc: pvSpec.isco,
-        ipm: pvSpec.impo,
-        string_per_inverter: invSpec.string_per_inverter,
-        panels_per_string: invSpec.panels_per_string,
-        inverterName: inverter.name,
-        paco: inverter.paco,
-      }
-    })
-  )
 
-  const reportData = useSelector(state => state.report)
-  const buildingReport = reportData[buildingID]
-  const combiboxCableChoice = buildingReport
-    ? DataGenerator.getCombiBoxCableChoice(buildingReport)
-    : ''
-  const acCableChoice = buildingReport ? buildingReport.setup_ac_wir_choice.flatMap(ary => ary) : []
+  const allPVArray: IAllPVArray[] = buildingData.data.flatMap((setup, index) =>
+    setup.inverter_wiring
+      .flatMap(invSpec => {
+        const pvSpec = allPV.find(pv => pv.pvID === setup.pv_panel_parameters.pv_model.pvID)
+        const inverter = allInverter.find(
+          inv => inv.inverterID === invSpec.inverter_model.inverterID
+        )
+        if (!pvSpec || !inverter) {
+          return undefined
+        } else {
+          return {
+            siliconMaterial: pvSpec.siliconMaterial as string,
+            inverter_serial_number: `${index + 1}.${invSpec.inverter_serial_number}`,
+            pvName: pvSpec.name,
+            pmax: pvSpec.pmax,
+            voc: pvSpec.voco,
+            vpm: pvSpec.vmpo,
+            isc: pvSpec.isco,
+            ipm: pvSpec.impo,
+            string_per_inverter: invSpec.string_per_inverter,
+            panels_per_string: invSpec.panels_per_string,
+            inverterName: inverter.name,
+            paco: inverter.paco,
+            acCableChoice: '',
+            dcCableChoice: [] as string[],
+          }
+        }
+      })
+      .filter((obj): obj is IAllPVArray => obj !== undefined)
+  )
+  const buildingReport = reportData[buildingID] as DomesticReport
+  const combiboxCableChoice = DataGenerator.getCombiBoxCableChoice(buildingReport)
+  const acCableChoice = buildingReport.setup_ac_wir_choice.flatMap(ary => ary)
   acCableChoice.forEach(
     (cableChoiceAry, index) => (allPVArray[index].acCableChoice = cableChoiceAry)
   )
-  const dcCableChoice = buildingReport
-    ? buildingReport.setup_dc_wir_choice.flatMap(ary => ary.map(ary2 => ary2))
-    : []
+  const dcCableChoice = buildingReport.setup_dc_wir_choice.flatMap(ary => ary.map(ary2 => ary2))
   dcCableChoice.forEach(
     (cableChoiceAry, index) => (allPVArray[index].dcCableChoice = cableChoiceAry)
   )
 
   const combiboxIe =
-    buildingReport && buildingReport.combibox_Ie ? buildingReport.combibox_Ie.toFixed(0) : ''
+    buildingReport && buildingReport.combibox_Ie ? Number(buildingReport.combibox_Ie.toFixed(0)) : 0
   const acIe =
     buildingReport && buildingReport.setup_ac_Ie
-      ? buildingReport.setup_ac_Ie.flatMap(ary => ary.map(val => val.toFixed(0)))
+      ? buildingReport.setup_ac_Ie.flatMap(ary => ary.map(val => Number(val.toFixed(0))))
       : []
   const combiboxName =
     buildingReport && buildingReport.investment ? DataGenerator.getCombiBoxData(buildingReport) : ''
-  let newWidth = useSelector(state => state.SLD.diagramWidth)
-  let newHeight = useSelector(state => state.SLD.diagramHeight)
 
   return (
     <div className={classes.SLD}>
@@ -93,7 +110,7 @@ const SingleLineDiagCN = () => {
                   acData={acCableChoice}
                   dcData={dcCableChoice}
                   numOfInv={numOfInverter}
-                  aggrePacpData={aggrePaco}
+                  aggrePacoData={aggrePaco}
                   allPVArray={allPVArray}
                   projectData={projectData}
                 />
@@ -111,7 +128,7 @@ const SingleLineDiagCN = () => {
                   acData={acCableChoice}
                   dcData={dcCableChoice}
                   numOfInv={numOfInverter}
-                  aggrePacpData={aggrePaco}
+                  aggrePacoData={aggrePaco}
                   allPVArray={allPVArray}
                   combiboxIe={combiboxIe}
                   projectData={projectData}

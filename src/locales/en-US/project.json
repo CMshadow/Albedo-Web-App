@@ -14,6 +14,7 @@
   "project.create.projectAltitude.auto": "Auto Altitude",
   "project.create.projectAltitude.placeholder": "Project Altitude",
   "project.create.type": "Project Type",
+  "project.create.type.placeholder": "Select a Project Type",
   "project.type.domestic": "Residential",
   "project.type.commercial": "Distributed",
   "project.create.weatherSrc": "Weather Source",

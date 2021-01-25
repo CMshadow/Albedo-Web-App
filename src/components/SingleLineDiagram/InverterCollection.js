@@ -2,7 +2,7 @@ import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { Rect, Line, Group, Text, Circle } from 'react-konva'
 import { useDispatch, useSelector } from 'react-redux'
-import { InverterDataExport } from '../../store/action/index'
+import { inverterDataExport } from '../../store/action/index'
 
 const InverterCollection = props => {
   const dispatch = useDispatch()
@@ -25,7 +25,7 @@ const InverterCollection = props => {
   const unitAccessPortDist = (numOfInverter * unitLineGap) / (numOfInverter + 1)
 
   const DrawSingleInverter = (i, accessPort) => {
-    let startX = startPosition[0] * 0.05 + distance[0]
+    let startX = startPosition[0] * 0.05 + distance
     let startY = startPosition[1] + inverterGap * i
 
     groupOfInverter.push(
@@ -223,7 +223,7 @@ const InverterCollection = props => {
     for (let i = 0; i < numOfInverter; ++i) {
       DrawSingleInverter(i, accessPort)
     }
-    dispatch(InverterDataExport(accessPort))
+    dispatch(inverterDataExport(accessPort))
 
     return groupOfInverter
   }

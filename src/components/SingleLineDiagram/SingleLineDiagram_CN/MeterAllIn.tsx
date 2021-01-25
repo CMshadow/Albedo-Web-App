@@ -2,12 +2,12 @@ import React from 'react'
 import { Line, Text, Arrow, Group, Rect } from 'react-konva'
 import { v4 as uuidv4 } from 'uuid'
 import { useSelector } from 'react-redux'
+import { RootState, IAllPVArray } from '../../../@types'
 
-const MeterAllIn = props => {
-  const groupOfMeterAllIn = []
-  // const dispatch = useDispatch()
-  const accessPort = useSelector(state => state.SLD.diagramMeterAccessAllIn)
-  const width = useSelector(state => state.SLD.diagramWidth) * 0.8
+const MeterAllIn: React.FC<{ combiboxIe: number }> = props => {
+  const groupOfMeterAllIn: React.ReactNode[] = []
+  const accessPort = useSelector((state: RootState) => state.SLD.diagramMeterAccessAllIn)
+  const width = useSelector((state: RootState) => state.SLD.diagramWidth) * 0.8
   const height = width * (4 / 6)
   const unitHeight = height / 4
   const unitWidth = width / 6
@@ -31,14 +31,14 @@ const MeterAllIn = props => {
     return groupOfMeterAllIn
   }
 
-  const combiSelect = combiboxIe => {
+  const combiSelect = (combiboxIe: number) => {
     const standard = [32, 63, 80, 100, 125, 160, 225]
     for (let element = 0; element < standard.length; element++) {
       if (standard[element] > combiboxIe) return standard[element]
     }
   }
 
-  const drawSwictchPort = (position, groupOfMeter) => {
+  const drawSwictchPort = (position: [number, number], groupOfMeter: React.ReactNode[]) => {
     groupOfMeterAllIn.push(
       <Line
         key={'Meter-Line-' + uuidv4()}
@@ -106,7 +106,7 @@ const MeterAllIn = props => {
     )
   }
 
-  const drawMeterBox = (accessPort, groupOfMeter) => {
+  const drawMeterBox = (accessPort: [number, number], groupOfMeter: React.ReactNode[]) => {
     groupOfMeter.push(
       <Rect
         key={'Meter-Rect-All' + uuidv4()}

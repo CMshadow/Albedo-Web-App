@@ -4,16 +4,16 @@ import {
   RELEASE_REPORTDATA,
   DELETE_REPORTDATA,
 } from '../../store/action/actionTypes'
-import { Report } from '../../@types'
+import { DomesticReport, CommercialReport, Report } from '../../@types'
 
 export interface IReportState {
-  [key: string]: Report
+  [key: string]: DomesticReport | CommercialReport
 }
 
 export interface SetReportDataAction {
   type: typeof SET_REPORTDATA
   buildingID: string
-  data: Report
+  data: DomesticReport | CommercialReport
 }
 
 export interface UpdateReportAttributesAction {

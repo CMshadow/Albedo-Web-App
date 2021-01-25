@@ -1,14 +1,19 @@
-import { Building, Inverter, PV, Report } from '../@types'
+import { Building, Inverter, PV, DomesticReport } from '../@types'
 
 export const getInverterWring = (buildingData: Building) =>
   buildingData.data.flatMap(setup => setup.inverter_wiring)
 
-export const getCombiBoxData = (buildingReport: Report) =>
+export const getCombiBoxData = (buildingReport: DomesticReport) =>
   buildingReport.investment.find(row => row.key === '4')?.description ?? ''
 
-export const getCombiBoxCableChoice = (buildingReport: Report) => buildingReport.combibox_wir_choice
+export const getCombiBoxCableChoice = (buildingReport: DomesticReport) =>
+  buildingReport.combibox_wir_choice
 
-export const getPVsTableData = (allPV: PV[], buildingData: Building, buildingReport: Report) => {
+export const getPVsTableData = (
+  allPV: PV[],
+  buildingData: Building,
+  buildingReport: DomesticReport
+) => {
   return buildingData.data.flatMap((spec, index) => {
     const pvName =
       allPV.find(obj => obj.pvID === spec.pv_panel_parameters.pv_model.pvID)?.name ?? ''
