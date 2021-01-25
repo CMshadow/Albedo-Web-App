@@ -3,28 +3,30 @@ import { Card, Button, Table, Badge, Divider, Popconfirm, message } from 'antd'
 import { SyncOutlined, SearchOutlined, FileTextOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { CreateModal } from './Modal'
-import { Portfolio } from './Portfolio'
 import styles from './index.module.scss'
-import { WeatherPortfolio } from '../../@types'
+import { DefaultShowModal, WeatherPortfolio } from '../../@types'
 import { deleteWeatherPortfolio, getWeatherPortfolio } from '../../services'
 import { ColumnsType } from 'antd/lib/table'
 import { SearchString } from '../../components/Table/TableColFilters/TableColSearch'
+import { useHistory, useLocation } from 'react-router-dom'
+import Axios from 'axios'
 
 const WeatherManager = () => {
   const { t } = useTranslation()
-  const [showModal, setshowModal] = useState(false)
+  const history = useHistory()
+  const location = useLocation<DefaultShowModal>()
+  const [showModal, setshowModal] = useState(location.state?.defaultShowModal ?? false)
   const [portfolios, setportfolios] = useState<WeatherPortfolio[]>([])
-  const [editingPortfolio, seteditingPortfolio] = useState<string | undefined>()
   const [loading, setloading] = useState(false)
 
-  const portfolioInDetail = portfolios.find(p => p.portfolioID === editingPortfolio)
-
   useEffect(() => {
+    const source = Axios.CancelToken.source()
     setloading(true)
     getWeatherPortfolio({}).then(res => {
       setloading(false)
       setportfolios(res)
     })
+    return () => source.cancel()
   }, [])
 
   const onDelete = (record: WeatherPortfolio) => {
@@ -54,7 +56,7 @@ const WeatherManager = () => {
       onFilter: (value, record) =>
         record.name.toString().toLowerCase().includes(value.toString().toLowerCase()),
       render: (value: string, record: WeatherPortfolio) => (
-        <Button type='link' onClick={() => seteditingPortfolio(record.portfolioID)}>
+        <Button type='link' onClick={() => history.push(`/weather/${record.portfolioID}`)}>
           {value}
         </Button>
       ),
@@ -114,7 +116,7 @@ const WeatherManager = () => {
           <Button
             type='link'
             icon={<FileTextOutlined />}
-            onClick={() => seteditingPortfolio(record.portfolioID)}
+            onClick={() => history.push(`/weather/${record.portfolioID}`)}
           />
           <Divider type='vertical' />
           <Popconfirm
@@ -135,58 +137,52 @@ const WeatherManager = () => {
   ]
 
   return (
-    <>
-      {portfolioInDetail ? (
-        <Portfolio portfolio={portfolioInDetail} onBack={() => seteditingPortfolio(undefined)} />
-      ) : (
-        <Card bodyStyle={{ padding: '20px 12px' }}>
-          <Button
-            className={styles.leftBut}
-            type='primary'
-            size='large'
-            onClick={() => setshowModal(true)}
-          >
-            {t('weatherManager.add')}
-          </Button>
-          <Button
-            className={styles.rightBut}
-            shape='circle'
-            icon={<SyncOutlined />}
-            onClick={() => {
-              setloading(true)
-              getWeatherPortfolio({}).then(res => {
-                setloading(false)
-                setportfolios(res)
-              })
-            }}
-          />
-          <Table
-            columns={tableCols}
-            loading={loading}
-            dataSource={portfolios}
-            rowKey='portfolioID'
-            pagination={{
-              position: ['bottomCenter'],
-              showTotal: total => `${total}` + t('table.totalCount'),
-              defaultPageSize: 10,
-              showSizeChanger: true,
-            }}
-            scroll={{ x: 'max-content' }}
-          />
-          <CreateModal
-            showModal={showModal}
-            setshowModal={setshowModal}
-            afterClose={() => {
-              setloading(true)
-              getWeatherPortfolio({}).then(res => {
-                setloading(false)
-                setportfolios(res)
-              })
-            }}
-          />
-        </Card>
-      )}
-    </>
+    <Card bodyStyle={{ padding: '20px 12px' }}>
+      <Button
+        className={styles.leftBut}
+        type='primary'
+        size='large'
+        onClick={() => setshowModal(true)}
+      >
+        {t('weatherManager.add')}
+      </Button>
+      <Button
+        className={styles.rightBut}
+        shape='circle'
+        icon={<SyncOutlined />}
+        onClick={() => {
+          setloading(true)
+          getWeatherPortfolio({}).then(res => {
+            setloading(false)
+            setportfolios(res)
+          })
+        }}
+      />
+      <Table
+        columns={tableCols}
+        loading={loading}
+        dataSource={portfolios.sort((a, b) => -(a.createdAt - b.createdAt))}
+        rowKey='portfolioID'
+        pagination={{
+          position: ['bottomCenter'],
+          showTotal: total => `${total}` + t('table.totalCount'),
+          defaultPageSize: 10,
+          showSizeChanger: true,
+        }}
+        scroll={{ x: 'max-content' }}
+      />
+      <CreateModal
+        showModal={showModal}
+        setshowModal={setshowModal}
+        afterClose={() => {
+          setloading(true)
+          getWeatherPortfolio({}).then(res => {
+            setloading(false)
+            setportfolios(res)
+          })
+        }}
+      />
+    </Card>
   )
 }
 

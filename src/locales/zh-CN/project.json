@@ -11,11 +11,14 @@
   "project.create.validation.unfinished": "验证地址",
   "project.create.validation.finished": "地址已被验证",
   "project.create.projectAltitude": "项目海拔",
+  "project.create.projectAltitude.auto": "自动获取海拔高度",
   "project.create.projectAltitude.placeholder": "项目海拔高度",
   "project.create.type": "项目类型",
   "project.create.type.placeholder": "选择一个项目类型",
   "project.type.domestic": "户用项目",
   "project.type.commercial": "分布式项目",
+  "project.create.weatherSrc": "天气数据",
+  "project.create.weatherSrc.placeholder": "选择天气数据",
   "project.create.proParams": "进阶设置",
 
   "project.create.albedo": "漫反射系数",
@@ -205,7 +208,7 @@
   "project.modifyPlan.ratio_validation": "逆变器实际超配系数核算",
   "project.modifyPlan.n1_validation": "N1按逆变器最大超配系数核算",
 
-  "project.loading.analyze": "正在分析Meteonorm天气数据...",
+  "project.loading.analyze": "正在分析天气数据...",
   "project.loading": "正在处理项目配置...",
 
   "project.transformer.title": "配置变压器",
