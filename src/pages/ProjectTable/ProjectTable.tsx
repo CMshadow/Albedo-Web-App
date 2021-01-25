@@ -11,6 +11,7 @@ import { DeleteAction } from './Actions'
 import styles from './ProjectTable.module.scss'
 import { Project } from '../../@types'
 import { ColumnsType } from 'antd/lib/table'
+import Axios from 'axios'
 
 const { TabPane } = Tabs
 
@@ -93,15 +94,21 @@ const ProjectTable: React.FC = () => {
 
   // 组件渲染后自动获取表单数据
   useEffect(() => {
+    const source = Axios.CancelToken.source()
     setloading(true)
     getProject({}).then(data => {
       setdata(data)
       setloading(false)
     })
+    return () => {
+      source.cancel()
+    }
   }, [dispatch])
 
   const genTable = (projectType: 'domestic' | 'commercial') => {
-    const validData = data.filter(d => d.projectType === projectType)
+    const validData = data
+      .filter(d => d.projectType === projectType)
+      .sort((a, b) => -(a.createdAt - b.createdAt))
     return (
       <Table
         columns={tableCols}

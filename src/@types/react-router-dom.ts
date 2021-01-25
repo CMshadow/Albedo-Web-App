@@ -12,3 +12,7 @@ export type Params = {
   buildingID?: string
   portfolioID?: string
 }
+
+export type DefaultShowModal = {
+  defaultShowModal?: boolean
+}

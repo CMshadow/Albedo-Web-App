@@ -15,6 +15,8 @@
   "project.create.type": "Project Type",
   "project.type.domestic": "Residential",
   "project.type.commercial": "Distributed",
+  "project.create.weatherSrc": "Weather Source",
+  "project.create.weatherSrc.placeholder": "Select a Weather Source",
   "project.create.proParams": "Advanced Setting",
 
   "project.create.albedo": "Albedo",
@@ -77,8 +79,8 @@
   "project.spec.inverters": "Manage Inverter Settings",
   "project.add.inverterSpec": "Add a Inverter",
 
-  "project.error.tilt":"Tilting should be between 0° and 60°",
-  "project.error.azimuth":"Azimuth should be between 0 and 360°",
+  "project.error.tilt": "Tilting should be between 0° and 60°",
+  "project.error.azimuth": "Azimuth should be between 0 and 360°",
 
   "project.spec.celltemp-model": "Celltemp Model",
   "project.spec.celltemp_sandia": "Sandia Model",
@@ -204,7 +206,7 @@
   "project.modifyPlan.ratio_validation": "Inverter DC/AC Ratio check",
   "project.modifyPlan.n1_validation": "N1 Check",
 
-  "project.loading.analyze": "Analyzing Meteonorm Weather Data...",
+  "project.loading.analyze": "Analyzing Weather Data...",
   "project.loading": "Processing Project Configurations...",
 
   "project.transformer.title": "Transformer Setup",

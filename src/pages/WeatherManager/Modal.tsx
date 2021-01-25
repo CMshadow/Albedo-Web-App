@@ -165,6 +165,7 @@ export const CreateModal: React.FC<CreateModalProps> = props => {
 
   return (
     <Modal
+      title={t('weatherManager.add')}
       visible={showModal}
       onOk={handleOk}
       confirmLoading={loading}

@@ -6,7 +6,6 @@ import { LoadingOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useParams, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import promiseRetry from 'promise-retry'
 import logo from '../../assets/logo-no-text.png'
 import PrivateHeader from '../PrivateHeader/PrivateHeader'
 import PublicHeader from '../PublicHeader/PublicHeader'
@@ -35,7 +34,7 @@ import {
   updateProjectAttributes,
   releaseProjectData,
 } from '../../store/action/index'
-import { Params, RootState, Project } from '../../@types'
+import { Params, RootState } from '../../@types'
 
 import styles from './ProjectLayout.module.scss'
 
@@ -278,22 +277,10 @@ const ProjectLayout: React.FC = props => {
       )
       await Promise.all(fetchPromises)
 
-      let projectData: Project
-      promiseRetry(
-        retry => {
-          return getProjectSingle({ projectID: projectID }).then(res => {
-            if (!res.weatherFile) {
-              retry(null)
-            } else {
-              projectData = res
-              dispatch(setProjectData(res))
-            }
-          })
-        },
-        { minTimeout: 10000 }
-      )
-        .then(async () => {
-          const getReportPromises = projectData.buildings
+      getProjectSingle({ projectID: projectID })
+        .then(async res => {
+          dispatch(setProjectData(res))
+          const getReportPromises = res.buildings
             .map(building => {
               return getReport({ projectID, buildingID: building.buildingID }).then(res =>
                 dispatch(setReportData({ buildingID: building.buildingID, data: res }))
@@ -308,11 +295,11 @@ const ProjectLayout: React.FC = props => {
           setfetchLoading(false)
 
           if (
-            !(projectData.optTilt && projectData.optTilt >= 0) ||
-            !(projectData.optAzimuth && projectData.optAzimuth >= 0) ||
-            !projectData.optPOA ||
-            !projectData.tiltAzimuthPOA ||
-            projectData.tiltAzimuthPOA.length === 0
+            !(res.optTilt && res.optTilt >= 0) ||
+            !(res.optAzimuth && res.optAzimuth >= 0) ||
+            !res.optPOA ||
+            !res.tiltAzimuthPOA ||
+            res.tiltAzimuthPOA.length === 0
           ) {
             globalOptTiltAzimuth({ projectID: projectID }).then(optSpec => {
               dispatch(setProjectData({ ...optSpec }))
@@ -398,7 +385,7 @@ const ProjectLayout: React.FC = props => {
           </Row>
           {projectData && Object.keys(projectData).length !== 0 ? (
             <div>
-              {projectData.projectType === 'domestic' ? domesticMenu : commercialMenu}
+              {projectData.projectType === 'commercial' ? commercialMenu : domesticMenu}
               <Button
                 block
                 type='link'

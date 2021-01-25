@@ -83,12 +83,13 @@ export type ProjectPreUpload = {
   projectType: 'domestic' | 'commercial'
   longitude: number
   latitude: number
+  weatherSrc: string
   albedo: number
   ACVolDropFac: number
   DCVolDropFac: number
 }
 
-export type Project = Omit<ProjectPreUpload, 'longitude' | 'latitude'> & {
+export type Project = Omit<ProjectPreUpload, 'longitude' | 'latitude' | 'weatherSrc'> & {
   projectID: string
   userID: string
   createdAt: number

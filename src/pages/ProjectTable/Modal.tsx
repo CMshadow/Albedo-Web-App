@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { amapGeocoder, googleGeocoder, getApiKey, createProject } from '../../services'
+import {
+  amapGeocoder,
+  googleGeocoder,
+  getApiKey,
+  createProject,
+  getWeatherPortfolio,
+} from '../../services'
 import {
   Tabs,
   Form,
@@ -21,7 +27,7 @@ import { genFullName } from '../../utils/genFullName'
 import { GoogleMap } from '../../components/GoogleMap'
 import { AMap } from '../../components/AMap'
 import styles from './Modal.module.scss'
-import { ProjectPreUpload, RootState } from '../../@types'
+import { ProjectPreUpload, RootState, WeatherPortfolio } from '../../@types'
 
 const FormItem = Form.Item
 const { Option } = Select
@@ -64,6 +70,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
   const [selectedMap, setselectedMap] = useState<string>(
     cognitoUser && cognitoUser.attributes.locale === 'zh-CN' ? 'aMap' : 'googleMap'
   )
+  const [weatherPortfolio, setweatherPortfolio] = useState<WeatherPortfolio[]>([])
   const [form] = Form.useForm()
 
   // albedo几个预设值
@@ -158,10 +165,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
     // 验证表单，如果通过提交表单
     form
       .validateFields()
-      .then(() => {
-        setloading(true)
-        form.submit()
-      })
+      .then(() => form.submit())
       .catch(err => {
         form.scrollToField(err.errorFields[0].name[0])
         return
@@ -170,9 +174,12 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
 
   // 表单提交
   const submitForm = (
-    values: Omit<ProjectPreUpload, 'projectCreator' | 'longitude' | 'latitude'>
+    values: Omit<ProjectPreUpload, 'projectCreator' | 'longitude' | 'latitude'> & {
+      weatherSrc: string
+    }
   ) => {
     if (!cognitoUser) return
+    setloading(true)
     createProject({
       values: {
         ...values,
@@ -182,11 +189,9 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
       },
     })
       .then(data => {
-        setTimeout(() => {
-          setloading(false)
-          setshowModal(false)
-          history.push(`project/${data.projectID}/dashboard`)
-        }, 10000)
+        setloading(false)
+        setshowModal(false)
+        history.push(`project/${data.projectID}/dashboard`)
       })
       .catch(() => {
         setloading(false)
@@ -206,6 +211,11 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
       setaMapWebKey(data.A_MAP_WEB_API_KEY)
     })
   }, [dispatch])
+
+  // 组建渲染后获取该用户的所有天气档案并生成下拉菜单选项
+  useEffect(() => {
+    getWeatherPortfolio({}).then(res => setweatherPortfolio(res))
+  }, [])
 
   return (
     <Modal
@@ -328,6 +338,53 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
             <Option key='commercial' value='commercial'>
               {t(`project.type.commercial`)}
             </Option>
+          </Select>
+        </FormItem>
+        <FormItem
+          name='weatherSrc'
+          label={t('project.create.weatherSrc')}
+          rules={[{ required: true }]}
+        >
+          <Select
+            showSearch
+            placeholder={t('project.create.weatherSrc.placeholder')}
+            dropdownRender={nodes => (
+              <div>
+                {nodes}
+                <Button
+                  block
+                  type='primary'
+                  onClick={() => history.push('/weather', { defaultShowModal: true })}
+                >
+                  {t('weatherManager.add')}
+                </Button>
+              </div>
+            )}
+            filterOption={(val, option) =>
+              option?.label?.toString().toLowerCase().includes(val.toLowerCase()) ?? false
+            }
+          >
+            {weatherPortfolio
+              .sort((a, b) => -(a.createdAt - b.createdAt))
+              .map(portfolio => (
+                <Select.OptGroup key={portfolio.portfolioID} label={portfolio.name}>
+                  {portfolio.meteonorm_src && (
+                    <Select.Option value={`${portfolio.portfolioID}|meteonorm`}>
+                      {`${portfolio.name} - ${t('weatherManager.portfolio.meteonorm')}`}
+                    </Select.Option>
+                  )}
+                  {portfolio.nasa_src && (
+                    <Select.Option value={`${portfolio.portfolioID}|nasa`}>
+                      {`${portfolio.name} - ${t('weatherManager.portfolio.nasa')}`}
+                    </Select.Option>
+                  )}
+                  {portfolio.custom_src && (
+                    <Select.Option value={`${portfolio.portfolioID}|custom`}>
+                      {`${portfolio.name} - ${t('weatherManager.portfolio.custom')}`}
+                    </Select.Option>
+                  )}
+                </Select.OptGroup>
+              ))}
           </Select>
         </FormItem>
         <Collapse bordered={false}>

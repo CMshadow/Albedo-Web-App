@@ -4,25 +4,29 @@ import { SyncOutlined, SearchOutlined, FileTextOutlined, DeleteOutlined } from '
 import { useTranslation } from 'react-i18next'
 import { CreateModal } from './Modal'
 import styles from './index.module.scss'
-import { WeatherPortfolio } from '../../@types'
+import { DefaultShowModal, WeatherPortfolio } from '../../@types'
 import { deleteWeatherPortfolio, getWeatherPortfolio } from '../../services'
 import { ColumnsType } from 'antd/lib/table'
 import { SearchString } from '../../components/Table/TableColFilters/TableColSearch'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+import Axios from 'axios'
 
 const WeatherManager = () => {
   const { t } = useTranslation()
   const history = useHistory()
-  const [showModal, setshowModal] = useState(false)
+  const location = useLocation<DefaultShowModal>()
+  const [showModal, setshowModal] = useState(location.state?.defaultShowModal ?? false)
   const [portfolios, setportfolios] = useState<WeatherPortfolio[]>([])
   const [loading, setloading] = useState(false)
 
   useEffect(() => {
+    const source = Axios.CancelToken.source()
     setloading(true)
     getWeatherPortfolio({}).then(res => {
       setloading(false)
       setportfolios(res)
     })
+    return () => source.cancel()
   }, [])
 
   const onDelete = (record: WeatherPortfolio) => {
@@ -157,7 +161,7 @@ const WeatherManager = () => {
       <Table
         columns={tableCols}
         loading={loading}
-        dataSource={portfolios}
+        dataSource={portfolios.sort((a, b) => -(a.createdAt - b.createdAt))}
         rowKey='portfolioID'
         pagination={{
           position: ['bottomCenter'],
