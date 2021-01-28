@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { ConfigProvider } from 'antd'
 import { useSelector } from 'react-redux'
 import { RootState } from './@types'

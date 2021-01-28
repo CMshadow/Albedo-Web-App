@@ -17,7 +17,7 @@ import {
 import { editCombibox } from '../../../store/action/index'
 import { other2m } from '../../../utils/unitConverter'
 import styles from './CombinerBoxSpecCard.module.scss'
-import { RootState, INVSpec, Combibox, EditCombiboxParams } from '../../../@types'
+import { RootState, INVSpec, EditCombiboxParams } from '../../../@types'
 const FormItem = Form.Item
 const { Panel } = Collapse
 const { Text } = Typography

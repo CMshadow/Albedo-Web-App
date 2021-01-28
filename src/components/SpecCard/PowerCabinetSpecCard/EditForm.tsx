@@ -519,8 +519,8 @@ export const EditForm: React.FC<EditFormProps> = ({ powercabinetIndex, seteditin
         })
         form.setFieldsValue({ [inverterKey]: newInverterCBValues })
       })
-      setcheckAll(checkAll.map(_ => false))
-      setintermediate(intermediate.map(_ => false))
+      setcheckAll(checkAll.map(() => false))
+      setintermediate(intermediate.map(() => false))
     } else {
       const curTransformerCBValues: string[] =
         form.getFieldValue('linked_transformer_serial_num') || []
