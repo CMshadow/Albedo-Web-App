@@ -2,26 +2,34 @@ import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { Rect, Line, Group, Text, Circle } from 'react-konva'
 import { useSelector, useDispatch } from 'react-redux'
+import { RootState, IAllPVArray } from '../../../@types'
 import { setMeterAccess, setMeterAccessAllIn } from '../../../store/action/index'
 
-const PanelArrayCollection = props => {
+type TPanelArrayProps = {
+  index: number
+  combiboxIe: number
+  acIe: number[]
+  numOfInv: number
+  allPVArray: IAllPVArray[]
+}
+
+const PanelArrayCollection: React.FC<TPanelArrayProps> = props => {
   const dispatch = useDispatch()
-  const groupOfPvArray = []
-  const width = useSelector(state => state.SLD.diagramWidth) * 0.8
+  const groupOfPvArray: React.ReactNode[] = []
+  const width = useSelector((state: RootState) => state.SLD.diagramWidth) * 0.8
   const height = width * (4 / 6)
   const unitHeight = height / 4
   const unitWidth = width / 6
   const offset = props.index === 1 ? 0 : height + 100
-  let startPosition = useSelector(state => state.SLD.diagramBoundaryPosition)
-  startPosition[1] += offset
   const numOfArrays = props.numOfInv > 5 ? 5 : props.numOfInv
   const trigger = props.numOfInv > 5 ? true : false
   const inverterWidth = unitWidth * 3.3
   const inverterAccessPorts = []
-
+  const startPosition = useSelector((state: RootState) => state.SLD.diagramBoundaryPosition)
+  startPosition[1] += offset
   const InvOffset = props.numOfInv === 1 ? -inverterWidth * 0.5 : 0
 
-  const combiSelect = combiboxIe => {
+  const combiSelect = (combiboxIe: number): number => {
     const standard = [32, 63, 80, 100, 125, 160, 225]
     for (let element = 0; element < standard.length; element++) {
       if (standard[element] > combiboxIe) return standard[element]
@@ -67,7 +75,7 @@ const PanelArrayCollection = props => {
     drawAccessPorts(numOfArrays)
   }
 
-  const drawAccessPorts = numOfArray => {
+  const drawAccessPorts = (numOfArray: number) => {
     const offSet = numOfArray > 1 ? (unitWidth / numOfArray - 1) * (6 - numOfArrays) : 0
 
     const fixedOffset = unitWidth / 4
@@ -396,7 +404,7 @@ const PanelArrayCollection = props => {
     }
   }
 
-  const drawSingleArray = (startPoint, unitW, index) => {
+  const drawSingleArray = (startPoint: [number, number], unitW: number, index: number) => {
     if (numOfArrays === 1) index = 0
     if (index === 4 && trigger) index = numOfArrays
     const unitArrayWidth = unitW / 5
@@ -883,7 +891,9 @@ const PanelArrayCollection = props => {
           key={'PV-Array-Text-' + uuidv4()}
           x={startPoint[0] - 0.4 * unitW + string * unitArrayWidth + offset - 5}
           y={startPoint[1] + 1.6 * unitHeight}
-          text={props.allPVArray[index].string_per_inverter > 4 && string === 3 ? 'N' : string + 1}
+          text={
+            props.allPVArray[index].string_per_inverter > 4 && string === 3 ? 'N' : `${string + 1}`
+          }
           fontSize={11}
           fontFamily='Arial'
           fill='black'

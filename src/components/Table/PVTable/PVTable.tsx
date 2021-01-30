@@ -72,7 +72,7 @@ export const PVTable: React.FC<PVTableProps> = ({
   ]
 
   // 生成表单所有数字列属性
-  const tableCols: ColumnsType<PV> = colKeys.map(([key, type, unit, width], index) => {
+  const tableCols: ColumnsType<PV> = colKeys.map(([key, , unit, width], index) => {
     return {
       title: t(`PVtable.table.${key}`),
       dataIndex: key,

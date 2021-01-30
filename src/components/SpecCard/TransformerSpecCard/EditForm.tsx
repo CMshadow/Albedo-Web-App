@@ -438,8 +438,8 @@ export const EditForm: React.FC<EditFormProps> = ({ transformerIndex, setediting
       })
       form.setFieldsValue({ [inverterKey]: newInverterCBValues })
     })
-    setcheckAll(checkAll.map(_ => false))
-    setintermediate(intermediate.map(_ => false))
+    setcheckAll(checkAll.map(() => false))
+    setintermediate(intermediate.map(() => false))
     calculateCapacity()
   }
 

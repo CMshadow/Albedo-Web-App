@@ -424,7 +424,7 @@ export const InvestmentTable: React.FC<InvestmentTableProps> = ({ buildingID }) 
       dataIndex: 'unitPrice',
       editable: true,
       width: '125px',
-      render: (text, row, index) => {
+      render: (text, row) => {
         if (disabledRowKeys.includes(row.key)) {
           return {
             children: text,

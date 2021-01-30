@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { ConfigProvider } from 'antd'
 import { useSelector } from 'react-redux'
 import { RootState } from './@types'
@@ -11,15 +11,10 @@ const localeSwitch = {
   'zh-CN': zhCN,
   'en-US': enUS,
 }
-moment.locale('en')
+moment.locale('zn-cn')
 
 const AntdConfig: React.FC = props => {
   const locale = useSelector((state: RootState) => state.locale.locale)
-
-  useEffect(() => {
-    if (locale === 'zh-CN') moment.locale('zh-cn')
-    else moment.locale('en')
-  }, [locale])
 
   const validateMessages = {
     'zh-CN': {

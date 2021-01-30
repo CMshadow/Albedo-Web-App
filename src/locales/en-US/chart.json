@@ -1,4 +1,5 @@
 {
+  "chart": "Chart",
   "cashflowChart.title": "Cumulative Net Cash Flow",
   "acPowerChart.title": "First Year Monthy Production",
   "lossChart.title": "System Loss",
@@ -136,5 +137,7 @@
   "PacPdcChart.vdco": "Vdco",
   "PacPdcChart.vdcMax": "Vdcmax",
   "InverterEfficiencyChart.eff": "Inverter Efficiency",
-  "InverterEfficiencyChart.pac_percent": "Normalized Output Power "
+  "InverterEfficiencyChart.pac_percent": "Normalized Output Power ",
+
+  "GHICompareChart.GHI": "Global Horizontal Irradiance"
 }

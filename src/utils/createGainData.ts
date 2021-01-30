@@ -1,8 +1,8 @@
-import { Report, GainEntry } from '../@types'
+import { DomesticReport, CommercialReport, GainEntry } from '../@types'
 import { wh2kwh, other2wh } from './unitConverter'
 
 interface ICreateGainData {
-  (report: Report): Array<GainEntry>
+  (report: DomesticReport | CommercialReport): Array<GainEntry>
 }
 
 export const createGainData: ICreateGainData = report => {

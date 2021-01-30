@@ -79,7 +79,11 @@ const BasicLayout: React.FC = props => {
               <h1>{t('sider.company')}</h1>
               <h4>
                 {t('sider.edition')}
-                {process.env.REACT_APP_VERSION}
+                {process.env.REACT_APP_VERSION}{' '}
+                {process.env.REACT_APP_STAGE_OVERWRITE === 'dev' ||
+                process.env.NODE_ENV === 'development'
+                  ? 'Dev Env'
+                  : ''}
               </h4>
             </div>
           </Row>
@@ -94,15 +98,15 @@ const BasicLayout: React.FC = props => {
             <Menu.Item key='dashboard' className={styles.menuItem}>
               {t('sider.menu.project')}
             </Menu.Item>
+            <Menu.Item key='weather' className={styles.menuItem}>
+              {t('sider.menu.weather')}
+            </Menu.Item>
             <Menu.Item key='pv' className={styles.menuItem}>
               {t('sider.menu.pv')}
             </Menu.Item>
             <Menu.Item key='inverter' className={styles.menuItem}>
               {t('sider.menu.inverter')}
             </Menu.Item>
-            {/* <Menu.Item key='weather' className={styles.menuItem}>
-              {t('sider.menu.weather')}
-            </Menu.Item> */}
           </Menu>
         </Sider>
         <Layout className={styles.main}>

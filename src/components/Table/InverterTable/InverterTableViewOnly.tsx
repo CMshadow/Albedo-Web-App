@@ -64,7 +64,7 @@ export const InverterTableViewOnly: React.FC<InverterTableViewOnlyProps> = ({ da
   }
 
   // 生成表单所有数字列属性
-  const tableCols: ColumnsType<Inverter> = colKeys.map(([key, type, unit, width], index) => {
+  const tableCols: ColumnsType<Inverter> = colKeys.map(([key, , unit, width], index) => {
     return {
       title: t(`InverterTable.table.${key}`),
       dataIndex: key,

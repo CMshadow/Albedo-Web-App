@@ -2,10 +2,11 @@ import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { Rect, Group } from 'react-konva'
 import { useSelector } from 'react-redux'
+import { RootState } from '../../../@types'
 
-const BackgroundGrids = props => {
-  const windowHeight = useSelector(state => state.SLD.stageHeight)
-  const windowWidth = useSelector(state => state.SLD.stageWidth)
+const BackgroundGrids = () => {
+  const windowHeight = useSelector((state: RootState) => state.SLD.stageHeight)
+  const windowWidth = useSelector((state: RootState) => state.SLD.stageWidth)
 
   return (
     <Group>

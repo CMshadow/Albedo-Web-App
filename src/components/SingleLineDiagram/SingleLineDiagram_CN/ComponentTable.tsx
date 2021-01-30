@@ -3,11 +3,22 @@ import { v4 as uuidv4 } from 'uuid'
 import { Rect, Line, Group, Text } from 'react-konva'
 import { useSelector, useDispatch } from 'react-redux'
 import { setDiagramHeight } from '../../../store/action/index'
+import { RootState, IAllPVArray } from '../../../@types'
 
-const ComponentTable = props => {
+type Table = {
+  index: number
+  allPVArray: IAllPVArray[]
+  dcData: string[][]
+  numOfInv: number
+  acData: string[]
+  combiboxName: string
+  combiBox: string
+}
+
+export const ComponentTable: React.FC<Table> = props => {
   const dispatch = useDispatch()
-  const groupOfTable = []
-  const width = useSelector(state => state.SLD.diagramWidth)
+  const groupOfTable: React.ReactNode[] = []
+  const width = useSelector((state: RootState) => state.SLD.diagramWidth)
   const allPVArray = props.allPVArray
   const numOfRoofTop = new Set(allPVArray.map(index => index.inverter_serial_number[0])).size
 
@@ -19,22 +30,24 @@ const ComponentTable = props => {
       : 50 + boundaryWidth * 0.04
 
   const offset = ((boundaryWidth * 4) / 6 + 100) * (props.index - 1)
-  const startPosition = [width * 0.1, 100 + offset]
+  const startPosition = [width * 0.1, 100 + offset] as [number, number]
   const headerFont = boundaryWidth * 0.03 > 16 ? 16 : boundaryWidth * 0.03
   const bodyFont = 12
-  const sortedArray = new Map()
-  const pvArray = allPVArray.map(index => [index.inverter_serial_number[0], index])
+  const sortedArray = new Map<string, IAllPVArray[]>()
+  const pvArray = allPVArray.map(
+    obj => [obj.inverter_serial_number[0], obj] as [string, IAllPVArray]
+  )
 
-  const sortPVArray = PV => {
+  const sortPVArray = (PV: [string, IAllPVArray][]) => {
     PV.forEach(element => {
-      if (sortedArray.has(element[0])) sortedArray.get(element[0]).push(element[1])
-      else {
+      if (sortedArray.has(element[0])) {
+        sortedArray.get(element[0])?.push(element[1])
+      } else {
         sortedArray.set(element[0], [element[1]])
       }
     })
   }
-
-  const filterDCType = dcArray => {
+  const filterDCType = (dcArray: string[]): string[] => {
     const dcSet = new Set(dcArray)
     return Array.from(dcSet)
   }
@@ -53,7 +66,7 @@ const ComponentTable = props => {
     return groupOfTable
   }
 
-  const drawBasicTable = (position, pvArray) => {
+  const drawBasicTable = (position: [number, number], pvArray: Map<string, IAllPVArray[]>) => {
     groupOfTable.push(
       <Rect
         key={'ComponentTable-Rect-' + uuidv4()}
@@ -229,7 +242,7 @@ const ComponentTable = props => {
     })
   }
 
-  const drawComponentTable = (position, pvArray) => {
+  const drawComponentTable = (position: [number, number], pvArray: Map<string, IAllPVArray[]>) => {
     groupOfTable.push(
       <Rect
         key={'ComponentTable-Rect-' + uuidv4()}
@@ -417,7 +430,7 @@ const ComponentTable = props => {
     })
   }
 
-  const drawInverterTable = (position, pvArray) => {
+  const drawInverterTable = (position: [number, number], pvArray: Map<string, IAllPVArray[]>) => {
     groupOfTable.push(
       <Rect
         key={'ComponentTable-Rect-' + uuidv4()}
@@ -575,7 +588,7 @@ const ComponentTable = props => {
     })
   }
 
-  const drawCombiBoxTable = position => {
+  const drawCombiBoxTable = (position: [number, number]) => {
     groupOfTable.push(
       <Rect
         key={'ComponentTable-Rect-' + uuidv4()}
@@ -784,7 +797,14 @@ const ComponentTable = props => {
     }
   }
 
-  const drawSingleRowBlock = (position, numOfRow, unitRow, blockIndex, blockData, table) => {
+  const drawSingleRowBlock = (
+    position: [number, number],
+    numOfRow: number,
+    unitRow: number,
+    blockIndex: string,
+    blockData: IAllPVArray[],
+    table: number
+  ) => {
     for (let i = 0; i < numOfRow; ++i) {
       if (i === 0) {
         groupOfTable.push(
@@ -940,7 +960,14 @@ const ComponentTable = props => {
     }
   }
 
-  const drawInverterRowBlock = (position, numOfRow, unitRow, blockIndex, blockData, table) => {
+  const drawInverterRowBlock = (
+    position: [number, number],
+    numOfRow: number,
+    unitRow: number,
+    blockIndex: string,
+    blockData: IAllPVArray[],
+    table: number
+  ) => {
     for (let i = 0; i < numOfRow; ++i) {
       if (i === 0) {
         groupOfTable.push(

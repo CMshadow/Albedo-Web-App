@@ -9,7 +9,7 @@ const ACDisconnecter = props => {
   const interConnectAccessPort = useSelector(state => state.SLD.interConnectAccessPorts)
   const startPosition = useSelector(state => state.SLD.disconnecterPosition)
   const groupOfDisconnecter = []
-  const width = useSelector(state => state.SLD.disconnectSize[1])
+  const width = useSelector(state => state.SLD.disconnectSize)
   let minSize = [width * 0.487, width * 0.3]
   let stroke_Width = 2
 

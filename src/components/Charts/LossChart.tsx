@@ -4,15 +4,13 @@ import { Chart, Interval, Axis, Annotation, Coordinate } from 'bizcharts'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { titleStyle, lgTitleStyle } from '../../styles/chartStyles'
-import { Project, Report, RootState } from '../../@types'
+import { RootState } from '../../@types'
 import { AdjustOption, ColorAttrCallback, GeometryLabelCfg } from 'bizcharts/lib/interface'
 const { Title } = Typography
 
 type LossChartProps = { buildingID: string }
 
 type Cat = 'irr' | 'ac' | 'dc'
-
-type DefaultKeys = 'opt_irr'
 
 type ProjectandReportKeys =
   | 'p_loss_tilt_azimuth'
@@ -36,7 +34,6 @@ type ProjectandReportKeys =
 export const LossChart: React.FC<LossChartProps> = ({ buildingID }) => {
   const { t } = useTranslation()
   const reportData = useSelector((state: RootState) => state.report)
-  const projectData = useSelector((state: RootState) => state.project)
   const buildingReport = reportData[buildingID]
   const colorMap = {
     irr: 0,
