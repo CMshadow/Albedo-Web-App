@@ -21,3 +21,12 @@ export type ParsedCSV = {
   Pressure: number[]
   Wspd: number[]
 }
+
+export type MonthRatioIntermedia = { ratio: number[] }
+
+export type FormulaIntermedia = {
+  userGHI: number[]
+  refGHI: number[]
+  coeff: [number, number]
+  r: number
+}

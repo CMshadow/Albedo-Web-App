@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Statistic, Row, Col } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { wh2other } from '../../../utils/unitConverter'
+import { wh2kwh, wh2other } from '../../../utils/unitConverter'
 import styles from './OptimalCard.module.scss'
 import { Project } from '../../../@types'
 
@@ -40,10 +40,10 @@ export const OptimalCard: React.FC<OptimalCardProps> = ({ loading, ...values }) 
             <Statistic
               className={styles.text}
               title={t('project.optimal.optPOA')}
-              value={Number(wh2other(values.optPOA).value)}
+              value={Number(wh2kwh(values.optPOA))}
               precision={2}
               valueStyle={{ color: '#faad14' }}
-              suffix={wh2other(values.optPOA).unit + '/㎡'}
+              suffix='kWh/㎡'
             />
           ) : null}
         </Card>

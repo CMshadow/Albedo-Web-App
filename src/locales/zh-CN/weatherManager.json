@@ -1,5 +1,5 @@
 {
-  "weatherManager.add": "创建天气档案",
+  "weatherManager.add": "创建新天气档案",
   "weatherManager.portfolio.name": "档案名称",
   "weatherManager.portfolio.name.placeholder": "输入档案名称",
   "weatherManager.portfolio.address": "天气数据地址",

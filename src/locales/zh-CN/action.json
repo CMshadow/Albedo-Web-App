@@ -1,5 +1,6 @@
 {
   "action.confirm": "确定",
   "action.cancel": "取消",
-  "action.checkall": "全选"
+  "action.checkall": "全选",
+  "action.preview": "预览"
 }

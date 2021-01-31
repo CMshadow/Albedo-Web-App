@@ -139,5 +139,10 @@
   "InverterEfficiencyChart.eff": "逆变器效率",
   "InverterEfficiencyChart.pac_percent": "输出功率/额定功率",
 
-  "GHICompareChart.GHI": "总辐射量(GHI)"
+  "GHICompareChart.GHI": "总辐射量(GHI)",
+
+  "IntermediaChart.userGHI": "实测数据辐射量",
+  "IntermediaChart.refGHI": "卫星数据辐射量",
+
+  "RatioBarChart.yAxis": "实测数据/卫星数据"
 }

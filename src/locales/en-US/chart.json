@@ -139,5 +139,10 @@
   "InverterEfficiencyChart.eff": "Inverter Efficiency",
   "InverterEfficiencyChart.pac_percent": "Normalized Output Power ",
 
-  "GHICompareChart.GHI": "Global Horizontal Irradiance"
+  "GHICompareChart.GHI": "Global Horizontal Irradiance",
+
+  "IntermediaChart.userGHI": "Measured GHI",
+  "IntermediaChart.refGHI": "Satellite GHI",
+
+  "RatioBarChart.yAxis": "Measured/Satellite"
 }

@@ -6,6 +6,7 @@ import {
   CheckCircleTwoTone,
   PaperClipOutlined,
   DeleteOutlined,
+  CloseOutlined,
 } from '@ant-design/icons'
 import {
   Steps,
@@ -22,15 +23,31 @@ import {
   Radio,
   Select,
   Space,
+  Tooltip,
+  Card,
 } from 'antd'
-import { Params, ParsedCSV, WeatherPortfolio } from '../../@types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChartBar } from '@fortawesome/pro-light-svg-icons'
+import {
+  Params,
+  ParsedCSV,
+  WeatherPortfolio,
+  MonthRatioIntermedia,
+  FormulaIntermedia,
+} from '../../@types'
 import { parseString } from 'fast-csv'
 import styles from './TmyProcedure.module.scss'
 import { useTranslation } from 'react-i18next'
 import { RcFile, UploadProps } from 'antd/lib/upload'
-import { complementCSV } from '../../services'
+import {
+  complementCSV,
+  monthRatioIntermediateResult,
+  monthFormulaIntermediateResult,
+  yearFormulaIntermediateResult,
+} from '../../services'
 import { useParams } from 'react-router-dom'
 import { aggregateByMonth, aggregateDay2Month } from '../../utils/dataChunk'
+import { IntermediaViz } from './IntermediaViz'
 
 const { Step } = Steps
 const { TabPane } = Tabs
@@ -75,6 +92,10 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
   const [selMethod, setselMethod] = useState<
     'month-ratio' | 'year-formula' | 'month-formula' | 'ghi-ratio'
   >('ghi-ratio')
+  const [previewLoading, setpreviewLoading] = useState(false)
+  const [preview, setpreview] = useState<
+    MonthRatioIntermedia | FormulaIntermedia | FormulaIntermedia[]
+  >()
 
   if (!portfolioID) return null
 
@@ -125,6 +146,54 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
     })
     return aggr
   }
+
+  const previewOption = (option: 'month-ratio' | 'year-formula' | 'month-formula') => (
+    <Space>
+      {t(`weatherManager.portfolio.method.${option}`)}
+      <Tooltip title={t('action.preview')} trigger={['hover', 'click']}>
+        <Button
+          type='text'
+          shape='circle'
+          size='small'
+          loading={previewLoading}
+          disabled={selSrc === 'meteonorm'}
+          icon={<FontAwesomeIcon icon={faChartBar} color='#faad14' />}
+          onClick={() => {
+            setselMethod(option)
+            setpreviewLoading(true)
+            const params = {
+              parsedCSV: parsedData,
+              dataYear,
+              source: selSrc,
+              portfolioID,
+            }
+            if (option === 'year-formula') {
+              yearFormulaIntermediateResult({ ...params, method: option })
+                .then(res => {
+                  setpreviewLoading(false)
+                  setpreview(res)
+                })
+                .catch(() => setpreviewLoading(false))
+            } else if (option === 'month-formula') {
+              monthFormulaIntermediateResult({ ...params, method: option })
+                .then(res => {
+                  setpreviewLoading(false)
+                  setpreview(res)
+                })
+                .catch(() => setpreviewLoading(false))
+            } else {
+              monthRatioIntermediateResult({ ...params, method: option })
+                .then(res => {
+                  setpreviewLoading(false)
+                  setpreview(res)
+                })
+                .catch(() => setpreviewLoading(false))
+            }
+          }}
+        />
+      </Tooltip>
+    </Space>
+  )
 
   const uploadProps: UploadProps = {
     accept: '.csv',
@@ -404,21 +473,21 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
                 style={{ display: 'block' }}
                 value='month-ratio'
               >
-                {t('weatherManager.portfolio.method.month-ratio')}
+                {previewOption('month-ratio')}
               </Radio>
               <Radio
                 disabled={selSrc === 'meteonorm'}
                 style={{ display: 'block' }}
                 value='year-formula'
               >
-                {t('weatherManager.portfolio.method.year-formula')}
+                {previewOption('year-formula')}
               </Radio>
               <Radio
                 style={{ display: 'block' }}
                 disabled={selSrc === 'meteonorm'}
                 value='month-formula'
               >
-                {t('weatherManager.portfolio.method.month-formula')}
+                {previewOption('month-formula')}
               </Radio>
               <Radio style={{ display: 'block' }} value='ghi-ratio'>
                 {t('weatherManager.portfolio.method.ghi-ratio')}
@@ -471,6 +540,26 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
 
   return (
     <>
+      <Row className={styles.row} justify='center'>
+        {preview && (
+          <Card
+            className={styles.preview}
+            title={t('action.preview')}
+            loading={previewLoading}
+            extra={
+              <Button
+                shape='circle'
+                type='text'
+                size='large'
+                icon={<CloseOutlined />}
+                onClick={() => setpreview(undefined)}
+              />
+            }
+          >
+            <IntermediaViz preview={preview} />
+          </Card>
+        )}
+      </Row>
       <Row className={styles.row} justify='center'>
         <Title level={4}>{t(`weatherManager.portfolio.${portfolio.mode}`)}</Title>
       </Row>

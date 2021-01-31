@@ -7,7 +7,6 @@
   "project.create.title.placeholder": "My Project",
   "project.create.address": "Project Address",
   "project.create.address.placeholder": "Enter an address and verify, or click a location on the map",
-  "project.create.address.hint": "Accurate address is not required, the address is only used for generating weather data",
   "project.create.validation.unfinished": "Verify Address",
   "project.create.validation.finished": "Address Verified",
   "project.create.projectAltitude": "Project Altitude",

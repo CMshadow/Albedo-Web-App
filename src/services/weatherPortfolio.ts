@@ -1,5 +1,11 @@
 import axios from '../axios.config'
-import { IAxiosRequest, ParsedCSV, WeatherPortfolio } from '../@types'
+import {
+  IAxiosRequest,
+  ParsedCSV,
+  WeatherPortfolio,
+  MonthRatioIntermedia,
+  FormulaIntermedia,
+} from '../@types'
 import injectAuth from './injectAuth'
 
 const createWeatherPortfolioRequest: IAxiosRequest<
@@ -122,6 +128,57 @@ const allSrcMonthGHIRequest: IAxiosRequest<
     )
     .then(res => res.data)
 
+type IntermediateReqBase = {
+  parsedCSV: ParsedCSV[]
+  dataYear: number[]
+  source: 'meteonorm' | 'nasa'
+  portfolioID: string
+  username: string
+  jwtToken: string
+}
+
+const yearFormulaIntermediateResultRequest = (
+  args: IntermediateReqBase & { method: 'year-formula' }
+) =>
+  axios
+    .post<Promise<FormulaIntermedia>>(
+      `/weatherportfolio/${args.username}/${args.portfolioID}/intermediate`,
+      args.parsedCSV,
+      {
+        headers: { 'COG-TOKEN': args.jwtToken },
+        params: { source: args.source, method: args.method, year: args.dataYear[0] },
+      }
+    )
+    .then(res => res.data)
+
+const monthFormulaIntermediateResultRequest = (
+  args: IntermediateReqBase & { method: 'month-formula' }
+) =>
+  axios
+    .post<Promise<FormulaIntermedia[]>>(
+      `/weatherportfolio/${args.username}/${args.portfolioID}/intermediate`,
+      args.parsedCSV,
+      {
+        headers: { 'COG-TOKEN': args.jwtToken },
+        params: { source: args.source, method: args.method, year: args.dataYear[0] },
+      }
+    )
+    .then(res => res.data)
+
+const monthRatioIntermediateResultRequest = (
+  args: IntermediateReqBase & { method: 'month-ratio' }
+) =>
+  axios
+    .post<Promise<MonthRatioIntermedia>>(
+      `/weatherportfolio/${args.username}/${args.portfolioID}/intermediate`,
+      args.parsedCSV,
+      {
+        headers: { 'COG-TOKEN': args.jwtToken },
+        params: { source: args.source, method: args.method, year: args.dataYear[0] },
+      }
+    )
+    .then(res => res.data)
+
 export const createWeatherPortfolio = injectAuth(createWeatherPortfolioRequest)
 export const getWeatherPortfolio = injectAuth(getWeatherPortfolioRequest)
 export const getWeatherPortfolioSingle = injectAuth(getWeatherPortfolioSingleRequest)
@@ -129,3 +186,6 @@ export const deleteWeatherPortfolio = injectAuth(deleteWeatherPortfolioRequest)
 export const complementCSV = injectAuth(complementCSVRequest)
 export const createNASA = injectAuth(createNASARequest)
 export const allSrcMonthGHI = injectAuth(allSrcMonthGHIRequest)
+export const yearFormulaIntermediateResult = injectAuth(yearFormulaIntermediateResultRequest)
+export const monthFormulaIntermediateResult = injectAuth(monthFormulaIntermediateResultRequest)
+export const monthRatioIntermediateResult = injectAuth(monthRatioIntermediateResultRequest)

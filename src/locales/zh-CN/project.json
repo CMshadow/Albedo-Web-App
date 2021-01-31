@@ -7,7 +7,6 @@
   "project.create.title.placeholder": "我的光伏项目",
   "project.create.address": "项目地址",
   "project.create.address.placeholder": "请输入地址并验证，或在地图上直接点击位置",
-  "project.create.address.hint": "地址不必完全精准，仅用于生成当地气象数据",
   "project.create.validation.unfinished": "验证地址",
   "project.create.validation.finished": "地址已被验证",
   "project.create.projectAltitude": "项目海拔",
@@ -48,7 +47,7 @@
   "project.optimal.title": "最佳配置",
   "project.optimal.optTilt": "最佳倾角",
   "project.optimal.optAzi": "最佳朝向",
-  "project.optimal.optPOA": "最大年总辐照",
+  "project.optimal.optPOA": "倾斜面上的辐射",
 
   "project.success.deleteProject": "成功删除项目",
 
