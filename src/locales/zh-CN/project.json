@@ -48,6 +48,9 @@
   "project.optimal.optTilt": "最佳倾角",
   "project.optimal.optAzi": "最佳朝向",
   "project.optimal.optPOA": "倾斜面上的辐射",
+  "project.optimal.GHI": "总水平辐射",
+  "project.optimal.DNI": "直接辐射",
+  "project.optimal.DHI": "散射辐射",
 
   "project.success.deleteProject": "成功删除项目",
 

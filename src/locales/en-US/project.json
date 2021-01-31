@@ -48,6 +48,9 @@
   "project.optimal.optTilt": "Optimal Tilt",
   "project.optimal.optAzi": "Optimal Azimuth",
   "project.optimal.optPOA": "Max Annual POA Irradiance",
+  "project.optimal.GHI": "GHI",
+  "project.optimal.DNI": "DNI",
+  "project.optimal.DHI": "DHI",
 
   "project.success.deleteProject": "Project Successfully Deleted",
 
