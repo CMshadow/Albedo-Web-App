@@ -387,7 +387,6 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
               googleElevation({
                 lon: mapPos.lon,
                 lat: mapPos.lat,
-                key: googleMapKey,
               })
                 .then(res => {
                   const val = m2other(unit, res.elevation)

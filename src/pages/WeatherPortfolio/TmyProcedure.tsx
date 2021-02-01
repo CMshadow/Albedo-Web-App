@@ -468,6 +468,9 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
               value={selMethod}
               onChange={e => setselMethod(e.target.value)}
             >
+              <Radio style={{ display: 'block' }} value='ghi-ratio'>
+                {t('weatherManager.portfolio.method.ghi-ratio')}
+              </Radio>
               <Radio
                 disabled={selSrc === 'meteonorm'}
                 style={{ display: 'block' }}
@@ -488,9 +491,6 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
                 value='month-formula'
               >
                 {previewOption('month-formula')}
-              </Radio>
-              <Radio style={{ display: 'block' }} value='ghi-ratio'>
-                {t('weatherManager.portfolio.method.ghi-ratio')}
               </Radio>
             </Radio.Group>
           </Row>

@@ -214,5 +214,14 @@
   "project.loading": "Processing Project Configurations...",
 
   "project.transformer.title": "Transformer Setup",
-  "project.powerCabinet.title": "Power Cabinet Setup"
+  "project.powerCabinet.title": "Power Cabinet Setup",
+
+  "project.autoHorizon.r": "Radius",
+  "project.autoHorizon.r.placeholder": "Auto Horizon Coverage Radius",
+  "project.autoHorizon.rOffset": "Radius Offset",
+  "project.autoHorizon.rOffset.placeholder": "Initial Position Offset",
+  "project.autoHorizon.rStep": "Radius Step",
+  "project.autoHorizon.rStep.placeholder": "Step distance between each sector",
+  "project.autoHorizon.gen": "Generate Auto Horizon",
+  "project.autoHorizon.error.notInRange": "Input is not in range:"
 }

@@ -214,5 +214,14 @@
   "project.loading": "正在处理项目配置...",
 
   "project.transformer.title": "配置变压器",
-  "project.powerCabinet.title": "配置并网柜"
+  "project.powerCabinet.title": "配置并网柜",
+
+  "project.autoHorizon.r": "半径",
+  "project.autoHorizon.r.placeholder": "自动地平线覆盖范围半径",
+  "project.autoHorizon.rOffset": "偏移",
+  "project.autoHorizon.rOffset.placeholder": "起始位置偏移半径",
+  "project.autoHorizon.rStep": "步距",
+  "project.autoHorizon.rStep.placeholder": "自动地平线每一环步距",
+  "project.autoHorizon.gen": "自动生成",
+  "project.autoHorizon.error.notInRange": "数字不在可选范围内:"
 }
