@@ -7,6 +7,7 @@
   "weatherManager.portfolio.meteonorm": "Meteonorm",
   "weatherManager.portfolio.nasa": "NASA",
   "weatherManager.portfolio.custom": "Custom TMY",
+  "weatherManager.portfolio.average": "Average Among Uploaded Data",
   "weatherManager.portfolio.createdAt": "Created At",
   "weatherManager.portfolio.longitude": "Longitude",
   "weatherManager.portfolio.latitude": "Latitude",
@@ -23,6 +24,8 @@
   "weatherManager.portfolio.src.yes": "Generated",
   "weatherManager.portfolio.src.no": "Empty",
   "weatherManager.portfolio.src.gen": "Generate Now",
+  "weatherManager.portfolio.src.visible": "Visible in Creating Project",
+  "weatherManager.portfolio.src.download": "Download Data",
   "weatherManager.portfolio.src.download.meteonorm": "Meteonorm usage agreement restriction applies; internal use only",
   "weatherManager.portfolio.waitMeteonorm": "Setting up Services",
   "weatherManager.portfolio.tmy": "Build Custom TMY - Upload TMY Data",
@@ -62,6 +65,9 @@
   "weatherManager.portfolio.method.year-formula": "Yearly Linear Regression",
   "weatherManager.portfolio.method.month-formula": "Monthly Linear Regression",
   "weatherManager.portfolio.method.ghi-ratio": "Yearly GHI Ratio",
+
+  "weatherManager.portfolio.intermediate.src.origin": "Before Fixing GHI",
+  "weatherManager.portfolio.intermediate.src.fixed": "After Fixing GHI",
 
   "weatherManager.portfolio.custom-ready.title": "Successfully Generated Custom TMY",
   "weatherManager.portfolio.custom-ready.subtitle": "",

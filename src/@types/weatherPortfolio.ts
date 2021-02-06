@@ -9,8 +9,11 @@ export type WeatherPortfolio = {
   altitude: number
   mode: 'tmy' | 'processed'
   meteonorm_src: string | null
+  meteonorm_visible?: boolean
   nasa_src: string | null
+  nasa_visible?: boolean
   custom_src: string | null
+  custom_visible?: boolean
 }
 
 export type ParsedCSV = {

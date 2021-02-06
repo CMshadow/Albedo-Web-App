@@ -2,7 +2,6 @@ import React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { useTranslation } from 'react-i18next'
 import { EChartOption } from 'echarts'
-import { ScaleOption } from 'bizcharts/lib/interface'
 import { titleStyle } from '../../styles/chartStyles'
 import { wh2kwh } from '../../utils/unitConverter'
 
@@ -37,7 +36,7 @@ export const TMYFormulaPreviewChart: React.FC<TMYFormulaPreviewChartProps> = pro
       name: t('IntermediaChart.refGHI'),
       nameLocation: 'center',
       nameTextStyle: { ...titleStyle, color: '#000' },
-      splitNumber: 8,
+      splitNumber: 5,
       nameGap: 30,
       scale: true,
       axisLine: { show: false, lineStyle: { color: '#8c8c8c' } },
@@ -78,8 +77,8 @@ export const TMYFormulaPreviewChart: React.FC<TMYFormulaPreviewChartProps> = pro
         markPoint: {
           label: {
             formatter: () =>
-              `y = ${props.coeff[0].toFixed(2)} * x + ${props.coeff[1].toFixed(
-                2
+              `y = ${props.coeff[0].toFixed(2)} * x + ${(props.coeff[1] / 1000).toFixed(
+                3
               )}\nR = ${props.r.toFixed(2)}`,
             fontSize: 14,
             color: '#595959',

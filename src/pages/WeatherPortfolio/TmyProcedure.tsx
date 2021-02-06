@@ -47,7 +47,7 @@ import {
 } from '../../services'
 import { useParams } from 'react-router-dom'
 import { aggregateByMonth, aggregateDay2Month } from '../../utils/dataChunk'
-import { IntermediaViz } from './IntermediaViz'
+import { IntermediateViz } from './IntermediateViz'
 
 const { Step } = Steps
 const { TabPane } = Tabs
@@ -93,9 +93,12 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
     'month-ratio' | 'year-formula' | 'month-formula' | 'ghi-ratio'
   >('ghi-ratio')
   const [previewLoading, setpreviewLoading] = useState(false)
-  const [preview, setpreview] = useState<
-    MonthRatioIntermedia | FormulaIntermedia | FormulaIntermedia[]
-  >()
+  const [preview, setpreview] = useState<{
+    originGHI: number[]
+    fixedGHI: number[]
+    intermediate: MonthRatioIntermedia | FormulaIntermedia | FormulaIntermedia[]
+  }>()
+  const [previewTabKey, setpreviewTabKey] = useState('0')
 
   if (!portfolioID) return null
 
@@ -120,8 +123,8 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
     },
   ]
 
-  const genChartData = (parsedData: ParsedCSV[], fileList: RcFile[]) =>
-    parsedData.flatMap((data, i) =>
+  const genChartData = (parsedData: ParsedCSV[], fileList: RcFile[]) => {
+    const aggregatedByMonth = parsedData.map((data, i) =>
       (data.GHI.length === 8760
         ? aggregateByMonth(data.GHI)
         : data.GHI.length === 365
@@ -133,18 +136,33 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
         value: val,
       }))
     )
+    if (parsedData.length > 1) {
+      return aggregatedByMonth[0]
+        .map((val, i) => ({
+          month: i,
+          src: 'average',
+          value: aggregatedByMonth.reduce((sum, v) => (sum += v[i].value), 0) / parsedData.length,
+        }))
+        .concat(aggregatedByMonth.flatMap(sub => sub.map(val => val)))
+    } else {
+      return aggregatedByMonth.flatMap(sub => sub.map(val => val))
+    }
+  }
 
-  const genTableData = (parsedData: ParsedCSV[], fileList: RcFile[]) => {
-    const aggr: Record<string, number[]> = {}
-    parsedData.forEach((data, i) => {
-      aggr[fileList[i].name] =
-        data.GHI.length === 8760
-          ? aggregateByMonth(data.GHI)
-          : data.GHI.length === 365
-          ? aggregateDay2Month(data.GHI)
-          : data.GHI
-    })
-    return aggr
+  const genTableData = (parsedData: ParsedCSV[]) => {
+    const aggregatedByMonth = parsedData.map(data =>
+      data.GHI.length === 8760
+        ? aggregateByMonth(data.GHI)
+        : data.GHI.length === 365
+        ? aggregateDay2Month(data.GHI)
+        : data.GHI
+    )
+
+    return {
+      average: aggregatedByMonth[0].map(
+        (val, i) => aggregatedByMonth.reduce((sum, v) => (sum += v[i]), 0) / parsedData.length
+      ),
+    }
   }
 
   const previewOption = (option: 'month-ratio' | 'year-formula' | 'month-formula') => (
@@ -244,8 +262,7 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
                   setparsedData([...parsedData])
                   genExtraChartData &&
                     genExtraChartData(genChartData([...parsedData], [...fileList]))
-                  genExtraTableData &&
-                    genExtraTableData(genTableData([...parsedData], [...fileList]))
+                  genExtraTableData && genExtraTableData(genTableData([...parsedData]))
                 }}
                 icon={<DeleteOutlined className={styles.delete} />}
               />
@@ -303,7 +320,7 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
               setdataYear([...dataYear, 0])
 
               genExtraChartData && genExtraChartData(genChartData(newParsedData, newFileList))
-              genExtraTableData && genExtraTableData(genTableData(newParsedData, newFileList))
+              genExtraTableData && genExtraTableData(genTableData(newParsedData))
             })
       }
       return false
@@ -555,8 +572,15 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
                 onClick={() => setpreview(undefined)}
               />
             }
+            tabList={[
+              { key: '0', tab: '关系' },
+              { key: '1', tab: '融合前后对比' },
+            ]}
+            defaultActiveTabKey={previewTabKey}
+            onTabChange={key => setpreviewTabKey(key)}
+            tabProps={{ centered: true, size: 'small' }}
           >
-            <IntermediaViz preview={preview} />
+            <IntermediateViz preview={preview} previewTab={previewTabKey} />
           </Card>
         )}
       </Row>
@@ -571,13 +595,10 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
             {portfolio.mode === 'processed' && parsedData.length <= 1 && (
               <Step
                 title={t('weatherManager.portfolio.tmy.step.3')}
-                disabled={parsedData.length === 0 || loading}
+                disabled={parsedData.length === 0 || dataYear.some(y => y === 0) || loading}
               />
             )}
-            <Step
-              title={t('weatherManager.portfolio.tmy.step.4')}
-              disabled={!portfolio.custom_src || loading}
-            />
+            <Step title={t('weatherManager.portfolio.tmy.step.4')} disabled />
           </Steps>
         </Col>
       </Row>

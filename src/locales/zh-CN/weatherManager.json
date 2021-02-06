@@ -7,6 +7,7 @@
   "weatherManager.portfolio.meteonorm": "Meteonorm数据",
   "weatherManager.portfolio.nasa": "NASA数据",
   "weatherManager.portfolio.custom": "自定义代表年数据",
+  "weatherManager.portfolio.average": "上传数据平均",
   "weatherManager.portfolio.createdAt": "创建于",
   "weatherManager.portfolio.longitude": "经度",
   "weatherManager.portfolio.latitude": "纬度",
@@ -23,6 +24,7 @@
   "weatherManager.portfolio.src.yes": "已生成",
   "weatherManager.portfolio.src.no": "未生成",
   "weatherManager.portfolio.src.gen": "立即生成",
+  "weatherManager.portfolio.src.visible": "是否在创建项目时显示",
   "weatherManager.portfolio.src.download": "下载数据",
   "weatherManager.portfolio.src.download.meteonorm": "Meteonorm协议限制无法提供下载，仅供软件内部使用",
   "weatherManager.portfolio.waitMeteonorm": "正在准备后台程序",
@@ -62,7 +64,10 @@
   "weatherManager.portfolio.method.month-ratio": "月比值修正",
   "weatherManager.portfolio.method.year-formula": "总体相关方程",
   "weatherManager.portfolio.method.month-formula": "各月相关方程",
-  "weatherManager.portfolio.method.ghi-ratio": "总辐射修正",
+  "weatherManager.portfolio.method.ghi-ratio": "年总值修正",
+
+  "weatherManager.portfolio.intermediate.src.origin": "修正前GHI",
+  "weatherManager.portfolio.intermediate.src.fixed": "修正后GHI",
 
   "weatherManager.portfolio.custom-ready.title": "自定义数据生成完毕",
   "weatherManager.portfolio.custom-ready.subtitle": "已成功将CSV中数据进行校对",

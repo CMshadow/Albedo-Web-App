@@ -32,6 +32,7 @@ export const GHICompareChart: React.FC<MonthlyProductionChartProps> = props => {
             if (val === 'meteonorm') return '#E9AF34'
             if (val === 'nasa') return '#DC3329'
             if (val === 'custom') return '#1890ff'
+            if (val === 'average') return '#95de64'
             return '#d9d9d9'
           },
         ]}

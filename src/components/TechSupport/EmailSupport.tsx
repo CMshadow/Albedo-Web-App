@@ -67,6 +67,44 @@ const EmailSupport = () => {
     disableSendButton()
   }
 
+  const customRequest = (option: any) => {
+    disableSendButton()
+    const reader = new FileReader()
+    reader.readAsDataURL(option.file)
+    reader.onload = event => {
+      if (!event.target || !event.target.result) return
+      Axios.post(
+        'https://j95bduexhe.execute-api.us-east-1.amazonaws.com/dev/upload-image-to-s3',
+        {
+          image: event.target.result,
+        },
+        {
+          onUploadProgress: ({ total, loaded }) => {
+            option.onProgress(
+              {
+                percent: Number(Math.round((loaded / total) * 100).toFixed(2)),
+              },
+              option.file
+            )
+          },
+        }
+      )
+        .then(res => {
+          setimageURL(res.data.imageURL)
+          option.onSuccess({}, option.file)
+          enableSendButton()
+        })
+        .catch(err => {
+          option.onError(err)
+          enableSendButton()
+        })
+    }
+    reader.onerror = () => {
+      option.onError(new Error())
+      enableSendButton()
+    }
+  }
+
   return (
     <>
       <Tooltip title={t('techsupport.contactus')}>
@@ -115,43 +153,7 @@ const EmailSupport = () => {
             <Dragger
               showUploadList={true}
               fileList={custFileList}
-              customRequest={option => {
-                disableSendButton()
-                const reader = new FileReader()
-                reader.readAsDataURL(option.file)
-                reader.onload = event => {
-                  if (!event.target || !event.target.result) return
-                  Axios.post(
-                    'https://j95bduexhe.execute-api.us-east-1.amazonaws.com/dev/upload-image-to-s3',
-                    {
-                      image: event.target.result,
-                    },
-                    {
-                      onUploadProgress: ({ total, loaded }) => {
-                        option.onProgress(
-                          {
-                            percent: Number(Math.round((loaded / total) * 100).toFixed(2)),
-                          },
-                          option.file
-                        )
-                      },
-                    }
-                  )
-                    .then(res => {
-                      setimageURL(res.data.imageURL)
-                      option.onSuccess({}, option.file)
-                      enableSendButton()
-                    })
-                    .catch(err => {
-                      option.onError(err)
-                      enableSendButton()
-                    })
-                }
-                reader.onerror = () => {
-                  option.onError(new Error())
-                  enableSendButton()
-                }
-              }}
+              customRequest={customRequest}
               onChange={info => {
                 const newFileList = info.fileList.slice(-1)
                 setcustFileList(newFileList)

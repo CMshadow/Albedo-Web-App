@@ -19,11 +19,9 @@ import {
   Divider,
   Button,
   notification,
-  Tooltip,
   Collapse,
   Slider,
 } from 'antd'
-import { QuestionCircleOutlined } from '@ant-design/icons'
 import { genFullName } from '../../utils/genFullName'
 import { GoogleMap } from '../../components/GoogleMap'
 import { AMap } from '../../components/AMap'
@@ -339,17 +337,17 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
               .sort((a, b) => -(a.createdAt - b.createdAt))
               .map(portfolio => (
                 <Select.OptGroup key={portfolio.portfolioID} label={portfolio.name}>
-                  {portfolio.meteonorm_src && (
+                  {portfolio.meteonorm_src && portfolio.meteonorm_visible && (
                     <Select.Option value={`${portfolio.portfolioID}|meteonorm`}>
                       {`${portfolio.name} - ${t('weatherManager.portfolio.meteonorm')}`}
                     </Select.Option>
                   )}
-                  {portfolio.nasa_src && (
+                  {portfolio.nasa_src && portfolio.nasa_visible && (
                     <Select.Option value={`${portfolio.portfolioID}|nasa`}>
                       {`${portfolio.name} - ${t('weatherManager.portfolio.nasa')}`}
                     </Select.Option>
                   )}
-                  {portfolio.custom_src && (
+                  {portfolio.custom_src && portfolio.custom_visible && (
                     <Select.Option value={`${portfolio.portfolioID}|custom`}>
                       {`${portfolio.name} - ${t('weatherManager.portfolio.custom')}`}
                     </Select.Option>
