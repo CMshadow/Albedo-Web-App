@@ -6,7 +6,7 @@ import Highlighter from 'react-highlight-words'
 import { SearchOutlined, FilterOutlined } from '@ant-design/icons'
 import styles from './TabelColSearch.module.scss'
 import { getMin, getMax } from '../../../utils/getObjectsMinMax'
-import { FilterDropdownProps } from 'antd/lib/table/interface'
+import { FilterConfirmProps, FilterDropdownProps } from 'antd/lib/table/interface'
 
 export const SearchString = <T extends Record<string, unknown>>(
   colKey: keyof T,
@@ -15,8 +15,8 @@ export const SearchString = <T extends Record<string, unknown>>(
   const { t } = useTranslation()
   const [searchedText, setsearchedText] = useState('')
 
-  const handleSearch = (selectedKeys: React.Key[], confirm: () => void) => {
-    confirm()
+  const handleSearch = (selectedKeys: React.Key[], confirm: (p: FilterConfirmProps) => void) => {
+    confirm({ closeDropdown: true })
     setsearchedText(selectedKeys[0] ? selectedKeys[0].toString() : '')
   }
 
@@ -144,7 +144,7 @@ export const SearchRange = <T extends Record<string, unknown>>(props: SearchRang
               <Button
                 className={styles.button}
                 type='primary'
-                onClick={confirm}
+                onClick={() => confirm({ closeDropdown: true })}
                 icon={<FilterOutlined />}
                 size='small'
               >

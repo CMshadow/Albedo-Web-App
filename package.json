@@ -1,6 +1,6 @@
 {
   "name": "albedo-webapp",
-  "version": "0.1.0",
+  "version": "0.7.3",
   "private": true,
   "license": "UNLICENSED",
   "dependencies": {
@@ -17,7 +17,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "aliplayer-react": "^0.5.0",
-    "antd": "^4.8.2",
+    "antd": "^4.12.2",
     "aws-amplify": "^3.3.8",
     "axios": "^0.21.0",
     "bizcharts": "^4.0.14",
@@ -56,8 +56,9 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "format": "prettier --write src/**/*.{js,jsx,ts,tsx,css,scss,less}",
-    "lint": "eslint --fix src/**/*.{js,jsx,ts,tsx} && stylelint --config .stylelintrc.json --fix src/**/*.{css,scss,less}",
+    "format": "prettier --write ./src/**/*.{js,jsx,ts,tsx,css,scss,less}",
+    "lint": "eslint --ext .tsx,.ts,.jsx,.js --fix ./src",
+    "lint:style": "stylelint --fix ./src/**/*.{css,scss,less}",
     "start": "craco start",
     "build": "craco --max-old-space-size=4096 build",
     "test": "craco test",
@@ -118,9 +119,13 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,md,yml,yaml}": [
+    "src/**/*.{js,jsx,ts,tsx}": [
       "prettier --write",
-      "eslint --config .eslintrc.js --fix",
+      "eslint --ext .tsx,.ts,.jsx,.js --config .eslintrc.js --fix",
+      "git add"
+    ],
+    "src/**/*.{md,yml,yaml}": [
+      "prettier --write",
       "git add"
     ],
     "src/**/*.{css,scss,less}": [

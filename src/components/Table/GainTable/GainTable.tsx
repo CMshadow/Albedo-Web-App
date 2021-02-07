@@ -277,7 +277,7 @@ export const GainTable: React.FC<{ buildingID: string }> = ({ buildingID }) => {
   const genHeader = () => <HeaderTable buildingID={buildingID} />
 
   // 计算回本周期
-  const calculatePayback = (dataSource: GainEntry[], type: 'selfuse' | 'togrid') => {
+  const calculatePayback = (dataSource: readonly GainEntry[], type: 'selfuse' | 'togrid') => {
     const dataIndexAccNet = `acc-net-cash-flow-${type}` as const
     const dataIndexNet = `net-cash-flow-${type}` as const
 
@@ -296,7 +296,7 @@ export const GainTable: React.FC<{ buildingID: string }> = ({ buildingID }) => {
   }
 
   // 生成表单统计数据
-  const genSummary = (dataSource: GainEntry[]) => {
+  const genSummary = (dataSource: readonly GainEntry[]): React.ReactNode => {
     //更新统计数值
     const ttlCashInFlowToGrid = Number(
       dataSource.reduce((sum, record) => sum + (record['cash-in-flow-togrid'] || 0), 0).toFixed(2)

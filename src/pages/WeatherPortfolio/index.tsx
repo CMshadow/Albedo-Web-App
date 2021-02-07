@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { LoadingOutlined, CloudDownloadOutlined } from '@ant-design/icons'
+import {
+  LoadingOutlined,
+  CloudDownloadOutlined,
+  DeleteOutlined,
+  CheckOutlined,
+  CloseOutlined,
+} from '@ant-design/icons'
 import {
   Card,
   Descriptions,
@@ -14,6 +20,7 @@ import {
   Spin,
   Tooltip,
   Space,
+  Switch,
 } from 'antd'
 import promiseRetry from 'promise-retry'
 import { Params, RootState, WeatherPortfolio } from '../../@types'
@@ -21,7 +28,12 @@ import { useTranslation } from 'react-i18next'
 import { AMap } from '../../components/AMap'
 import { GoogleMap } from '../../components/GoogleMap'
 import { TmyProcedure } from './TmyProcedure'
-import { getApiKey, getWeatherPortfolioSingle, createNASA } from '../../services'
+import {
+  getApiKey,
+  getWeatherPortfolioSingle,
+  createNASA,
+  updateWeatherPortfolio,
+} from '../../services'
 import styles from './index.module.scss'
 import { m2other } from '../../utils/unitConverter'
 import { useHistory, useParams } from 'react-router-dom'
@@ -39,6 +51,8 @@ const WeatherPortfolioFC = () => {
   const [googleMapKey, setgoogleMapKey] = useState<string>()
   const [waitMeteonorm, setwaitMeteonorm] = useState(true)
   const [nasaLoading, setnasaLoading] = useState(false)
+  const [visLoading, setvisLoading] = useState(false)
+  const [delLoading, setdelLoading] = useState(false)
   const [aMapKey, setaMapKey] = useState<string>()
   const [aMapWebKey, setaMapWebKey] = useState<string>()
   const [selectedMap, setselectedMap] = useState<string>(
@@ -80,6 +94,34 @@ const WeatherPortfolioFC = () => {
       .catch(err => {
         console.log(err)
         setnasaLoading(false)
+      })
+  }
+
+  const setVisible = (vis: boolean, src: 'meteonorm' | 'nasa' | 'custom') => {
+    if (!portfolioID) return
+    setvisLoading(true)
+    updateWeatherPortfolio({ portfolioID: portfolioID, property: `${src}_visible`, value: vis })
+      .then(res => {
+        setvisLoading(false)
+        setportfolio(res.Attributes)
+      })
+      .catch(err => {
+        console.log(err)
+        setvisLoading(false)
+      })
+  }
+
+  const toggleDelete = (src: 'meteonorm' | 'nasa' | 'custom') => {
+    if (!portfolioID) return
+    setdelLoading(true)
+    updateWeatherPortfolio({ portfolioID: portfolioID, property: `${src}_src`, value: 'null' })
+      .then(res => {
+        setdelLoading(false)
+        setportfolio(res.Attributes)
+      })
+      .catch(err => {
+        console.log(err)
+        setdelLoading(false)
       })
   }
 
@@ -152,6 +194,18 @@ const WeatherPortfolioFC = () => {
                     {portfolio?.meteonorm_src ? (
                       <Space>
                         <Badge status='success' text={t('weatherManager.portfolio.src.yes')} />
+                        <Divider type='vertical' />
+                        <Tooltip title={t('weatherManager.portfolio.src.visible')}>
+                          <Switch
+                            size='small'
+                            checked={portfolio.meteonorm_visible}
+                            onChange={checked => setVisible(checked, 'meteonorm')}
+                            loading={visLoading}
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                          />
+                        </Tooltip>
+                        <Divider type='vertical' />
                         <Tooltip title={t('weatherManager.portfolio.src.download.meteonorm')}>
                           <Button type='link' disabled icon={<CloudDownloadOutlined />} />
                         </Tooltip>
@@ -174,6 +228,18 @@ const WeatherPortfolioFC = () => {
                         {portfolio?.nasa_src ? (
                           <Space>
                             <Badge status='success' text={t('weatherManager.portfolio.src.yes')} />
+                            <Divider type='vertical' />
+                            <Tooltip title={t('weatherManager.portfolio.src.visible')}>
+                              <Switch
+                                size='small'
+                                checked={portfolio.nasa_visible}
+                                onChange={checked => setVisible(checked, 'nasa')}
+                                loading={visLoading}
+                                checkedChildren={<CheckOutlined />}
+                                unCheckedChildren={<CloseOutlined />}
+                              />
+                            </Tooltip>
+                            <Divider type='vertical' />
                             <Tooltip title={t('weatherManager.portfolio.src.download')}>
                               <Button type='link' icon={<CloudDownloadOutlined />} />
                             </Tooltip>
@@ -192,12 +258,35 @@ const WeatherPortfolioFC = () => {
             <br />
             <Card hoverable>
               <Row align='middle'>
-                <Col span={12}>{t('weatherManager.portfolio.custom')}</Col>
+                <Col span={12}>
+                  {t('weatherManager.portfolio.custom')}
+                  {portfolio?.custom_src && (
+                    <Button
+                      danger
+                      type='link'
+                      icon={<DeleteOutlined />}
+                      onClick={() => toggleDelete('custom')}
+                      loading={delLoading}
+                    />
+                  )}
+                </Col>
                 <Col span={12}>
                   <Row justify='end'>
                     {portfolio?.custom_src ? (
                       <Space>
                         <Badge status='success' text={t('weatherManager.portfolio.src.yes')} />
+                        <Divider type='vertical' />
+                        <Tooltip title={t('weatherManager.portfolio.src.visible')}>
+                          <Switch
+                            size='small'
+                            checked={portfolio.custom_visible}
+                            onChange={checked => setVisible(checked, 'custom')}
+                            loading={visLoading}
+                            checkedChildren={<CheckOutlined />}
+                            unCheckedChildren={<CloseOutlined />}
+                          />
+                        </Tooltip>
+                        <Divider type='vertical' />
                         <Tooltip title={t('weatherManager.portfolio.src.download')}>
                           <Button type='link' icon={<CloudDownloadOutlined />} />
                         </Tooltip>

@@ -148,8 +148,11 @@ const WeatherManager = () => {
       </Button>
       <Button
         className={styles.rightBut}
-        shape='circle'
+        shape='round'
+        ghost
+        type='primary'
         icon={<SyncOutlined />}
+        loading={loading}
         onClick={() => {
           setloading(true)
           getWeatherPortfolio({}).then(res => {
@@ -157,7 +160,9 @@ const WeatherManager = () => {
             setportfolios(res)
           })
         }}
-      />
+      >
+        {t('action.refresh')}
+      </Button>
       <Table
         columns={tableCols}
         loading={loading}

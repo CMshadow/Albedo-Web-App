@@ -49,7 +49,6 @@ export const amapRevGeocoder = (params: {
 const googleElevationRequest = (params: {
   lon: number
   lat: number
-  key: string
   jwtToken: string
 }): Promise<{ elevation: number }> =>
   axios
@@ -60,3 +59,28 @@ const googleElevationRequest = (params: {
     .then(res => res.data)
 
 export const googleElevation = injectAuth(googleElevationRequest)
+
+const autoHorizonRequest = (params: {
+  lon: number
+  lat: number
+  ele: number
+  r: number
+  rOffset: number
+  rStep: number
+  jwtToken: string
+}): Promise<{ elevation: number[] }> =>
+  axios
+    .get<{ elevation: number[] }>(`/autohorizon`, {
+      params: {
+        longitude: params.lon,
+        latitude: params.lat,
+        elevation: params.ele,
+        r: params.r,
+        rOffset: params.rOffset,
+        rStep: params.rStep,
+      },
+      headers: { 'COG-TOKEN': params.jwtToken },
+    })
+    .then(res => res.data)
+
+export const autoHorizon = injectAuth(autoHorizonRequest)

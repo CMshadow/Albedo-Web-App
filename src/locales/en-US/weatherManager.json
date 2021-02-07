@@ -4,9 +4,10 @@
   "weatherManager.portfolio.name.placeholder": "Portfolio Name",
   "weatherManager.portfolio.address": "Weather Data Address",
   "weatherManager.portfolio.address.placeholder": "Enter an address and verify, or click a location on the map",
-  "weatherManager.portfolio.meteonorm": "Meteonorm Source",
-  "weatherManager.portfolio.nasa": "NASA Source",
+  "weatherManager.portfolio.meteonorm": "Meteonorm",
+  "weatherManager.portfolio.nasa": "NASA",
   "weatherManager.portfolio.custom": "Custom TMY",
+  "weatherManager.portfolio.average": "Uploaded Data Average",
   "weatherManager.portfolio.createdAt": "Created At",
   "weatherManager.portfolio.longitude": "Longitude",
   "weatherManager.portfolio.latitude": "Latitude",
@@ -23,13 +24,15 @@
   "weatherManager.portfolio.src.yes": "Generated",
   "weatherManager.portfolio.src.no": "Empty",
   "weatherManager.portfolio.src.gen": "Generate Now",
+  "weatherManager.portfolio.src.visible": "Visible in Creating Project",
+  "weatherManager.portfolio.src.download": "Download Data",
   "weatherManager.portfolio.src.download.meteonorm": "Meteonorm usage agreement restriction applies; internal use only",
   "weatherManager.portfolio.waitMeteonorm": "Setting up Services",
   "weatherManager.portfolio.tmy": "Build Custom TMY - Upload TMY Data",
-  "weatherManager.portfolio.processed": "Build Bustom TMY - Upload Measured Data",
+  "weatherManager.portfolio.processed": "Build Custom TMY - Upload Measured Data",
 
   "weatherManager.portfolio.tmy.step.1": "Download Templates",
-  "weatherManager.portfolio.tmy.step.2": "Upload Finished File",
+  "weatherManager.portfolio.tmy.step.2": "Upload Completed File",
   "weatherManager.portfolio.tmy.step.3": "Data Calibration",
   "weatherManager.portfolio.tmy.step.4": "Complete",
 
@@ -43,7 +46,7 @@
   "weatherManager.portfolio.template.daily": "Daily Template",
   "weatherManager.portfolio.template.monthly": "Monthly Template",
 
-  "weatherManager.portfolio.upload.description": "Click or drag a CSV file into this area; Uploading multiple CSV files to combine into TMY",
+  "weatherManager.portfolio.upload.description": "Click or drag a CSV file into this area; Upload multiple CSV files to combine into TMY",
   "weatherManager.portfolio.upload.processed": "Calibration Method",
   "weatherManager.portfolio.upload.selectYear": "Select Year",
   "weatherManager.portfolio.upload.multi2tmy": "Combine TMY",
@@ -56,14 +59,22 @@
   "weatherManager.portfolio.process": "Calibrate",
   "weatherManager.portfolio.measured.choice": "Select Measured Data",
   "weatherManager.portfolio.measured": "Measured Data",
-  "weatherManager.portfolio.satellite.choice": "Select Satellite Source",
+  "weatherManager.portfolio.satellite.choice": "Select Satellite Data",
   "weatherManager.portfolio.method.choice": "Select Calibration Method",
-  "weatherManager.portfolio.method.month-ratio": "Monthly Ratio",
-  "weatherManager.portfolio.method.year-formula": "Yearly Formula",
-  "weatherManager.portfolio.method.month-formula": "Monthly Formula",
-  "weatherManager.portfolio.method.ghi-ratio": "GHI Ratio",
+  "weatherManager.portfolio.method.month-ratio": "Monthly GHI Ratio",
+  "weatherManager.portfolio.method.year-formula": "Yearly Linear Regression",
+  "weatherManager.portfolio.method.month-formula": "Monthly Linear Regression",
+  "weatherManager.portfolio.method.ghi-ratio": "Yearly GHI Ratio",
+
+  "weatherManager.portfolio.intermediate.src.origin": "GHI Before Calibration",
+  "weatherManager.portfolio.intermediate.src.fixed": "GHI After Calibration",
+  "weatherManager.portfolio.intermediate.src.origin-avg": "Average GHI Before Calibration",
+  "weatherManager.portfolio.intermediate.src.fixed-avg": "Average GHI After Calibration",
 
   "weatherManager.portfolio.custom-ready.title": "Successfully Generated Custom TMY",
   "weatherManager.portfolio.custom-ready.subtitle": "",
-  "weatherManager.portfolio.custom.download": "Download DAT File"
+  "weatherManager.portfolio.custom.download": "Download DAT File",
+
+  "weatherManager.portfolio.preview.tab0": "Correlation",
+  "weatherManager.portfolio.preview.tab1": "Calibration Result"
 }

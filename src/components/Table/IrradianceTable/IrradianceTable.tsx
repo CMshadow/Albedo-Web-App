@@ -89,7 +89,7 @@ export const IrradianceTable: React.FC<{ buildingID: string }> = ({ buildingID }
     align: 'center',
   })
 
-  const genSummary = (dataSource: DataRecord[]) => {
+  const genSummary = (dataSource: readonly DataRecord[]): React.ReactNode => {
     const setupIrrSum: { [key: string]: number } = {}
     const regex = RegExp(/setup\d+irr/)
     dataSource.forEach(record => {

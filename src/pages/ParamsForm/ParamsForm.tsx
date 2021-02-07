@@ -50,10 +50,11 @@ const ParamsForm: React.FC = () => {
   const [form] = Form.useForm()
   const { projectID } = useParams<Params>()
 
-  const horizonData: [number, number][] =
+  const [horizonData, sethorizonData] = useState<[number, number][]>(
     projectData && projectData.horizonData
       ? JSON.parse(JSON.stringify(projectData.horizonData))
       : new Array(24).fill([]).map((val, index) => [(index + 1) * 15, 0])
+  )
 
   // 滑动输入条标识style
   const markStyle = { overflow: 'hidden', whiteSpace: 'nowrap' }
@@ -288,14 +289,14 @@ const ParamsForm: React.FC = () => {
         {genFormItems(acKeys, 2)}
         <Divider>{t('report.paramsForm.grid')}</Divider>
         {genFormItems(gridKeys, 2)}
-        <HorizonChart data={horizonData} />
-        <br />
-        <Row justify='center'>
-          <Button loading={loading} type='primary' htmlType='submit'>
-            {t('form.confirm')}
-          </Button>
-        </Row>
       </Form>
+      <HorizonChart data={horizonData} setdata={(d: [number, number][]) => sethorizonData(d)} />
+      <br />
+      <Row justify='center'>
+        <Button loading={loading} type='primary' onClick={() => form.submit()}>
+          {t('form.confirm')}
+        </Button>
+      </Row>
     </Card>
   )
 }

@@ -66,7 +66,7 @@ export const ACPowerTable: React.FC<{ buildingID: string }> = ({ buildingID }) =
   ]
 
   // 生成表单统计数据
-  const genSummary = (dataSource: DataRecord[]) => {
+  const genSummary = (dataSource: readonly DataRecord[]): React.ReactNode => {
     const ttlACPower = wh2other(
       dataSource.reduce(
         (sum, record) => sum + (other2wh(record.acpower, record.acunit) as number),

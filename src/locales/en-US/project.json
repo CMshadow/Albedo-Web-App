@@ -7,7 +7,6 @@
   "project.create.title.placeholder": "My Project",
   "project.create.address": "Project Address",
   "project.create.address.placeholder": "Enter an address and verify, or click a location on the map",
-  "project.create.address.hint": "Accurate address is not required, the address is only used for generating weather data",
   "project.create.validation.unfinished": "Verify Address",
   "project.create.validation.finished": "Address Verified",
   "project.create.projectAltitude": "Project Altitude",
@@ -49,6 +48,9 @@
   "project.optimal.optTilt": "Optimal Tilt",
   "project.optimal.optAzi": "Optimal Azimuth",
   "project.optimal.optPOA": "Max Annual POA Irradiance",
+  "project.optimal.GHI": "GHI",
+  "project.optimal.DNI": "DNI",
+  "project.optimal.DHI": "DHI",
 
   "project.success.deleteProject": "Project Successfully Deleted",
 
@@ -212,5 +214,14 @@
   "project.loading": "Processing Project Configurations...",
 
   "project.transformer.title": "Transformer Setup",
-  "project.powerCabinet.title": "Power Cabinet Setup"
+  "project.powerCabinet.title": "Power Cabinet Setup",
+
+  "project.autoHorizon.r": "Radius",
+  "project.autoHorizon.r.placeholder": "Auto Horizon Coverage Radius",
+  "project.autoHorizon.rOffset": "Radius Offset",
+  "project.autoHorizon.rOffset.placeholder": "Initial Position Offset",
+  "project.autoHorizon.rStep": "Radius Step",
+  "project.autoHorizon.rStep.placeholder": "Step distance between each sector",
+  "project.autoHorizon.gen": "Generate Auto Horizon",
+  "project.autoHorizon.error.notInRange": "Input is not in range:"
 }

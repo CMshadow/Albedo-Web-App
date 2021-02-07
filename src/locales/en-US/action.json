@@ -1,5 +1,7 @@
 {
   "action.confirm": "Confirm",
   "action.cancel": "Cancel",
-  "action.checkall": "Check All"
+  "action.checkall": "Check All",
+  "action.preview": "Preview",
+  "action.refresh": "Reload"
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Statistic, Row, Col } from 'antd'
 import { useTranslation } from 'react-i18next'
-import { wh2other } from '../../../utils/unitConverter'
+import { wh2kwh } from '../../../utils/unitConverter'
 import styles from './OptimalCard.module.scss'
 import { Project } from '../../../@types'
 
@@ -12,8 +12,8 @@ export const OptimalCard: React.FC<OptimalCardProps> = ({ loading, ...values }) 
 
   return (
     <Row gutter={12}>
-      <Col span={8}>
-        <Card loading={loading}>
+      <Col lg={8} xl={4}>
+        <Card loading={loading} className={styles.card}>
           <Statistic
             className={styles.text}
             title={t('project.optimal.optTilt')}
@@ -23,8 +23,8 @@ export const OptimalCard: React.FC<OptimalCardProps> = ({ loading, ...values }) 
           />
         </Card>
       </Col>
-      <Col span={8}>
-        <Card loading={loading}>
+      <Col lg={8} xl={4}>
+        <Card loading={loading} className={styles.card}>
           <Statistic
             className={styles.text}
             title={t('project.optimal.optAzi')}
@@ -34,16 +34,58 @@ export const OptimalCard: React.FC<OptimalCardProps> = ({ loading, ...values }) 
           />
         </Card>
       </Col>
-      <Col span={8}>
-        <Card loading={loading}>
+      <Col lg={8} xl={4}>
+        <Card loading={loading} className={styles.card}>
           {values.optPOA !== undefined && values.optPOA >= 0 ? (
             <Statistic
               className={styles.text}
               title={t('project.optimal.optPOA')}
-              value={Number(wh2other(values.optPOA).value)}
+              value={Number(wh2kwh(values.optPOA))}
               precision={2}
               valueStyle={{ color: '#faad14' }}
-              suffix={wh2other(values.optPOA).unit + '/㎡'}
+              suffix='kWh/㎡'
+            />
+          ) : null}
+        </Card>
+      </Col>
+      <Col lg={8} xl={4}>
+        <Card loading={loading} className={styles.card}>
+          {values.GHI ? (
+            <Statistic
+              className={styles.text}
+              title={t('project.optimal.GHI')}
+              value={Number(wh2kwh(values.GHI))}
+              precision={2}
+              valueStyle={{ color: '#69c0ff' }}
+              suffix='kWh/㎡'
+            />
+          ) : null}
+        </Card>
+      </Col>
+      <Col lg={8} xl={4}>
+        <Card loading={loading} className={styles.card}>
+          {values.DNI ? (
+            <Statistic
+              className={styles.text}
+              title={t('project.optimal.DNI')}
+              value={Number(wh2kwh(values.DNI))}
+              precision={2}
+              valueStyle={{ color: '#69c0ff' }}
+              suffix='kWh/㎡'
+            />
+          ) : null}
+        </Card>
+      </Col>
+      <Col lg={8} xl={4}>
+        <Card loading={loading} className={styles.card}>
+          {values.DHI ? (
+            <Statistic
+              className={styles.text}
+              title={t('project.optimal.DHI')}
+              value={Number(wh2kwh(values.DHI))}
+              precision={2}
+              valueStyle={{ color: '#69c0ff' }}
+              suffix='kWh/㎡'
             />
           ) : null}
         </Card>
