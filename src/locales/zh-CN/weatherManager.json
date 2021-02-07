@@ -71,5 +71,8 @@
 
   "weatherManager.portfolio.custom-ready.title": "自定义数据生成完毕",
   "weatherManager.portfolio.custom-ready.subtitle": "已成功将CSV中数据进行校对",
-  "weatherManager.portfolio.custom.download": "下载DAT文件"
+  "weatherManager.portfolio.custom.download": "下载DAT文件",
+
+  "weatherManager.portfolio.preview.tab0": "对照关系",
+  "weatherManager.portfolio.preview.tab1": "融合结果对比"
 }

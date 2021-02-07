@@ -7,7 +7,7 @@
   "weatherManager.portfolio.meteonorm": "Meteonorm",
   "weatherManager.portfolio.nasa": "NASA",
   "weatherManager.portfolio.custom": "Custom TMY",
-  "weatherManager.portfolio.average": "Average Among Uploaded Data",
+  "weatherManager.portfolio.average": "Uploaded Data Average",
   "weatherManager.portfolio.createdAt": "Created At",
   "weatherManager.portfolio.longitude": "Longitude",
   "weatherManager.portfolio.latitude": "Latitude",
@@ -71,5 +71,8 @@
 
   "weatherManager.portfolio.custom-ready.title": "Successfully Generated Custom TMY",
   "weatherManager.portfolio.custom-ready.subtitle": "",
-  "weatherManager.portfolio.custom.download": "Download DAT File"
+  "weatherManager.portfolio.custom.download": "Download DAT File",
+
+  "weatherManager.portfolio.preview.tab0": "Correlation",
+  "weatherManager.portfolio.preview.tab1": "Calibration Result"
 }

@@ -1,7 +1,9 @@
 import React from 'react'
-import { Chart, Axis, Interval, Tooltip } from 'bizcharts'
+import { useTranslation } from 'react-i18next'
+import { Chart, Axis, Interval, Tooltip, Annotation } from 'bizcharts'
 import { titleStyle } from '../../styles/chartStyles'
 import { ScaleOption } from 'bizcharts/lib/interface'
+import { wh2kwh } from '../../utils/unitConverter'
 
 type GHIOriginVSFixedBarChartProps = {
   scale: {
@@ -14,6 +16,12 @@ export const GHIOriginVSFixedBarChart: React.FC<GHIOriginVSFixedBarChartProps> =
   scale,
   dataSource,
 }) => {
+  const { t } = useTranslation()
+  const origin = dataSource.filter(v => v.src === 'origin')
+  const originAvg = origin.reduce((sum, v) => sum + v.ghi, 0) / origin.length
+  const fixed = dataSource.filter(v => v.src === 'fixed')
+  const fixedAvg = fixed.reduce((sum, v) => sum + v.ghi, 0) / origin.length
+
   return (
     <Chart
       scale={scale}
@@ -31,6 +39,15 @@ export const GHIOriginVSFixedBarChart: React.FC<GHIOriginVSFixedBarChartProps> =
         adjust={{ type: 'dodge', marginRatio: 0 }}
         position='year*ghi'
         color={['src', ['#1890ff', '#E9AF34']]}
+      />
+      <Annotation.Text
+        position={['5%', '5%']}
+        content={`${t('weatherManager.portfolio.intermediate.src.origin')} ${t(
+          'gain.average'
+        )}: ${Number(wh2kwh(originAvg).toString()).toFixed(2)} kWh/㎡\n${t(
+          'weatherManager.portfolio.intermediate.src.fixed'
+        )} ${t('gain.average')}: ${Number(wh2kwh(fixedAvg).toString()).toFixed(2)} kWh/㎡`}
+        style={{ fontSize: 16, fill: '#f759ab' }}
       />
     </Chart>
   )

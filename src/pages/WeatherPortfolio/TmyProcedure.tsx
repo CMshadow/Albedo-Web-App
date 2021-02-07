@@ -513,6 +513,7 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
           </Row>
         </Col>
       </Row>
+      <br />
       <Row>
         <Button
           block
@@ -573,8 +574,8 @@ export const TmyProcedure: React.FC<TmyProcedureProps> = props => {
               />
             }
             tabList={[
-              { key: '0', tab: '关系' },
-              { key: '1', tab: '融合前后对比' },
+              { key: '0', tab: t('weatherManager.portfolio.preview.tab0') },
+              { key: '1', tab: t('weatherManager.portfolio.preview.tab1') },
             ]}
             defaultActiveTabKey={previewTabKey}
             onTabChange={key => setpreviewTabKey(key)}
