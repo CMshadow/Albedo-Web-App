@@ -42,11 +42,11 @@ export const GHIOriginVSFixedBarChart: React.FC<GHIOriginVSFixedBarChartProps> =
       />
       <Annotation.Text
         position={['5%', '5%']}
-        content={`${t('weatherManager.portfolio.intermediate.src.origin')} ${t(
-          'gain.average'
-        )}: ${Number(wh2kwh(originAvg).toString()).toFixed(2)} kWh/㎡\n${t(
-          'weatherManager.portfolio.intermediate.src.fixed'
-        )} ${t('gain.average')}: ${Number(wh2kwh(fixedAvg).toString()).toFixed(2)} kWh/㎡`}
+        content={`${t('weatherManager.portfolio.intermediate.src.origin-avg')}: ${Number(
+          wh2kwh(originAvg).toString()
+        ).toFixed(2)} kWh/㎡\n${t('weatherManager.portfolio.intermediate.src.fixed-avg')}: ${Number(
+          wh2kwh(fixedAvg).toString()
+        ).toFixed(2)} kWh/㎡`}
         style={{ fontSize: 16, fill: '#f759ab' }}
       />
     </Chart>

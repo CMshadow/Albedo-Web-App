@@ -68,6 +68,8 @@
 
   "weatherManager.portfolio.intermediate.src.origin": "修正前GHI",
   "weatherManager.portfolio.intermediate.src.fixed": "修正后GHI",
+  "weatherManager.portfolio.intermediate.src.origin-avg": "修正前GHI年平均",
+  "weatherManager.portfolio.intermediate.src.fixed-avg": "修正后GHI年平均",
 
   "weatherManager.portfolio.custom-ready.title": "自定义数据生成完毕",
   "weatherManager.portfolio.custom-ready.subtitle": "已成功将CSV中数据进行校对",

@@ -66,8 +66,10 @@
   "weatherManager.portfolio.method.month-formula": "Monthly Linear Regression",
   "weatherManager.portfolio.method.ghi-ratio": "Yearly GHI Ratio",
 
-  "weatherManager.portfolio.intermediate.src.origin": "Before Fixing GHI",
-  "weatherManager.portfolio.intermediate.src.fixed": "After Fixing GHI",
+  "weatherManager.portfolio.intermediate.src.origin": "GHI Before Calibration",
+  "weatherManager.portfolio.intermediate.src.fixed": "GHI After Calibration",
+  "weatherManager.portfolio.intermediate.src.origin-avg": "Average GHI Before Calibration",
+  "weatherManager.portfolio.intermediate.src.fixed-avg": "Average GHI After Calibration",
 
   "weatherManager.portfolio.custom-ready.title": "Successfully Generated Custom TMY",
   "weatherManager.portfolio.custom-ready.subtitle": "",
