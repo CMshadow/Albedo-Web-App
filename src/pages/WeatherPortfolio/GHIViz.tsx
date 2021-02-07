@@ -37,7 +37,7 @@ export const GHIViz: React.FC<GHIVizProps> = props => {
       .catch(() => {
         setloading(false)
       })
-  }, [portfolio])
+  }, [portfolio.portfolioID, portfolio.meteonorm_src, portfolio.nasa_src, portfolio.custom_src])
 
   return (
     <Spin spinning={loading} indicator={<LoadingOutlined />}>
@@ -54,7 +54,7 @@ export const GHIViz: React.FC<GHIVizProps> = props => {
               },
               src: {
                 formatter: (text: string) =>
-                  ['meteonorm', 'nasa', 'custom'].includes(text)
+                  ['meteonorm', 'nasa', 'custom', 'average'].includes(text)
                     ? t(`weatherManager.portfolio.${text}`)
                     : text,
               },
@@ -68,7 +68,7 @@ export const GHIViz: React.FC<GHIVizProps> = props => {
             }}
           />
         </TabPane>
-        <TabPane tab={t('table')} key='2'>
+        <TabPane tab={t('table')} key='2' forceRender>
           <Table
             columns={[
               {
@@ -77,14 +77,8 @@ export const GHIViz: React.FC<GHIVizProps> = props => {
                 key: 'month',
                 render: (text: number) => t(`weatherAnalysisTable.month.${text + 1}`),
               },
-              ...Object.keys(tableData).map(key => ({
+              ...Object.keys({ ...tableData, ...extraTableData }).map(key => ({
                 title: t(`weatherManager.portfolio.${key}`),
-                dataIndex: key,
-                key: key,
-                render: (text: number) => `${Number(wh2kwh(text).toString()).toFixed(2)} kWh/㎡`,
-              })),
-              ...Object.keys(extraTableData).map(key => ({
-                title: key,
                 dataIndex: key,
                 key: key,
                 render: (text: number) => `${Number(wh2kwh(text).toString()).toFixed(2)} kWh/㎡`,

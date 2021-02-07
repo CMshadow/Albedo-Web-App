@@ -19,11 +19,9 @@ import {
   Divider,
   Button,
   notification,
-  Tooltip,
   Collapse,
   Slider,
 } from 'antd'
-import { QuestionCircleOutlined } from '@ant-design/icons'
 import { genFullName } from '../../utils/genFullName'
 import { GoogleMap } from '../../components/GoogleMap'
 import { AMap } from '../../components/AMap'
@@ -301,15 +299,66 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
           <Input placeholder={t('project.create.title.placeholder')} />
         </FormItem>
         <FormItem
+          name='weatherSrc'
+          label={t('project.create.weatherSrc')}
+          rules={[{ required: true }]}
+        >
+          <Select
+            showSearch
+            placeholder={t('project.create.weatherSrc.placeholder')}
+            dropdownRender={nodes => (
+              <div>
+                {nodes}
+                <Button
+                  block
+                  type='primary'
+                  onClick={() => history.push('/weather', { defaultShowModal: true })}
+                >
+                  {t('weatherManager.add')}
+                </Button>
+              </div>
+            )}
+            filterOption={(val, option) =>
+              option?.label?.toString().toLowerCase().includes(val.toLowerCase()) ?? false
+            }
+            onSelect={val => {
+              const portfolioID = val.toString().split('|')[0]
+              const match = weatherPortfolio.find(p => p.portfolioID === portfolioID)
+              match && setmapPos({ lon: match.longitude, lat: match.latitude })
+              match && setvalidated(true)
+              match &&
+                form.setFieldsValue({
+                  projectAltitude: match.altitude,
+                  projectAddress: match.address,
+                })
+            }}
+          >
+            {weatherPortfolio
+              .sort((a, b) => -(a.createdAt - b.createdAt))
+              .map(portfolio => (
+                <Select.OptGroup key={portfolio.portfolioID} label={portfolio.name}>
+                  {portfolio.meteonorm_src && portfolio.meteonorm_visible && (
+                    <Select.Option value={`${portfolio.portfolioID}|meteonorm`}>
+                      {`${portfolio.name} - ${t('weatherManager.portfolio.meteonorm')}`}
+                    </Select.Option>
+                  )}
+                  {portfolio.nasa_src && portfolio.nasa_visible && (
+                    <Select.Option value={`${portfolio.portfolioID}|nasa`}>
+                      {`${portfolio.name} - ${t('weatherManager.portfolio.nasa')}`}
+                    </Select.Option>
+                  )}
+                  {portfolio.custom_src && portfolio.custom_visible && (
+                    <Select.Option value={`${portfolio.portfolioID}|custom`}>
+                      {`${portfolio.name} - ${t('weatherManager.portfolio.custom')}`}
+                    </Select.Option>
+                  )}
+                </Select.OptGroup>
+              ))}
+          </Select>
+        </FormItem>
+        <FormItem
           name='projectAddress'
-          label={
-            <div>
-              <Tooltip title={t(`project.create.address.hint`)}>
-                <QuestionCircleOutlined className={styles.icon} />
-                {t('project.create.address')}
-              </Tooltip>
-            </div>
-          }
+          label={t('project.create.address')}
           rules={[{ required: true }]}
         >
           <Input.Search
@@ -336,7 +385,6 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
               googleElevation({
                 lon: mapPos.lon,
                 lat: mapPos.lat,
-                key: googleMapKey,
               })
                 .then(res => {
                   const val = m2other(unit, res.elevation)
@@ -362,53 +410,6 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
             <Option key='commercial' value='commercial'>
               {t(`project.type.commercial`)}
             </Option>
-          </Select>
-        </FormItem>
-        <FormItem
-          name='weatherSrc'
-          label={t('project.create.weatherSrc')}
-          rules={[{ required: true }]}
-        >
-          <Select
-            showSearch
-            placeholder={t('project.create.weatherSrc.placeholder')}
-            dropdownRender={nodes => (
-              <div>
-                {nodes}
-                <Button
-                  block
-                  type='primary'
-                  onClick={() => history.push('/weather', { defaultShowModal: true })}
-                >
-                  {t('weatherManager.add')}
-                </Button>
-              </div>
-            )}
-            filterOption={(val, option) =>
-              option?.label?.toString().toLowerCase().includes(val.toLowerCase()) ?? false
-            }
-          >
-            {weatherPortfolio
-              .sort((a, b) => -(a.createdAt - b.createdAt))
-              .map(portfolio => (
-                <Select.OptGroup key={portfolio.portfolioID} label={portfolio.name}>
-                  {portfolio.meteonorm_src && (
-                    <Select.Option value={`${portfolio.portfolioID}|meteonorm`}>
-                      {`${portfolio.name} - ${t('weatherManager.portfolio.meteonorm')}`}
-                    </Select.Option>
-                  )}
-                  {portfolio.nasa_src && (
-                    <Select.Option value={`${portfolio.portfolioID}|nasa`}>
-                      {`${portfolio.name} - ${t('weatherManager.portfolio.nasa')}`}
-                    </Select.Option>
-                  )}
-                  {portfolio.custom_src && (
-                    <Select.Option value={`${portfolio.portfolioID}|custom`}>
-                      {`${portfolio.name} - ${t('weatherManager.portfolio.custom')}`}
-                    </Select.Option>
-                  )}
-                </Select.OptGroup>
-              ))}
           </Select>
         </FormItem>
         <Collapse bordered={false}>

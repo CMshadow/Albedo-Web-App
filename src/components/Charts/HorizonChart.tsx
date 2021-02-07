@@ -1,14 +1,23 @@
-import React from 'react'
-import { Divider } from 'antd'
+import React, { useState } from 'react'
+import { Divider, Row, Input, Button, Col, Form } from 'antd'
+import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { titleStyle } from '../../styles/chartStyles'
 import ReactEcharts from 'echarts-for-react'
 import { EChartOption } from 'echarts'
+import { RootState } from '../../@types'
+import { autoHorizon } from '../../services'
 
-type HorizonChartProps = { data: [number, number][] }
+type HorizonChartProps = { data: [number, number][]; setdata: (d: [number, number][]) => void }
 
-export const HorizonChart: React.FC<HorizonChartProps> = ({ data }) => {
+export const HorizonChart: React.FC<HorizonChartProps> = ({ data, setdata }) => {
   const { t } = useTranslation()
+  const unit = useSelector((state: RootState) => state.unit.unit)
+  const projectData = useSelector((state: RootState) => state.project)
+  const [r, setr] = useState<number>()
+  const [rOffset, setrOffset] = useState<number>()
+  const [rStep, setrStep] = useState<number>()
+  const [loading, setloading] = useState(false)
 
   const symbolSize = 20
 
@@ -26,7 +35,7 @@ export const HorizonChart: React.FC<HorizonChartProps> = ({ data }) => {
         )
       },
     },
-    grid: {},
+    grid: { top: '5%' },
     xAxis: {
       name: t('horizonChart.azi'),
       nameLocation: 'center',
@@ -68,7 +77,111 @@ export const HorizonChart: React.FC<HorizonChartProps> = ({ data }) => {
 
   return (
     <>
-      <Divider style={{ marginBottom: 0 }}>{t('horizonChart.title')}</Divider>
+      <Divider>{t('horizonChart.title')}</Divider>
+
+      <Form
+        colon={false}
+        onFinish={values => {
+          setloading(true)
+          autoHorizon({
+            r: unit === 'm' ? values.r : 0.621371 * Number(values.r),
+            rOffset: unit === 'm' ? values.rOffset : 0.621371 * Number(values.rOffset),
+            rStep: unit === 'm' ? values.rStep : 0.621371 * Number(values.rStep),
+            lon: projectData?.projectLon ?? 0,
+            lat: projectData?.projectLat ?? 0,
+            ele: projectData?.projectAltitude ?? 0,
+          })
+            .then(res => {
+              setloading(false)
+              setdata(res.elevation.map((val, i) => [(i + 1) * 15, val]))
+            })
+            .catch(() => setloading(false))
+        }}
+      >
+        <Row justify='center' gutter={20}>
+          <Col span={8}>
+            <Form.Item
+              name='r'
+              label={t('project.autoHorizon.r')}
+              rules={[
+                {
+                  type: 'number',
+                  min: 1,
+                  max: 100,
+                  message: `${t('project.autoHorizon.error.notInRange')} 0 - 100`,
+                  transform: v => Number(v),
+                },
+              ]}
+            >
+              <Input
+                type='number'
+                suffix={unit === 'm' ? 'km' : 'mile'}
+                placeholder={t('project.autoHorizon.r.placeholder')}
+                onChange={e => setr(Number(e.target.value))}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              name='rOffset'
+              label={t('project.autoHorizon.rOffset')}
+              dependencies={['r']}
+              rules={[
+                {
+                  type: 'number',
+                  min: 0,
+                  max: r,
+                  message: `${t('project.autoHorizon.error.notInRange')} 0 - ${r}`,
+                  transform: v => Number(v),
+                },
+              ]}
+            >
+              <Input
+                type='number'
+                suffix={unit === 'm' ? 'km' : 'mile'}
+                placeholder={t('project.autoHorizon.rOffset.placeholder')}
+                onChange={e => setrOffset(Number(e.target.value))}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              name='rStep'
+              label={t('project.autoHorizon.rStep')}
+              dependencies={['r', 'rOffset']}
+              rules={[
+                {
+                  type: 'number',
+                  min: r !== undefined && rOffset !== undefined ? (r - rOffset) / 250 : 0,
+                  max: r !== undefined && rOffset !== undefined ? r - rOffset : 0,
+                  message: `${t('project.autoHorizon.error.notInRange')} ${
+                    r !== undefined && rOffset !== undefined ? (r - rOffset) / 250 : 0
+                  } - ${r !== undefined && rOffset !== undefined ? r - rOffset : 0}`,
+                  transform: v => Number(v),
+                },
+              ]}
+            >
+              <Input
+                type='number'
+                disabled={r === undefined || rOffset === undefined}
+                suffix={unit === 'm' ? 'km' : 'mile'}
+                placeholder={t('project.autoHorizon.rStep.placeholder')}
+                onChange={e => setrStep(Number(e.target.value))}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row justify='center'>
+          <Button
+            htmlType='submit'
+            disabled={r === undefined || rOffset === undefined || rStep === undefined}
+            loading={loading}
+          >
+            {t('project.autoHorizon.gen')}
+          </Button>
+        </Row>
+      </Form>
+
       <ReactEcharts
         option={option}
         style={{ height: '600px', width: '100%' }}

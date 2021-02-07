@@ -114,4 +114,7 @@ export type Project = Omit<ProjectPreUpload, 'longitude' | 'latitude' | 'weather
   p_loss_mismatch_betweenstrings?: number
   p_loss_mismatch_withinstring?: number
   p_loss_soiling?: number
+  GHI?: number
+  DNI?: number
+  DHI?: number
 }

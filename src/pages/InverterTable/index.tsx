@@ -44,10 +44,15 @@ const InverterTablePage: React.FC = () => {
           </Button>
           <Button
             className={styles.rightBut}
-            shape='circle'
+            shape='round'
             onClick={() => fetchData()}
-            icon={<SyncOutlined spin={loading} />}
-          />
+            loading={loading}
+            icon={<SyncOutlined />}
+            ghost
+            type='primary'
+          >
+            {t('action.refresh')}
+          </Button>
           <InverterTable
             loading={loading}
             data={myData}

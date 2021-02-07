@@ -139,10 +139,15 @@ const ProjectTable: React.FC = () => {
       </Button>
       <Button
         className={styles.rightBut}
-        shape='circle'
+        shape='round'
         onClick={fetchData}
-        icon={<SyncOutlined spin={loading} />}
-      />
+        loading={loading}
+        icon={<SyncOutlined />}
+        ghost
+        type='primary'
+      >
+        {t('action.refresh')}
+      </Button>
       <Tabs defaultActiveKey='1' centered>
         <TabPane tab={t('project.type.domestic')} key='1'>
           {genTable('domestic')}

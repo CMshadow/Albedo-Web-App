@@ -286,6 +286,38 @@ export const InverterModal: React.FC<InverterModalProps> = props => {
       })
   }
 
+  const customRequest = (params: any) => {
+    const reader = new FileReader()
+    reader.readAsText(params.file)
+    reader.onload = event => {
+      if (!event.target || !event.target.result) {
+        params.onError(Error('Failed to load File'))
+        return
+      }
+      parseOND({
+        fileText: event.target.result,
+        onUploadProgress: ({ total, loaded }) =>
+          params.onProgress(
+            {
+              percent: Number(Math.round((loaded / total) * 100).toFixed(2)),
+            },
+            params.file
+          ),
+      })
+        .then(res => {
+          form.setFieldsValue(res)
+          params.onSuccess({}, params.file)
+        })
+        .catch(err => {
+          params.onError(err)
+        })
+    }
+    reader.onerror = () => {
+      params.onError(Error('Failed to read file'))
+      return
+    }
+  }
+
   // 组件渲染后加载表单初始值
   useEffect(() => {
     form.setFieldsValue(editRecord || initValues)
@@ -329,37 +361,7 @@ export const InverterModal: React.FC<InverterModalProps> = props => {
                   <Upload
                     accept='.ond'
                     fileList={uploadFileList}
-                    customRequest={params => {
-                      const reader = new FileReader()
-                      reader.readAsText(params.file)
-                      reader.onload = event => {
-                        if (!event.target || !event.target.result) {
-                          params.onError(Error('Failed to load File'))
-                          return
-                        }
-                        parseOND({
-                          fileText: event.target.result,
-                          onUploadProgress: ({ total, loaded }) =>
-                            params.onProgress(
-                              {
-                                percent: Number(Math.round((loaded / total) * 100).toFixed(2)),
-                              },
-                              params.file
-                            ),
-                        })
-                          .then(res => {
-                            form.setFieldsValue(res)
-                            params.onSuccess({}, params.file)
-                          })
-                          .catch(err => {
-                            params.onError(err)
-                          })
-                      }
-                      reader.onerror = () => {
-                        params.onError(Error('Failed to read file'))
-                        return
-                      }
-                    }}
+                    customRequest={customRequest}
                     onChange={({ fileList }) => setuploadFileList(fileList.slice(-1))}
                   >
                     <Button icon={<UploadOutlined />}>{t('PV.uploadBut')} .ond</Button>
