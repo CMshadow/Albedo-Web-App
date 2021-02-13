@@ -37,7 +37,7 @@ export const GHIViz: React.FC<GHIVizProps> = props => {
       .catch(() => {
         setloading(false)
       })
-  }, [portfolio.portfolioID, portfolio.meteonorm_src, portfolio.nasa_src, portfolio.custom_src])
+  }, [portfolio])
 
   return (
     <Spin spinning={loading} indicator={<LoadingOutlined />}>
