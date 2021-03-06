@@ -11,7 +11,7 @@ export const OptimalCard: React.FC<OptimalCardProps> = ({ loading, ...values }) 
   const { t } = useTranslation()
 
   return (
-    <Row gutter={12}>
+    <Row gutter={5} className={styles.wrap}>
       <Col lg={8} xl={4}>
         <Card loading={loading} className={styles.card}>
           <Statistic
