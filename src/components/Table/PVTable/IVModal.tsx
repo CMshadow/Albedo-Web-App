@@ -40,33 +40,12 @@ export const IVModal: React.FC<IVModalProps> = ({
       setloading(true)
       getIVCurve({ pvID, userID })
         .then(res => {
-          const ivData: IvsV[] = []
-          const pvData: PvsV[] = []
-          Object.keys(res).forEach(key => {
-            ivData.push({ current: res[key].i_sc, voltage: 0, irr: key })
-            ivData.push({ current: 0, voltage: res[key].v_oc, irr: key })
-            ivData.push({ current: res[key].i_mp, voltage: res[key].v_mp, irr: key })
-            ivData.push({ current: res[key].i_x, voltage: res[key].v_oc * 0.5, irr: key })
-            ivData.push({
-              current: res[key].i_xx,
-              voltage: (res[key].v_oc + res[key].v_mp) * 0.5,
-              irr: key,
-            })
-
-            pvData.push({ power: res[key].i_sc * 0, voltage: 0, irr: key })
-            pvData.push({ power: 0 * res[key].v_oc, voltage: res[key].v_oc, irr: key })
-            pvData.push({ power: res[key].i_mp * res[key].v_mp, voltage: res[key].v_mp, irr: key })
-            pvData.push({
-              power: res[key].i_x * res[key].v_oc * 0.5,
-              voltage: res[key].v_oc * 0.5,
-              irr: key,
-            })
-            pvData.push({
-              power: res[key].i_xx * (res[key].v_oc + res[key].v_mp) * 0.5,
-              voltage: (res[key].v_oc + res[key].v_mp) * 0.5,
-              irr: key,
-            })
-          })
+          const ivData: IvsV[] = Object.keys(res.iv).flatMap(irr =>
+            res.iv[irr].map(v => ({ current: v[0], voltage: v[1], irr: irr }))
+          )
+          const pvData: PvsV[] = Object.keys(res.pv).flatMap(irr =>
+            res.pv[irr].map(v => ({ power: v[0], voltage: v[1], irr: irr }))
+          )
           setivDataSrc(ivData)
           setpvDataSrc(pvData)
           setloading(false)

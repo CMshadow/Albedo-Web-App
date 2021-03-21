@@ -51,6 +51,7 @@ export const PVModal: React.FC<PVModalProps> = props => {
   const { t } = useTranslation()
   const [loading, setloading] = useState(false)
   const [uploadFileList, setuploadFileList] = useState<UploadFile[]>([])
+  const [optionIVData, setoptionIVData] = useState<{ [key: string]: [number, number][] }>()
   const [form] = Form.useForm()
   const dispatch = useDispatch()
 
@@ -214,7 +215,7 @@ export const PVModal: React.FC<PVModalProps> = props => {
     if (editRecord) {
       action = updatePV({ pvID: editRecord.pvID, values: values as PVPreUpload })
     } else {
-      action = addPV({ values: values as PVPreUpload })
+      action = addPV({ values: { ...values, singlediodeIVData: optionIVData } as PVPreUpload })
     }
     action
       .then(() => {
@@ -252,6 +253,7 @@ export const PVModal: React.FC<PVModalProps> = props => {
       })
         .then(res => {
           form.setFieldsValue(res)
+          setoptionIVData(res.singlediode_iv_data)
           params.onSuccess({}, params.file)
         })
         .catch(err => {
