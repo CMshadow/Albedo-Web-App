@@ -45,18 +45,17 @@ const updatePVRequest: IAxiosRequest<
     })
     .then(res => res.data)
 
-type IVEntry = { i_sc: number; i_mp: number; v_mp: number; v_oc: number; i_xx: number; i_x: number }
-
-type IVCruve = {
-  [key: string]: IVEntry
+type IVCruveData = {
+  iv: { [key: string]: [number, number][] }
+  pv: { [key: string]: [number, number][] }
 }
 
 const getIVCurveRequest: IAxiosRequest<
   { pvID: string; userID: string; jwtToken: string },
-  IVCruve
+  IVCruveData
 > = args =>
   axios
-    .get<IVCruve>(`/pv/ivcurve`, {
+    .get<IVCruveData>(`/pv/ivcurve`, {
       params: { pvID: args.pvID, userID: args.userID },
       headers: { 'COG-TOKEN': args.jwtToken },
     })

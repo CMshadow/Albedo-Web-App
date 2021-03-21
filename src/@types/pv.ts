@@ -27,6 +27,7 @@ export type PVPreUpload = {
   twentyfiveYDecay: number
   year1Decay: number
   year2To25Decay: number
+  singlediodeIVData?: { [key: string]: [number, number][] }
 }
 
 export type PV = PVPreUpload & {
