@@ -20,14 +20,10 @@ const Dashboard: React.FC = () => {
           <Description loading={!projectData || !projectData.projectTitle} />
         </Col>
       </Row>
-      <Row gutter={rowGutter}>
-        <Col span={24}>
-          <OptimalCard
-            loading={!projectData || !projectData.optTilt || !(projectData.optTilt >= 0)}
-            {...projectData}
-          />
-        </Col>
-      </Row>
+      <OptimalCard
+        loading={!projectData || !projectData.optTilt || !(projectData.optTilt >= 0)}
+        {...projectData}
+      />
       <Row gutter={rowGutter}>
         <Col span={24}>
           <Equipments
