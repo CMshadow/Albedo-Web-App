@@ -392,9 +392,9 @@ export const EditForm: React.FC<EditFormProps> = ({ powercabinetIndex, seteditin
         ...(values[`linked_inverter_serial_num_${buildingIndex}`] || []),
       ]
     })
-    const linkedCombiboxSerialNum: string[] = []
+    let linkedCombiboxSerialNum: string[] = []
     buildings.forEach((building, buildingIndex) => {
-      values.linkedCombiboxSerialNum = [
+      linkedCombiboxSerialNum = [
         ...linkedCombiboxSerialNum,
         ...(values[`linked_combibox_serial_num_${buildingIndex}`] || []),
       ]
