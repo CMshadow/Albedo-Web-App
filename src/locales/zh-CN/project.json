@@ -87,8 +87,8 @@
   "project.error.azimuth": "朝向在0°到360°之间",
 
   "project.spec.celltemp-model": "温度模型",
-  "project.spec.celltemp_sandia": "Sandia电池片温度模型",
-  "project.spec.celltemp_pvsyst": "PVsyst电池片散热模型",
+  "project.spec.celltemp_sandia": "经验系数温度模型",
+  "project.spec.celltemp_pvsyst": "物理参数散热模型",
   "project.spec.celltemp_a.help": "低风速和高辐照环境下的组件上限温度系数",
   "project.spec.celltemp_b.help": "风速和组件温度的变化系数",
   "project.spec.celltemp_dtc.help": "组件正反面温度差",

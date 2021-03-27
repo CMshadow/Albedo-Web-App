@@ -87,8 +87,8 @@
   "project.error.azimuth": "Azimuth should be between 0 and 360°",
 
   "project.spec.celltemp-model": "Celltemp Model",
-  "project.spec.celltemp_sandia": "Sandia Model",
-  "project.spec.celltemp_pvsyst": "PVsyst Model",
+  "project.spec.celltemp_sandia": "Empirical Model",
+  "project.spec.celltemp_pvsyst": "Physical Model",
   "project.spec.celltemp_a.help": "Empirically-determined coefficient establishing the upper limit for module temperature at low wind speeds and high solar irradiance",
   "project.spec.celltemp_b.help": "Empirically-determined coefficient establishing the rate at which module temperature drops as wind speed increases",
   "project.spec.celltemp_dtc.help": "Temperature difference between cell and module back",
