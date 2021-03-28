@@ -34,6 +34,8 @@
   "PV.mc-Si": "Polycrystalline",
   "PV.c-Si": "Monocrystalline",
   "PV.moduleMaterial": "Module Frame Material",
+  "PV.sandia": "Empirical Model",
+  "PV.pvsyst": "Physical Model",
   "PV.glass/cell/glass": "Glass/Cell/Glass",
   "PV.glass/cell/polymer-sheet": "Glass/Cell/Polymer-sheet",
   "PV.polymer/thin-film/steel": "Polymer/Thin-film/Steel",
