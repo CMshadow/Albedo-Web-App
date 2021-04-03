@@ -264,6 +264,23 @@ const Register: React.FC = () => {
             />
           </FormItem>
         </Popover>
+        <Row>{t('user.required.token')}</Row>
+        <FormItem
+          name='token'
+          rules={[
+            { required: true },
+            {
+              validateTrigger: 'onSubmit',
+              validator: (rule, value) =>
+                new Promise((resolve, reject) => {
+                  if (value === 'albedobeta') resolve('')
+                  else reject(t('user.error.token'))
+                }),
+            },
+          ]}
+        >
+          <Input size='large' placeholder={t('user.placeholder.token')} />
+        </FormItem>
         <FormItem>
           <Button
             size='large'

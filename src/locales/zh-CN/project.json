@@ -29,6 +29,9 @@
   "project.create.albedo.full": "全反射",
   "project.create.ACVolDropFac": "交流侧允许压降系数",
   "project.create.DCVolDropFac": "直流侧允许压降系数",
+  "project.create.skyDiffModel": "散射模型",
+  "project.skyDiffModel.isotropic": "等向散射模型",
+  "project.skyDiffModel.anisotropic": "异向散射模型",
 
   "project.error.invalid-address.amap": "高德地图无法验证该地址",
   "project.error.invalid-address.googlemap": "谷歌地图无法验证该地址",
