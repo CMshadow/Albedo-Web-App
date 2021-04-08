@@ -17,7 +17,6 @@
   "user.required.email": "邮箱",
   "user.required.password": "密码",
   "user.required.verification": "验证码",
-  "user.required.token": "测试邀请码",
 
   "user.format.email": "请输入有效邮箱格式",
   "user.hint.length": "包含至少8个字符",
@@ -33,9 +32,7 @@
   "user.placeholder.email": "邮箱",
   "user.placeholder.password": "至少8位密码，包含大小写字母和数字",
   "user.placeholder.verification": "验证码",
-  "user.placeholder.token": "联系我们: support@albedox.com",
 
-  "user.error.token": "无效邀请码",
   "user.error.register": "注册失败",
   "user.error.verification": "验证失败",
   "user.error.login": "登录失败",
