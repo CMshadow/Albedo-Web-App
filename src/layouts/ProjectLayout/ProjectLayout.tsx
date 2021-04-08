@@ -165,14 +165,16 @@ const ProjectLayout: React.FC = props => {
       >
         {genReportSubMenu()}
       </SubMenu>
-      <SubMenu
-        disabled={!projectData || !projectData.tiltAzimuthPOA || !projectData.buildings}
-        key='singleLineDiag'
-        className={styles.menuItem}
-        title={t('sider.menu.singleLineDiagram')}
-      >
-        {genSLDSubMen()}
-      </SubMenu>
+      {cognitoUser?.attributes.locale === 'zh-CN' ? (
+        <SubMenu
+          disabled={!projectData || !projectData.tiltAzimuthPOA || !projectData.buildings}
+          key='singleLineDiag'
+          className={styles.menuItem}
+          title={t('sider.menu.singleLineDiagram')}
+        >
+          {genSLDSubMen()}
+        </SubMenu>
+      ) : null}
     </Menu>
   )
 
