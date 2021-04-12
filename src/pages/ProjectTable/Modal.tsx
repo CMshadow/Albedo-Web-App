@@ -445,7 +445,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
               <Select
                 options={[
                   { label: t('project.skyDiffModel.isotropic'), value: 'isotropic' },
-                  { label: t('project.skyDiffModel.anisotropic'), value: 'anisotropic' },
+                  { label: t('project.skyDiffModel.perez'), value: 'perez' },
                 ]}
               />
             </FormItem>

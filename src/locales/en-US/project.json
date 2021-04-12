@@ -31,7 +31,7 @@
   "project.create.DCVolDropFac": "Allowable DC Voltage Drop Factor",
   "project.create.skyDiffModel": "Sky Diffuse Model",
   "project.skyDiffModel.isotropic": "Isotropic Model",
-  "project.skyDiffModel.anisotropic": "Anisotropic Model",
+  "project.skyDiffModel.perez": "Anisotropic Model",
 
   "project.error.invalid-address.amap": "AMap cannot verify the address",
   "project.error.invalid-address.googlemap": "Google Map cannot verify the address",
