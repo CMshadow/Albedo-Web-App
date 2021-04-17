@@ -42,6 +42,7 @@ const initValues = {
   albedo: 0.3,
   DCVolDropFac: 1,
   ACVolDropFac: 2,
+  skyDiffModel: 'isotropic',
 }
 
 type CreateProjectModalProps = {
@@ -435,6 +436,18 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
               rules={[{ required: true }]}
             >
               <Slider marks={ACVolDropFacMarks} step={0.05} min={0.1} max={5} />
+            </FormItem>
+            <FormItem
+              name='skyDiffModel'
+              label={t('project.create.skyDiffModel')}
+              rules={[{ required: true }]}
+            >
+              <Select
+                options={[
+                  { label: t('project.skyDiffModel.isotropic'), value: 'isotropic' },
+                  { label: t('project.skyDiffModel.perez'), value: 'perez' },
+                ]}
+              />
             </FormItem>
           </Panel>
         </Collapse>

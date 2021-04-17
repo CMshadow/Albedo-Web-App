@@ -19,9 +19,9 @@
   "user.required.verification": "Verification code",
 
   "user.format.email": "Please enter a valid email address",
-  "user.hint.length": "Must contain 8 characters" ,
-  "user.hint.lowLetter": "Must include a lowercase letter" ,
-  "user.hint.capLetter": "Must include a uppercase letter" ,
+  "user.hint.length": "Must contain 8 characters",
+  "user.hint.lowLetter": "Must include a lowercase letter",
+  "user.hint.capLetter": "Must include a uppercase letter",
   "user.hint.number": "Must include a number",
   "user.strength.strong": "Strength: Strong",
   "user.strength.medium": "Strength: Medium",

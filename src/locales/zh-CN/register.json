@@ -19,9 +19,9 @@
   "user.required.verification": "验证码",
 
   "user.format.email": "请输入有效邮箱格式",
-  "user.hint.length": "包含至少8个字符" ,
-  "user.hint.lowLetter": "包含小写字母" ,
-  "user.hint.capLetter": "包含大写字母" ,
+  "user.hint.length": "包含至少8个字符",
+  "user.hint.lowLetter": "包含小写字母",
+  "user.hint.capLetter": "包含大写字母",
   "user.hint.number": "包含数字",
   "user.strength.strong": "强度: 强",
   "user.strength.medium": "强度: 中",
