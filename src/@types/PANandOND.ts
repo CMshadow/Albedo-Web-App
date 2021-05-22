@@ -20,7 +20,7 @@ export type PAN = {
   betaVmpo: number
   ixo: number
   ixxo: number
-  singlediode_iv_data: { [key: string]: [number, number][] }
+  singlediodeIVData: { [key: string]: [number, number][] }
 }
 
 export type OND = {

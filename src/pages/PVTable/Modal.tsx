@@ -253,7 +253,7 @@ export const PVModal: React.FC<PVModalProps> = props => {
       })
         .then(res => {
           form.setFieldsValue(res)
-          setoptionIVData(res.singlediode_iv_data)
+          setoptionIVData(res.singlediodeIVData)
           params.onSuccess({}, params.file)
         })
         .catch(err => {
