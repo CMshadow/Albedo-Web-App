@@ -87,7 +87,7 @@ export type ProjectPreUpload = {
   albedo: number
   ACVolDropFac: number
   DCVolDropFac: number
-  skyDiffModel: 'isotropic' | 'perez'
+  skyDiffModel: 'albedo_isotropic' | 'perez'
 }
 
 export type Project = Omit<ProjectPreUpload, 'longitude' | 'latitude' | 'weatherSrc'> & {

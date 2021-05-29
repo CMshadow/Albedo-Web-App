@@ -42,7 +42,7 @@ const initValues = {
   albedo: 0.3,
   DCVolDropFac: 1,
   ACVolDropFac: 2,
-  skyDiffModel: 'isotropic',
+  skyDiffModel: 'albedo_isotropic',
 }
 
 type CreateProjectModalProps = {
@@ -444,7 +444,7 @@ export const CreateProjectModal: React.FC<CreateProjectModalProps> = props => {
             >
               <Select
                 options={[
-                  { label: t('project.skyDiffModel.isotropic'), value: 'isotropic' },
+                  { label: t('project.skyDiffModel.isotropic'), value: 'albedo_isotropic' },
                   { label: t('project.skyDiffModel.perez'), value: 'perez' },
                 ]}
               />
